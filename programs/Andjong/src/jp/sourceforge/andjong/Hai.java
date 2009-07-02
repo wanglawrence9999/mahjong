@@ -28,15 +28,15 @@ public class Hai {
 	 * <p>
 	 * <dl>
 	 * <dt>萬子</dt>
-	 * <dd>KIND_WAN & 1-9</dd>
+	 * <dd>KIND_WAN | 1-9</dd>
 	 * <dt>筒子</dt>
-	 * <dd>KIND_PIN & 1-9</dd>
+	 * <dd>KIND_PIN | 1-9</dd>
 	 * <dt>索子</dt>
-	 * <dd>KIND_SOU & 1-9</dd>
+	 * <dd>KIND_SOU | 1-9</dd>
 	 * <dt>風牌</dt>
-	 * <dd>KIND_FON & 1-4</dd>
+	 * <dd>KIND_FON | 1-4</dd>
 	 * <dt>三元牌</dt>
-	 * <dd>KIND_SANGEN & 1-3</dd>
+	 * <dd>KIND_SANGEN | 1-3</dd>
 	 * </dl>
 	 * </p>
 	 */

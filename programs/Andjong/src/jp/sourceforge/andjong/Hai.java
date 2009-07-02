@@ -2,58 +2,80 @@ package jp.sourceforge.andjong;
 
 /**
  * 牌を管理するクラスです。
+ * 
  * @author Yuji Urushibara
- *
+ * 
  */
 public class Hai {
 	/** 萬子 */
-	public final static int KIND_WAN	= 0x00000010;
+	public final static int KIND_WAN = 0x00000010;
 	/** 筒子 */
-	public final static int KIND_PIN	= 0x00000020;
+	public final static int KIND_PIN = 0x00000020;
 	/** 索子 */
-	public final static int KIND_SOU	= 0x00000040;
+	public final static int KIND_SOU = 0x00000040;
 	/** 数牌 */
-	public final static int KIND_SHUU	= 0x00000070;
-	
+	public final static int KIND_SHUU = 0x00000070;
+
 	/** 風牌 */
-	public final static int KIND_FON	= 0x00000100;
+	public final static int KIND_FON = 0x00000100;
 	/** 三元牌 */
-	public final static int KIND_SANGEN	= 0x00000200;
+	public final static int KIND_SANGEN = 0x00000200;
 	/** 字牌 */
-	public final static int KIND_TSUU	= 0x00000300;
-	
+	public final static int KIND_TSUU = 0x00000300;
+
 	/**
 	 * 牌番号
 	 * <p>
 	 * <dl>
-	 * <dt>萬子</dt><dd>KIND_WAN & 1-9</dd>
-	 * <dt>筒子</dt><dd>KIND_PIN & 1-9</dd>
-	 * <dt>索子</dt><dd>KIND_SOU & 1-9</dd>
-	 * <dt>風牌</dt><dd>KIND_FON & 1-4</dd>
-	 * <dt>三元牌</dt><dd>KIND_SANGEN & 1-3</dd>
+	 * <dt>萬子</dt>
+	 * <dd>KIND_WAN & 1-9</dd>
+	 * <dt>筒子</dt>
+	 * <dd>KIND_PIN & 1-9</dd>
+	 * <dt>索子</dt>
+	 * <dd>KIND_SOU & 1-9</dd>
+	 * <dt>風牌</dt>
+	 * <dd>KIND_FON & 1-4</dd>
+	 * <dt>三元牌</dt>
+	 * <dd>KIND_SANGEN & 1-3</dd>
 	 * </dl>
 	 * </p>
 	 */
 	public int id;
-	
+
 	/** 赤牌フラグ */
 	public boolean aka;
-	
+
 	/**
 	 * 牌番号を渡してHaiオブジェクトを作ります。
-	 * @param id 牌番号
+	 * 
+	 * @param id
+	 *            牌番号
 	 */
 	public Hai(int id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * 牌番号と赤牌フラグを渡してHaiオブジェクトを作ります。
-	 * @param id 牌番号
-	 * @param aka 赤牌フラグ
+	 * 
+	 * @param id
+	 *            牌番号
+	 * @param aka
+	 *            赤牌フラグ
 	 */
 	public Hai(int id, boolean aka) {
 		this.id = id;
 		this.aka = aka;
+	}
+
+	/**
+	 * Haiオブジェクトを渡してHaiオブジェクトを作ります。
+	 * 
+	 * @param hai
+	 *            Haiオブジェクト
+	 */
+	public Hai(Hai hai) {
+		this.id = hai.id;
+		this.aka = hai.aka;
 	}
 }

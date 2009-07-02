@@ -42,8 +42,11 @@ public class Hai {
 	 */
 	public int id;
 
-	/** 赤牌フラグ */
-	public boolean aka;
+	/** プロパティ（赤牌） */
+	public final static int PROPERTY_AKA = 0x00000001;
+
+	/** プロパティ */
+	public int property;
 
 	/**
 	 * 牌番号を渡してHaiオブジェクトを作ります。
@@ -56,16 +59,16 @@ public class Hai {
 	}
 
 	/**
-	 * 牌番号と赤牌フラグを渡してHaiオブジェクトを作ります。
+	 * 牌番号とプロパティを渡してHaiオブジェクトを作ります。
 	 * 
 	 * @param id
 	 *            牌番号
-	 * @param aka
-	 *            赤牌フラグ
+	 * @param property
+	 *            プロパティ
 	 */
-	public Hai(int id, boolean aka) {
+	public Hai(int id, int property) {
 		this.id = id;
-		this.aka = aka;
+		this.property = property;
 	}
 
 	/**
@@ -76,6 +79,6 @@ public class Hai {
 	 */
 	public Hai(Hai hai) {
 		this.id = hai.id;
-		this.aka = hai.aka;
+		this.property = hai.property;
 	}
 }

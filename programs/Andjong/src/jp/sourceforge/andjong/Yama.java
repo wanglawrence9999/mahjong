@@ -6,19 +6,19 @@ import java.util.Random;
 
 public class Yama {
 	/** 山牌の最大数 */
-	public final static int YAMA_MAX = 136;
+	private final static int YAMA_MAX = 136;
 
 	/** 山牌 */
 	private Hai[] hai = new Hai[YAMA_MAX];
 
 	/** ツモ位置の最後 */
-	public final static int TSUMO_END = 122;
+	private final static int TSUMO_END = 122;
 
 	/** ツモ位置 */
 	private int tsumoIdx;
 
 	/** リンシャンツモ位置の最後 */
-	public final static int RINSHAN_END = 126;
+	private final static int RINSHAN_END = 126;
 
 	/** リンシャンツモ位置 */
 	private int rinshanIdx;

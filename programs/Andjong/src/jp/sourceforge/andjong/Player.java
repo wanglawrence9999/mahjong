@@ -22,6 +22,12 @@ public class Player {
 	/** 点棒 */
 	public int tenbou;
 
+	/** 家からプレイヤー番号を取得する */
+	public int[] PlayerToCha = new int[4];
+
+	/** プレイヤー番号から家を取得する */
+	public int[] ChaToPlayer = new int[4];
+
 	/**
 	 * プレイヤーを初期化する。
 	 */

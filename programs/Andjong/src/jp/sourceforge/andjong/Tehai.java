@@ -199,4 +199,110 @@ public class Tehai {
 		ankans[ankansLength][2].copy(ankan[2]);
 		ankans[ankansLength++][3].copy(ankan[3]);
 	}
+
+	/**
+	 * カウントフォーマットを管理するクラスです。
+	 * <p>
+	 * 構造体のように使用します。
+	 * </p>
+	 * 
+	 * @author Yuji Urushibara
+	 * 
+	 */
+	public static class CountFormat {
+		/**
+		 * カウントを管理するクラスです。
+		 * <p>
+		 * 構造体のように使用します。
+		 * </p>
+		 * 
+		 * @author Yuji Urushibara
+		 * 
+		 */
+		public static class Count {
+			/** 牌番号 */
+			public int id;
+
+			/** 牌の個数 */
+			public int length = 1;
+		}
+
+		/** カウントの最大値 */
+		public static final int COUNT_MAX = 14;
+
+		/** カウントの配列 */
+		public Count[] counts = new Count[COUNT_MAX];
+
+		/** カウントの長さ */
+		public int length;
+
+		{
+			for (int i = 0; i < COUNT_MAX; i++)
+				counts[i] = new Count();
+		}
+
+		/**
+		 * カウントの配列の長さの合計を取得する。
+		 * 
+		 * @return　カウントの配列の長さの合計
+		 */
+		public int getTotalCountLength() {
+			int totalCountLength = 0;
+
+			for (int i = 0; i < length; i++)
+				totalCountLength += counts[i].length;
+
+			return totalCountLength;
+		}
+	}
+
+	/** カウントフォーマット */
+	private CountFormat countFormat = new CountFormat();
+
+	/**
+	 * カウントフォーマットを取得する。
+	 * 
+	 * @param addHai
+	 *            手牌に追加する牌。nullでも良い。
+	 * @return カウントフォーマット
+	 */
+	public CountFormat getCountFormat(Hai addHai) {
+		int jyunTehaiId;
+		int addHaiId = 0;
+		boolean set = true;
+
+		countFormat.length = 0;
+
+		if (addHai != null) {
+			addHaiId = addHai.id;
+			set = false;
+		}
+
+		for (int i = 0; i < jyunTehaiLength;) {
+			jyunTehaiId = jyunTehai[i].id;
+
+			if (!set && (jyunTehaiId > addHaiId)) {
+				set = true;
+				countFormat.counts[countFormat.length++].id = addHaiId;
+				continue;
+			}
+
+			countFormat.counts[countFormat.length].id = jyunTehaiId;
+
+			if (!set && (jyunTehaiId == addHaiId)) {
+				set = true;
+				countFormat.counts[countFormat.length].length++;
+			}
+
+			while (++i < jyunTehaiLength)
+				if (jyunTehaiId == jyunTehai[i].id)
+					countFormat.counts[countFormat.length].length++;
+				else
+					break;
+
+			countFormat.length++;
+		}
+
+		return countFormat;
+	}
 }

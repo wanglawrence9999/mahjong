@@ -1,5 +1,7 @@
 package jp.sourceforge.andjong;
 
+import jp.sourceforge.andjong.Tehai.CountFormat;
+
 /**
  * ゲームのハンドリングを行うクラスです。
  * 
@@ -46,6 +48,19 @@ public class Game {
 			for (int j = 0; j < players[i].tehai.jyunTehaiLength; j++)
 				System.out.print(players[i].tehai.jyunTehai[j].id + ",");
 			System.out.println();
+		}
+
+		// CountFormatに変換してみます。
+		CountFormat countFormat;
+		countFormat = players[0].tehai.getCountFormat(yama.tsumo());
+
+		{
+			System.out.println("CountFormat");
+			for (int i = 0; i < countFormat.length; i++) {
+				System.out.println("id = " + countFormat.counts[i].id
+						+ ", length = " + countFormat.counts[i].length);
+			}
+			System.out.println(countFormat.getTotalCountLength());
 		}
 
 		// 河に捨ててみます。

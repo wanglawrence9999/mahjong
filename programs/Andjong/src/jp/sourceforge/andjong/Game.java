@@ -1,5 +1,6 @@
 package jp.sourceforge.andjong;
 
+import static jp.sourceforge.andjong.Hai.*;
 import jp.sourceforge.andjong.Tehai.CountFormat;
 
 /**
@@ -61,6 +62,29 @@ public class Game {
 						+ ", length = " + countFormat.counts[i].length);
 			}
 			System.out.println(countFormat.getTotalCountLength());
+		}
+
+		{
+			Tehai tehai = new Tehai();
+			tehai.addJyunTehai(new Hai(KIND_WAN | 1));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 1));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 1));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 2));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 3));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 4));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 5));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 6));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 7));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 8));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 9));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 9));
+			tehai.addJyunTehai(new Hai(KIND_WAN | 9));
+
+			CountFormat countFormatTest;
+			countFormatTest = tehai.getCountFormat(new Hai(KIND_WAN | 2));
+
+			tehai.combiManage.init(countFormatTest.getTotalCountLength());
+			tehai.searchCombi(0);
 		}
 
 		// �͂Ɏ̂ĂĂ݂܂��B

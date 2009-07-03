@@ -18,14 +18,14 @@ public class Kawa {
 	private final static int KAWA_MAX = 25;
 
 	/** 河 */
-	public Hai[] hai = new Hai[KAWA_MAX];
+	public Hai[] hais = new Hai[KAWA_MAX];
 
 	/** 河の長さ */
 	public int kawaLength;
 
 	{
-		for (int i = 0; i < hai.length; i++)
-			hai[i] = new Hai(0);
+		for (int i = 0; i < hais.length; i++)
+			hais[i] = new Hai();
 	}
 
 	/**
@@ -42,8 +42,7 @@ public class Kawa {
 	 *            追加する牌
 	 */
 	public void add(Hai addHai) {
-		hai[kawaLength].id = addHai.id;
-		hai[kawaLength++].property = addHai.property;
+		hais[kawaLength++].copy(addHai);
 	}
 
 	/**
@@ -55,8 +54,9 @@ public class Kawa {
 	 *            追加するプロパティ
 	 */
 	public void add(Hai addHai, int property) {
-		hai[kawaLength].id = addHai.id;
-		hai[kawaLength++].property = addHai.property | property;
+		hais[kawaLength].copy(addHai);
+		addProperty(property);
+		kawaLength++;
 	}
 
 	/**
@@ -66,6 +66,6 @@ public class Kawa {
 	 *            追加するプロパティ
 	 */
 	public void addProperty(int property) {
-		hai[kawaLength].property |= property;
+		hais[kawaLength].property |= property;
 	}
 }

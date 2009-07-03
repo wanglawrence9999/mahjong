@@ -49,6 +49,13 @@ public class Hai {
 	public int property;
 
 	/**
+	 * 空のHaiオブジェクトを作ります。
+	 */
+	public Hai() {
+
+	}
+
+	/**
 	 * 牌番号を渡してHaiオブジェクトを作ります。
 	 * 
 	 * @param id
@@ -78,6 +85,17 @@ public class Hai {
 	 *            Haiオブジェクト
 	 */
 	public Hai(Hai hai) {
+		this.id = hai.id;
+		this.property = hai.property;
+	}
+
+	/**
+	 * Haiオブジェクトをコピーします。
+	 * 
+	 * @param hai
+	 *            Haiオブジェクト
+	 */
+	public void copy(Hai hai) {
 		this.id = hai.id;
 		this.property = hai.property;
 	}

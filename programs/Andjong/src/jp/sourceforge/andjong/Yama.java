@@ -9,7 +9,7 @@ public class Yama {
 	private final static int YAMA_MAX = 136;
 
 	/** éRîv */
-	private Hai[] hai = new Hai[YAMA_MAX];
+	private Hai[] hais = new Hai[YAMA_MAX];
 
 	/** ÉcÉÇà íuÇÃç≈å„ */
 	private final static int TSUMO_END = 122;
@@ -44,23 +44,23 @@ public class Yama {
 
 		for (id = KIND_WAN + 1, max = id + 9; id < max; id++)
 			for (loop = 0; loop < 4; loop++, haiIdx++)
-				hai[haiIdx] = new Hai(id);
+				hais[haiIdx] = new Hai(id);
 
 		for (id = KIND_PIN + 1, max = id + 9; id < max; id++)
 			for (loop = 0; loop < 4; loop++, haiIdx++)
-				hai[haiIdx] = new Hai(id);
+				hais[haiIdx] = new Hai(id);
 
 		for (id = KIND_SOU + 1, max = id + 9; id < max; id++)
 			for (loop = 0; loop < 4; loop++, haiIdx++)
-				hai[haiIdx] = new Hai(id);
+				hais[haiIdx] = new Hai(id);
 
 		for (id = KIND_FON + 1, max = id + 4; id < max; id++)
 			for (loop = 0; loop < 4; loop++, haiIdx++)
-				hai[haiIdx] = new Hai(id);
+				hais[haiIdx] = new Hai(id);
 
 		for (id = KIND_SANGEN + 1, max = id + 3; id < max; id++)
 			for (loop = 0; loop < 4; loop++, haiIdx++)
-				hai[haiIdx] = new Hai(id);
+				hais[haiIdx] = new Hai(id);
 	}
 
 	/**
@@ -75,9 +75,9 @@ public class Yama {
 
 		for (int i = 0, j, size = YAMA_MAX; i < YAMA_MAX; i++) {
 			j = random.nextInt(size);
-			temp = hai[i];
-			hai[i] = hai[j];
-			hai[j] = temp;
+			temp = hais[i];
+			hais[i] = hais[j];
+			hais[j] = temp;
 		}
 
 		tsumoIdx = 0;
@@ -91,7 +91,7 @@ public class Yama {
 	 */
 	public Hai tsumo() {
 		if (tsumoIdx < TSUMO_END)
-			return new Hai(hai[tsumoIdx++]);
+			return new Hai(hais[tsumoIdx++]);
 
 		return null;
 	}
@@ -103,7 +103,7 @@ public class Yama {
 	 */
 	public Hai rinshan() {
 		if (rinshanIdx < RINSHAN_END)
-			return new Hai(hai[rinshanIdx++]);
+			return new Hai(hais[rinshanIdx++]);
 
 		return null;
 	}
@@ -118,7 +118,7 @@ public class Yama {
 		Hai[] dora = new Hai[doraNum];
 
 		for (int i = 0, doraIdx = RINSHAN_END; i < doraNum; i++, doraIdx += 2)
-			dora[i] = new Hai(hai[doraIdx]);
+			dora[i] = new Hai(hais[doraIdx]);
 
 		return dora;
 	}
@@ -133,7 +133,7 @@ public class Yama {
 		Hai[] dora = new Hai[doraNum];
 
 		for (int i = 0, doraIdx = RINSHAN_END; i < doraNum; i++, doraIdx++)
-			dora[i] = new Hai(hai[doraIdx]);
+			dora[i] = new Hai(hais[doraIdx]);
 
 		return dora;
 	}

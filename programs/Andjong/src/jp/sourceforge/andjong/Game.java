@@ -7,38 +7,62 @@ package jp.sourceforge.andjong;
  * 
  */
 public class Game {
-	public void play() {
-		Yama yama = new Yama();
+	/** 山 */
+	private Yama yama = new Yama();
 
+	/** プレイヤーの人数 */
+	private int playerNum;
+
+	/** プレイヤーの配列 */
+	private Player[] players;
+
+	public void play() {
+		// 山を洗牌します。
 		yama.xipai();
 
-		Hai[] dora;
-		dora = yama.getDora();
-		System.out.println("dora.length = " + dora.length);
-		for (int i = 0; i < dora.length; i++)
-			System.out.println("dora = " + dora[i].id);
-
-		Tehai tehai = new Tehai();
-		Hai tsumoHai;
-
-		for (int i = 0; i < 13; i++) {
-			tsumoHai = yama.tsumo();
-			tehai.addJyunTehai(tsumoHai);
+		// ドラを表示してみます。
+		{
+			Hai[] dora;
+			dora = yama.getDora();
+			System.out.println("dora.length = " + dora.length);
+			for (int i = 0; i < dora.length; i++)
+				System.out.println("dora = " + dora[i].id);
 		}
 
-		for (int i = 0; i < tehai.jyunTehaiLength; i++)
-			System.out.println("jyunTehai = " + tehai.jyunTehai[i].id);
+		// プレイヤーを初期化します。
+		playerNum = 4;
+		players = new Player[playerNum];
+		for (int i = 0; i < playerNum; i++)
+			players[i] = new Player(new AI());
 
-		{
-			System.out.println("removeJyunTehai");
-			for (int i = 0; i < 3; i++)
-				tehai.removeJyunTehai(i);
+		// ツモします。
+		for (int i = 0; i < playerNum; i++)
+			for (int j = 0; j < 13; j++)
+				players[i].tehai.addJyunTehai(yama.tsumo());
 
-			for (int i = 0; i < tehai.jyunTehaiLength; i++)
-				System.out.println("jyunTehai = " + tehai.jyunTehai[i].id);
+		// 純手牌を表示します。
+		for (int i = 0; i < playerNum; i++) {
+			System.out.println("players[" + i + "]");
+			for (int j = 0; j < players[i].tehai.jyunTehaiLength; j++)
+				System.out.print(players[i].tehai.jyunTehai[j].id + ",");
+			System.out.println();
 		}
 
+		// 河に捨ててみます。
+		for (int i = 0; i < 5; i++) {
+			players[0].kawa.add(players[0].tehai.jyunTehai[0]);
+			players[0].tehai.removeJyunTehai(0);
+		}
+
+		// 河を表示してみます。
+		System.out.println("kawa");
+		for (int i = 0; i < players[0].kawa.kawaLength; i++)
+			System.out.print(players[0].kawa.hais[i].id + ",");
+		System.out.println();
+
 		{
+			Tehai tehai = new Tehai();
+
 			Hai[] minshun = new Hai[] { new Hai(Hai.KIND_WAN | 1),
 					new Hai(Hai.KIND_WAN | 2), new Hai(Hai.KIND_WAN | 3) };
 
@@ -66,6 +90,7 @@ public class Game {
 				tehai.addankan(ankan);
 		}
 
+		Hai tsumoHai;
 		while (true) {
 			tsumoHai = yama.tsumo();
 			if (tsumoHai == null)
@@ -81,10 +106,14 @@ public class Game {
 			System.out.println("rinshanHai = " + rinshanHai.id);
 		}
 
-		dora = yama.getDoraAll();
-		System.out.println("dora.length = " + dora.length);
-		for (int i = 0; i < dora.length; i++)
-			System.out.println("dora = " + dora[i].id);
+		// ドラを表示してみます。
+		{
+			Hai[] dora;
+			dora = yama.getDoraAll();
+			System.out.println("dora.length = " + dora.length);
+			for (int i = 0; i < dora.length; i++)
+				System.out.println("dora = " + dora[i].id);
+		}
 	}
 
 	public static void main(String[] args) {

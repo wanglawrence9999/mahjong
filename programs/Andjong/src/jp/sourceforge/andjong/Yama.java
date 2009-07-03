@@ -4,6 +4,12 @@ import static jp.sourceforge.andjong.Hai.*;
 
 import java.util.Random;
 
+/**
+ * 山を管理するクラスです。
+ * 
+ * @author Yuji Urushibara
+ * 
+ */
 public class Yama {
 	/** 山牌の最大数 */
 	private final static int YAMA_MAX = 136;
@@ -24,14 +30,14 @@ public class Yama {
 	private int rinshanIdx;
 
 	/**
-	 * 山牌を初期化します。
+	 * 山を初期化します。
 	 */
 	public Yama() {
 		init();
 	}
 
 	/**
-	 * 山牌を初期化します。
+	 * 山を初期化します。
 	 * <p>
 	 * 力尽くで初期化します。
 	 * </p>

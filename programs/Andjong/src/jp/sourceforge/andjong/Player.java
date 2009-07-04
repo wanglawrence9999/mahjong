@@ -28,6 +28,9 @@ public class Player {
 	/** プレイヤー番号から家を取得する */
 	public int[] ChaToPlayer = new int[4];
 
+	/** 家に対応したプレイヤー */
+	public Player[] players = new Player[4];
+
 	/**
 	 * プレイヤーを初期化する。
 	 */
@@ -44,7 +47,7 @@ public class Player {
 	public Player(AI ai) {
 		this.ai = ai;
 	}
-	
+
 	public void init() {
 		tehai.init();
 		kawa.init();

@@ -1,14 +1,8 @@
 package jp.sourceforge.andjong;
 
-//import static jp.sourceforge.andjong.Hai.*;
-import static jp.sourceforge.andjong.AI.*;
+import static jp.sourceforge.andjong.Info.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
-
-//import jp.sourceforge.andjong.Tehai.CountFormat;
 
 /**
  * ゲームのハンドリングを行うクラスです。
@@ -24,7 +18,7 @@ public class Game {
 	private int playerNum;
 
 	/** プレイヤーの配列 */
-	private Player[] players;
+	Player[] players;
 
 	private int kyoku;
 
@@ -45,6 +39,8 @@ public class Game {
 	private int action;
 
 	private Info info;
+
+	private UI ui;
 
 	public void play() {
 		// Gameオブジェクトを初期化します。
@@ -216,6 +212,7 @@ public class Game {
 					l = 0;
 				players[j].ChaToPlayer[l] = k;
 				players[j].PlayerToCha[k] = l;
+				players[j].players[l] = players[k];
 			}
 		}
 	}
@@ -300,11 +297,52 @@ public class Game {
 		}
 	}
 
-	private Player activePlayer;
+	Player activePlayer;
 
 	private final static int ACTION_TSUMO = 0;
 	private final static int ACTION_RON = 1;
-	
+
+	// int eventCallPlayerIdx;
+	int eventTargetPlayerIdx;
+
+	private void callEvent(int eventCallPlayerIdx, int eventTargetPlayerIdx,
+			int eventId) {
+		// private void callEvent(int k, int l, int action, Hai hai) {
+		int returnEvent;
+		int j = eventCallPlayerIdx;
+		// int player_no = k;
+		// int target_no = l;
+
+		for (int i = 0; i < players.length; i++) {
+			// アクションを通知
+
+			// ツモ
+			ui.event(activePlayer.ChaToPlayer[eventCallPlayerIdx],
+					activePlayer.ChaToPlayer[eventTargetPlayerIdx], action);
+			returnEvent = activePlayer.ai.event(
+					activePlayer.ChaToPlayer[eventCallPlayerIdx],
+					activePlayer.ChaToPlayer[eventTargetPlayerIdx], action);
+			// returnEvent = activePlayer.ai.event(action,
+			// player_active.cha_to_player_no[player_no],
+			// player_active.cha_to_player_no[target_no], hai);
+
+			switch (returnEvent) {
+			case EVENTID_RON:
+				activePlayer = players[j];
+				activePlayerIdx = j;
+				this.action = ACTION_RON;
+				return;
+			default:
+				j++;
+				if (j >= players.length) {
+					j = 0;
+				}
+				activePlayer = players[j];
+				break;
+			}
+		}
+	}
+
 	Hai tsumoHai;
 
 	Hai suteHai;
@@ -314,22 +352,26 @@ public class Game {
 		int sutehaiIdx;
 
 		// ツモ
-		returnEvent = activePlayer.ai.event(EVENTID_TSUMO);
+		System.out.println("a:" + activePlayerIdx);
+		ui.event(0, 0, EVENTID_TSUMO);
+		returnEvent = activePlayer.ai.event(0, 0, EVENTID_TSUMO);
 		sutehaiIdx = info.sutehaiIdx;
 
 		switch (returnEvent) {
 		case EVENTID_SUTEHAI:
-			if(sutehaiIdx == 13) {
+			if (sutehaiIdx == 13) {
 				lastTsumogiri = true;
-				suteHai = tsumoHai;
-				if(suteHai == null) {
+				suteHai.copy(tsumoHai);
+				if (suteHai == null) {
 					System.out.println("sutehai == null");
 				}
 				activePlayer.kawa.add(suteHai);
-			}
-			else {
+				eventTargetPlayerIdx = activePlayerIdx;
+				callEvent(activePlayerIdx, eventTargetPlayerIdx,
+						EVENTID_SUTEHAI);
+			} else {
 				lastTsumogiri = false;
-				suteHai = activePlayer.tehai.jyunTehai[sutehaiIdx];
+				suteHai.copy(activePlayer.tehai.jyunTehai[sutehaiIdx]);
 				activePlayer.tehai.removeJyunTehai(sutehaiIdx);
 				activePlayer.kawa.add(suteHai);
 				if (tsumoHai != null) {
@@ -341,7 +383,7 @@ public class Game {
 			break;
 		}
 	}
-	
+
 	private void loopKyoku() {
 		activePlayerIdx = oya;
 
@@ -407,6 +449,9 @@ public class Game {
 		kyoku = 0;
 		renchan = false;
 		info = new Info(this);
+		ui = new UI(info);
+		tsumoHai = new Hai();
+		suteHai = new Hai();
 	}
 
 	public static void main(String[] args) {

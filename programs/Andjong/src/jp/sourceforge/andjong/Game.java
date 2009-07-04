@@ -1,6 +1,7 @@
 package jp.sourceforge.andjong;
 
 //import static jp.sourceforge.andjong.Hai.*;
+import static jp.sourceforge.andjong.AI.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class Game {
 
 	private int reachbou;
 
-	private boolean last_tsumogiri;
+	private boolean lastTsumogiri;
 
 	private int wareme;
 
@@ -260,7 +261,7 @@ public class Game {
 	}
 
 	private void startKyoku() {
-		last_tsumogiri = false;
+		lastTsumogiri = false;
 		reachbou = 0;
 		renchan = false;
 
@@ -274,9 +275,8 @@ public class Game {
 		saifuri();
 
 		// プレイヤーの初期化
-		/*
-		 * for (int i = 0; i < players.length; i++) { players[i].init(); }
-		 */
+		for (int i = 0; i < players.length; i++)
+			players[i].init();
 
 		// 配牌
 		haipai();
@@ -306,6 +306,41 @@ public class Game {
 	private final static int ACTION_RON = 1;
 	
 	Hai tsumoHai;
+
+	Hai suteHai;
+
+	private void sutehai() {
+		int returnEvent;
+		int sutehaiIdx;
+
+		// ツモ
+		returnEvent = activePlayer.ai.event(EVENTID_TSUMO);
+		sutehaiIdx = info.sutehaiIdx;
+
+		switch (returnEvent) {
+		case EVENTID_SUTEHAI:
+			if(sutehaiIdx == 13) {
+				lastTsumogiri = true;
+				suteHai = tsumoHai;
+				if(suteHai == null) {
+					System.out.println("sutehai == null");
+				}
+				activePlayer.kawa.add(suteHai);
+			}
+			else {
+				lastTsumogiri = false;
+				suteHai = activePlayer.tehai.jyunTehai[sutehaiIdx];
+				activePlayer.tehai.removeJyunTehai(sutehaiIdx);
+				activePlayer.kawa.add(suteHai);
+				if (tsumoHai != null) {
+					activePlayer.tehai.addJyunTehai(tsumoHai);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
 	
 	private void loopKyoku() {
 		activePlayerIdx = oya;
@@ -323,7 +358,7 @@ public class Game {
 			}
 
 			activePlayer = players[activePlayerIdx];
-			// sutehai(tsumoHai);
+			sutehai();
 			action = 2;
 
 			switch (action) {

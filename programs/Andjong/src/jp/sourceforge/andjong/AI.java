@@ -17,7 +17,8 @@ public class AI {
 	public final static int EVENTID_TSUMO = 0;
 	public final static int EVENTID_SUTEHAI = 1;
 
-	public void event(int eventId) {
-
+	public int event(int eventId) {
+		info.sutehaiIdx = 13;
+		return EVENTID_SUTEHAI;
 	}
 }

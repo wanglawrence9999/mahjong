@@ -44,4 +44,9 @@ public class Player {
 	public Player(AI ai) {
 		this.ai = ai;
 	}
+	
+	public void init() {
+		tehai.init();
+		kawa.init();
+	}
 }

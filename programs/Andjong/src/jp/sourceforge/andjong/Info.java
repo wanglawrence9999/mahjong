@@ -8,6 +8,8 @@ package jp.sourceforge.andjong;
  */
 public class Info {
 	private Game game;
+	
+	public int sutehaiIdx;
 
 	public Info(Game game) {
 		this.game = game;

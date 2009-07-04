@@ -2,6 +2,9 @@ package jp.sourceforge.andjong;
 
 //import static jp.sourceforge.andjong.Hai.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 
 //import jp.sourceforge.andjong.Tehai.CountFormat;
@@ -14,7 +17,7 @@ import java.util.Random;
  */
 public class Game {
 	/** 山 */
-	private Yama yama = new Yama();
+	private Yama yama;
 
 	/** プレイヤーの人数 */
 	private int playerNum;
@@ -40,6 +43,8 @@ public class Game {
 
 	private int action;
 
+	private Info info;
+
 	public void play() {
 		// Gameオブジェクトを初期化します。
 		init();
@@ -55,7 +60,7 @@ public class Game {
 		playerNum = 4;
 		players = new Player[playerNum];
 		for (int i = 0; i < playerNum; i++)
-			players[i] = new Player(new AI());
+			players[i] = new Player(new AI(info));
 
 		// 局を開始します。
 		// TODO 最初は東風戦にしておきます。
@@ -287,7 +292,7 @@ public class Game {
 		}
 
 		// 局のメインループ
-		// loopKyoku();
+		loopKyoku();
 
 		{
 			// debug
@@ -299,15 +304,15 @@ public class Game {
 
 	private final static int ACTION_TSUMO = 0;
 	private final static int ACTION_RON = 1;
-
+	
+	Hai tsumoHai;
+	
 	private void loopKyoku() {
-		Hai tsumoHai;
 		activePlayerIdx = oya;
 
 		while (true) {
 			// ツモ
 			tsumoHai = yama.tsumo();
-			// tsumo_hai = yama.rinshan();
 			if (tsumoHai == null) {
 				// 流局
 				oya++;
@@ -317,9 +322,9 @@ public class Game {
 				return;
 			}
 
-			action = 0;
 			activePlayer = players[activePlayerIdx];
 			// sutehai(tsumoHai);
+			action = 2;
 
 			switch (action) {
 			case ACTION_TSUMO:
@@ -366,6 +371,7 @@ public class Game {
 		yama = new Yama();
 		kyoku = 0;
 		renchan = false;
+		info = new Info(this);
 	}
 
 	public static void main(String[] args) {

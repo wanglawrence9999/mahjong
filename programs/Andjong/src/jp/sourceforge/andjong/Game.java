@@ -63,12 +63,13 @@ public class Game {
 		// TODO 最初は東風戦にしておきます。
 		while (kyoku < 4) {
 			startKyoku();
-			if (!renchan) {
-				kyoku++;
-				honba = 0;
-			} else {
-				System.out.println("連荘です。");
-			}
+			break;
+//			if (!renchan) {
+//				kyoku++;
+//				honba = 0;
+//			} else {
+//				System.out.println("連荘です。");
+//			}
 		}
 
 		// // 山を洗牌します。
@@ -322,9 +323,6 @@ public class Game {
 			returnEvent = activePlayer.ai.event(
 					activePlayer.ChaToPlayer[eventCallPlayerIdx],
 					activePlayer.ChaToPlayer[eventTargetPlayerIdx], action);
-			// returnEvent = activePlayer.ai.event(action,
-			// player_active.cha_to_player_no[player_no],
-			// player_active.cha_to_player_no[target_no], hai);
 
 			switch (returnEvent) {
 			case EVENTID_RON:
@@ -377,6 +375,10 @@ public class Game {
 				if (tsumoHai != null) {
 					activePlayer.tehai.addJyunTehai(tsumoHai);
 				}
+				eventTargetPlayerIdx = activePlayerIdx;
+				callEvent(activePlayerIdx, eventTargetPlayerIdx,
+						EVENTID_SUTEHAI);
+				System.out.println("!!!");
 			}
 			break;
 		default:

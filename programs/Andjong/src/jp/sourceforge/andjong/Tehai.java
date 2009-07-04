@@ -10,7 +10,7 @@ import static jp.sourceforge.andjong.Hai.*;
  */
 public class Tehai {
 	/** ƒŽè”v‚ÌÅ‘å” */
-	private final static int JYUNTEHAI_MAX = 13;
+	private final static int JYUNTEHAI_MAX = 14;
 
 	/**
 	 * ƒŽè”v
@@ -299,7 +299,7 @@ public class Tehai {
 			public int id;
 
 			/** ”v‚ÌŒÂ” */
-			public int length = 1;
+			public int length;
 		}
 
 		/** ƒJƒEƒ“ƒg‚ÌÅ‘å’l */
@@ -358,11 +358,14 @@ public class Tehai {
 
 			if (!set && (jyunTehaiId > addHaiId)) {
 				set = true;
-				countFormat.counts[countFormat.length++].id = addHaiId;
+				countFormat.counts[countFormat.length].id = addHaiId;
+				countFormat.counts[countFormat.length].length = 1;
+				countFormat.length++;
 				continue;
 			}
 
 			countFormat.counts[countFormat.length].id = jyunTehaiId;
+			countFormat.counts[countFormat.length].length = 1;
 
 			if (!set && (jyunTehaiId == addHaiId)) {
 				set = true;

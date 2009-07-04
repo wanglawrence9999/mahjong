@@ -119,21 +119,24 @@ public class UI {
 			int eventId) {
 		switch (eventId) {
 		case EVENTID_TSUMO:
-			System.out.println("[" + eventCallPlayerIdx + "]["
-					+ eventTargetPlayerIdx + "]EVENTID_TSUMO");
+//			System.out.println("[" + eventCallPlayerIdx + "]["
+//					+ eventTargetPlayerIdx + "]EVENTID_TSUMO");
 			info.copyTehai(tehai, 0);
+
 			// ƒè”v‚ğ•\¦‚µ‚Ü‚·B
 			for (int i = 0; i < tehai.jyunTehaiLength; i++)
 				System.out.print(idToString(tehai.jyunTehai[i].id));
-			System.out.println();
+			Hai tsumoHai = new Hai();
+			info.copyTsumoHai(tsumoHai);
+			System.out.println(":" + idToString(tsumoHai.id));
 			break;
 		case EVENTID_SUTEHAI:
-			System.out.println("[" + eventCallPlayerIdx + "]["
-					+ eventTargetPlayerIdx + "]EVENTID_SUTEHAI");
+//			System.out.println("[" + eventCallPlayerIdx + "]["
+//					+ eventTargetPlayerIdx + "]EVENTID_SUTEHAI");
 			break;
 		case EVENTID_NAGASHI:
-			System.out.println("[" + eventCallPlayerIdx + "]["
-					+ eventTargetPlayerIdx + "]EVENTID_NAGASHI");
+//			System.out.println("[" + eventCallPlayerIdx + "]["
+//					+ eventTargetPlayerIdx + "]EVENTID_NAGASHI");
 			break;
 		default:
 			break;

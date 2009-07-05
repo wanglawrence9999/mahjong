@@ -1,6 +1,7 @@
 package jp.sourceforge.andjong;
 
 import static jp.sourceforge.andjong.Info.*;
+import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
 
 /**
@@ -15,6 +16,9 @@ public class AI {
 
 	private Tehai tehai = new Tehai();
 
+	/** カウントフォーマット */
+	private CountFormat countFormat = new CountFormat();
+
 	public AI(Info info) {
 		this.info = info;
 	}
@@ -28,7 +32,15 @@ public class AI {
 			returnEvent = eventTsumo();
 			break;
 		case EVENTID_SUTEHAI:
-			returnEvent = EVENTID_NAGASHI;
+			tehai.getCountFormat(countFormat, info.getSuteHai());
+			int combisCount = tehai.getCombi(combis, countFormat);
+			if (combisCount > 0) {
+				returnEvent = EVENTID_RON;
+			}
+			else {
+				returnEvent = EVENTID_NAGASHI;
+			}
+			break;
 		default:
 			break;
 		}
@@ -36,33 +48,45 @@ public class AI {
 		return returnEvent;
 	}
 
+	private Combi[] combis = new Combi[10];
+
+	private final static int HYOUKA_SHUU = 1;
+
 	public int eventTsumo() {
 		int score = 0;
 		int maxScore = 0;
 		info.copyTehai(tehai, 0);
-
 		Hai tsumoHai = info.getTsumoHai();
 
+		// 和了のチェックをする。
+		tehai.getCountFormat(countFormat, tsumoHai);
+		int combisCount = tehai.getCombi(combis, countFormat);
+		if (combisCount > 0) {
+			return EVENTID_TSUMOAGARI;
+		}
+
 		info.setSutehaiIdx(13);
-		CountFormat countFormat = tehai.getCountFormat(null);
+		tehai.getCountFormat(countFormat, null);
 		maxScore = getCountFormatScore(countFormat);
-		//System.out.println("score:" + score + ",maxScore:" + maxScore + ",hai:" + UI.idToString(tsumoHai.getId()));
+		// System.out.println("score:" + score + ",maxScore:" + maxScore +
+		// ",hai:" + UI.idToString(tsumoHai.getId()));
 		Hai hai = new Hai();
 
 		Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
 		for (int i = 0; i < Tehai.JYUNTEHAI_MAX; i++)
 			jyunTehai[i] = new Hai();
 		int jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
-		
+
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			tehai.copyJyunTehaiIdx(hai, i);
 			tehai.removeJyunTehai(i);
-			countFormat = tehai.getCountFormat(tsumoHai);
+			tehai.getCountFormat(countFormat, tsumoHai);
 			score = getCountFormatScore(countFormat);
-			//System.out.println("score:" + score + ",maxScore:" + maxScore + ",hai:" + UI.idToString(hai.getId()));
+			// System.out.println("score:" + score + ",maxScore:" + maxScore +
+			// ",hai:" + UI.idToString(hai.getId()));
 			if (score > maxScore) {
 				maxScore = score;
-				//System.out.println("setSutehaiIdx:" + i);
+				// System.out.println("setSutehaiIdx:" + i);
 				info.setSutehaiIdx(i);
 			}
 			tehai.addJyunTehai(hai);
@@ -75,6 +99,10 @@ public class AI {
 		int score = 0;
 
 		for (int i = 0; i < countFormat.length; i++) {
+			if ((countFormat.counts[i].id & Hai.KIND_SHUU) != 0) {
+				score += countFormat.counts[i].length * HYOUKA_SHUU;
+			}
+			
 			if (countFormat.counts[i].length == 2) {
 				score += 4;
 			}

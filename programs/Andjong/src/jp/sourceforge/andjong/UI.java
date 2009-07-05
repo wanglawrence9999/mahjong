@@ -142,6 +142,7 @@ public class UI {
 
 	public void event(int eventCallPlayerIdx, int eventTargetPlayerIdx,
 			int eventId) {
+		int jyunTehaiLength;
 		switch (eventId) {
 		case EVENTID_TSUMO:
 			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
@@ -149,7 +150,7 @@ public class UI {
 
 			// 純手牌を表示します。
 			info.copyTehai(tehai, 0);
-			int jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
+			jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
 			for (int i = 0; i < jyunTehaiLength; i++)
 				System.out.print(idToString(jyunTehai[i].getId()));
 			System.out.println(":" + idToString((info.getTsumoHai()).getId()));
@@ -165,6 +166,17 @@ public class UI {
 				System.out.println(":"
 						+ idToString((info.getSuteHai()).getId()));
 			}
+			break;
+		case EVENTID_RON:
+			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
+			System.out.print("[ロン]");
+
+			// 純手牌を表示します。
+			info.copyTehai(tehai, 0);
+			jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
+			for (int i = 0; i < jyunTehaiLength; i++)
+				System.out.print(idToString(jyunTehai[i].getId()));
+			System.out.println(":" + idToString((info.getSuteHai()).getId()));
 			break;
 		case EVENTID_NAGASHI:
 			// System.out.println("[" + eventCallPlayerIdx + "]["

@@ -364,9 +364,6 @@ public class Tehai {
 		}
 	}
 
-	/** カウントフォーマット */
-	private CountFormat countFormat = new CountFormat();
-
 	/**
 	 * カウントフォーマットを取得する。
 	 * 
@@ -374,7 +371,7 @@ public class Tehai {
 	 *            手牌に追加する牌。nullでも良い。
 	 * @return カウントフォーマット
 	 */
-	public CountFormat getCountFormat(Hai addHai) {
+	public void getCountFormat(CountFormat countFormat, Hai addHai) {
 		int jyunTehaiId;
 		int addHaiId = 0;
 		boolean set = true;
@@ -413,8 +410,6 @@ public class Tehai {
 
 			countFormat.length++;
 		}
-
-		return countFormat;
 	}
 
 	/**
@@ -423,7 +418,7 @@ public class Tehai {
 	 * @author Yuji Urushibara
 	 * 
 	 */
-	private static class Combi {
+	public static class Combi {
 		/** 頭の牌番号 */
 		public int atamaId = 0;
 
@@ -511,6 +506,13 @@ public class Tehai {
 	/** 上がりの組み合わせの構築を管理 */
 	public CombiManage combiManage = new CombiManage();
 
+	public int getCombi(Combi[] combis, CountFormat countFormat) {
+		combiManage.init(countFormat.getTotalCountLength());
+		searchCombi(countFormat, 0);
+		combis = combiManage.combis;
+		return combiManage.combisCount;
+	}
+
 	/**
 	 * 上がりの組み合わせを探す。
 	 * <p>
@@ -522,7 +524,7 @@ public class Tehai {
 	 * @param pos
 	 *            検索位置
 	 */
-	public void searchCombi(int pos) {
+	public void searchCombi(CountFormat countFormat, int pos) {
 		/*
 		 * 検索位置を更新します。
 		 */
@@ -551,7 +553,7 @@ public class Tehai {
 				if (combiManage.totalCount <= 0)
 					combiManage.add();
 				else
-					searchCombi(pos);
+					searchCombi(countFormat, pos);
 
 				/*
 				 * 確定した頭を戻す。
@@ -587,7 +589,7 @@ public class Tehai {
 					if (combiManage.totalCount <= 0)
 						combiManage.add();
 					else
-						searchCombi(pos);
+						searchCombi(countFormat, pos);
 
 					/*
 					 * 確定した順子を戻す。
@@ -619,7 +621,7 @@ public class Tehai {
 			if (combiManage.totalCount <= 0)
 				combiManage.add();
 			else
-				searchCombi(pos);
+				searchCombi(countFormat, pos);
 
 			/*
 			 * 確定した刻子を戻す。

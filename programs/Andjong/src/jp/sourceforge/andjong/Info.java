@@ -23,6 +23,7 @@ public class Info {
 	public final static int EVENTID_SUTEHAI = 0x00000002;
 	public final static int EVENTID_RON = 0x00000003;
 	public final static int EVENTID_NAGASHI = 0x00000004;
+	public final static int EVENTID_TSUMOAGARI = 0x00000005;
 
 	public final static int EVENTID_KYOKUSTART = 0x00010000;
 

@@ -301,7 +301,7 @@ public class Game {
 		return activePlayer;
 	}
 
-	private final static int ACTION_TSUMO = 0;
+	private final static int ACTION_TSUMOAGARI = 0;
 	private final static int ACTION_RON = 1;
 
 	// int eventCallPlayerIdx;
@@ -326,7 +326,13 @@ public class Game {
 			case EVENTID_RON:
 				activePlayer = players[j];
 				activePlayerIdx = j;
-				this.action = ACTION_RON;
+				action = ACTION_RON;
+				ui.event(activePlayerIdx, activePlayer.ChaToPlayer[eventCallPlayerIdx], EVENTID_RON);
+				return;
+			case EVENTID_TSUMOAGARI:
+				activePlayer = players[j];
+				activePlayerIdx = j;
+				action = ACTION_TSUMOAGARI;
 				return;
 			default:
 				j++;
@@ -375,6 +381,9 @@ public class Game {
 						EVENTID_SUTEHAI);
 			}
 			break;
+		case EVENTID_TSUMOAGARI:
+			action = ACTION_TSUMOAGARI;
+			break;
 		default:
 			break;
 		}
@@ -383,6 +392,7 @@ public class Game {
 	private void loopKyoku() {
 		activePlayerIdx = oya;
 		eventTargetPlayerIdx = oya;
+		action = 2;
 
 		while (true) {
 			// ÉcÉÇ
@@ -398,10 +408,9 @@ public class Game {
 
 			activePlayer = players[activePlayerIdx];
 			sutehai();
-			action = 2;
 
 			switch (action) {
-			case ACTION_TSUMO:
+			case ACTION_TSUMOAGARI:
 				activePlayer.tenbou += reachbou * 1000;
 				System.out.println("ÅöÉcÉÇ");
 				action = 0;

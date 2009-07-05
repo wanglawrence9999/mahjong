@@ -23,6 +23,9 @@ public class Hai {
 	/** š”v */
 	public final static int KIND_TSUU = 0x00000300;
 
+	/** ”v‚Ìí—Ş‚ğƒ}ƒXƒN‚·‚é */
+	public final static int KIND_MASK = 0x0000000F;
+
 	/**
 	 * ”v”Ô†
 	 * <p>

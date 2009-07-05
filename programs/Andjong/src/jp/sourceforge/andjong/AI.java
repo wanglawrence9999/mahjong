@@ -39,6 +39,7 @@ public class AI {
 			tehai.getCountFormat(countFormat, info.getSuteHai());
 			int combisCount = tehai.getCombi(combis, countFormat);
 			if (combisCount > 0) {
+				info.getAgariScore(tehai, info.getSuteHai(), combisCount, combis);
 				returnEvent = EVENTID_RON;
 			}
 			else {
@@ -70,6 +71,7 @@ public class AI {
 		tehai.getCountFormat(countFormat, tsumoHai);
 		int combisCount = tehai.getCombi(combis, countFormat);
 		if (combisCount > 0) {
+			info.getAgariScore(tehai, info.getSuteHai(), combisCount, combis);
 			return EVENTID_TSUMOAGARI;
 		}
 

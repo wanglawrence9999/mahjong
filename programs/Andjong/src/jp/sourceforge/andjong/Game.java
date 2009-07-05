@@ -1,12 +1,14 @@
 package jp.sourceforge.andjong;
 
 import static jp.sourceforge.andjong.Info.*;
+import static jp.sourceforge.andjong.Hai.*;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
+import jp.sourceforge.andjong.Tehai.TehaiBuffer;
 
 /**
  * ゲームのハンドリングを行うクラスです。
@@ -43,6 +45,45 @@ public class Game {
 	private Info info;
 
 	private UI ui;
+	
+	private TehaiBuffer tehaiBuffer = new TehaiBuffer();
+
+	private boolean checkTanyao(TehaiBuffer tehaiBuffer, Hai addHai, Combi combi) {
+		int id;
+
+		for(int i = 0; i< tehaiBuffer.jyunTehaiLength; i++ ) {
+			id = tehaiBuffer.jyunTehai[i].getId();
+			if((id & KIND_SHUU) == 0)
+				return false;
+			id &= KIND_MASK;
+			if((id == 1) || (id == 9))
+				return false;
+		}
+		
+		// TODO 鳴き牌の確認も
+		
+		return true;
+	}
+
+	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,
+			Combi[] combis) {
+		/*
+		 * ここで役と得点を計算する。
+		 */
+		
+		tehaiBuffer.copyTehai(tehai, true);
+		boolean tanyao;
+		for (int i = 0; i < combisCount; i++) {
+			tanyao = checkTanyao(tehaiBuffer, addHai, combis[i]);
+			if (tanyao) {
+				System.out.println("タンヤオ！！！");
+				/*
+				 * TODO 役をカウントしていく。
+				 */
+			}
+		}
+		return 0;
+	}
 
 	public void play() {
 		// Gameオブジェクトを初期化します。
@@ -203,7 +244,9 @@ public class Game {
 				activePlayer = players[j];
 				activePlayerIdx = j;
 				action = ACTION_RON;
-				ui.event(activePlayerIdx, activePlayer.ChaToPlayer[eventCallPlayerIdx], EVENTID_RON);
+				ui.event(activePlayerIdx,
+						activePlayer.ChaToPlayer[eventCallPlayerIdx],
+						EVENTID_RON);
 				return;
 			case EVENTID_TSUMOAGARI:
 				activePlayer = players[j];

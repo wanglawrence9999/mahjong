@@ -69,6 +69,91 @@ public class Tehai {
 	}
 
 	/**
+	 * 手牌バッファを管理するクラスです。
+	 * <p>
+	 * メンバがパブリックになっています。
+	 * </p>
+	 * 
+	 * @author Yuji Urushibara
+	 * 
+	 */
+	public static class TehaiBuffer {
+		/**
+		 * 純手牌
+		 * <p>
+		 * ソートされています。
+		 * </p>
+		 */
+		public Hai[] jyunTehai = new Hai[JYUNTEHAI_MAX];
+
+		/** 純手牌の長さ */
+		public int jyunTehaiLength;
+
+		/** 明順の配列の長さ */
+		public int minshunsLength;
+
+		/** 明順の配列 */
+		public Hai[][] minshuns = new Hai[4][3];
+
+		/** 明刻の配列の長さ */
+		public int minkousLength;
+
+		/** 明刻の配列 */
+		public Hai[][] minkous = new Hai[4][3];
+
+		/** 明槓の配列の長さ */
+		public int minkansLength;
+
+		/** 明槓の配列 */
+		public Hai[][] minkans = new Hai[4][4];
+
+		/** 暗槓の配列の長さ */
+		public int ankansLength;
+
+		/** 暗槓の配列 */
+		public Hai[][] ankans = new Hai[4][4];
+
+		{
+			for (int i = 0; i < JYUNTEHAI_MAX; i++)
+				jyunTehai[i] = new Hai();
+
+			for (int i = 0; i < minshuns.length; i++)
+				for (int j = 0; j < minshuns[i].length; j++)
+					minshuns[i][j] = new Hai();
+
+			for (int i = 0; i < minkous.length; i++)
+				for (int j = 0; j < minkous[i].length; j++)
+					minkous[i][j] = new Hai();
+
+			for (int i = 0; i < minkans.length; i++)
+				for (int j = 0; j < minkans[i].length; j++)
+					minkans[i][j] = new Hai();
+
+			for (int i = 0; i < ankans.length; i++)
+				for (int j = 0; j < ankans[i].length; j++)
+					ankans[i][j] = new Hai();
+		}
+
+		/**
+		 * 手牌オブジェクトをコピーする。
+		 * 
+		 * @param tehai
+		 *            手牌オブジェクト
+		 * @param jyunTehaiCopy
+		 *            純手牌のコピー許可
+		 */
+		public void copyTehai(Tehai tehai, boolean jyunTehaiCopy) {
+			if (jyunTehaiCopy == true) {
+				this.jyunTehaiLength = tehai.copyJyunTehai(this.jyunTehai);
+			}
+			this.minshunsLength = tehai.copyMinshuns(this.minshuns);
+			this.minkousLength = tehai.copyMinkous(this.minkous);
+			this.minkansLength = tehai.copyMinkans(this.minkans);
+			this.ankansLength = tehai.copyAnkans(this.ankans);
+		}
+	}
+
+	/**
 	 * 手牌を初期化します。
 	 */
 	public void init() {
@@ -84,6 +169,8 @@ public class Tehai {
 	 * 
 	 * @param tehai
 	 *            手牌オブジェクト
+	 * @param jyunTehaiCopy
+	 *            純手牌のコピー許可
 	 */
 	public void copy(Tehai tehai, boolean jyunTehaiCopy) {
 		init();

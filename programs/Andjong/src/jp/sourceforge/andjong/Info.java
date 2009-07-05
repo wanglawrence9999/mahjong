@@ -1,5 +1,7 @@
 package jp.sourceforge.andjong;
 
+import jp.sourceforge.andjong.Tehai.Combi;
+
 /**
  * AIやUIにGameクラスの情報を提供するクラスです。
  * 
@@ -46,12 +48,17 @@ public class Info {
 			tehai.copy((game.getActivePlayer()).players[cha].tehai, false);
 		}
 	}
-	
+
 	public void copyKawa(Kawa kawa, int cha) {
 		kawa.copy((game.getActivePlayer()).players[cha].kawa);
 	}
-	
+
 	public int getJikaze() {
 		return (game.getActivePlayer()).getJikaze();
+	}
+
+	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,
+			Combi[] combis) {
+		return game.getAgariScore(tehai, addHai, combisCount, combis);
 	}
 }

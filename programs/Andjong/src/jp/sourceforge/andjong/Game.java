@@ -30,8 +30,6 @@ public class Game {
 
 	private int reachbou;
 
-	private boolean lastTsumogiri;
-
 	private int wareme;
 
 	private int activePlayerIdx;
@@ -64,12 +62,12 @@ public class Game {
 		while (kyoku < 4) {
 			startKyoku();
 			break;
-//			if (!renchan) {
-//				kyoku++;
-//				honba = 0;
-//			} else {
-//				System.out.println("連荘です。");
-//			}
+			// if (!renchan) {
+			// kyoku++;
+			// honba = 0;
+			// } else {
+			// System.out.println("連荘です。");
+			// }
 		}
 
 		// // 山を洗牌します。
@@ -213,7 +211,7 @@ public class Game {
 					l = 0;
 				players[j].ChaToPlayer[l] = k;
 				players[j].PlayerToCha[k] = l;
-				players[j].players[l] = players[k];
+				players[j].players[k] = players[l];
 			}
 		}
 	}
@@ -259,7 +257,6 @@ public class Game {
 	}
 
 	private void startKyoku() {
-		lastTsumogiri = false;
 		reachbou = 0;
 		renchan = false;
 
@@ -312,21 +309,18 @@ public class Game {
 
 	private void callEvent(int eventCallPlayerIdx, int eventTargetPlayerIdx,
 			int eventId) {
-		// private void callEvent(int k, int l, int action, Hai hai) {
 		int returnEvent;
 		int j = eventCallPlayerIdx;
-		// int player_no = k;
-		// int target_no = l;
 
 		for (int i = 0; i < players.length; i++) {
 			// アクションを通知
 
 			// ツモ
 			ui.event(activePlayer.ChaToPlayer[eventCallPlayerIdx],
-					activePlayer.ChaToPlayer[eventTargetPlayerIdx], action);
+					activePlayer.ChaToPlayer[eventTargetPlayerIdx], eventId);
 			returnEvent = activePlayer.ai.event(
 					activePlayer.ChaToPlayer[eventCallPlayerIdx],
-					activePlayer.ChaToPlayer[eventTargetPlayerIdx], action);
+					activePlayer.ChaToPlayer[eventTargetPlayerIdx], eventId);
 
 			switch (returnEvent) {
 			case EVENTID_RON:
@@ -353,35 +347,32 @@ public class Game {
 		int returnEvent;
 		int sutehaiIdx;
 
-		// ツモ
+		// イベント（ツモ）
 		ui.event(0, 0, EVENTID_TSUMO);
 		returnEvent = activePlayer.ai.event(0, 0, EVENTID_TSUMO);
-		sutehaiIdx = info.sutehaiIdx;
 
 		switch (returnEvent) {
 		case EVENTID_SUTEHAI:
+			// イベント（捨牌）
+			sutehaiIdx = info.getSutehaiIdx();
 			if (sutehaiIdx == 13) {
-				lastTsumogiri = true;
+				// ツモ切り
 				suteHai.copy(tsumoHai);
-				if (suteHai == null) {
-					System.out.println("sutehai == null");
-				}
 				activePlayer.kawa.add(suteHai);
 				eventTargetPlayerIdx = activePlayerIdx;
 				callEvent(activePlayerIdx, eventTargetPlayerIdx,
 						EVENTID_SUTEHAI);
 			} else {
-				lastTsumogiri = false;
+				// 手出し
 				activePlayer.tehai.copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.tehai.removeJyunTehai(sutehaiIdx);
-				activePlayer.kawa.add(suteHai);
+				activePlayer.kawa.add(suteHai, Kawa.PROPERTY_TEDASHI);
 				if (tsumoHai != null) {
 					activePlayer.tehai.addJyunTehai(tsumoHai);
 				}
 				eventTargetPlayerIdx = activePlayerIdx;
 				callEvent(activePlayerIdx, eventTargetPlayerIdx,
 						EVENTID_SUTEHAI);
-				System.out.println("!!!");
 			}
 			break;
 		default:
@@ -391,6 +382,7 @@ public class Game {
 
 	private void loopKyoku() {
 		activePlayerIdx = oya;
+		eventTargetPlayerIdx = oya;
 
 		while (true) {
 			// ツモ

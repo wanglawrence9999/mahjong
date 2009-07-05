@@ -15,17 +15,17 @@ public class Kawa {
 	public final static int PROPERTY_TEDASHI = 0x00000008;
 
 	/** 河の最大数 */
-	private final static int KAWA_MAX = 25;
+	public final static int KAWA_MAX = 25;
 
 	/** 河 */
-	private KawaHai[] hais = new KawaHai[KAWA_MAX];
+	private KawaHai[] kawaHais = new KawaHai[KAWA_MAX];
 
 	/** 河の長さ */
 	private int kawaLength;
 
 	{
-		for (int i = 0; i < hais.length; i++)
-			hais[i] = new KawaHai();
+		for (int i = 0; i < kawaHais.length; i++)
+			kawaHais[i] = new KawaHai();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class Kawa {
 	 *            追加する牌
 	 */
 	void add(Hai addHai) {
-		hais[kawaLength].copy(addHai);
+		kawaHais[kawaLength].copy(addHai);
 		kawaLength++;
 	}
 
@@ -55,7 +55,7 @@ public class Kawa {
 	 *            追加するプロパティ
 	 */
 	void add(Hai addHai, int property) {
-		hais[kawaLength].copy(addHai);
+		kawaHais[kawaLength].copy(addHai);
 		addProperty(property);
 		kawaLength++;
 	}
@@ -67,7 +67,7 @@ public class Kawa {
 	 *            追加するプロパティ
 	 */
 	void addProperty(int property) {
-		hais[kawaLength].addKawaProperty(property);
+		kawaHais[kawaLength].addKawaProperty(property);
 	}
 
 	/**
@@ -77,19 +77,19 @@ public class Kawa {
 	 *            河
 	 */
 	void copy(Kawa kawa) {
-		this.kawaLength = copyKawaHai(this.hais);
+		this.kawaLength = kawa.copyKawaHai(this.kawaHais);
 	}
 
 	/**
 	 * 河をコピーする。
 	 * 
-	 * @param hais
+	 * @param kawaHais
 	 *            河
 	 * @return 河の長さ
 	 */
-	int copyKawaHai(KawaHai[] hais) {
+	int copyKawaHai(KawaHai[] kawaHais) {
 		for (int i = 0; i < this.kawaLength; i++)
-			hais[i].copy(this.hais[i]);
+			kawaHais[i].copy(this.kawaHais[i]);
 		return this.kawaLength;
 	}
 }

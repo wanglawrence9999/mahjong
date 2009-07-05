@@ -37,14 +37,16 @@ public class AI {
 	}
 
 	public int eventTsumo() {
+		int score = 0;
+		int maxScore = 0;
 		info.copyTehai(tehai, 0);
 
 		Hai tsumoHai = info.getTsumoHai();
 
-		tehai.addJyunTehai(tsumoHai);
-		CountFormat countFormat = tehai.getCountFormat(tsumoHai);
-		int score;
-		int minScore = 0;
+		info.setSutehaiIdx(13);
+		CountFormat countFormat = tehai.getCountFormat(null);
+		maxScore = getCountFormatScore(countFormat);
+		//System.out.println("score:" + score + ",maxScore:" + maxScore + ",hai:" + UI.idToString(tsumoHai.getId()));
 		Hai hai = new Hai();
 
 		Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
@@ -52,27 +54,19 @@ public class AI {
 			jyunTehai[i] = new Hai();
 		int jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
 		
-		for (int i = jyunTehaiLength - 1; i >= 0; i--) {
-			hai.copy(jyunTehai[i]);
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			tehai.copyJyunTehaiIdx(hai, i);
 			tehai.removeJyunTehai(i);
-			countFormat = tehai.getCountFormat(null);
+			countFormat = tehai.getCountFormat(tsumoHai);
 			score = getCountFormatScore(countFormat);
-			if (score < minScore) {
-				minScore = score;
-				info.sutehaiIdx = i;
+			//System.out.println("score:" + score + ",maxScore:" + maxScore + ",hai:" + UI.idToString(hai.getId()));
+			if (score > maxScore) {
+				maxScore = score;
+				//System.out.println("setSutehaiIdx:" + i);
+				info.setSutehaiIdx(i);
 			}
-			//System.out.println("i = " + i + ", score = " + score);
-			//for (int j = 0; j < tehai.jyunTehaiLength; j++)
-			//	System.out.print(UI.idToString(tehai.jyunTehai[j].id));
-			//System.out.println();
 			tehai.addJyunTehai(hai);
 		}
-		/*
-		 * for (int i = 0; i < countFormat.length; i++) {
-		 * countFormat.counts[i].length--; score =
-		 * getCountFormatScore(countFormat); System.out.println("score = " +
-		 * score); countFormat.counts[i].length++; }
-		 */
 
 		return EVENTID_SUTEHAI;
 	}
@@ -90,7 +84,6 @@ public class AI {
 			}
 
 			if ((countFormat.counts[i].id & Hai.KIND_SHUU) > 0) {
-				//System.out.println("[" + (countFormat.counts[i].id + 1) + "][" + countFormat.counts[i + 1].id + "]");
 				if ((countFormat.counts[i].id + 1) == countFormat.counts[i + 1].id) {
 					score += 4;
 				}

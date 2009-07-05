@@ -10,14 +10,24 @@ import static jp.sourceforge.andjong.Info.*;
  */
 public class UI {
 	private Info info;
-
 	private Tehai tehai = new Tehai();
+	private Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
+	private Kawa kawa = new Kawa();
+	private KawaHai[] kawaHais = new KawaHai[Kawa.KAWA_MAX];
+
+	{
+		for (int i = 0; i < Tehai.JYUNTEHAI_MAX; i++)
+			jyunTehai[i] = new Hai();
+
+		for (int i = 0; i < Kawa.KAWA_MAX; i++)
+			kawaHais[i] = new KawaHai();
+	}
 
 	public UI(Info info) {
 		this.info = info;
 	}
 
-	static private String idToString(int id) {
+	static public String idToString(int id) {
 		int kind = id & (Hai.KIND_SHUU | Hai.KIND_TSUU);
 		id &= ~(Hai.KIND_SHUU | Hai.KIND_TSUU);
 
@@ -114,8 +124,8 @@ public class UI {
 
 		return null;
 	}
-	
-	static private String jikazeToString(int jikaze) {
+
+	static public String jikazeToString(int jikaze) {
 		switch (jikaze) {
 		case 0:
 			return "“Œ";
@@ -126,7 +136,7 @@ public class UI {
 		case 3:
 			return "–k";
 		}
-		
+
 		return null;
 	}
 
@@ -135,24 +145,26 @@ public class UI {
 		switch (eventId) {
 		case EVENTID_TSUMO:
 			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
-			// System.out.println("[" + eventCallPlayerIdx + "]["
-			// + eventTargetPlayerIdx + "]EVENTID_TSUMO");
-			info.copyTehai(tehai, 0);
-
-			Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
-			for (int i = 0; i < Tehai.JYUNTEHAI_MAX; i++)
-				jyunTehai[i] = new Hai();
-			int jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
+			System.out.print("[ƒcƒ‚]");
 
 			// ƒŽè”v‚ð•\Ž¦‚µ‚Ü‚·B
+			info.copyTehai(tehai, 0);
+			int jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
 			for (int i = 0; i < jyunTehaiLength; i++)
 				System.out.print(idToString(jyunTehai[i].getId()));
-			Hai tsumoHai = info.getTsumoHai();
-			System.out.println(":" + idToString(tsumoHai.getId()));
+			System.out.println(":" + idToString((info.getTsumoHai()).getId()));
 			break;
 		case EVENTID_SUTEHAI:
-			// System.out.println("[" + eventCallPlayerIdx + "]["
-			// + eventTargetPlayerIdx + "]EVENTID_SUTEHAI");
+			if (eventCallPlayerIdx == 0) {
+				System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
+				System.out.print("[ŽÌ”v]");
+				info.copyKawa(kawa, 0);
+				int kawaLength = kawa.copyKawaHai(kawaHais);
+				for (int i = 0; i < kawaLength; i++)
+					System.out.print(idToString(kawaHais[i].getId()));
+				System.out.println(":"
+						+ idToString((info.getSuteHai()).getId()));
+			}
 			break;
 		case EVENTID_NAGASHI:
 			// System.out.println("[" + eventCallPlayerIdx + "]["

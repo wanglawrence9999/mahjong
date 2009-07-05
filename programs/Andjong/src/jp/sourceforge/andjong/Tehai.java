@@ -336,7 +336,7 @@ public class Tehai {
 		}
 
 		/** カウントの最大値 */
-		public static final int COUNT_MAX = 14;
+		public static final int COUNT_MAX = 14 + 2;
 
 		/** カウントの配列 */
 		public Count[] counts = new Count[COUNT_MAX];

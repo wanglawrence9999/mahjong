@@ -9,7 +9,15 @@ package jp.sourceforge.andjong;
 public class Info {
 	private Game game;
 
-	public int sutehaiIdx;
+	private int sutehaiIdx;
+
+	public int getSutehaiIdx() {
+		return sutehaiIdx;
+	}
+
+	public void setSutehaiIdx(int sutehaiIdx) {
+		this.sutehaiIdx = sutehaiIdx;
+	}
 
 	public final static int EVENTID_TSUMO = 0x00000001;
 	public final static int EVENTID_SUTEHAI = 0x00000002;
@@ -36,6 +44,10 @@ public class Info {
 		} else {
 			tehai.copy((game.getActivePlayer()).players[cha].tehai, false);
 		}
+	}
+	
+	public void copyKawa(Kawa kawa, int cha) {
+		kawa.copy((game.getActivePlayer()).players[cha].kawa);
 	}
 	
 	public int getJikaze() {

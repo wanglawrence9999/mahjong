@@ -22,24 +22,23 @@ public class Info {
 		this.game = game;
 	}
 
-	public void copyTsumoHai(Hai tsumoHai) {
-		tsumoHai.copy(game.tsumoHai);
+	public Hai getTsumoHai() {
+		return new Hai(game.tsumoHai);
 	}
 
-	public void copySuteHai(Hai suteHai) {
-		suteHai.copy(game.suteHai);
+	public Hai getSuteHai() {
+		return new Hai(game.suteHai);
 	}
 
 	public void copyTehai(Tehai tehai, int cha) {
-		tehai.init();
-		Tehai tehaiSource = game.activePlayer.players[cha].tehai;
-
 		if (cha == 0) {
-			tehaiSource.copyJyunTehai(tehai);
+			tehai.copy((game.getActivePlayer()).players[cha].tehai, true);
+		} else {
+			tehai.copy((game.getActivePlayer()).players[cha].tehai, false);
 		}
-		tehaiSource.copyMinshun(tehai);
-		tehaiSource.copyMinkou(tehai);
-		tehaiSource.copyMinkan(tehai);
-		tehaiSource.copyAnkan(tehai);
+	}
+	
+	public int getJikaze() {
+		return (game.getActivePlayer()).getJikaze();
 	}
 }

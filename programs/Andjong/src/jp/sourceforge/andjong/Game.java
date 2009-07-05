@@ -206,7 +206,7 @@ public class Game {
 			if (j >= players.length)
 				j = 0;
 
-			players[j].jikaze = i;
+			players[j].setJikaze(i);
 
 			for (int k = 0, l = j; k < players.length; k++, l++) {
 				if (l >= players.length)
@@ -298,7 +298,11 @@ public class Game {
 		}
 	}
 
-	Player activePlayer;
+	private Player activePlayer;
+
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
 
 	private final static int ACTION_TSUMO = 0;
 	private final static int ACTION_RON = 1;
@@ -350,7 +354,6 @@ public class Game {
 		int sutehaiIdx;
 
 		// ƒcƒ‚
-		System.out.println("a:" + activePlayerIdx);
 		ui.event(0, 0, EVENTID_TSUMO);
 		returnEvent = activePlayer.ai.event(0, 0, EVENTID_TSUMO);
 		sutehaiIdx = info.sutehaiIdx;
@@ -369,7 +372,7 @@ public class Game {
 						EVENTID_SUTEHAI);
 			} else {
 				lastTsumogiri = false;
-				suteHai.copy(activePlayer.tehai.jyunTehai[sutehaiIdx]);
+				activePlayer.tehai.copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.tehai.removeJyunTehai(sutehaiIdx);
 				activePlayer.kawa.add(suteHai);
 				if (tsumoHai != null) {

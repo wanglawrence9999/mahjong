@@ -17,7 +17,7 @@ public class UI {
 		this.info = info;
 	}
 
-	static public String idToString(int id) {
+	static private String idToString(int id) {
 		int kind = id & (Hai.KIND_SHUU | Hai.KIND_TSUU);
 		id &= ~(Hai.KIND_SHUU | Hai.KIND_TSUU);
 
@@ -114,29 +114,49 @@ public class UI {
 
 		return null;
 	}
+	
+	static private String jikazeToString(int jikaze) {
+		switch (jikaze) {
+		case 0:
+			return "ìå";
+		case 1:
+			return "ìÏ";
+		case 2:
+			return "êº";
+		case 3:
+			return "ñk";
+		}
+		
+		return null;
+	}
 
 	public void event(int eventCallPlayerIdx, int eventTargetPlayerIdx,
 			int eventId) {
 		switch (eventId) {
 		case EVENTID_TSUMO:
-//			System.out.println("[" + eventCallPlayerIdx + "]["
-//					+ eventTargetPlayerIdx + "]EVENTID_TSUMO");
+			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
+			// System.out.println("[" + eventCallPlayerIdx + "]["
+			// + eventTargetPlayerIdx + "]EVENTID_TSUMO");
 			info.copyTehai(tehai, 0);
 
+			Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
+			for (int i = 0; i < Tehai.JYUNTEHAI_MAX; i++)
+				jyunTehai[i] = new Hai();
+			int jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
+
 			// èÉéËîvÇï\é¶ÇµÇ‹Ç∑ÅB
-			for (int i = 0; i < tehai.jyunTehaiLength; i++)
-				System.out.print(idToString(tehai.jyunTehai[i].getId()));
-			Hai tsumoHai = new Hai();
-			info.copyTsumoHai(tsumoHai);
+			for (int i = 0; i < jyunTehaiLength; i++)
+				System.out.print(idToString(jyunTehai[i].getId()));
+			Hai tsumoHai = info.getTsumoHai();
 			System.out.println(":" + idToString(tsumoHai.getId()));
 			break;
 		case EVENTID_SUTEHAI:
-//			System.out.println("[" + eventCallPlayerIdx + "]["
-//					+ eventTargetPlayerIdx + "]EVENTID_SUTEHAI");
+			// System.out.println("[" + eventCallPlayerIdx + "]["
+			// + eventTargetPlayerIdx + "]EVENTID_SUTEHAI");
 			break;
 		case EVENTID_NAGASHI:
-//			System.out.println("[" + eventCallPlayerIdx + "]["
-//					+ eventTargetPlayerIdx + "]EVENTID_NAGASHI");
+			// System.out.println("[" + eventCallPlayerIdx + "]["
+			// + eventTargetPlayerIdx + "]EVENTID_NAGASHI");
 			break;
 		default:
 			break;

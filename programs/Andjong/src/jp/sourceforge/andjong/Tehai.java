@@ -10,7 +10,7 @@ import static jp.sourceforge.andjong.Hai.*;
  */
 public class Tehai {
 	/** 純手牌の最大数 */
-	private final static int JYUNTEHAI_MAX = 14;
+	public final static int JYUNTEHAI_MAX = 14;
 
 	/**
 	 * 純手牌
@@ -18,34 +18,34 @@ public class Tehai {
 	 * ソートされています。
 	 * </p>
 	 */
-	public Hai[] jyunTehai = new Hai[JYUNTEHAI_MAX];
+	private Hai[] jyunTehai = new Hai[JYUNTEHAI_MAX];
 
 	/** 純手牌の長さ */
-	public int jyunTehaiLength;
+	private int jyunTehaiLength;
 
 	/** 明順の配列の長さ */
-	public int minshunsLength;
+	private int minshunsLength;
 
 	/** 明順の配列 */
-	public Hai[][] minshuns = new Hai[4][3];
+	private Hai[][] minshuns = new Hai[4][3];
 
 	/** 明刻の配列の長さ */
-	public int minkousLength;
+	private int minkousLength;
 
 	/** 明刻の配列 */
-	public Hai[][] minkous = new Hai[4][3];
+	private Hai[][] minkous = new Hai[4][3];
 
 	/** 明槓の配列の長さ */
-	public int minkansLength;
+	private int minkansLength;
 
 	/** 明槓の配列 */
-	public Hai[][] minkans = new Hai[4][4];
+	private Hai[][] minkans = new Hai[4][4];
 
 	/** 暗槓の配列の長さ */
-	public int ankansLength;
+	private int ankansLength;
 
 	/** 暗槓の配列 */
-	public Hai[][] ankans = new Hai[4][4];
+	private Hai[][] ankans = new Hai[4][4];
 
 	{
 		for (int i = 0; i < JYUNTEHAI_MAX; i++)
@@ -80,6 +80,23 @@ public class Tehai {
 	}
 
 	/**
+	 * 手牌オブジェクトをコピーする。
+	 * 
+	 * @param tehai
+	 *            手牌オブジェクト
+	 */
+	public void copy(Tehai tehai, boolean jyunTehaiCopy) {
+		init();
+		if (jyunTehaiCopy == true) {
+			this.jyunTehaiLength = tehai.copyJyunTehai(this.jyunTehai);
+		}
+		this.minshunsLength = tehai.copyMinshuns(this.minshuns);
+		this.minkousLength = tehai.copyMinkous(this.minkous);
+		this.minkansLength = tehai.copyMinkans(this.minkans);
+		this.ankansLength = tehai.copyAnkans(this.ankans);
+	}
+
+	/**
 	 * 純手牌に牌を追加する。
 	 * <p>
 	 * 力尽くでソートします。<br>
@@ -110,16 +127,28 @@ public class Tehai {
 	}
 
 	/**
+	 * 純手牌のインデックスを指定して、牌をコピーする。
+	 * 
+	 * @param hai
+	 *            牌
+	 * @param idx
+	 *            純手牌のインデックス
+	 */
+	public void copyJyunTehaiIdx(Hai hai, int idx) {
+		hai.copy(jyunTehai[idx]);
+	}
+
+	/**
 	 * 純手牌をコピーする。
 	 * 
-	 * @param tehai
-	 *            手牌
+	 * @param jyunTehai
+	 *            純手牌
+	 * @return 純手牌の長さ
 	 */
-	public void copyJyunTehai(Tehai tehai) {
-		tehai.jyunTehaiLength = jyunTehaiLength;
-		for (int i = 0; i < tehai.jyunTehaiLength; i++) {
-			tehai.jyunTehai[i].copy(jyunTehai[i]);
-		}
+	public int copyJyunTehai(Hai[] jyunTehai) {
+		for (int i = 0; i < this.jyunTehaiLength; i++)
+			jyunTehai[i].copy(this.jyunTehai[i]);
+		return this.jyunTehaiLength;
 	}
 
 	/**
@@ -158,18 +187,19 @@ public class Tehai {
 	}
 
 	/**
-	 * 明順をコピーする。
+	 * 明順の配列をコピーする。
 	 * 
-	 * @param tehai
-	 *            手牌
+	 * @param minshuns
+	 *            明順の配列
+	 * @return 明順の配列の長さ
 	 */
-	public void copyMinshun(Tehai tehai) {
-		tehai.minshunsLength = minshunsLength;
-		for (int i = 0; i < tehai.minshunsLength; i++) {
-			minshuns[i][0].copy(tehai.minshuns[i][0]);
-			minshuns[i][1].copy(tehai.minshuns[i][1]);
-			minshuns[i][2].copy(tehai.minshuns[i][2]);
+	public int copyMinshuns(Hai[][] minshuns) {
+		for (int i = 0; i < this.minshunsLength; i++) {
+			minshuns[i][0].copy(this.minshuns[i][0]);
+			minshuns[i][1].copy(this.minshuns[i][1]);
+			minshuns[i][2].copy(this.minshuns[i][2]);
 		}
+		return this.minshunsLength;
 	}
 
 	/**
@@ -191,18 +221,19 @@ public class Tehai {
 	}
 
 	/**
-	 * 明刻をコピーする。
+	 * 明刻の配列をコピーする。
 	 * 
-	 * @param tehai
-	 *            手牌
+	 * @param minkous
+	 *            明刻の配列
+	 * @return 明刻の配列の長さ
 	 */
-	public void copyMinkou(Tehai tehai) {
-		tehai.minkousLength = minkousLength;
-		for (int i = 0; i < tehai.minkousLength; i++) {
-			minkous[i][0].copy(tehai.minkous[i][0]);
-			minkous[i][1].copy(tehai.minkous[i][1]);
-			minkous[i][2].copy(tehai.minkous[i][2]);
+	public int copyMinkous(Hai[][] minkous) {
+		for (int i = 0; i < this.minkousLength; i++) {
+			minkous[i][0].copy(this.minkous[i][0]);
+			minkous[i][1].copy(this.minkous[i][1]);
+			minkous[i][2].copy(this.minkous[i][2]);
 		}
+		return this.minkousLength;
 	}
 
 	/**
@@ -225,19 +256,20 @@ public class Tehai {
 	}
 
 	/**
-	 * 明槓をコピーする。
+	 * 明槓の配列をコピーする。
 	 * 
-	 * @param tehai
-	 *            手牌
+	 * @param minkans
+	 *            明槓の配列
+	 * @return 明槓の配列の長さ
 	 */
-	public void copyMinkan(Tehai tehai) {
-		tehai.minkansLength = minkansLength;
-		for (int i = 0; i < tehai.minkansLength; i++) {
-			minkans[i][0].copy(tehai.minkans[i][0]);
-			minkans[i][1].copy(tehai.minkans[i][1]);
-			minkans[i][2].copy(tehai.minkans[i][2]);
-			minkans[i][3].copy(tehai.minkans[i][3]);
+	public int copyMinkans(Hai[][] minkans) {
+		for (int i = 0; i < this.minkansLength; i++) {
+			minkans[i][0].copy(this.minkans[i][0]);
+			minkans[i][1].copy(this.minkans[i][1]);
+			minkans[i][2].copy(this.minkans[i][2]);
+			minkans[i][3].copy(this.minkans[i][3]);
 		}
+		return this.minkansLength;
 	}
 
 	/**
@@ -260,19 +292,20 @@ public class Tehai {
 	}
 
 	/**
-	 * 暗槓をコピーする。
+	 * 暗槓の配列をコピーする。
 	 * 
-	 * @param tehai
-	 *            手牌
+	 * @param minkans
+	 *            暗槓の配列
+	 * @return 暗槓の配列の長さ
 	 */
-	public void copyAnkan(Tehai tehai) {
-		tehai.ankansLength = ankansLength;
-		for (int i = 0; i < tehai.ankansLength; i++) {
-			ankans[i][0].copy(tehai.ankans[i][0]);
-			ankans[i][1].copy(tehai.ankans[i][1]);
-			ankans[i][2].copy(tehai.ankans[i][2]);
-			ankans[i][3].copy(tehai.ankans[i][3]);
+	public int copyAnkans(Hai[][] ankans) {
+		for (int i = 0; i < this.ankansLength; i++) {
+			ankans[i][0].copy(this.ankans[i][0]);
+			ankans[i][1].copy(this.ankans[i][1]);
+			ankans[i][2].copy(this.ankans[i][2]);
+			ankans[i][3].copy(this.ankans[i][3]);
 		}
+		return this.ankansLength;
 	}
 
 	/**
@@ -435,7 +468,7 @@ public class Tehai {
 	 * @author Yuji Urushibara
 	 * 
 	 */
-	public static class CombiManage {
+	private static class CombiManage {
 		/** 上がりの組み合わせ（作業領域） */
 		public Combi combiWork = new Combi();
 

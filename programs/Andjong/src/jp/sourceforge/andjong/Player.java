@@ -17,7 +17,15 @@ public class Player {
 	public Kawa kawa = new Kawa();
 
 	/** Ž©•— */
-	public int jikaze;
+	private int jikaze;
+
+	public int getJikaze() {
+		return jikaze;
+	}
+
+	public void setJikaze(int jikaze) {
+		this.jikaze = jikaze;
+	}
 
 	/** “_–_ */
 	public int tenbou;

@@ -71,14 +71,25 @@ public class Kawa {
 	}
 
 	/**
-	 * 河をコピーする。
+	 * 河オブジェクトをコピーする。
 	 * 
 	 * @param kawa
 	 *            河
 	 */
-	void copyKawa(Kawa kawa) {
-		this.kawaLength = kawa.kawaLength;
-		for (int i = 0; i < kawa.kawaLength; i++)
-			this.hais[i].copy(kawa.hais[i]);
+	void copy(Kawa kawa) {
+		this.kawaLength = copyKawaHai(this.hais);
+	}
+
+	/**
+	 * 河をコピーする。
+	 * 
+	 * @param hais
+	 *            河
+	 * @return 河の長さ
+	 */
+	int copyKawaHai(KawaHai[] hais) {
+		for (int i = 0; i < this.kawaLength; i++)
+			hais[i].copy(this.hais[i]);
+		return this.kawaLength;
 	}
 }

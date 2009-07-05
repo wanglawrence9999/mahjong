@@ -39,16 +39,21 @@ public class AI {
 	public int eventTsumo() {
 		info.copyTehai(tehai, 0);
 
-		Hai tsumoHai = new Hai();
-		info.copyTsumoHai(tsumoHai);
+		Hai tsumoHai = info.getTsumoHai();
 
 		tehai.addJyunTehai(tsumoHai);
 		CountFormat countFormat = tehai.getCountFormat(tsumoHai);
 		int score;
 		int minScore = 0;
 		Hai hai = new Hai();
-		for (int i = tehai.jyunTehaiLength - 1; i >= 0; i--) {
-			hai.copy(tehai.jyunTehai[i]);
+
+		Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
+		for (int i = 0; i < Tehai.JYUNTEHAI_MAX; i++)
+			jyunTehai[i] = new Hai();
+		int jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
+		
+		for (int i = jyunTehaiLength - 1; i >= 0; i--) {
+			hai.copy(jyunTehai[i]);
 			tehai.removeJyunTehai(i);
 			countFormat = tehai.getCountFormat(null);
 			score = getCountFormatScore(countFormat);

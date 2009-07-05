@@ -96,10 +96,10 @@ public class Tehai {
 
 		int i;
 		for (i = jyunTehaiLength; i > 0; i--) {
-			if (jyunTehai[i - 1].id == hai.id) {
-				if (jyunTehai[i - 1].property < (hai.property & PROPERTY_AKA))
+			if (jyunTehai[i - 1].getId() == hai.getId()) {
+				if (jyunTehai[i - 1].getProperty() < (hai.getProperty() & PROPERTY_AKA))
 					break;
-			} else if (jyunTehai[i - 1].id < hai.id)
+			} else if (jyunTehai[i - 1].getId() < hai.getId())
 				break;
 
 			jyunTehai[i].copy(jyunTehai[i - 1]);
@@ -349,12 +349,12 @@ public class Tehai {
 		countFormat.length = 0;
 
 		if (addHai != null) {
-			addHaiId = addHai.id;
+			addHaiId = addHai.getId();
 			set = false;
 		}
 
 		for (int i = 0; i < jyunTehaiLength;) {
-			jyunTehaiId = jyunTehai[i].id;
+			jyunTehaiId = jyunTehai[i].getId();
 
 			if (!set && (jyunTehaiId > addHaiId)) {
 				set = true;
@@ -373,7 +373,7 @@ public class Tehai {
 			}
 
 			while (++i < jyunTehaiLength)
-				if (jyunTehaiId == jyunTehai[i].id)
+				if (jyunTehaiId == jyunTehai[i].getId())
 					countFormat.counts[countFormat.length].length++;
 				else
 					break;

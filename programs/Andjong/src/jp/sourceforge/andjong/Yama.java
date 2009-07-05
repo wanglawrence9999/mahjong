@@ -75,7 +75,7 @@ public class Yama {
 	 * ランダムで入れ替えます。
 	 * </p>
 	 */
-	public void xipai() {
+	void xipai() {
 		Random random = new Random();
 		Hai temp;
 
@@ -95,7 +95,7 @@ public class Yama {
 	 * 
 	 * @return ツモ牌
 	 */
-	public Hai tsumo() {
+	Hai tsumo() {
 		if (tsumoIdx < TSUMO_END)
 			return new Hai(hais[tsumoIdx++]);
 
@@ -107,7 +107,7 @@ public class Yama {
 	 * 
 	 * @return リンシャンツモ牌
 	 */
-	public Hai rinshan() {
+	Hai rinshan() {
 		if (rinshanIdx < RINSHAN_END)
 			return new Hai(hais[rinshanIdx++]);
 
@@ -119,7 +119,7 @@ public class Yama {
 	 * 
 	 * @return 表ドラ、槓ドラの配列
 	 */
-	public Hai[] getDora() {
+	Hai[] getDora() {
 		int doraNum = 1 + (rinshanIdx - TSUMO_END);
 		Hai[] dora = new Hai[doraNum];
 
@@ -134,7 +134,7 @@ public class Yama {
 	 * 
 	 * @return 表ドラ、槓ドラ、裏ドラ、槓ウラの配列
 	 */
-	public Hai[] getDoraAll() {
+	Hai[] getDoraAll() {
 		int doraNum = (1 + (rinshanIdx - TSUMO_END)) * 2;
 		Hai[] dora = new Hai[doraNum];
 
@@ -149,7 +149,7 @@ public class Yama {
 	 * 
 	 * @return ツモの残り数
 	 */
-	public int getTsumoRemain() {
+	int getTsumoRemain() {
 		return TSUMO_END - tsumoIdx;
 	}
 }

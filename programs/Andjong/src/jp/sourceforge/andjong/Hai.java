@@ -40,13 +40,31 @@ public class Hai {
 	 * </dl>
 	 * </p>
 	 */
-	public int id;
+	private int id;
+
+	/**
+	 * 牌番号を取得する。
+	 * 
+	 * @return 牌番号
+	 */
+	public int getId() {
+		return id;
+	}
 
 	/** プロパティ（赤牌） */
 	public final static int PROPERTY_AKA = 0x00000001;
 
 	/** プロパティ */
-	public int property;
+	private int property;
+
+	/**
+	 * プロパティを取得する。
+	 * 
+	 * @return プロパティ
+	 */
+	public int getProperty() {
+		return property;
+	}
 
 	/**
 	 * 空のHaiオブジェクトを作ります。

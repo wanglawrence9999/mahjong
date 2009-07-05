@@ -281,7 +281,7 @@ public class Game {
 
 		Hai[] doras = yama.getDoraAll();
 		for (Hai hai : doras) {
-			System.out.println("ƒhƒ‰:" + hai.id);
+			System.out.println("ƒhƒ‰:" + hai.getId());
 		}
 
 		{

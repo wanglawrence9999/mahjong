@@ -125,10 +125,10 @@ public class UI {
 
 			// ƒè”v‚ğ•\¦‚µ‚Ü‚·B
 			for (int i = 0; i < tehai.jyunTehaiLength; i++)
-				System.out.print(idToString(tehai.jyunTehai[i].id));
+				System.out.print(idToString(tehai.jyunTehai[i].getId()));
 			Hai tsumoHai = new Hai();
 			info.copyTsumoHai(tsumoHai);
-			System.out.println(":" + idToString(tsumoHai.id));
+			System.out.println(":" + idToString(tsumoHai.getId()));
 			break;
 		case EVENTID_SUTEHAI:
 //			System.out.println("[" + eventCallPlayerIdx + "]["

@@ -146,7 +146,7 @@ public class UI {
 		switch (eventId) {
 		case EVENTID_TSUMO:
 			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
-			System.out.print("[ƒcƒ‚]");
+			System.out.print("[©–Ì]");
 
 			// ƒè”v‚ğ•\¦‚µ‚Ü‚·B
 			info.copyTehai(tehai, 0);
@@ -169,7 +169,7 @@ public class UI {
 			break;
 		case EVENTID_RON:
 			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
-			System.out.print("[ƒƒ“]");
+			System.out.print("[‰h˜a]");
 
 			// ƒè”v‚ğ•\¦‚µ‚Ü‚·B
 			info.copyTehai(tehai, 0);
@@ -177,6 +177,17 @@ public class UI {
 			for (int i = 0; i < jyunTehaiLength; i++)
 				System.out.print(idToString(jyunTehai[i].getId()));
 			System.out.println(":" + idToString((info.getSuteHai()).getId()));
+			break;
+		case EVENTID_TSUMOAGARI:
+			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
+			System.out.print("[©–Ì˜a]");
+
+			// ƒè”v‚ğ•\¦‚µ‚Ü‚·B
+			info.copyTehai(tehai, 0);
+			jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
+			for (int i = 0; i < jyunTehaiLength; i++)
+				System.out.print(idToString(jyunTehai[i].getId()));
+			System.out.println(":" + idToString((info.getTsumoHai()).getId()));
 			break;
 		case EVENTID_NAGASHI:
 			// System.out.println("[" + eventCallPlayerIdx + "]["

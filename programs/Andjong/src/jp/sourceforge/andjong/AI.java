@@ -32,6 +32,10 @@ public class AI {
 			returnEvent = eventTsumo();
 			break;
 		case EVENTID_SUTEHAI:
+			if(eventCallPlayerIdx == 0) {
+				returnEvent = EVENTID_NAGASHI;
+			}
+			info.copyTehai(tehai, 0);
 			tehai.getCountFormat(countFormat, info.getSuteHai());
 			int combisCount = tehai.getCombi(combis, countFormat);
 			if (combisCount > 0) {
@@ -49,6 +53,10 @@ public class AI {
 	}
 
 	private Combi[] combis = new Combi[10];
+	{
+		for(int i = 0; i < combis.length; i++) 
+			combis[i] = new Combi();
+	}
 
 	private final static int HYOUKA_SHUU = 1;
 

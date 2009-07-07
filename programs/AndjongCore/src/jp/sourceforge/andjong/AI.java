@@ -23,45 +23,44 @@ public class AI {
 		this.info = info;
 	}
 
-	public int event(int eventCallPlayerIdx, int eventTargetPlayerIdx,
-			int eventId) {
-		int returnEvent = EVENTID_NAGASHI;
+	public EID event(EID eid, int callPlayerIdx, int targetPlayerIdx) {
+		EID returnEid = EID.NAGASHI;
 
-		switch (eventId) {
-		case EVENTID_TSUMO:
-			returnEvent = eventTsumo();
+		switch (eid) {
+		case TSUMO:
+			returnEid = eventTsumo();
 			break;
-		case EVENTID_SUTEHAI:
-			if(eventCallPlayerIdx == 0) {
-				returnEvent = EVENTID_NAGASHI;
+		case SUTEHAI:
+			if (callPlayerIdx == 0) {
+				returnEid = EID.NAGASHI;
 			}
 			info.copyTehai(tehai, 0);
 			tehai.getCountFormat(countFormat, info.getSuteHai());
 			int combisCount = tehai.getCombi(combis, countFormat);
 			if (combisCount > 0) {
-				info.getAgariScore(tehai, info.getSuteHai(), combisCount, combis);
-				returnEvent = EVENTID_RON;
-			}
-			else {
-				returnEvent = EVENTID_NAGASHI;
+				info.getAgariScore(tehai, info.getSuteHai(), combisCount,
+						combis);
+				returnEid = EID.RON;
+			} else {
+				returnEid = EID.NAGASHI;
 			}
 			break;
 		default:
 			break;
 		}
 
-		return returnEvent;
+		return returnEid;
 	}
 
 	private Combi[] combis = new Combi[10];
 	{
-		for(int i = 0; i < combis.length; i++) 
+		for (int i = 0; i < combis.length; i++)
 			combis[i] = new Combi();
 	}
 
 	private final static int HYOUKA_SHUU = 1;
 
-	public int eventTsumo() {
+	public EID eventTsumo() {
 		int score = 0;
 		int maxScore = 0;
 		info.copyTehai(tehai, 0);
@@ -72,7 +71,7 @@ public class AI {
 		int combisCount = tehai.getCombi(combis, countFormat);
 		if (combisCount > 0) {
 			info.getAgariScore(tehai, info.getSuteHai(), combisCount, combis);
-			return EVENTID_TSUMOAGARI;
+			return EID.TSUMOAGARI;
 		}
 
 		info.setSutehaiIdx(13);
@@ -102,7 +101,7 @@ public class AI {
 			tehai.addJyunTehai(hai);
 		}
 
-		return EVENTID_SUTEHAI;
+		return EID.SUTEHAI;
 	}
 
 	private int getCountFormatScore(CountFormat countFormat) {
@@ -112,7 +111,7 @@ public class AI {
 			if ((countFormat.counts[i].id & Hai.KIND_SHUU) != 0) {
 				score += countFormat.counts[i].length * HYOUKA_SHUU;
 			}
-			
+
 			if (countFormat.counts[i].length == 2) {
 				score += 4;
 			}

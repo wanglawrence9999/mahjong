@@ -27,7 +27,7 @@ public class Yama {
 	private final static int RINSHAN_END = 126;
 
 	/** リンシャンツモ位置 */
-	private int rinshanIdx;
+	private int rinshanIdx = TSUMO_END;
 
 	/**
 	 * 山を初期化します。

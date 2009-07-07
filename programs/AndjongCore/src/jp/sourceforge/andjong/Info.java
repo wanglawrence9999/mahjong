@@ -1,5 +1,6 @@
 package jp.sourceforge.andjong;
 
+import jp.sourceforge.andjong.Game.SAI;
 import jp.sourceforge.andjong.Tehai.Combi;
 
 /**
@@ -9,7 +10,47 @@ import jp.sourceforge.andjong.Tehai.Combi;
  * 
  */
 public class Info {
-	private Game game;
+	/** ゲームオブジェクト */
+	protected Game game;
+
+	/** イベントID */
+	enum EID {
+		/** 場所決め */
+		UI_BASHOGIME,
+		/** 親決め */
+		UI_OYAGIME,
+		/** 洗牌 */
+		UI_SENPAI,
+		/** サイ振り */
+		UI_SAIFURI,
+
+		/** 流し */
+		NAGASHI,
+		/** ツモ */
+		TSUMO,
+		/** ツモあがり */
+		TSUMOAGARI,
+		/** 捨牌 */
+		SUTEHAI,
+		/** ロン */
+		RON,
+		/** ポン */
+		PON,
+		/** チー */
+		CHII,
+		/** 明槓 */
+		MINKAN,
+		/** 暗槓 */
+		ANKAN
+	}
+	
+	public SAI[] getSai() {
+		return game.getSai();
+	}
+	
+	public Hai[] getDora() {
+		return game.getYama().getDora();
+	}
 
 	private int sutehaiIdx;
 
@@ -20,14 +61,6 @@ public class Info {
 	public void setSutehaiIdx(int sutehaiIdx) {
 		this.sutehaiIdx = sutehaiIdx;
 	}
-
-	public final static int EVENTID_TSUMO = 0x00000001;
-	public final static int EVENTID_SUTEHAI = 0x00000002;
-	public final static int EVENTID_RON = 0x00000003;
-	public final static int EVENTID_NAGASHI = 0x00000004;
-	public final static int EVENTID_TSUMOAGARI = 0x00000005;
-
-	public final static int EVENTID_KYOKUSTART = 0x00010000;
 
 	public Info(Game game) {
 		this.game = game;

@@ -42,25 +42,30 @@ public class Game {
 	private int action;
 
 	private Info info;
+	private InfoUI infoUi;
 
 	private UI ui;
+	
+	public Yama getYama() {
+		return yama;
+	}
 
 	private boolean checkTanyao(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 
-		for(int i = 0; i< jyunTehaiLength; i++ ) {
+		for (int i = 0; i < jyunTehaiLength; i++) {
 			id = jyunTehai[i].getId();
-			if((id & KIND_SHUU) == 0)
+			if ((id & KIND_SHUU) == 0)
 				return false;
 			id &= KIND_MASK;
-			if((id == 1) || (id == 9))
+			if ((id == 1) || (id == 9))
 				return false;
 		}
-		
+
 		// TODO 鳴き牌の確認も
-		
+
 		return true;
 	}
 
@@ -69,7 +74,7 @@ public class Game {
 		/*
 		 * ここで役と得点を計算する。
 		 */
-		
+
 		boolean tanyao;
 		for (int i = 0; i < combisCount; i++) {
 			tanyao = checkTanyao(tehai, addHai, combis[i]);
@@ -83,6 +88,24 @@ public class Game {
 		return 0;
 	}
 
+	class SAI {
+		private int no;
+
+		public int getNo() {
+			return no;
+		}
+
+		public int saifuri() {
+			return no = new Random().nextInt(6) + 1;
+		}
+	}
+
+	private SAI[] sai = new SAI[] { new SAI(), new SAI() };
+	
+	SAI[] getSai() {
+		return sai;
+	}
+
 	public void play() {
 		// Gameオブジェクトを初期化します。
 		init();
@@ -90,15 +113,23 @@ public class Game {
 		// 場所を決めます。
 		// TODO あとで実装します。
 
-		// 親を決めます。
-		// TODO ランダムで決める必要があります。
-		oya = 0;
+		// UIイベント（場所決め）
+		ui.event(EID.UI_BASHOGIME, 0, 0);
 
 		// プレイヤーを初期化します。
 		playerNum = 4;
 		players = new Player[playerNum];
 		for (int i = 0; i < playerNum; i++)
 			players[i] = new Player(new AI(info));
+
+		// 親を決めます。
+		// TODO ランダムで決める必要があります。
+		sai[0].saifuri();
+		sai[1].saifuri();
+		oya = 0;
+
+		// UIイベント（親決め）
+		ui.event(EID.UI_OYAGIME, 0, 0);
 
 		// 局を開始します。
 		// TODO 最初は東風戦にしておきます。
@@ -181,8 +212,14 @@ public class Game {
 		// 洗牌
 		yama.xipai();
 
+		// UIイベント（洗牌）
+		ui.event(EID.UI_SENPAI, 0, 0);
+		
 		// サイ振り
 		saifuri();
+		
+		// UIイベント（サイ振り）
+		ui.event(EID.UI_SAIFURI, 0, 0);
 
 		// プレイヤーの初期化
 		for (int i = 0; i < players.length; i++)
@@ -190,16 +227,6 @@ public class Game {
 
 		// 配牌
 		haipai();
-
-		Hai[] doras = yama.getDoraAll();
-		for (Hai hai : doras) {
-			System.out.println("ドラ:" + hai.getId());
-		}
-
-		{
-			// debug
-			System.out.println("親:" + oya);
-		}
 
 		// 局のメインループ
 		loopKyoku();
@@ -223,30 +250,29 @@ public class Game {
 	int eventTargetPlayerIdx;
 
 	private void callEvent(int eventCallPlayerIdx, int eventTargetPlayerIdx,
-			int eventId) {
-		int returnEvent;
+			EID eid) {
+		EID returnEid;
 		int j = eventCallPlayerIdx;
 
 		for (int i = 0; i < players.length; i++) {
 			// アクションを通知
 
 			// ツモ
-			ui.event(activePlayer.ChaToPlayer[eventCallPlayerIdx],
-					activePlayer.ChaToPlayer[eventTargetPlayerIdx], eventId);
-			returnEvent = activePlayer.ai.event(
+			ui.event(eid, activePlayer.ChaToPlayer[eventCallPlayerIdx],
+					activePlayer.ChaToPlayer[eventTargetPlayerIdx]);
+			returnEid = activePlayer.ai.event(eid,
 					activePlayer.ChaToPlayer[eventCallPlayerIdx],
-					activePlayer.ChaToPlayer[eventTargetPlayerIdx], eventId);
+					activePlayer.ChaToPlayer[eventTargetPlayerIdx]);
 
-			switch (returnEvent) {
-			case EVENTID_RON:
+			switch (returnEid) {
+			case RON:
 				activePlayer = players[j];
 				activePlayerIdx = j;
 				action = ACTION_RON;
-				ui.event(activePlayerIdx,
-						activePlayer.ChaToPlayer[eventCallPlayerIdx],
-						EVENTID_RON);
+				ui.event(EID.RON, activePlayerIdx,
+						activePlayer.ChaToPlayer[eventCallPlayerIdx]);
 				return;
-			case EVENTID_TSUMOAGARI:
+			case TSUMOAGARI:
 				activePlayer = players[j];
 				activePlayerIdx = j;
 				action = ACTION_TSUMOAGARI;
@@ -267,15 +293,15 @@ public class Game {
 	Hai suteHai;
 
 	private void sutehai() {
-		int returnEvent;
+		EID returnEid;
 		int sutehaiIdx;
 
 		// イベント（ツモ）
-		ui.event(0, 0, EVENTID_TSUMO);
-		returnEvent = activePlayer.ai.event(0, 0, EVENTID_TSUMO);
+		ui.event(EID.TSUMO, 0, 0);
+		returnEid = activePlayer.ai.event(EID.TSUMO, 0, 0);
 
-		switch (returnEvent) {
-		case EVENTID_SUTEHAI:
+		switch (returnEid) {
+		case SUTEHAI:
 			// イベント（捨牌）
 			sutehaiIdx = info.getSutehaiIdx();
 			if (sutehaiIdx == 13) {
@@ -283,8 +309,7 @@ public class Game {
 				suteHai.copy(tsumoHai);
 				activePlayer.kawa.add(suteHai);
 				eventTargetPlayerIdx = activePlayerIdx;
-				callEvent(activePlayerIdx, eventTargetPlayerIdx,
-						EVENTID_SUTEHAI);
+				callEvent(activePlayerIdx, eventTargetPlayerIdx, EID.SUTEHAI);
 			} else {
 				// 手出し
 				activePlayer.tehai.copyJyunTehaiIdx(suteHai, sutehaiIdx);
@@ -294,12 +319,11 @@ public class Game {
 					activePlayer.tehai.addJyunTehai(tsumoHai);
 				}
 				eventTargetPlayerIdx = activePlayerIdx;
-				callEvent(activePlayerIdx, eventTargetPlayerIdx,
-						EVENTID_SUTEHAI);
+				callEvent(activePlayerIdx, eventTargetPlayerIdx, EID.SUTEHAI);
 			}
 			break;
-		case EVENTID_TSUMOAGARI:
-			ui.event(0, 0, EVENTID_TSUMOAGARI);
+		case TSUMOAGARI:
+			ui.event(EID.TSUMOAGARI, 0, 0);
 			action = ACTION_TSUMOAGARI;
 			break;
 		default:
@@ -371,7 +395,8 @@ public class Game {
 		kyoku = 0;
 		renchan = false;
 		info = new Info(this);
-		ui = new UI(info);
+		infoUi = new InfoUI(this);
+		ui = new UI(infoUi);
 		tsumoHai = new Hai();
 		suteHai = new Hai();
 	}

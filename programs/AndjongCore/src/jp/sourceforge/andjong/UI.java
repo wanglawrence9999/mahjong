@@ -1,32 +1,172 @@
 package jp.sourceforge.andjong;
 
 import static jp.sourceforge.andjong.Info.*;
+import jp.sourceforge.andjong.Game.SAI;
 
 /**
- * UIを実装するクラスです。 とりあえず、コンソールで実装します。 TODO オーバーライドしやすい設計にする。
+ * UIを実装するクラスです。
+ * <p>
+ * コンソールで動くように実装しています。<br>
+ * UIクラスを継承し、別のUIを実装します。
+ * </p>
  * 
  * @author Yuji Urushibara
  * 
  */
 public class UI {
-	private Info info;
+	/** InfoUIオブジェクト */
+	private InfoUI infoUi;
+
+	/** 手牌 */
 	private Tehai tehai = new Tehai();
-	private Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
+
+	/** 河 */
 	private Kawa kawa = new Kawa();
-	private KawaHai[] kawaHais = new KawaHai[Kawa.KAWA_MAX];
 
-	{
-		for (int i = 0; i < Tehai.JYUNTEHAI_MAX; i++)
-			jyunTehai[i] = new Hai();
-
-		for (int i = 0; i < Kawa.KAWA_MAX; i++)
-			kawaHais[i] = new KawaHai();
+	/**
+	 * UIを初期化します。
+	 * 
+	 * @param infoUi
+	 *            InfoUIオブジェクト
+	 */
+	public UI(InfoUI infoUi) {
+		this.infoUi = infoUi;
 	}
 
-	public UI(Info info) {
-		this.info = info;
+	/**
+	 * イベントを処理します。
+	 * 
+	 * @param callPlayerIdx
+	 *            イベントを発行した家
+	 * @param targetPlayerIdx
+	 *            イベントの対象の家
+	 * @param eid
+	 *            イベントID
+	 */
+	public void event(EID eid, int callPlayerIdx, int targetPlayerIdx) {
+		switch (eid) {
+		// 場所決め
+		case UI_BASHOGIME:
+			// 表示することはない。
+			break;
+		// 親決め
+		case UI_OYAGIME:
+			// サイ振りを表示します。
+			SAI[] sai = infoUi.getSai();
+			System.out.println("[サイ振り][" + sai[0].getNo() + "]["
+					+ sai[1].getNo() + "]");
+			break;
+		// 洗牌
+		case UI_SENPAI:
+			// 表示することはない。
+			break;
+		// サイ振り
+		case UI_SAIFURI:
+			// ドラ表示牌を表示します。
+			Hai[] doras = infoUi.getDora();
+			System.out.print("[ドラ表示牌]");
+			for (Hai hai : doras) {
+				System.out.print("[" + idToString(hai.getId()) + "]");
+			}
+			System.out.println();
+			break;
+		// 流し
+		case NAGASHI:
+			// 表示することはない。
+			break;
+		// ツモ
+		case TSUMO:
+			System.out
+					.print("[" + jikazeToString(infoUi.getJikaze()) + "][ツモ]");
+
+			// 手牌を表示します。
+			printJyunTehai(tehai);
+
+			// ツモ牌を表示します。
+			System.out
+					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
+			break;
+		// ツモあがり
+		case TSUMOAGARI:
+			System.out.print("[" + jikazeToString(infoUi.getJikaze())
+					+ "][ツモあがり]");
+
+			// 手牌を表示します。
+			printJyunTehai(tehai);
+
+			// ツモ牌を表示します。
+			System.out
+					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
+			break;
+		// 捨牌
+		case SUTEHAI:
+			// 自分の捨牌のみを表示します。
+			if (callPlayerIdx == 0) {
+				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+						+ "][捨牌]");
+
+				// 河を表示します。
+				printKawa(kawa);
+
+				// 捨牌を表示します。
+				System.out.println(":"
+						+ idToString((infoUi.getSuteHai()).getId()));
+			}
+			break;
+		// ロン
+		case RON:
+			System.out
+					.print("[" + jikazeToString(infoUi.getJikaze()) + "][ロン]");
+
+			// 手牌を表示します。
+			printJyunTehai(tehai);
+
+			// 当たり牌を表示します。
+			System.out.println(":" + idToString((infoUi.getSuteHai()).getId()));
+			break;
+		default:
+			break;
+		}
 	}
 
+	/**
+	 * 手牌を表示します。
+	 * <p>
+	 * TODO 鳴き牌を表示すること。
+	 * </p>
+	 * 
+	 * @param tehai
+	 *            手牌
+	 */
+	private void printJyunTehai(Tehai tehai) {
+		infoUi.copyTehai(tehai, 0);
+		Hai[] jyunTehai = tehai.getJyunTehai();
+		int jyunTehaiLength = tehai.getJyunTehaiLength();
+		for (int i = 0; i < jyunTehaiLength; i++)
+			System.out.print(idToString(jyunTehai[i].getId()));
+	}
+
+	/**
+	 * 河を表示します。
+	 * 
+	 * @param kawa
+	 *            河
+	 */
+	private void printKawa(Kawa kawa) {
+		infoUi.copyKawa(kawa, 0);
+		KawaHai[] kawaHais = kawa.getKawaHai();
+		int kawaLength = kawa.getKawaHaiLength();
+		for (int i = 0; i < kawaLength; i++)
+			System.out.print(idToString(kawaHais[i].getId()));
+	}
+
+	/**
+	 * 牌番号を文字列に変換します
+	 * 
+	 * @param id
+	 *            牌番号
+	 * @return 文字列
+	 */
 	static public String idToString(int id) {
 		int kind = id & (Hai.KIND_SHUU | Hai.KIND_TSUU);
 		id &= ~(Hai.KIND_SHUU | Hai.KIND_TSUU);
@@ -125,6 +265,13 @@ public class UI {
 		return null;
 	}
 
+	/**
+	 * 自風を文字列に変換します。
+	 * 
+	 * @param jikaze
+	 *            自風
+	 * @return　文字列
+	 */
 	static public String jikazeToString(int jikaze) {
 		switch (jikaze) {
 		case 0:
@@ -138,63 +285,5 @@ public class UI {
 		}
 
 		return null;
-	}
-
-	public void event(int eventCallPlayerIdx, int eventTargetPlayerIdx,
-			int eventId) {
-		int jyunTehaiLength;
-		switch (eventId) {
-		case EVENTID_TSUMO:
-			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
-			System.out.print("[自摸]");
-
-			// 純手牌を表示します。
-			info.copyTehai(tehai, 0);
-			jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
-			for (int i = 0; i < jyunTehaiLength; i++)
-				System.out.print(idToString(jyunTehai[i].getId()));
-			System.out.println(":" + idToString((info.getTsumoHai()).getId()));
-			break;
-		case EVENTID_SUTEHAI:
-			if (eventCallPlayerIdx == 0) {
-				System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
-				System.out.print("[捨牌]");
-				info.copyKawa(kawa, 0);
-				int kawaLength = kawa.copyKawaHai(kawaHais);
-				for (int i = 0; i < kawaLength; i++)
-					System.out.print(idToString(kawaHais[i].getId()));
-				System.out.println(":"
-						+ idToString((info.getSuteHai()).getId()));
-			}
-			break;
-		case EVENTID_RON:
-			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
-			System.out.print("[栄和]");
-
-			// 純手牌を表示します。
-			info.copyTehai(tehai, 0);
-			jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
-			for (int i = 0; i < jyunTehaiLength; i++)
-				System.out.print(idToString(jyunTehai[i].getId()));
-			System.out.println(":" + idToString((info.getSuteHai()).getId()));
-			break;
-		case EVENTID_TSUMOAGARI:
-			System.out.print("[" + jikazeToString(info.getJikaze()) + "]");
-			System.out.print("[自摸和]");
-
-			// 純手牌を表示します。
-			info.copyTehai(tehai, 0);
-			jyunTehaiLength = tehai.copyJyunTehai(jyunTehai);
-			for (int i = 0; i < jyunTehaiLength; i++)
-				System.out.print(idToString(jyunTehai[i].getId()));
-			System.out.println(":" + idToString((info.getTsumoHai()).getId()));
-			break;
-		case EVENTID_NAGASHI:
-			// System.out.println("[" + eventCallPlayerIdx + "]["
-			// + eventTargetPlayerIdx + "]EVENTID_NAGASHI");
-			break;
-		default:
-			break;
-		}
 	}
 }

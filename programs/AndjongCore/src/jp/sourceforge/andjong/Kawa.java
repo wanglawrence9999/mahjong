@@ -81,6 +81,24 @@ public class Kawa {
 	}
 
 	/**
+	 * 河を取得する。
+	 * 
+	 * @return 河
+	 */
+	KawaHai[] getKawaHai() {
+		return kawaHais;
+	}
+
+	/**
+	 * 河の長さを取得する。
+	 * 
+	 * @return 河の長さ
+	 */
+	int getKawaHaiLength() {
+		return kawaLength;
+	}
+
+	/**
 	 * 河をコピーする。
 	 * 
 	 * @param kawaHais

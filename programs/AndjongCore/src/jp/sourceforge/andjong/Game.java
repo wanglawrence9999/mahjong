@@ -8,7 +8,6 @@ import java.util.concurrent.CountDownLatch;
 
 import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
-import jp.sourceforge.andjong.Tehai.TehaiBuffer;
 
 /**
  * ゲームのハンドリングを行うクラスです。
@@ -45,14 +44,14 @@ public class Game {
 	private Info info;
 
 	private UI ui;
-	
-	private TehaiBuffer tehaiBuffer = new TehaiBuffer();
 
-	private boolean checkTanyao(TehaiBuffer tehaiBuffer, Hai addHai, Combi combi) {
+	private boolean checkTanyao(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
+		Hai[] jyunTehai = tehai.getJyunTehai();
+		int jyunTehaiLength = tehai.getJyunTehaiLength();
 
-		for(int i = 0; i< tehaiBuffer.jyunTehaiLength; i++ ) {
-			id = tehaiBuffer.jyunTehai[i].getId();
+		for(int i = 0; i< jyunTehaiLength; i++ ) {
+			id = jyunTehai[i].getId();
 			if((id & KIND_SHUU) == 0)
 				return false;
 			id &= KIND_MASK;
@@ -71,10 +70,9 @@ public class Game {
 		 * ここで役と得点を計算する。
 		 */
 		
-		tehaiBuffer.copyTehai(tehai, true);
 		boolean tanyao;
 		for (int i = 0; i < combisCount; i++) {
-			tanyao = checkTanyao(tehaiBuffer, addHai, combis[i]);
+			tanyao = checkTanyao(tehai, addHai, combis[i]);
 			if (tanyao) {
 				System.out.println("タンヤオ！！！");
 				/*

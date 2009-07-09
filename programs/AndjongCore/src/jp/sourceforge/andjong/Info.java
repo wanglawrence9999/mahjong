@@ -12,37 +12,6 @@ import jp.sourceforge.andjong.Tehai.Combi;
 public class Info {
 	/** ゲームオブジェクト */
 	protected Game game;
-
-	/** イベントID */
-	enum EID {
-		/** 場所決め */
-		UI_BASHOGIME,
-		/** 親決め */
-		UI_OYAGIME,
-		/** 洗牌 */
-		UI_SENPAI,
-		/** サイ振り */
-		UI_SAIFURI,
-
-		/** 流し */
-		NAGASHI,
-		/** ツモ */
-		TSUMO,
-		/** ツモあがり */
-		TSUMOAGARI,
-		/** 捨牌 */
-		SUTEHAI,
-		/** ロン */
-		RON,
-		/** ポン */
-		PON,
-		/** チー */
-		CHII,
-		/** 明槓 */
-		MINKAN,
-		/** 暗槓 */
-		ANKAN
-	}
 	
 	public SAI[] getSai() {
 		return game.getSai();

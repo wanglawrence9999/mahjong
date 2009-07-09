@@ -1,13 +1,11 @@
 package jp.sourceforge.andjong;
 
-import static jp.sourceforge.andjong.Info.*;
 import static jp.sourceforge.andjong.Hai.*;
 
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
 
+import jp.sourceforge.andjong.EventIF.EID;
 import jp.sourceforge.andjong.Tehai.Combi;
-import jp.sourceforge.andjong.Tehai.CountFormat;
 import jp.sourceforge.andjong.Yaku;
 
 /**
@@ -188,12 +186,13 @@ public class Game {
 		// TODO あとで実装します。
 
 		// UIイベント（場所決め）
-		ui.event(EID.UI_BASHOGIME, 0, 0);
+		ui.event(EID.BASHOGIME, 0, 0);
 
 		// プレイヤーを初期化します。
 		playerNum = 4;
 		players = new Player[playerNum];
-		for (int i = 0; i < playerNum; i++)
+		players[0] = new Player((EventIF)new Man(info));
+		for (int i = 1; i < playerNum; i++)
 			players[i] = new Player(new AI(info));
 
 		// 親を決めます。
@@ -203,7 +202,7 @@ public class Game {
 		oya = 0;
 
 		// UIイベント（親決め）
-		ui.event(EID.UI_OYAGIME, 0, 0);
+		ui.event(EID.OYAGIME, 0, 0);
 
 		// 局を開始します。
 		// TODO 最初は東風戦にしておきます。
@@ -287,13 +286,13 @@ public class Game {
 		yama.xipai();
 
 		// UIイベント（洗牌）
-		ui.event(EID.UI_SENPAI, 0, 0);
+		ui.event(EID.SENPAI, 0, 0);
 		
 		// サイ振り
 		saifuri();
 		
 		// UIイベント（サイ振り）
-		ui.event(EID.UI_SAIFURI, 0, 0);
+		ui.event(EID.SAIFURI, 0, 0);
 
 		// プレイヤーの初期化
 		for (int i = 0; i < players.length; i++)

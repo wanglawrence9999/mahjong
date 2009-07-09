@@ -8,7 +8,7 @@ package jp.sourceforge.andjong;
  */
 public class Player {
 	/** AI */
-	public AI ai;
+	public EventIF ai;
 
 	/** Žè”v */
 	public Tehai tehai = new Tehai();
@@ -52,7 +52,7 @@ public class Player {
 	 * @param ai
 	 *            AI
 	 */
-	public Player(AI ai) {
+	public Player(EventIF ai) {
 		this.ai = ai;
 	}
 

@@ -1,6 +1,5 @@
 package jp.sourceforge.andjong;
 
-import static jp.sourceforge.andjong.Info.*;
 import jp.sourceforge.andjong.Game.SAI;
 
 /**
@@ -13,7 +12,7 @@ import jp.sourceforge.andjong.Game.SAI;
  * @author Yuji Urushibara
  * 
  */
-public class UI {
+public class UI implements EventIF {
 	/** InfoUIオブジェクト */
 	private InfoUI infoUi;
 
@@ -36,32 +35,32 @@ public class UI {
 	/**
 	 * イベントを処理します。
 	 * 
-	 * @param callPlayerIdx
+	 * @param fromKaze
 	 *            イベントを発行した家
-	 * @param targetPlayerIdx
+	 * @param toKaze
 	 *            イベントの対象の家
 	 * @param eid
 	 *            イベントID
 	 */
-	public void event(EID eid, int callPlayerIdx, int targetPlayerIdx) {
+	public EID event(EID eid, int fromKaze, int toKaze) {
 		switch (eid) {
 		// 場所決め
-		case UI_BASHOGIME:
+		case BASHOGIME:
 			// 表示することはない。
 			break;
 		// 親決め
-		case UI_OYAGIME:
+		case OYAGIME:
 			// サイ振りを表示します。
 			SAI[] sai = infoUi.getSai();
 			System.out.println("[サイ振り][" + sai[0].getNo() + "]["
 					+ sai[1].getNo() + "]");
 			break;
 		// 洗牌
-		case UI_SENPAI:
+		case SENPAI:
 			// 表示することはない。
 			break;
 		// サイ振り
-		case UI_SAIFURI:
+		case SAIFURI:
 			// ドラ表示牌を表示します。
 			Hai[] doras = infoUi.getDora();
 			System.out.print("[ドラ表示牌]");
@@ -101,7 +100,7 @@ public class UI {
 		// 捨牌
 		case SUTEHAI:
 			// 自分の捨牌のみを表示します。
-			if (callPlayerIdx == 0) {
+			if (fromKaze == 0) {
 				System.out.print("[" + jikazeToString(infoUi.getJikaze())
 						+ "][捨牌]");
 
@@ -127,6 +126,8 @@ public class UI {
 		default:
 			break;
 		}
+		
+		return EID.NAGASHI;
 	}
 
 	/**

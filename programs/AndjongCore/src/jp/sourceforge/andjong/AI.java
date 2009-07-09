@@ -1,6 +1,5 @@
 package jp.sourceforge.andjong;
 
-import static jp.sourceforge.andjong.Info.*;
 import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
 
@@ -11,7 +10,7 @@ import jp.sourceforge.andjong.Tehai.CountFormat;
  * @author Yuji Urushibara
  * 
  */
-public class AI {
+public class AI implements EventIF {
 	private Info info;
 
 	private Tehai tehai = new Tehai();
@@ -23,7 +22,7 @@ public class AI {
 		this.info = info;
 	}
 
-	public EID event(EID eid, int callPlayerIdx, int targetPlayerIdx) {
+	public EID event(EID eid, int fromKaze, int toKaze) {
 		EID returnEid = EID.NAGASHI;
 
 		switch (eid) {
@@ -31,7 +30,7 @@ public class AI {
 			returnEid = eventTsumo();
 			break;
 		case SUTEHAI:
-			if (callPlayerIdx == 0) {
+			if (fromKaze == 0) {
 				returnEid = EID.NAGASHI;
 			}
 			info.copyTehai(tehai, 0);

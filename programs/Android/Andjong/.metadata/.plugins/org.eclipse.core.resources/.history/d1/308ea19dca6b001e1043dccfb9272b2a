@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <string name="Main_Title">Android Game</string>
+ <string name="New_Game">New Game</string>
+ <string name="Setting">Setting</string>
+ <string name="app_name">Andjong</string>
+ <string name="new_game_title">Difficulty</string> 
+</resources>

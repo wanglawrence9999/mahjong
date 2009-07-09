@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 
 public class Andjong extends Activity implements OnClickListener{
     /** Called when the activity is first created. */
@@ -29,7 +30,9 @@ public class Andjong extends Activity implements OnClickListener{
         	openNewGameDialog();
         	break;
         case R.id.setting_button:
-//        	startActivity(new Intent(this, Settings.class));
+//       	Intent i = new Intent(this, Settings.class);
+//        	startActivity(i);
+        	startActivity(new Intent(this, Settings.class));
         	break;
         }
     }

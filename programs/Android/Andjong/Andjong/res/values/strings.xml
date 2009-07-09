@@ -5,7 +5,10 @@
  <string name="Setting">Setting</string>
  <string name="app_name">Andjong</string>
  <string name="new_game_title">Difficulty</string>
- <string name="easy_label">Easy</string>  
- <string name="medium_label">Medium</string>  
- <string name="hard_label">Hard</string> 
+ <string name="easy_label">Easy</string>
+ <string name="medium_label">Medium</string> 
+ <string name="hard_label">Hard</string>
+ <string name="music_title">Music</string>
+ <string name="music_summary">Music</string>
+ <string name="settings_title">Setting</string>
 </resources>

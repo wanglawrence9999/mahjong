@@ -18,8 +18,26 @@ public class Hai {
 
 	/** ïóîv */
 	public final static int KIND_FON = 0x00000100;
+
+	/** ìå*/
+	public final static int KIND_TON = 0x00000101;
+	/** ìÏ */
+	public final static int KIND_NAN = 0x00000102;
+	/** êº */
+	public final static int KIND_SYA = 0x00000103;
+	/** ñk */
+	public final static int KIND_PEE = 0x00000104;
+	
 	/** éOå≥îv */
 	public final static int KIND_SANGEN = 0x00000200;
+
+	/** îí */
+	public final static int KIND_HAKU = 0x00000201;
+	/** î≠ */
+	public final static int KIND_HATU = 0x00000202;
+	/** íÜ */
+	public final static int KIND_CYUN = 0x00000203;
+
 	/** éöîv */
 	public final static int KIND_TSUU = 0x00000300;
 

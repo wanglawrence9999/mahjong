@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
 
 import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
+import jp.sourceforge.andjong.Yaku;
 
 /**
  * ゲームのハンドリングを行うクラスです。
@@ -49,26 +50,99 @@ public class Game {
 	public Yama getYama() {
 		return yama;
 	}
-
-	private boolean checkTanyao(Tehai tehai, Hai addHai, Combi combi) {
-		int id;
-		Hai[] jyunTehai = tehai.getJyunTehai();
-		int jyunTehaiLength = tehai.getJyunTehaiLength();
-
-		for (int i = 0; i < jyunTehaiLength; i++) {
-			id = jyunTehai[i].getId();
-			if ((id & KIND_SHUU) == 0)
-				return false;
-			id &= KIND_MASK;
-			if ((id == 1) || (id == 9))
-				return false;
+	
+	private int countYaku(Tehai tehai, Hai addHai, int combisCount,	Combi[] combis){
+		int countYaku = 0;
+		boolean menzenflg = true;
+		if(tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX){
+			menzenflg = false;
 		}
-
-		// TODO 鳴き牌の確認も
-
-		return true;
+		
+		
+		return	countYaku;	
 	}
+	
+	private int countHan(Tehai tehai, Hai addHai, int combisCount,	Combi combi){
+		int countHan = 20;
+		int id;
+		Hai checkHai[][]; 
+	
 
+		id = combi.atamaId;
+/*
+		// TODO 役牌の識別が必要
+
+		//頭が役牌
+		if((combi.atamaId & KIND_TSUU) != 0 ){
+			//２ 符追加
+			countHan += 2;
+		}
+*/		
+		//TODO 単騎、カンチャン、ペンチャンならば
+			//countHan += 2;
+		
+		
+		//刻子による追加
+	
+		//暗刻による加点
+		for(int i = 0; i< combi.kouCount ; i++){
+			id = combi.kouIds[i];
+			//牌が字牌もしくは1,9
+			if (((id & KIND_TSUU) != 0) ||((id & KIND_MASK) == 1) || ((id & KIND_MASK) == 9)){ 
+				countHan += 8;
+			}else{
+				countHan += 4;
+			}
+		}
+		
+		//明刻による加点
+		for(int i = 0 ; i < tehai.getMinkousLength() ; i++){
+			checkHai = tehai.getMinkous();
+			id = checkHai[i][0].getId();
+			//牌が字牌もしくは1,9
+			if (((id & KIND_TSUU) != 0) ||((id & KIND_MASK) == 1) || ((id & KIND_MASK) == 9)){ 
+				countHan += 4;
+			}else{
+				countHan += 2;
+			}
+		}
+		
+		//明槓による加点
+		for(int i = 0 ; i < tehai.getMinkansLength() ; i++){
+			checkHai = tehai.getMinkans();
+			id = checkHai[i][0].getId();
+			//牌が字牌もしくは1,9
+			if (((id & KIND_TSUU) != 0) ||((id & KIND_MASK) == 1) || ((id & KIND_MASK) == 9)){ 
+				countHan += 16;
+			}else{
+				countHan += 8;
+			}
+		}
+		
+		//暗槓による加点
+		for(int i = 0 ; i < tehai.getMinkansLength() ; i++){
+			checkHai = tehai.getMinkans();
+			id = checkHai[i][0].getId();
+			//牌が字牌もしくは1,9
+			if (((id & KIND_TSUU) != 0) ||((id & KIND_MASK) == 1) || ((id & KIND_MASK) == 9)){ 
+				countHan += 32;
+			}else{
+				countHan += 16;
+			}
+		}
+		
+		//TODO ツモ上がりによる追加
+			//countHan += 2;
+		
+		//TODO 面前ロン上がりによる追加
+		if(tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX){
+			//TODO ロン上がりの場合
+			//countHan += 10;
+		}
+		
+		return countHan;
+	}
+	
 	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,
 			Combi[] combis) {
 		/*
@@ -77,7 +151,7 @@ public class Game {
 
 		boolean tanyao;
 		for (int i = 0; i < combisCount; i++) {
-			tanyao = checkTanyao(tehai, addHai, combis[i]);
+			tanyao = Yaku.checkTanyao(tehai, addHai, combis[i]);
 			if (tanyao) {
 				System.out.println("タンヤオ！！！");
 				/*

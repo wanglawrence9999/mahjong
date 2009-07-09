@@ -14,7 +14,7 @@ public class Info {
 	protected Game game;
 	
 	public SAI[] getSai() {
-		return game.getSai();
+		return game.getSais();
 	}
 	
 	public Hai[] getDora() {

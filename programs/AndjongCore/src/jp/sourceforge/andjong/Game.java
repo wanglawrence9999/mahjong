@@ -379,19 +379,8 @@ public class Game {
 		}
 	}
 	
-	private int countYaku(Tehai tehai, Hai addHai, int combisCount,
-			Combi[] combis) {
-		int countYaku = 0;
-		boolean menzenflg = true;
-		if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
-			menzenflg = false;
-		}
-
-		return countYaku;
-	}
-
-	private int countHan(Tehai tehai, Hai addHai, int combisCount, Combi combi) {
-		int countHan = 20;
+	private int countHu(Tehai tehai, Hai addHai, int combisCount, Combi combi) {
+		int countHu = 20;
 		int id;
 		Hai checkHai[][];
 
@@ -403,7 +392,8 @@ public class Game {
 		 * }
 		 */
 		// TODO ’P‹RAƒJƒ“ƒ`ƒƒƒ“Aƒyƒ“ƒ`ƒƒƒ“‚È‚ç‚Î
-		// countHan += 2;
+		// countHu += 2;
+		
 		// q‚É‚æ‚é’Ç‰Á
 		// ˆÃ‚É‚æ‚é‰Á“_
 		for (int i = 0; i < combi.kouCount; i++) {
@@ -411,9 +401,9 @@ public class Game {
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
 					|| ((id & KIND_MASK) == 9)) {
-				countHan += 8;
+				countHu += 8;
 			} else {
-				countHan += 4;
+				countHu += 4;
 			}
 		}
 
@@ -424,9 +414,9 @@ public class Game {
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
 					|| ((id & KIND_MASK) == 9)) {
-				countHan += 4;
+				countHu += 4;
 			} else {
-				countHan += 2;
+				countHu += 2;
 			}
 		}
 
@@ -437,9 +427,9 @@ public class Game {
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
 					|| ((id & KIND_MASK) == 9)) {
-				countHan += 16;
+				countHu += 16;
 			} else {
-				countHan += 8;
+				countHu += 8;
 			}
 		}
 
@@ -450,40 +440,80 @@ public class Game {
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
 					|| ((id & KIND_MASK) == 9)) {
-				countHan += 32;
+				countHu += 32;
 			} else {
-				countHan += 16;
+				countHu += 16;
 			}
 		}
 
 		// TODO ƒcƒ‚ã‚ª‚è‚É‚æ‚é’Ç‰Á
-		// countHan += 2;
+		// countHu += 2;
 
 		// TODO –Ê‘Oƒƒ“ã‚ª‚è‚É‚æ‚é’Ç‰Á
 		if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
 			// TODO ƒƒ“ã‚ª‚è‚Ìê‡
-			// countHan += 10;
+			// countHu += 10;
 		}
 
-		return countHan;
+		return countHu;
+	}
+	
+	public int getScore(int hanSuu ,int huSuu){
+		int score;
+		//•„@~  ‚Q‚Ì@i–ğ”@+@êƒ]ƒ‚Ì2–ğ)
+		score = huSuu * (int)Math.pow(2, hanSuu + 2 );
+		//q‚Íã‚Ì4”{‚ªŠî–{“_(e‚Í6”{)
+		score *= 4;
+		
+		
+		if(hanSuu >= 13){		 //13–|ˆÈã‚Í–ğ–
+			score = 32000;
+		}else if (hanSuu >= 11){ //11–|ˆÈã‚Í3”{–
+			score = 24000;
+		}else if (hanSuu >= 8){  //8–|ˆÈã‚Í”{–
+			score = 16000;
+		}else if (hanSuu >= 6){  //6–|ˆÈã‚Í’µ–
+			score = 12000;
+		}else if (hanSuu >= 5){  //5–|ˆÈã‚Í–ŠÑ
+			score = 8000;
+		}
+		
+		//7700‚Í8000‚Æ‚·‚é
+		if(score > 7600){
+			score = 8000;
+		}
+		
+		//100‚ÅŠ„‚èØ‚ê‚È‚¢”‚ª‚ ‚éê‡100“_ŒJã‚°
+		if(score % 100 != 0){
+			score = score - (score % 100) + 100;
+		}
+		
+		return score;
 	}
 
-	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,
-			Combi[] combis) {
-		/*
-		 * ‚±‚±‚Å–ğ‚Æ“¾“_‚ğŒvZ‚·‚éB
-		 */
-
-		boolean tanyao;
+	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,Combi[] combis) {
+		//–ğ
+		int hanSuu[] = new int [combisCount];
+		//•„
+		int huSuu[]  = new int [combisCount];
+		//“_”iq‚Ìƒƒ“ã‚ª‚èj
+		int agariScore[]  = new int [combisCount];
+		//Å‘å‚Ì“_”
+		int maxagariScore = 0;
+		
 		for (int i = 0; i < combisCount; i++) {
-			tanyao = Yaku.checkTanyao(tehai, addHai, combis[i]);
-			if (tanyao) {
-				System.out.println("ƒ^ƒ“ƒ„ƒIIII");
-				/*
-				 * TODO –ğ‚ğƒJƒEƒ“ƒg‚µ‚Ä‚¢‚­B
-				 */
-			}
+			Yaku yaku = new Yaku(tehai, addHai, combis[i]);
+			hanSuu[i] = yaku.getHanSuu();
+			huSuu[i] = countHu(tehai, addHai, combisCount, combis[i]);
+			//TODO ƒhƒ‰‚ÌŒvZ
+			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
 		}
-		return 0;
+			
+		//Å‘å’l‚ğ’T‚·
+		maxagariScore = agariScore[0];
+		for (int i = 0; i < combisCount; i++) {
+			maxagariScore = Math.max(maxagariScore, agariScore[i]);
+		}
+		return maxagariScore;
 	}
 }

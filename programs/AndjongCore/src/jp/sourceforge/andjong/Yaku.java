@@ -3,8 +3,398 @@ import static jp.sourceforge.andjong.Hai.*;
 import static jp.sourceforge.andjong.Tehai.JYUNTEHAI_MAX;
 import jp.sourceforge.andjong.Tehai.Combi;
 
+
 public class Yaku {
-	static boolean checkTanyao(Tehai tehai, Hai addHai, Combi combi) {
+	
+	YakuHantei yakuhantei[] = new YakuHantei[50];
+	Yaku(Tehai tehai, Hai addHai, Combi combi){
+		int i = 0;
+		yakuhantei[i++] = new CheckTanyao(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckPinfu(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckIpeikou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckTon(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckNan(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSya(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckPei(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckHaku(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckHatu(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckCyun(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckCyanta(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckIkkituukan(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSansyokuDoukou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSansyokuDoujun(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckToitoi(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSanankou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSankantu(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckRyanpeikou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckHonitu(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckJunCyan(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSyousangen(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckHonroutou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckTinitu(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSuuankou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSuukantu(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckDaisangen(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckSyousuushi(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckDaisuushi(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckDaisangen(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckTuuisou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckChinroutou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckRyuuisou(tehai,addHai,combi);
+		yakuhantei[i++] = new CheckCyuurennpoutou(tehai,addHai,combi);
+		yakuhantei[i++] = null;
+	}
+	
+	int getHanSuu(){
+		int hanSuu = 0;
+		for(int i = 0 ; yakuhantei[i] != null ; i++){
+			if( yakuhantei[i].getYakuHantei() == true){
+				hanSuu+= yakuhantei[i].getHanSuu();
+			}
+		}
+		return hanSuu;
+	}
+
+	String getYakuName(){
+		String yakuName ="";
+		for(int i = 0 ; yakuhantei[i] != null ; i++){
+			if( yakuhantei[i].getYakuHantei() == true){
+				yakuName = yakuhantei[i].getYakuName();
+			}
+		}
+		return yakuName;
+	}
+	
+	boolean getYakumanflg(){
+		for(int i = 0 ; yakuhantei[i] != null ; i++){
+			if( yakuhantei[i].getYakuman() == true){
+				return true;
+			}
+		}
+		return false;		
+	}
+	
+	private class YakuHantei{
+		boolean hantei = false;
+		boolean yakuman = false;
+		String  yakuName;
+		int hanSuu;
+		
+		boolean getYakuHantei(){
+			return hantei;
+		}
+		int getHanSuu(){
+			return hanSuu;
+		}
+		
+		String getYakuName(){
+			return yakuName;
+		}
+		
+		boolean getYakuman(){
+			return yakuman;
+		}
+	}
+
+	private class CheckTanyao extends YakuHantei{
+		CheckTanyao(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkTanyao(tehai, addHai, combi);
+			yakuName = "’f›ô";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckPinfu extends YakuHantei{
+		CheckPinfu(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkPinfu(tehai, addHai, combi);
+			yakuName = "•½˜a";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckIpeikou extends YakuHantei{
+		CheckIpeikou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkIpeikou(tehai, addHai, combi);
+			if(checkRyanpeikou(tehai, addHai, combi)){
+				hantei = false;
+			}
+			yakuName = "ˆê”uŒû";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckTon extends YakuHantei{
+		CheckTon(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkTon(tehai, addHai, combi);
+			yakuName = "“Œ";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckNan extends YakuHantei{
+		CheckNan(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkNan(tehai, addHai, combi);
+			yakuName = "“ì";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckSya extends YakuHantei{
+		CheckSya(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSya(tehai, addHai, combi);
+			yakuName = "¼";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckPei extends YakuHantei{
+		CheckPei(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkPei(tehai, addHai, combi);
+			yakuName = "–k";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckHaku extends YakuHantei{
+		CheckHaku(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkHaku(tehai, addHai, combi);
+			yakuName = "”’";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckHatu extends YakuHantei{
+		CheckHatu(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkHatu(tehai, addHai, combi);
+			yakuName = "á¢";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckCyun extends YakuHantei{
+		CheckCyun(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkCyun(tehai, addHai, combi);
+			yakuName = "’†";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckCyanta extends YakuHantei{
+		CheckCyanta(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkCyanta(tehai, addHai, combi);
+			if(checkJunCyan(tehai, addHai, combi)){
+				hantei = false;
+			}
+			if(checkHonroutou(tehai, addHai, combi)){
+				hantei = false;
+			}	
+			yakuName = "‘S‘Ñ";
+			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+				hanSuu = 1;
+			}else{
+				hanSuu = 2;
+			}
+		}
+	}
+
+	private class CheckIkkituukan extends YakuHantei{
+		CheckIkkituukan(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkIkkituukan(tehai, addHai, combi);
+			yakuName = "ˆê‹C’ÊŠÑ";
+			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+				hanSuu = 1;
+			}else{
+				hanSuu = 2;
+			}
+		}
+	}
+
+	private class CheckSansyokuDoujun extends YakuHantei{
+		CheckSansyokuDoujun(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSansyokuDoujun(tehai, addHai, combi);
+			yakuName = "OF“¯‡";
+			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+				hanSuu = 1;
+			}else{
+				hanSuu = 2;
+			}
+		}
+	}
+
+	private class CheckSansyokuDoukou extends YakuHantei{
+		CheckSansyokuDoukou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSansyokuDoukou(tehai, addHai, combi);
+			yakuName = "OF“¯";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckToitoi extends YakuHantei{
+		CheckToitoi(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkToitoi(tehai, addHai, combi);
+			yakuName = "‘ÎX˜a";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckSanankou extends YakuHantei{
+		CheckSanankou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSanankou(tehai, addHai, combi);
+			yakuName = "OˆÃ";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckSankantu extends YakuHantei{
+		CheckSankantu(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSankantu(tehai, addHai, combi);
+			yakuName = "OÈq";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckRyanpeikou extends YakuHantei{
+		CheckRyanpeikou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkRyanpeikou(tehai, addHai, combi);
+			yakuName = "“ñ”uŒû";
+			hanSuu = 3;
+		}
+	}
+
+	private class CheckHonitu extends YakuHantei{
+		CheckHonitu(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkHonitu(tehai, addHai, combi);
+			yakuName = "¬ˆêF";
+			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+				hanSuu = 2;
+			}else{
+				hanSuu = 3;
+			}
+		}
+	}
+
+	private class CheckJunCyan extends YakuHantei{
+		CheckJunCyan(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkJunCyan(tehai, addHai, combi);
+			yakuName = "ƒ‘S‘Ñ";
+			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+				hanSuu = 2;
+			}else{
+				hanSuu = 3;
+			}
+		}
+	}
+
+	private class CheckSyousangen extends YakuHantei{
+		CheckSyousangen(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSyousangen(tehai, addHai, combi);
+			yakuName = "¬OŒ³";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckHonroutou extends YakuHantei{
+		CheckHonroutou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkHonroutou(tehai, addHai, combi);
+			yakuName = "¬˜V“ª";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckTinitu extends YakuHantei{
+		CheckTinitu(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkTinitu(tehai, addHai, combi);
+			yakuName = "´ˆêF";
+			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+				hanSuu = 5;
+			}else{
+				hanSuu = 6;
+			}
+		}
+	}
+
+	private class CheckSuuankou extends YakuHantei{
+		CheckSuuankou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSuuankou(tehai, addHai, combi);
+			yakuName = "lˆÃ";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	private class CheckSuukantu extends YakuHantei{
+		CheckSuukantu(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSuukantu(tehai, addHai, combi);
+			yakuName = "lÈq";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	private class CheckDaisangen extends YakuHantei{
+		CheckDaisangen(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkDaisangen(tehai, addHai, combi);
+			yakuName = "‘åOŒ³";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	private class CheckSyousuushi extends YakuHantei{
+		CheckSyousuushi(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkSyousuushi(tehai, addHai, combi);
+			yakuName = "¬lŠì";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	private class CheckDaisuushi extends YakuHantei{
+		CheckDaisuushi(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkDaisuushi(tehai, addHai, combi);
+			yakuName = "‘ålŠì";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	private class CheckTuuisou extends YakuHantei{
+		CheckTuuisou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkTuuisou(tehai, addHai, combi);
+			yakuName = "šˆêF";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	private class CheckChinroutou extends YakuHantei{
+		CheckChinroutou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkChinroutou(tehai, addHai, combi);
+			yakuName = "´˜V“ª";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	private class CheckRyuuisou extends YakuHantei{
+		CheckRyuuisou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkRyuuisou(tehai, addHai, combi);
+			yakuName = "—ÎˆêF";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+	private class CheckCyuurennpoutou extends YakuHantei{
+		CheckCyuurennpoutou(Tehai tehai, Hai addHai, Combi combi){
+			hantei = checkCyuurennpoutou(tehai, addHai, combi);
+			yakuName = "‹ã˜@•ó“•";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+
+	
+	boolean checkTanyao(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
@@ -68,7 +458,7 @@ public class Yaku {
 		return true;
 	}
 
-	static boolean checkPinfu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkPinfu(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		//–Â‚«‚ª“ü‚Á‚Ä‚¢‚éê‡‚Í¬—§‚µ‚È‚¢
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
@@ -99,8 +489,8 @@ public class Yaku {
 		return true;
 	}
 
-	static boolean checkIpeikou(Tehai tehai, Hai addHai, Combi combi) {
-
+	boolean checkIpeikou(Tehai tehai, Hai addHai, Combi combi) {
+				
 		//–Â‚«‚ª“ü‚Á‚Ä‚¢‚éê‡‚Í¬—§‚µ‚È‚¢
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
 			return false;
@@ -117,15 +507,15 @@ public class Yaku {
 	}
 	//TODO ƒŠ[ƒ`‚âˆê”­Œn‚Ì–ğ
 	/*
-	static boolean checkReach(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkReach(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 
-	static boolean checkIppatu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkIppatu(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 
-	static boolean checkTumo(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTumo(Tehai tehai, Hai addHai, Combi combi) {
 		//–Â‚«‚ª“ü‚Á‚Ä‚¢‚éê‡‚Í¬—§‚µ‚È‚¢
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
 			return false;
@@ -136,7 +526,7 @@ public class Yaku {
 */
 
 	//–ğ”v‚ª‚Å‚«‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ì”»’è‚Ég‚¤•â•ƒƒ\ƒbƒh
-	private static boolean checkYakuHai(Tehai tehai, Combi combi , int yakuHaiId) {
+	private boolean checkYakuHai(Tehai tehai, Combi combi , int yakuHaiId) {
 		int id;
 		Hai checkHai[][]; 
 
@@ -179,60 +569,59 @@ public class Yaku {
 		return false;
 	}
 	
-	static boolean checkTon(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTon(Tehai tehai, Hai addHai, Combi combi) {
 		return checkYakuHai(tehai,combi,KIND_TON);
 	}
 
-	static boolean checkNan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkNan(Tehai tehai, Hai addHai, Combi combi) {
 		return checkYakuHai(tehai,combi,KIND_NAN);
 	}
 
-	static boolean checkSya(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSya(Tehai tehai, Hai addHai, Combi combi) {
 		return checkYakuHai(tehai,combi,KIND_SYA);
 	}
 
-	static boolean checkPei(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkPei(Tehai tehai, Hai addHai, Combi combi) {
 		return checkYakuHai(tehai,combi,KIND_PEE);
 	}
 
-	static boolean checkHaku(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHaku(Tehai tehai, Hai addHai, Combi combi) {
 		return checkYakuHai(tehai,combi,KIND_HAKU);
 	}
 
-	static boolean checkHatu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHatu(Tehai tehai, Hai addHai, Combi combi) {
 		return checkYakuHai(tehai,combi,KIND_HATU);
 	}
 
-	static boolean checkCyun(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkCyun(Tehai tehai, Hai addHai, Combi combi) {
 		return checkYakuHai(tehai,combi,KIND_CYUN);
 	}
 	
 	//TODO “Áê‚È–ğ‚ÍŒã‰ñ‚µ
 /*
-	static boolean checkHaitei(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHaitei(Tehai tehai, Hai addHai, Combi combi) {
 
 		return true;
 	}
 	
-	static boolean checkRinsyan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRinsyan(Tehai tehai, Hai addHai, Combi combi) {
 
 		return true;
 	}
-	static boolean checkCyankan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkCyankan(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 	
-	static boolean checkDoubleReach(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkDoubleReach(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 	
-	static boolean checkTeetoitu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTeetoitu(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 */
 	
-	static boolean checkCyanta(Tehai tehai, Hai addHai, Combi combi) {
-		
+	boolean checkCyanta(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai checkHai[][]; 
 
@@ -245,7 +634,6 @@ public class Yaku {
 				if ((id > 1) && (id < 9))
 					return false;
 			}
-			
 		}
 		
 		//ƒè”v‚Ì‡q‚ğƒ`ƒFƒbƒN
@@ -316,7 +704,7 @@ public class Yaku {
 		return true;
 	}
 
-	static boolean checkIkkituukan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkIkkituukan(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai checkHai[][]; 
 		boolean ikkituukanflg[]= {false,false,false,false,false,false,false,false,false};
@@ -367,7 +755,7 @@ public class Yaku {
 		}		
 	}
 	
-	static boolean checkSansyokuDoujun(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSansyokuDoujun(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai checkHai[][]; 
 		boolean sansyokuflg[][]= new boolean[3][9];
@@ -403,7 +791,7 @@ public class Yaku {
 		return false;
 	}
 
-	static boolean checkSansyokuDoukou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSansyokuDoukou(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai checkHai[][]; 
 		boolean sansyokuflg[][]= new boolean[3][9];
@@ -454,7 +842,7 @@ public class Yaku {
 		return false;
 	}
 	
-	static boolean checkToitoi(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkToitoi(Tehai tehai, Hai addHai, Combi combi) {
 		//è”v‚É‡q‚ª‚ ‚é
 		if((combi.shunCount != 0) || (tehai.getMinshunsLength() != 0) ){
 			return false;
@@ -463,7 +851,7 @@ public class Yaku {
 		}
 	}
 	
-	static boolean checkSanankou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSanankou(Tehai tehai, Hai addHai, Combi combi) {
 		//è”v‚ÌˆÃ‚ª‚R‚Â
 		//TODO ã‚ª‚Á‚½Û‚ªoã‚ª‚è‚©‚Ç‚¤‚©‚Ì”»’è‚à•K—vH
 		if(combi.kouCount == 3){
@@ -473,7 +861,7 @@ public class Yaku {
 		}
 	}
 	
-	static boolean checkSankantu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSankantu(Tehai tehai, Hai addHai, Combi combi) {
 		int kansnumber = 0;
 		kansnumber += tehai.getAnkansLength();
 		kansnumber += tehai.getMinkansLength();
@@ -484,7 +872,7 @@ public class Yaku {
 		}
 	}
 
-	static boolean checkRyanpeikou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRyanpeikou(Tehai tehai, Hai addHai, Combi combi) {
 		//–Â‚«‚ª“ü‚Á‚Ä‚¢‚éê‡‚Í¬—§‚µ‚È‚¢
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
 			return false;
@@ -504,7 +892,7 @@ public class Yaku {
 		}
 	}
 	
-	static boolean checkHonitu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHonitu(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
@@ -575,7 +963,7 @@ public class Yaku {
 
 	}
 	
-	static boolean checkJunCyan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkJunCyan(Tehai tehai, Hai addHai, Combi combi) {
 		
 		int id;
 		Hai checkHai[][]; 
@@ -684,7 +1072,7 @@ public class Yaku {
 		return true;
 	}
 	
-	static boolean checkSyousangen(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSyousangen(Tehai tehai, Hai addHai, Combi combi) {
 		//OŒ³”v–ğ‚ª¬—§‚µ‚Ä‚¢‚éŒÂ”‚ğ’²‚×‚é
 		int countSangen = 0;
 		//”’‚ªq
@@ -707,7 +1095,7 @@ public class Yaku {
 		return false;
 	}
 	
-	static boolean checkHonroutou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHonroutou(Tehai tehai, Hai addHai, Combi combi) {
 		//ƒgƒCƒgƒC‚ª¬—§‚µ‚Ä‚¢‚é
 		if(checkToitoi(tehai,addHai,combi) == false){
 			return false;
@@ -721,11 +1109,11 @@ public class Yaku {
 		}
 	}
 /*	
-	static boolean checkRenhou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRenhou(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 */
-	static boolean checkTinitu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTinitu(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
@@ -796,7 +1184,7 @@ public class Yaku {
 
 	}
 
-	static boolean checkSuuankou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSuuankou(Tehai tehai, Hai addHai, Combi combi) {
 		//è”v‚ÌˆÃ‚ª4‚Â
 		//TODO ã‚ª‚Á‚½Û‚ªoã‚ª‚èAƒcƒ‚ã‚ª‚è‚©‚Ç‚¤‚©‚Ì”»’è‚à•K—vH
 		if(combi.kouCount == 4){
@@ -806,7 +1194,7 @@ public class Yaku {
 		}
 	}
 
-	static boolean checkSuukantu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSuukantu(Tehai tehai, Hai addHai, Combi combi) {
 		int kansnumber = 0;
 		kansnumber += tehai.getAnkansLength();
 		kansnumber += tehai.getMinkansLength();
@@ -817,7 +1205,7 @@ public class Yaku {
 		}
 	}
 
-	static boolean checkDaisangen(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkDaisangen(Tehai tehai, Hai addHai, Combi combi) {
 		//OŒ³”v–ğ‚ª¬—§‚µ‚Ä‚¢‚éŒÂ”‚ğ’²‚×‚é
 		int countSangen = 0;
 		//”’‚ªq
@@ -841,16 +1229,16 @@ public class Yaku {
 	}
 	//TODO “V˜aA’n˜a‚ÍŒã‚Ål‚¦‚éB
 /*
-	static boolean checkTenhou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTenhou(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 
-	static boolean checkTihou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTihou(Tehai tehai, Hai addHai, Combi combi) {
 		return true;
 	}
 */
 	
-	static boolean checkSyousuushi(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSyousuushi(Tehai tehai, Hai addHai, Combi combi) {
 		//•—”v–ğ‚ª¬—§‚µ‚Ä‚¢‚éŒÂ”‚ğ’²‚×‚é
 		int countFon = 0;
 		//“Œ‚ªq
@@ -878,7 +1266,7 @@ public class Yaku {
 		}
 	}
 
-	static boolean checkDaisuushi(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkDaisuushi(Tehai tehai, Hai addHai, Combi combi) {
 		//•—”v–ğ‚ª¬—§‚µ‚Ä‚¢‚éŒÂ”‚ğ’²‚×‚é
 		int countFon = 0;
 		//“Œ‚ªq
@@ -905,7 +1293,7 @@ public class Yaku {
 		}
 	}
 
-	static boolean checkTuuisou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTuuisou(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
@@ -919,16 +1307,6 @@ public class Yaku {
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		for (int j = 0; j < jyunTehaiLength; j++) {
 			id = jyunTehai[j].getId();
-			//”v‚ª””v
-			if ((id & KIND_SHUU) != 0){
-				return false;
-			}
-		}
-		
-		//–¾‡‚Ì”v‚ğƒ`ƒFƒbƒN
-		for(int j = 0; j < tehai.getMinshunsLength(); j++){
-			checkHai = tehai.getMinshuns();
-			id = checkHai[j][0].getId();
 			//”v‚ª””v
 			if ((id & KIND_SHUU) != 0){
 				return false;
@@ -968,99 +1346,22 @@ public class Yaku {
 		return true;
 	}
 
-	static boolean checkChinroutou(Tehai tehai, Hai addHai, Combi combi) {
-		int id;
-		Hai[] jyunTehai = tehai.getJyunTehai();
-		Hai checkHai[][]; 
-		
+	boolean checkChinroutou(Tehai tehai, Hai addHai, Combi combi) {
 		//‡q‚ª‚ ‚é‚©‚Ç‚¤‚©Šm”F
 		if(checkToitoi(tehai,addHai,combi) == false){
 			return false;
 		}
 		
-		//ƒè”v‚ğƒ`ƒFƒbƒN
-		int jyunTehaiLength = tehai.getJyunTehaiLength();
-		for (int j = 0; j < jyunTehaiLength; j++) {
-			id = jyunTehai[j].getId();
-			//”v‚ªš”v‚È‚ç‚Î•s¬—§
-			if((id & KIND_TSUU) != 0){
-				return false;
-			}else{
-				//””v‚Ìê‡1,9”vˆÈŠO‚Í•s¬—§
-				id &= KIND_MASK;
-				if ((id > 1) && (id < 9)){
-					return false;
-				}
-			}
+		//‡q‚È‚µ‚ÅƒWƒ…ƒ“ƒ`ƒƒƒ“‚ª¬—§‚µ‚Ä‚¢‚é‚©i1‚Æ9‚Ì‚İ‚Åì¬j
+		if(checkJunCyan(tehai,addHai,combi) == false){
+			return false;
 		}
 		
-		//–¾‡‚Ì”v‚ğƒ`ƒFƒbƒN
-		for(int j = 0; j < tehai.getMinshunsLength(); j++){
-			checkHai = tehai.getMinshuns();
-			id = checkHai[j][0].getId();
-			//”v‚ªš”v‚È‚ç‚Î•s¬—§
-			if((id & KIND_TSUU) != 0){
-				return false;
-			}else{
-				//””v‚Ìê‡1,9”vˆÈŠO‚Í•s¬—§
-				id &= KIND_MASK;
-				if ((id > 1) && (id < 9)){
-					return false;
-				}
-			}
-		}
+		return true;
 		
-		//–¾‚Ì”v‚ğƒ`ƒFƒbƒN
-		for(int j = 0; j < tehai.getMinkousLength(); j++){
-			checkHai = tehai.getMinkous();
-			id = checkHai[j][0].getId();
-			//”v‚ªš”v‚È‚ç‚Î•s¬—§
-			if((id & KIND_TSUU) != 0){
-				return false;
-			}else{
-				//””v‚Ìê‡1,9”vˆÈŠO‚Í•s¬—§
-				id &= KIND_MASK;
-				if ((id > 1) && (id < 9)){
-					return false;
-				}
-			}
-		}
-		
-		//–¾È‚Ì”v‚ğƒ`ƒFƒbƒN
-		for(int j = 0; j < tehai.getMinkansLength(); j++){
-			checkHai = tehai.getMinkans();
-			id = checkHai[j][0].getId();
-			//”v‚ªš”v‚È‚ç‚Î•s¬—§
-			if((id & KIND_TSUU) != 0){
-				return false;
-			}else{
-				//””v‚Ìê‡1,9”vˆÈŠO‚Í•s¬—§
-				id &= KIND_MASK;
-				if ((id > 1) && (id < 9)){
-					return false;
-				}
-			}
-		}
-		
-		//ˆÃÈ‚Ì”v‚ğƒ`ƒFƒbƒN
-		for(int j = 0; j < tehai.getAnkansLength(); j++){
-			checkHai = tehai.getAnkans();
-			id = checkHai[j][0].getId();
-			//”v‚ªš”v‚È‚ç‚Î•s¬—§
-			if((id & KIND_TSUU) != 0){
-				return false;
-			}else{
-				//””v‚Ìê‡1,9”vˆÈŠO‚Í•s¬—§
-				id &= KIND_MASK;
-				if ((id > 1) && (id < 9)){
-					return false;
-				}
-			}
-		}
-		
-		return true;	}
+	}
 
-	static boolean checkRyuuisou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRyuuisou(Tehai tehai, Hai addHai, Combi combi) {
 		int checkId[] = {KIND_SOU+2,KIND_SOU+3,KIND_SOU+4,KIND_SOU+6,KIND_SOU+8,KIND_HATU};
 		int id;
 		boolean ryuuisouflg = false;
@@ -1150,7 +1451,7 @@ public class Yaku {
 		return true;
 	}
 
-	static boolean checkCyuurennpoutou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkCyuurennpoutou(Tehai tehai, Hai addHai, Combi combi) {
 		int id;
 		
 		//”v‚Ì”‚ğ’²‚×‚é‚½‚ß‚Ì”z—ñ (0”Ô’n‚Íg—p‚µ‚È‚¢j
@@ -1174,7 +1475,7 @@ public class Yaku {
 			id = checkHai[i].getId();
 			//”š‚ğƒ`ƒFƒbƒN‚·‚é
 			id &= KIND_MASK;
-			//”š-1‚Ì”Ô†‚ğƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é
+			//”š‚Ì”Ô†‚ğƒCƒ“ƒNƒŠƒƒ“ƒg‚·‚é
 			countNumber[id]++;
 		}
 		

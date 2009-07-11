@@ -27,11 +27,12 @@ public class AI implements EventIF {
 
 		switch (eid) {
 		case TSUMO:
-			returnEid = eventTsumo();
+			returnEid = eventTsumo(fromKaze, toKaze);
 			break;
 		case SUTEHAI:
-			if (fromKaze == 0) {
+			if (fromKaze == info.getJikaze()) {
 				returnEid = EID.NAGASHI;
+				break;
 			}
 			info.copyTehai(tehai, 0);
 			tehai.getCountFormat(countFormat, info.getSuteHai());
@@ -59,10 +60,10 @@ public class AI implements EventIF {
 
 	private final static int HYOUKA_SHUU = 1;
 
-	public EID eventTsumo() {
+	public EID eventTsumo(int fromKaze, int toKaze) {
 		int score = 0;
 		int maxScore = 0;
-		info.copyTehai(tehai, 0);
+		info.copyTehai(tehai, fromKaze);
 		Hai tsumoHai = info.getTsumoHai();
 
 		// 和了のチェックをする。

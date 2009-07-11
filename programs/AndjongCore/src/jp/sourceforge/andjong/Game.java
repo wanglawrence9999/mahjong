@@ -21,7 +21,7 @@ public class Game {
 	public Yama getYama() {
 		return yama;
 	}
-	
+
 	/** プレイヤーの人数 */
 	private int playerNum = 4;
 
@@ -40,7 +40,7 @@ public class Game {
 
 	private int wareme;
 
-	private int activePlayerIdx;
+	private int fromKaze;
 
 	private int action;
 
@@ -67,18 +67,12 @@ public class Game {
 		return sais;
 	}
 
-
 	private Player activePlayer;
-
-	public Player getActivePlayer() {
-		return activePlayer;
-	}
 
 	private final static int ACTION_TSUMOAGARI = 0;
 	private final static int ACTION_RON = 1;
 
-	int eventTargetPlayerIdx;
-
+	private int toKaze;
 
 	Hai tsumoHai;
 
@@ -113,7 +107,7 @@ public class Game {
 		// イベント（場所決め）
 		ui.event(EID.BASHOGIME, 0, 0);
 
-		// 親を決めます。
+		// プレイヤーが親を決めます。
 		sais[0].saifuri();
 		sais[1].saifuri();
 		oya = (sais[0].getNo() + sais[1].getNo() - 1) % 4;
@@ -163,13 +157,13 @@ public class Game {
 		yama.xipai();
 
 		// UIイベント（洗牌）
-		ui.event(EID.SENPAI, 0, 0);
+		ui.event(EID.SENPAI, fromKaze, toKaze);
 
 		// サイ振り
 		saifuri();
 
 		// UIイベント（サイ振り）
-		ui.event(EID.SAIFURI, 0, 0);
+		ui.event(EID.SAIFURI, fromKaze, toKaze);
 
 		// プレイヤーの初期化
 		for (int i = 0; i < players.length; i++)
@@ -187,21 +181,18 @@ public class Game {
 		}
 	}
 
+	private int[] kazeToPlayerIdx = new int[4];
+
 	private void setCha() {
 		for (int i = 0, j = oya; i < players.length; i++, j++) {
 			if (j >= players.length)
 				j = 0;
 
 			players[j].setJikaze(i);
-
-			for (int k = 0, l = j; k < players.length; k++, l++) {
-				if (l >= players.length)
-					l = 0;
-				players[j].ChaToPlayer[l] = k;
-				players[j].PlayerToCha[k] = l;
-				players[j].players[k] = players[l];
-			}
+			kazeToPlayerIdx[i] = j;
 		}
+		fromKaze = oya;
+		toKaze = oya;
 	}
 
 	private void saifuri() {
@@ -230,7 +221,7 @@ public class Game {
 			break;
 		}
 	}
-	
+
 	private void haipai() {
 		for (int i = 0, j = oya; i < HAIPAI_END; i++) {
 			players[j].tehai.addJyunTehai(yama.tsumo());
@@ -243,8 +234,6 @@ public class Game {
 	}
 
 	private void loopKyoku() {
-		activePlayerIdx = oya;
-		eventTargetPlayerIdx = oya;
 		action = 2;
 
 		while (true) {
@@ -259,15 +248,16 @@ public class Game {
 				return;
 			}
 
-			activePlayer = players[activePlayerIdx];
+			activePlayer = players[kazeToPlayerIdx[fromKaze]];
+			toKaze = fromKaze;
 			sutehai();
 
 			switch (action) {
 			case ACTION_TSUMOAGARI:
+				ui.event(EID.TSUMOAGARI, fromKaze, toKaze);
 				activePlayer.tenbou += reachbou * 1000;
 				action = 0;
-				if (oya != activePlayerIdx) {
-					// System.out.println("oya++");
+				if (oya != fromKaze) {
 					oya++;
 					if (oya >= players.length) {
 						oya = 0;
@@ -278,9 +268,10 @@ public class Game {
 				}
 				return;
 			case ACTION_RON:
+				ui.event(EID.RON, fromKaze, toKaze);
 				activePlayer.tenbou += reachbou * 1000;
 				action = 0;
-				if (oya != activePlayerIdx) {
+				if (oya != fromKaze) {
 					// System.out.println("oya++");
 					oya++;
 					if (oya >= players.length) {
@@ -292,9 +283,9 @@ public class Game {
 				}
 				return;
 			default:
-				activePlayerIdx++;
-				if (activePlayerIdx >= players.length) {
-					activePlayerIdx = 0;
+				fromKaze++;
+				if (fromKaze >= players.length) {
+					fromKaze = 0;
 				}
 				break;
 			}
@@ -306,8 +297,8 @@ public class Game {
 		int sutehaiIdx;
 
 		// イベント（ツモ）
-		ui.event(EID.TSUMO, 0, 0);
-		returnEid = activePlayer.ai.event(EID.TSUMO, 0, 0);
+		ui.event(EID.TSUMO, fromKaze, toKaze);
+		returnEid = activePlayer.eventIf.event(EID.TSUMO, fromKaze, toKaze);
 
 		switch (returnEid) {
 		case SUTEHAI:
@@ -317,8 +308,8 @@ public class Game {
 				// ツモ切り
 				suteHai.copy(tsumoHai);
 				activePlayer.kawa.add(suteHai);
-				eventTargetPlayerIdx = activePlayerIdx;
-				callEvent(activePlayerIdx, eventTargetPlayerIdx, EID.SUTEHAI);
+				// toKaze = fromKaze;
+				callEvent(fromKaze, toKaze, EID.SUTEHAI);
 			} else {
 				// 手出し
 				activePlayer.tehai.copyJyunTehaiIdx(suteHai, sutehaiIdx);
@@ -327,45 +318,40 @@ public class Game {
 				if (tsumoHai != null) {
 					activePlayer.tehai.addJyunTehai(tsumoHai);
 				}
-				eventTargetPlayerIdx = activePlayerIdx;
-				callEvent(activePlayerIdx, eventTargetPlayerIdx, EID.SUTEHAI);
+				// toKaze = fromKaze;
+				callEvent(fromKaze, toKaze, EID.SUTEHAI);
 			}
 			break;
 		case TSUMOAGARI:
-			ui.event(EID.TSUMOAGARI, 0, 0);
 			action = ACTION_TSUMOAGARI;
 			break;
 		default:
 			break;
 		}
 	}
-	
-	private void callEvent(int eventCallPlayerIdx, int eventTargetPlayerIdx,
-			EID eid) {
+
+	private void callEvent(int fromKaze, int toKaze, EID eid) {
 		EID returnEid;
-		int j = eventCallPlayerIdx;
+		int j = fromKaze;
 
 		for (int i = 0; i < players.length; i++) {
 			// アクションを通知
 
 			// ツモ
-			ui.event(eid, activePlayer.ChaToPlayer[eventCallPlayerIdx],
-					activePlayer.ChaToPlayer[eventTargetPlayerIdx]);
-			returnEid = activePlayer.ai.event(eid,
-					activePlayer.ChaToPlayer[eventCallPlayerIdx],
-					activePlayer.ChaToPlayer[eventTargetPlayerIdx]);
+			ui.event(eid, fromKaze, toKaze);
+			returnEid = activePlayer.eventIf.event(eid, fromKaze, toKaze);
 
 			switch (returnEid) {
 			case RON:
 				activePlayer = players[j];
-				activePlayerIdx = j;
+				this.fromKaze = j;
+				this.toKaze = toKaze;
 				action = ACTION_RON;
-				ui.event(EID.RON, activePlayerIdx,
-						activePlayer.ChaToPlayer[eventCallPlayerIdx]);
 				return;
 			case TSUMOAGARI:
 				activePlayer = players[j];
-				activePlayerIdx = j;
+				this.fromKaze = j;
+				this.toKaze = toKaze;
 				action = ACTION_TSUMOAGARI;
 				return;
 			default:
@@ -373,12 +359,28 @@ public class Game {
 				if (j >= players.length) {
 					j = 0;
 				}
-				activePlayer = players[j];
+				activePlayer = players[kazeToPlayerIdx[j]];
 				break;
 			}
 		}
 	}
-	
+
+	public void copyTehai(Tehai tehai, int kaze) {
+		if (activePlayer.getJikaze() == kaze) {
+			tehai.copy(activePlayer.tehai, true);
+		} else {
+			tehai.copy(players[kazeToPlayerIdx[kaze]].tehai, false);
+		}
+	}
+
+	public void copyKawa(Kawa kawa, int kaze) {
+		kawa.copy(players[kazeToPlayerIdx[kaze]].kawa);
+	}
+
+	public int getJikaze() {
+		return activePlayer.getJikaze();
+	}
+
 	private int countHu(Tehai tehai, Hai addHai, int combisCount, Combi combi) {
 		int countHu = 20;
 		int id;
@@ -393,7 +395,6 @@ public class Game {
 		 */
 		// TODO 単騎、カンチャン、ペンチャンならば
 		// countHu += 2;
-		
 		// 刻子による追加
 		// 暗刻による加点
 		for (int i = 0; i < combi.kouCount; i++) {
@@ -457,59 +458,59 @@ public class Game {
 
 		return countHu;
 	}
-	
-	public int getScore(int hanSuu ,int huSuu){
+
+	public int getScore(int hanSuu, int huSuu) {
 		int score;
-		//符　×  ２の　（役数　+　場ゾロの2役)
-		score = huSuu * (int)Math.pow(2, hanSuu + 2 );
-		//子は上の4倍が基本点(親は6倍)
+		// 符　× ２の　（役数　+　場ゾロの2役)
+		score = huSuu * (int) Math.pow(2, hanSuu + 2);
+		// 子は上の4倍が基本点(親は6倍)
 		score *= 4;
-		
-		
-		if(hanSuu >= 13){		 //13翻以上は役満
+
+		if (hanSuu >= 13) { // 13翻以上は役満
 			score = 32000;
-		}else if (hanSuu >= 11){ //11翻以上は3倍満
+		} else if (hanSuu >= 11) { // 11翻以上は3倍満
 			score = 24000;
-		}else if (hanSuu >= 8){  //8翻以上は倍満
+		} else if (hanSuu >= 8) { // 8翻以上は倍満
 			score = 16000;
-		}else if (hanSuu >= 6){  //6翻以上は跳満
+		} else if (hanSuu >= 6) { // 6翻以上は跳満
 			score = 12000;
-		}else if (hanSuu >= 5){  //5翻以上は満貫
+		} else if (hanSuu >= 5) { // 5翻以上は満貫
 			score = 8000;
 		}
-		
-		//7700は8000とする
-		if(score > 7600){
+
+		// 7700は8000とする
+		if (score > 7600) {
 			score = 8000;
 		}
-		
-		//100で割り切れない数がある場合100点繰上げ
-		if(score % 100 != 0){
+
+		// 100で割り切れない数がある場合100点繰上げ
+		if (score % 100 != 0) {
 			score = score - (score % 100) + 100;
 		}
-		
+
 		return score;
 	}
 
-	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,Combi[] combis) {
-		//役
-		int hanSuu[] = new int [combisCount];
-		//符
-		int huSuu[]  = new int [combisCount];
-		//点数（子のロン上がり）
-		int agariScore[]  = new int [combisCount];
-		//最大の点数
+	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,
+			Combi[] combis) {
+		// 役
+		int hanSuu[] = new int[combisCount];
+		// 符
+		int huSuu[] = new int[combisCount];
+		// 点数（子のロン上がり）
+		int agariScore[] = new int[combisCount];
+		// 最大の点数
 		int maxagariScore = 0;
-		
+
 		for (int i = 0; i < combisCount; i++) {
 			Yaku yaku = new Yaku(tehai, addHai, combis[i]);
 			hanSuu[i] = yaku.getHanSuu();
 			huSuu[i] = countHu(tehai, addHai, combisCount, combis[i]);
-			//TODO ドラの計算
+			// TODO ドラの計算
 			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
 		}
-			
-		//最大値を探す
+
+		// 最大値を探す
 		maxagariScore = agariScore[0];
 		for (int i = 0; i < combisCount; i++) {
 			maxagariScore = Math.max(maxagariScore, agariScore[i]);

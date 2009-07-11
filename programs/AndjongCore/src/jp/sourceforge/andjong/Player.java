@@ -7,8 +7,8 @@ package jp.sourceforge.andjong;
  * 
  */
 public class Player {
-	/** AI */
-	public EventIF ai;
+	/** EventIF */
+	public EventIF eventIf;
 
 	/** 手牌 */
 	public Tehai tehai = new Tehai();
@@ -30,30 +30,14 @@ public class Player {
 	/** 点棒 */
 	public int tenbou;
 
-	/** 家からプレイヤー番号を取得する */
-	public int[] PlayerToCha = new int[4];
-
-	/** プレイヤー番号から家を取得する */
-	public int[] ChaToPlayer = new int[4];
-
-	/** 家に対応したプレイヤー */
-	public Player[] players = new Player[4];
-
-	/**
-	 * プレイヤーを初期化する。
-	 */
-	public Player() {
-
-	}
-
 	/**
 	 * プレイヤーを初期化する。
 	 * 
-	 * @param ai
-	 *            AI
+	 * @param eventIf
+	 *            EventIF
 	 */
-	public Player(EventIF ai) {
-		this.ai = ai;
+	public Player(EventIF eventIf) {
+		this.eventIf = eventIf;
 	}
 
 	public void init() {

@@ -100,7 +100,7 @@ public class UI implements EventIF {
 		// Ì”v
 		case SUTEHAI:
 			// ©•ª‚ÌÌ”v‚Ì‚İ‚ğ•\¦‚µ‚Ü‚·B
-			if (fromKaze == 0) {
+			if (fromKaze == infoUi.getJikaze()) {
 				System.out.print("[" + jikazeToString(infoUi.getJikaze())
 						+ "][Ì”v]");
 
@@ -140,7 +140,7 @@ public class UI implements EventIF {
 	 *            è”v
 	 */
 	private void printJyunTehai(Tehai tehai) {
-		infoUi.copyTehai(tehai, 0);
+		infoUi.copyTehai(tehai, infoUi.getJikaze());
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		for (int i = 0; i < jyunTehaiLength; i++)
@@ -154,7 +154,7 @@ public class UI implements EventIF {
 	 *            ‰Í
 	 */
 	private void printKawa(Kawa kawa) {
-		infoUi.copyKawa(kawa, 0);
+		infoUi.copyKawa(kawa, infoUi.getJikaze());
 		KawaHai[] kawaHais = kawa.getKawaHai();
 		int kawaLength = kawa.getKawaHaiLength();
 		for (int i = 0; i < kawaLength; i++)

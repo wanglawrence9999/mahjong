@@ -12,11 +12,11 @@ import jp.sourceforge.andjong.Tehai.Combi;
 public class Info {
 	/** ゲームオブジェクト */
 	protected Game game;
-	
+
 	public SAI[] getSai() {
 		return game.getSais();
 	}
-	
+
 	public Hai[] getDora() {
 		return game.getYama().getDora();
 	}
@@ -43,20 +43,16 @@ public class Info {
 		return new Hai(game.suteHai);
 	}
 
-	public void copyTehai(Tehai tehai, int cha) {
-		if (cha == 0) {
-			tehai.copy((game.getActivePlayer()).players[cha].tehai, true);
-		} else {
-			tehai.copy((game.getActivePlayer()).players[cha].tehai, false);
-		}
+	public void copyTehai(Tehai tehai, int kaze) {
+		game.copyTehai(tehai, kaze);
 	}
 
-	public void copyKawa(Kawa kawa, int cha) {
-		kawa.copy((game.getActivePlayer()).players[cha].kawa);
+	public void copyKawa(Kawa kawa, int kaze) {
+		game.copyKawa(kawa, kaze);
 	}
 
 	public int getJikaze() {
-		return (game.getActivePlayer()).getJikaze();
+		return game.getJikaze();
 	}
 
 	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,

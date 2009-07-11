@@ -1,7 +1,6 @@
 package jp.sourceforge.andjong;
 
 import jp.sourceforge.andjong.Game.SAI;
-import jp.sourceforge.andjong.Tehai.Combi;
 
 /**
  * AIやUIにGameクラスの情報を提供するクラスです。
@@ -21,6 +20,40 @@ public class Info {
 		return game.getYama().getDora();
 	}
 
+	/**
+	 * 手牌をコピーします。
+	 * 
+	 * @param tehai
+	 *            手牌
+	 * @param kaze
+	 *            風
+	 */
+	public void copyTehai(Tehai tehai, int kaze) {
+		game.copyTehai(tehai, kaze);
+	}
+
+	/**
+	 * ツモ牌を取得します。
+	 * 
+	 * @return ツモ牌
+	 */
+	public Hai getTsumoHai() {
+		return new Hai(game.tsumoHai);
+	}
+
+	/**
+	 * あがり点を取得します。
+	 * 
+	 * @param tehai
+	 *            手牌
+	 * @param addHai
+	 *            手牌に追加する牌
+	 * @return
+	 */
+	public int getAgariScore(Tehai tehai, Hai addHai) {
+		return game.getAgariScore(tehai, addHai);
+	}
+
 	private int sutehaiIdx;
 
 	public int getSutehaiIdx() {
@@ -35,16 +68,8 @@ public class Info {
 		this.game = game;
 	}
 
-	public Hai getTsumoHai() {
-		return new Hai(game.tsumoHai);
-	}
-
 	public Hai getSuteHai() {
 		return new Hai(game.suteHai);
-	}
-
-	public void copyTehai(Tehai tehai, int kaze) {
-		game.copyTehai(tehai, kaze);
 	}
 
 	public void copyKawa(Kawa kawa, int kaze) {
@@ -53,10 +78,5 @@ public class Info {
 
 	public int getJikaze() {
 		return game.getJikaze();
-	}
-
-	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,
-			Combi[] combis) {
-		return game.getAgariScore(tehai, addHai, combisCount, combis);
 	}
 }

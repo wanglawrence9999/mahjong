@@ -3,16 +3,12 @@ package jp.sourceforge.andjong;
 import jp.sourceforge.andjong.Game.SAI;
 
 /**
- * UIを実装するクラスです。
- * <p>
- * コンソールで動くように実装しています。<br>
- * UIクラスを継承し、別のUIを実装します。
- * </p>
+ * Consoleを実装するクラスです。
  * 
  * @author Yuji Urushibara
  * 
  */
-public class UI implements EventIF {
+public class Console implements EventIF {
 	/** InfoUIオブジェクト */
 	private InfoUI infoUi;
 
@@ -28,7 +24,7 @@ public class UI implements EventIF {
 	 * @param infoUi
 	 *            InfoUIオブジェクト
 	 */
-	public UI(InfoUI infoUi) {
+	public Console(InfoUI infoUi) {
 		this.infoUi = infoUi;
 	}
 

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import jp.sourceforge.andjong.EventIF.EID;
 import jp.sourceforge.andjong.Tehai.Combi;
+import jp.sourceforge.andjong.Tehai.CountFormat;
 import jp.sourceforge.andjong.Yaku;
 
 /**
@@ -47,7 +48,7 @@ public class Game {
 	private Info info;
 	private InfoUI infoUi;
 
-	private UI ui;
+	private Console ui;
 
 	class SAI {
 		private int no;
@@ -135,7 +136,7 @@ public class Game {
 		renchan = false;
 		info = new Info(this);
 		infoUi = new InfoUI(this);
-		ui = new UI(infoUi);
+		ui = new Console(infoUi);
 		tsumoHai = new Hai();
 		suteHai = new Hai();
 
@@ -336,20 +337,18 @@ public class Game {
 
 		for (int i = 0; i < players.length; i++) {
 			// アクションを通知
-
-			// ツモ
 			ui.event(eid, fromKaze, toKaze);
 			returnEid = activePlayer.eventIf.event(eid, fromKaze, toKaze);
 
 			switch (returnEid) {
 			case RON:
-				activePlayer = players[j];
+				activePlayer = players[kazeToPlayerIdx[j]];
 				this.fromKaze = j;
 				this.toKaze = toKaze;
 				action = ACTION_RON;
 				return;
 			case TSUMOAGARI:
-				activePlayer = players[j];
+				activePlayer = players[kazeToPlayerIdx[j]];
 				this.fromKaze = j;
 				this.toKaze = toKaze;
 				action = ACTION_TSUMOAGARI;
@@ -379,6 +378,15 @@ public class Game {
 
 	public int getJikaze() {
 		return activePlayer.getJikaze();
+	}
+
+	/** カウントフォーマット */
+	private CountFormat countFormat = new CountFormat();
+
+	private Combi[] combis = new Combi[10];
+	{
+		for (int i = 0; i < combis.length; i++)
+			combis[i] = new Combi();
 	}
 
 	private int countHu(Tehai tehai, Hai addHai, int combisCount, Combi combi) {
@@ -491,8 +499,17 @@ public class Game {
 		return score;
 	}
 
-	public int getAgariScore(Tehai tehai, Hai addHai, int combisCount,
-			Combi[] combis) {
+	public int getAgariScore(Tehai tehai, Hai addHai) {
+		// カウントフォーマットを取得します。
+		tehai.getCountFormat(countFormat, addHai);
+
+		// あがりの組み合わせを取得します。
+		int combisCount = tehai.getCombi(combis, countFormat);
+
+		// あがりの組み合わせがない場合は0点
+		if (combisCount == 0)
+			return 0;
+
 		// 役
 		int hanSuu[] = new int[combisCount];
 		// 符

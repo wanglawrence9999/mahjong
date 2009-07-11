@@ -27,19 +27,15 @@ public class AI implements EventIF {
 
 		switch (eid) {
 		case TSUMO:
-			returnEid = eventTsumo(fromKaze, toKaze);
+			returnEid = eidTsumo(fromKaze, toKaze);
 			break;
 		case SUTEHAI:
 			if (fromKaze == info.getJikaze()) {
 				returnEid = EID.NAGASHI;
 				break;
 			}
-			info.copyTehai(tehai, 0);
-			tehai.getCountFormat(countFormat, info.getSuteHai());
-			int combisCount = tehai.getCombi(combis, countFormat);
-			if (combisCount > 0) {
-				info.getAgariScore(tehai, info.getSuteHai(), combisCount,
-						combis);
+			int agariScore = info.getAgariScore(tehai, info.getSuteHai());
+			if (agariScore > 0) {
 				returnEid = EID.RON;
 			} else {
 				returnEid = EID.NAGASHI;
@@ -60,19 +56,20 @@ public class AI implements EventIF {
 
 	private final static int HYOUKA_SHUU = 1;
 
-	public EID eventTsumo(int fromKaze, int toKaze) {
+	public EID eidTsumo(int fromKaze, int toKaze) {
 		int score = 0;
 		int maxScore = 0;
+
+		// 自分の手牌をコピーします。
 		info.copyTehai(tehai, fromKaze);
+
+		// ツモ牌を取得します。
 		Hai tsumoHai = info.getTsumoHai();
 
-		// 和了のチェックをする。
-		tehai.getCountFormat(countFormat, tsumoHai);
-		int combisCount = tehai.getCombi(combis, countFormat);
-		if (combisCount > 0) {
-			info.getAgariScore(tehai, info.getSuteHai(), combisCount, combis);
+		// ツモあがりの場合はEID.TSUMOAGARIを返します。
+		int agariScore = info.getAgariScore(tehai, info.getSuteHai());
+		if (agariScore > 0)
 			return EID.TSUMOAGARI;
-		}
 
 		info.setSutehaiIdx(13);
 		tehai.getCountFormat(countFormat, null);

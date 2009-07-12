@@ -1,34 +1,133 @@
 package jp.sourceforge.andjong;
 
 /**
- * プレイヤーの情報を管理するクラスです。
+ * プレイヤーを管理するクラスです。
  * 
  * @author Yuji Urushibara
  * 
  */
-public class Player {
+class Player {
 	/** EventIF */
-	public EventIF eventIf;
+	private EventIF eventIf;
+
+	/**
+	 * EventIFを取得します。。
+	 * 
+	 * @return EventIF
+	 */
+	EventIF getEventIf() {
+		return eventIf;
+	}
 
 	/** 手牌 */
-	public Tehai tehai = new Tehai();
+	private Tehai tehai = new Tehai();
+
+	/**
+	 * 手牌を取得します。
+	 * 
+	 * @return 手牌
+	 */
+	Tehai getTehai() {
+		return tehai;
+	}
 
 	/** 河 */
-	public Kawa kawa = new Kawa();
+	private Kawa kawa = new Kawa();
+
+	/**
+	 * 河を取得します。
+	 * 
+	 * @return 河
+	 */
+	Kawa getKawa() {
+		return kawa;
+	}
 
 	/** 自風 */
 	private int jikaze;
 
-	public int getJikaze() {
+	/**
+	 * 自風を取得します。
+	 * 
+	 * @return 自風
+	 */
+	int getJikaze() {
 		return jikaze;
 	}
 
-	public void setJikaze(int jikaze) {
+	/**
+	 * 自風を設定します。
+	 * 
+	 * @param jikaze
+	 *            自風
+	 */
+	void setJikaze(int jikaze) {
 		this.jikaze = jikaze;
 	}
 
 	/** 点棒 */
-	public int tenbou;
+	private int tenbou;
+
+	/**
+	 * 点棒を取得します。
+	 * 
+	 * @return
+	 */
+	int getTenbou() {
+		return tenbou;
+	}
+
+	/**
+	 * 点棒を設定します。
+	 * 
+	 * @param tenbou
+	 *            点棒
+	 */
+	void setTenbou(int tenbou) {
+		this.tenbou = tenbou;
+	}
+
+	/**
+	 * 点棒を増やします。
+	 * 
+	 * @param ten
+	 *            点
+	 */
+	void increaseTenbou(int ten) {
+		tenbou += ten;
+	}
+
+	/**
+	 * 点棒を減らします。
+	 * 
+	 * @param ten
+	 *            点
+	 */
+	void reduceTenbou(int ten) {
+		tenbou -= ten;
+	}
+
+	/** リーチ */
+	private boolean reach;
+
+	/**
+	 * リーチを取得します。
+	 * 
+	 * @return リーチ
+	 */
+	boolean isReach() {
+		return reach;
+	}
+
+	/**
+	 * リーチを設定します。
+	 * 
+	 * @param reach
+	 *            リーチ
+	 */
+	void setReach(boolean reach) {
+		this.reach = reach;
+	}
 
 	/**
 	 * プレイヤーを初期化する。
@@ -36,12 +135,24 @@ public class Player {
 	 * @param eventIf
 	 *            EventIF
 	 */
-	public Player(EventIF eventIf) {
+	Player(EventIF eventIf) {
 		this.eventIf = eventIf;
 	}
 
-	public void init() {
+	/**
+	 * プレイヤーを初期化します。
+	 */
+	void init() {
+		// 手牌を初期化します。
 		tehai.init();
+
+		// 河を初期化します。
 		kawa.init();
+
+		// 点棒を初期化します。
+		tenbou = 25000;
+
+		// リーチを初期化します。
+		reach = false;
 	}
 }

@@ -1,23 +1,50 @@
 package jp.sourceforge.andjong;
 
-import jp.sourceforge.andjong.Game.SAI;
-
 /**
- * AIやUIにGameクラスの情報を提供するクラスです。
+ * プレイヤーに提供する情報を管理するクラスです。
  * 
  * @author Yuji Urushibara
  * 
  */
 public class Info {
-	/** ゲームオブジェクト */
+	/** Game */
 	protected Game game;
 
-	public SAI[] getSai() {
+	/**
+	 * インスタンスを初期化します。
+	 * 
+	 * @param game
+	 *            Game
+	 */
+	public Info(Game game) {
+		this.game = game;
+	}
+
+	/**
+	 * サイコロの配列を取得します。
+	 * 
+	 * @return サイコロの配列
+	 */
+	public Sai[] getSais() {
 		return game.getSais();
 	}
 
-	public Hai[] getDora() {
-		return game.getYama().getDora();
+	/**
+	 * 表ドラ、槓ドラの配列を取得します。
+	 * 
+	 * @return 表ドラ、槓ドラの配列
+	 */
+	public Hai[] getDoras() {
+		return game.getDoras();
+	}
+
+	/**
+	 * 自風を取得します。
+	 * 
+	 * @return 自風
+	 */
+	public int getJikaze() {
+		return game.getJikaze();
 	}
 
 	/**
@@ -33,12 +60,33 @@ public class Info {
 	}
 
 	/**
+	 * 河をコピーします。
+	 * 
+	 * @param kawa
+	 *            河
+	 * @param kaze
+	 *            風
+	 */
+	public void copyKawa(Kawa kawa, int kaze) {
+		game.copyKawa(kawa, kaze);
+	}
+
+	/**
 	 * ツモ牌を取得します。
 	 * 
 	 * @return ツモ牌
 	 */
 	public Hai getTsumoHai() {
-		return new Hai(game.tsumoHai);
+		return new Hai(game.getTsumoHai());
+	}
+
+	/**
+	 * 捨牌を取得します。
+	 * 
+	 * @return 捨牌
+	 */
+	public Hai getSuteHai() {
+		return new Hai(game.getSuteHai());
 	}
 
 	/**
@@ -54,29 +102,14 @@ public class Info {
 		return game.getAgariScore(tehai, addHai);
 	}
 
-	private int sutehaiIdx;
-
-	public int getSutehaiIdx() {
-		return sutehaiIdx;
-	}
-
-	public void setSutehaiIdx(int sutehaiIdx) {
-		this.sutehaiIdx = sutehaiIdx;
-	}
-
-	public Info(Game game) {
-		this.game = game;
-	}
-
-	public Hai getSuteHai() {
-		return new Hai(game.suteHai);
-	}
-
-	public void copyKawa(Kawa kawa, int kaze) {
-		game.copyKawa(kawa, kaze);
-	}
-
-	public int getJikaze() {
-		return game.getJikaze();
+	/**
+	 * リーチを取得します。
+	 * 
+	 * @param kaze
+	 *            風
+	 * @return リーチ
+	 */
+	public boolean isReach(int kaze) {
+		return game.isReach(kaze);
 	}
 }

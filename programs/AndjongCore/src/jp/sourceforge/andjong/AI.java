@@ -4,8 +4,7 @@ import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
 
 /**
- * AIを実装するクラスです。<br>
- * TODO オーバーライドしやすい設計にする。
+ * AIを実装するクラスです。
  * 
  * @author Yuji Urushibara
  * 
@@ -18,6 +17,20 @@ public class AI implements EventIF {
 	/** カウントフォーマット */
 	private CountFormat countFormat = new CountFormat();
 
+	private int sutehaiIdx = 0;
+
+	public int getSutehaiIdx() {
+		return sutehaiIdx;
+	}
+
+	private final static int HYOUKA_SHUU = 1;
+
+	private Combi[] combis = new Combi[10];
+	{
+		for (int i = 0; i < combis.length; i++)
+			combis[i] = new Combi();
+	}
+
 	public AI(Info info) {
 		this.info = info;
 	}
@@ -25,11 +38,12 @@ public class AI implements EventIF {
 	public EID event(EID eid, int fromKaze, int toKaze) {
 		EID returnEid = EID.NAGASHI;
 
+		// イベントを処理する。
 		switch (eid) {
-		case TSUMO:
+		case TSUMO:// ツモ
 			returnEid = eidTsumo(fromKaze, toKaze);
 			break;
-		case SUTEHAI:
+		case SUTEHAI:// 捨牌
 			if (fromKaze == info.getJikaze()) {
 				returnEid = EID.NAGASHI;
 				break;
@@ -48,17 +62,19 @@ public class AI implements EventIF {
 		return returnEid;
 	}
 
-	private Combi[] combis = new Combi[10];
-	{
-		for (int i = 0; i < combis.length; i++)
-			combis[i] = new Combi();
-	}
-
-	private final static int HYOUKA_SHUU = 1;
-
+	/**
+	 * イベント（ツモ）を処理する。
+	 * 
+	 * @param fromKaze
+	 *            イベントを発行した風
+	 * @param toKaze
+	 *            イベントの対象となった風
+	 * @return イベントID
+	 */
 	public EID eidTsumo(int fromKaze, int toKaze) {
 		int score = 0;
 		int maxScore = 0;
+		sutehaiIdx = 13;
 
 		// 自分の手牌をコピーします。
 		info.copyTehai(tehai, fromKaze);
@@ -66,12 +82,16 @@ public class AI implements EventIF {
 		// ツモ牌を取得します。
 		Hai tsumoHai = info.getTsumoHai();
 
-		// ツモあがりの場合はEID.TSUMOAGARIを返します。
+		// ツモあがりの場合はイベント（ツモあがり）を返します。
 		int agariScore = info.getAgariScore(tehai, info.getSuteHai());
 		if (agariScore > 0)
 			return EID.TSUMOAGARI;
 
-		info.setSutehaiIdx(13);
+		// リーチの場合は流します。
+		if (info.isReach(info.getJikaze())) {
+			return EID.NAGASHI;
+		}
+
 		tehai.getCountFormat(countFormat, null);
 		maxScore = getCountFormatScore(countFormat);
 		// System.out.println("score:" + score + ",maxScore:" + maxScore +
@@ -93,7 +113,7 @@ public class AI implements EventIF {
 			if (score > maxScore) {
 				maxScore = score;
 				// System.out.println("setSutehaiIdx:" + i);
-				info.setSutehaiIdx(i);
+				sutehaiIdx = i;
 			}
 			tehai.addJyunTehai(hai);
 		}

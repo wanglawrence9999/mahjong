@@ -1,7 +1,5 @@
 package jp.sourceforge.andjong;
 
-import jp.sourceforge.andjong.Game.SAI;
-
 /**
  * Consoleを実装するクラスです。
  * 
@@ -17,6 +15,9 @@ public class Console implements EventIF {
 
 	/** 河 */
 	private Kawa kawa = new Kawa();
+
+	/** 捨牌のインデックス */
+	private int sutehaiIdx = 0;
 
 	/**
 	 * UIを初期化します。
@@ -47,7 +48,7 @@ public class Console implements EventIF {
 		// 親決め
 		case OYAGIME:
 			// サイ振りを表示します。
-			SAI[] sai = infoUi.getSai();
+			Sai[] sai = infoUi.getSais();
 			System.out.println("[サイ振り][" + sai[0].getNo() + "]["
 					+ sai[1].getNo() + "]");
 			break;
@@ -58,12 +59,16 @@ public class Console implements EventIF {
 		// サイ振り
 		case SAIFURI:
 			// ドラ表示牌を表示します。
-			Hai[] doras = infoUi.getDora();
+			Hai[] doras = infoUi.getDoras();
 			System.out.print("[ドラ表示牌]");
 			for (Hai hai : doras) {
 				System.out.print("[" + idToString(hai.getId()) + "]");
 			}
 			System.out.println();
+			break;
+		// 流局
+		case RYUUKYOKU:
+			System.out.println("[流局]");
 			break;
 		// 流し
 		case NAGASHI:
@@ -122,8 +127,12 @@ public class Console implements EventIF {
 		default:
 			break;
 		}
-		
+
 		return EID.NAGASHI;
+	}
+
+	public int getSutehaiIdx() {
+		return sutehaiIdx;
 	}
 
 	/**

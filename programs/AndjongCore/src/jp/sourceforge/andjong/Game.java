@@ -2,15 +2,13 @@ package jp.sourceforge.andjong;
 
 import static jp.sourceforge.andjong.Hai.*;
 
-import java.util.Random;
-
 import jp.sourceforge.andjong.EventIF.EID;
 import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
 import jp.sourceforge.andjong.Yaku;
 
 /**
- * ゲームのハンドリングを行うクラスです。
+ * ゲームを管理するクラスです。
  * 
  * @author Yuji Urushibara
  * 
@@ -19,67 +17,107 @@ public class Game {
 	/** 山 */
 	private Yama yama;
 
-	public Yama getYama() {
+	/**
+	 * 山を取得します。
+	 * 
+	 * @return 山
+	 */
+	Yama getYama() {
 		return yama;
 	}
 
-	/** プレイヤーの人数 */
-	private int playerNum = 4;
-
-	/** プレイヤーの配列 */
-	Player[] players;
-
+	/** 局 */
 	private int kyoku;
 
-	private boolean renchan;
-
-	private int oya;
-
-	private int honba;
-
-	private int reachbou;
-
-	private int wareme;
-
-	private int fromKaze;
-
-	private int action;
-
-	private Info info;
-	private InfoUI infoUi;
-
-	private Console ui;
-
-	class SAI {
-		private int no;
-
-		public int getNo() {
-			return no;
-		}
-
-		public int saifuri() {
-			return no = new Random().nextInt(6) + 1;
-		}
+	/**
+	 * 局を取得します。
+	 * 
+	 * @return 局
+	 */
+	int getkyoku() {
+		return kyoku;
 	}
 
-	private SAI[] sais = new SAI[] { new SAI(), new SAI() };
+	/** 局の最大値 */
+	private int kyokuMax;
 
-	SAI[] getSais() {
+	/** ツモ牌 */
+	private Hai tsumoHai;
+
+	/**
+	 * ツモ牌を取得します。
+	 * 
+	 * @return ツモ牌
+	 */
+	Hai getTsumoHai() {
+		return tsumoHai;
+	}
+
+	/** 捨牌 */
+	private Hai suteHai;
+
+	/**
+	 * 捨牌を取得します。
+	 * 
+	 * @return 捨牌
+	 */
+	Hai getSuteHai() {
+		return suteHai;
+	}
+
+	/** プレイヤーに提供する情報 */
+	private Info info;
+
+	/** プレイヤーの人数 */
+	private int playerLength;
+
+	/** プレイヤーの配列 */
+	private Player[] players;
+
+	/** 風をプレイヤーインデックスに変換する配列 */
+	private int[] kazeToPlayerIdx = new int[4];
+
+	/** UIに提供する情報 */
+	private InfoUI infoUi;
+
+	/** UI */
+	private Console ui;
+
+	/** リーチ棒の数 */
+	private int reachbou;
+
+	/** 親のプレイヤーインデックス */
+	private int oyaIdx;
+
+	/** 連荘 */
+	private boolean renchan;
+
+	/** 本場 */
+	private int honba;
+
+	/** イベントを発行した風 */
+	private int fromKaze;
+
+	/** イベントの対象となった風 */
+	private int toKaze;
+
+	/** サイコロの配列 */
+	private Sai[] sais = new Sai[] { new Sai(), new Sai() };
+
+	/**
+	 * サイコロの配列を取得します。
+	 * 
+	 * @return サイコロの配列
+	 */
+	Sai[] getSais() {
 		return sais;
 	}
 
+	/** 割れ目 */
+	private int wareme;
+
+	/** アクティブプレイヤー */
 	private Player activePlayer;
-
-	private final static int ACTION_TSUMOAGARI = 0;
-	private final static int ACTION_RON = 1;
-
-	private int toKaze;
-
-	Hai tsumoHai;
-
-	Hai suteHai;
-
-	private final static int HAIPAI_END = 52;
 
 	/**
 	 * メイン処理を開始します。
@@ -105,279 +143,386 @@ public class Game {
 		// 場所を決めます。
 		// TODO 未実装です。
 
-		// イベント（場所決め）
+		// イベント（場所決め）を発行します。
 		ui.event(EID.BASHOGIME, 0, 0);
 
 		// プレイヤーが親を決めます。
 		sais[0].saifuri();
 		sais[1].saifuri();
-		oya = (sais[0].getNo() + sais[1].getNo() - 1) % 4;
+		oyaIdx = (sais[0].getNo() + sais[1].getNo() - 1) % 4;
 
-		// イベント（親決め）
+		// イベント（親決め）を発行します。
 		ui.event(EID.OYAGIME, 0, 0);
 
 		// 局を開始します。
-		// TODO 暫定的に東風戦で実装します。
-		while (kyoku < 4) {
+		while (kyoku < kyokuMax) {
 			startKyoku();
-			break;
-			// if (!renchan) {
-			// kyoku++;
-			// honba = 0;
-			// } else {
-			// System.out.println("連荘です。");
-			// }
+			if (!renchan) {
+				kyoku++;
+				honba = 0;
+			} else {
+				System.out.println("連荘です。");
+			}
 		}
 	}
 
+	/**
+	 * 初期化します。
+	 * <p>
+	 * 設定によって動的に初期化します。
+	 * </p>
+	 */
 	private void init() {
+		// 山を初期化します。
 		yama = new Yama();
-		kyoku = 0;
-		renchan = false;
-		info = new Info(this);
-		infoUi = new InfoUI(this);
-		ui = new Console(infoUi);
+
+		// 局を初期化します。
+		kyoku = 1;
+
+		// 局の最大値を設定します。
+		kyokuMax = 4;
+
+		// ツモ牌を初期化します。
 		tsumoHai = new Hai();
+
+		// 捨牌を初期化します。
 		suteHai = new Hai();
 
-		// プレイヤーを初期化します。
-		players = new Player[playerNum];
-		for (int i = 0; i < playerNum; i++)
-			players[i] = new Player(new AI(info));
+		// プレイヤーに提供する情報を初期化します。
+		info = new Info(this);
+
+		// プレイヤーの人数を設定します。
+		playerLength = 4;
+
+		// プレイヤー配列を初期化します。
+		players = new Player[playerLength];
+		for (int i = 0; i < players.length; i++) {
+			players[i] = new Player((EventIF) new AI(info));
+		}
 		// players[0] = new Player((EventIF) new Man(info));
+
+		// 風をプレイヤーインデックスに変換する配列を初期化します。
+		kazeToPlayerIdx = new int[players.length];
+
+		// UIに提供する情報を初期化します。
+		infoUi = new InfoUI(this);
+
+		// UIを初期化します。
+		ui = new Console(infoUi);
 	}
 
+	/**
+	 * 局を開始します。
+	 */
 	private void startKyoku() {
+		// リーチ棒の数を初期化します。
 		reachbou = 0;
+
+		// 連荘を初期化します。
 		renchan = false;
 
-		// 家を設定
-		setCha();
+		// イベントを発行した風を初期化します。
+		fromKaze = oyaIdx;
 
-		// 洗牌
+		// イベントの対象となった風を初期化します。
+		toKaze = oyaIdx;
+
+		// プレイヤーの自風を設定します。
+		setJikaze();
+
+		// 洗牌をします。
 		yama.xipai();
 
-		// UIイベント（洗牌）
+		// UIイベント（洗牌）を発行します。
 		ui.event(EID.SENPAI, fromKaze, toKaze);
 
-		// サイ振り
-		saifuri();
+		// サイ振りをします。
+		sais[0].saifuri();
+		sais[1].saifuri();
+		wareme = (sais[0].getNo() + sais[1].getNo() - 1) % 4;
 
-		// UIイベント（サイ振り）
+		// UIイベント（サイ振り）を発行します。
 		ui.event(EID.SAIFURI, fromKaze, toKaze);
 
-		// プレイヤーの初期化
-		for (int i = 0; i < players.length; i++)
+		// プレイヤー配列を初期化します。
+		for (int i = 0; i < players.length; i++) {
 			players[i].init();
+		}
 
-		// 配牌
+		// 配牌をします。
 		haipai();
 
 		// 局のメインループ
-		loopKyoku();
+		EID retEid;
+		MAINLOOP: while (true) {
+			// ツモします。
+			tsumoHai = yama.tsumo();
 
-		{
-			// debug
-			System.out.println("honba:" + honba);
+			// ツモ牌がない場合、流局します。
+			if (tsumoHai == null) {
+				// UIイベント（流局）を発行します。
+				ui.event(EID.RYUUKYOKU, 0, 0);
+
+				// 親を更新します。
+				oyaIdx++;
+				if (oyaIdx >= players.length) {
+					oyaIdx = 0;
+				}
+
+				break MAINLOOP;
+			}
+
+			// イベント（ツモ）を発行します。
+			retEid = tsumoEvent();
+
+			// イベントを処理します。
+			switch (retEid) {
+			case TSUMOAGARI:// ツモあがり
+				// UIイベント（ツモあがり）を発行します。
+				ui.event(retEid, fromKaze, toKaze);
+
+				// TODO 点数を清算します。
+				activePlayer.increaseTenbou(reachbou * 1000);
+
+				// 親を更新します。
+				if (oyaIdx != kazeToPlayerIdx[fromKaze]) {
+					oyaIdx++;
+					if (oyaIdx >= players.length) {
+						oyaIdx = 0;
+					}
+				} else {
+					renchan = true;
+					honba++;
+				}
+
+				break MAINLOOP;
+			case RON:// ロン
+				// UIイベント（ロン）を発行します。
+				ui.event(retEid, fromKaze, toKaze);
+
+				// TODO 点数を清算します。
+				activePlayer.increaseTenbou(reachbou * 1000);
+
+				// 親を更新します。
+				if (oyaIdx != kazeToPlayerIdx[fromKaze]) {
+					oyaIdx++;
+					if (oyaIdx >= players.length) {
+						oyaIdx = 0;
+					}
+				} else {
+					renchan = true;
+					honba++;
+				}
+
+				break MAINLOOP;
+			case REACH:// リーチ
+				int tenbou = activePlayer.getTenbou();
+				if (tenbou >= 1000) {
+					activePlayer.reduceTenbou(1000);
+					activePlayer.setReach(true);
+					reachbou++;
+				}
+				break;
+			default:
+				break;
+			}
+
+			// イベントを発行した風を更新します。
+			fromKaze++;
+			if (fromKaze >= players.length) {
+				fromKaze = 0;
+			}
 		}
 	}
 
-	private int[] kazeToPlayerIdx = new int[4];
-
-	private void setCha() {
-		for (int i = 0, j = oya; i < players.length; i++, j++) {
-			if (j >= players.length)
-				j = 0;
-
-			players[j].setJikaze(i);
-			kazeToPlayerIdx[i] = j;
-		}
-		fromKaze = oya;
-		toKaze = oya;
-	}
-
-	private void saifuri() {
-		Random random = new Random();
-		int sainome = random.nextInt(10) + 2;
-
-		switch (sainome) {
-		case 5:
-		case 9:
-			wareme = oya;
-			break;
-		case 2:
-		case 6:
-		case 10:
-			wareme = (oya + 1) % players.length;
-			break;
-		case 3:
-		case 7:
-		case 11:
-			wareme = (oya + 2) % players.length;
-			break;
-		case 4:
-		case 8:
-		case 12:
-			wareme = (oya + 3) % players.length;
-			break;
-		}
-	}
-
-	private void haipai() {
-		for (int i = 0, j = oya; i < HAIPAI_END; i++) {
-			players[j].tehai.addJyunTehai(yama.tsumo());
-
-			j++;
+	/**
+	 * プレイヤーの自風を設定します。
+	 */
+	private void setJikaze() {
+		for (int i = 0, j = oyaIdx; i < players.length; i++, j++) {
 			if (j >= players.length) {
 				j = 0;
 			}
+
+			// プレイヤーの自風を設定します。
+			players[j].setJikaze(i);
+
+			// 風をプレイヤーインデックスに変換する配列を設定します。
+			kazeToPlayerIdx[i] = j;
 		}
 	}
 
-	private void loopKyoku() {
-		action = 2;
+	/**
+	 * 配牌します。
+	 */
+	private void haipai() {
+		// TODO 山に割れ目を設定する必要があります。
 
-		while (true) {
-			// ツモ
-			tsumoHai = yama.tsumo();
-			if (tsumoHai == null) {
-				// 流局
-				oya++;
-				if (oya >= players.length) {
-					oya = 0;
-				}
-				return;
+		for (int i = 0, j = oyaIdx, max = players.length * 13; i < max; i++, j++) {
+			if (j >= players.length) {
+				j = 0;
 			}
 
-			activePlayer = players[kazeToPlayerIdx[fromKaze]];
-			toKaze = fromKaze;
-			sutehai();
-
-			switch (action) {
-			case ACTION_TSUMOAGARI:
-				ui.event(EID.TSUMOAGARI, fromKaze, toKaze);
-				activePlayer.tenbou += reachbou * 1000;
-				action = 0;
-				if (oya != fromKaze) {
-					oya++;
-					if (oya >= players.length) {
-						oya = 0;
-					}
-				} else {
-					renchan = true;
-					honba++;
-				}
-				return;
-			case ACTION_RON:
-				ui.event(EID.RON, fromKaze, toKaze);
-				activePlayer.tenbou += reachbou * 1000;
-				action = 0;
-				if (oya != fromKaze) {
-					// System.out.println("oya++");
-					oya++;
-					if (oya >= players.length) {
-						oya = 0;
-					}
-				} else {
-					renchan = true;
-					honba++;
-				}
-				return;
-			default:
-				fromKaze++;
-				if (fromKaze >= players.length) {
-					fromKaze = 0;
-				}
-				break;
-			}
+			players[j].getTehai().addJyunTehai(yama.tsumo());
 		}
 	}
 
-	private void sutehai() {
-		EID returnEid;
+	/**
+	 * イベント（ツモ）を発行します。
+	 * 
+	 * @return イベントID
+	 */
+	private EID tsumoEvent() {
+		// アクティブプレイヤーを設定します。
+		activePlayer = players[kazeToPlayerIdx[fromKaze]];
+
+		// UIイベント（ツモ）を発行します。
+		ui.event(EID.TSUMO, fromKaze, fromKaze);
+
+		// イベント（ツモ）を発行します。
+		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, fromKaze,
+				fromKaze);
+
 		int sutehaiIdx;
 
-		// イベント（ツモ）
-		ui.event(EID.TSUMO, fromKaze, toKaze);
-		returnEid = activePlayer.eventIf.event(EID.TSUMO, fromKaze, toKaze);
-
-		switch (returnEid) {
-		case SUTEHAI:
-			// イベント（捨牌）
-			sutehaiIdx = info.getSutehaiIdx();
-			if (sutehaiIdx == 13) {
-				// ツモ切り
-				suteHai.copy(tsumoHai);
-				activePlayer.kawa.add(suteHai);
-				// toKaze = fromKaze;
-				callEvent(fromKaze, toKaze, EID.SUTEHAI);
-			} else {
-				// 手出し
-				activePlayer.tehai.copyJyunTehaiIdx(suteHai, sutehaiIdx);
-				activePlayer.tehai.removeJyunTehai(sutehaiIdx);
-				activePlayer.kawa.add(suteHai, Kawa.PROPERTY_TEDASHI);
-				if (tsumoHai != null) {
-					activePlayer.tehai.addJyunTehai(tsumoHai);
-				}
-				// toKaze = fromKaze;
-				callEvent(fromKaze, toKaze, EID.SUTEHAI);
-			}
+		// イベントを処理します。
+		switch (retEid) {
+		case TSUMOAGARI:// ツモあがり
 			break;
-		case TSUMOAGARI:
-			action = ACTION_TSUMOAGARI;
+		case SUTEHAI:// 捨牌
+			// 捨牌のインデックスを取得します。
+			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+			if (sutehaiIdx == 13) {// ツモ切り
+				suteHai.copy(tsumoHai);
+				activePlayer.getKawa().add(suteHai);
+
+				// イベントを通知します。
+				retEid = notifyEvent(EID.SUTEHAI, fromKaze, fromKaze);
+			} else {// 手出し
+				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
+				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
+				activePlayer.getTehai().addJyunTehai(tsumoHai);
+				activePlayer.getKawa().add(suteHai, Kawa.PROPERTY_TEDASHI);
+
+				// イベントを通知します。
+				retEid = notifyEvent(EID.SUTEHAI, fromKaze, fromKaze);
+			}
 			break;
 		default:
 			break;
 		}
+
+		return retEid;
 	}
 
-	private void callEvent(int fromKaze, int toKaze, EID eid) {
-		EID returnEid;
-		int j = fromKaze;
+	/**
+	 * イベントを通知します。
+	 * 
+	 * @param eid
+	 *            イベントID
+	 * @param fromKaze
+	 *            イベントを発行した風
+	 * @param toKaze
+	 *            イベントの対象となった風
+	 * @return イベントID
+	 */
+	private EID notifyEvent(EID eid, int fromKaze, int toKaze) {
+		EID retEid = EID.NAGASHI;
 
-		for (int i = 0; i < players.length; i++) {
-			// アクションを通知
+		// 各プレイヤーにイベントを通知する。
+		NOTIFYLOOP: for (int i = 0, j = fromKaze; i < players.length; i++, j++) {
+			if (j >= players.length) {
+				j = 0;
+			}
+
+			// アクティブプレイヤーを設定します。
+			activePlayer = players[kazeToPlayerIdx[j]];
+
+			// UIイベントを発行します。
 			ui.event(eid, fromKaze, toKaze);
-			returnEid = activePlayer.eventIf.event(eid, fromKaze, toKaze);
 
-			switch (returnEid) {
-			case RON:
-				activePlayer = players[kazeToPlayerIdx[j]];
+			// イベントを発行します。
+			retEid = activePlayer.getEventIf().event(eid, fromKaze, toKaze);
+
+			// イベントを処理します。
+			switch (retEid) {
+			case TSUMOAGARI:// ツモあがり
+				// アクティブプレイヤーを設定します。
 				this.fromKaze = j;
 				this.toKaze = toKaze;
-				action = ACTION_RON;
-				return;
-			case TSUMOAGARI:
-				activePlayer = players[kazeToPlayerIdx[j]];
+				activePlayer = players[kazeToPlayerIdx[this.fromKaze]];
+				break NOTIFYLOOP;
+			case RON:// ロン
+				// アクティブプレイヤーを設定します。
 				this.fromKaze = j;
 				this.toKaze = toKaze;
-				action = ACTION_TSUMOAGARI;
-				return;
+				activePlayer = players[kazeToPlayerIdx[this.fromKaze]];
+				break NOTIFYLOOP;
 			default:
-				j++;
-				if (j >= players.length) {
-					j = 0;
-				}
-				activePlayer = players[kazeToPlayerIdx[j]];
 				break;
 			}
 		}
+
+		return retEid;
 	}
 
-	public void copyTehai(Tehai tehai, int kaze) {
+	/*
+	 * Info, InfoUIに提供するAPIを定義します。
+	 */
+
+	/**
+	 * 表ドラ、槓ドラの配列を取得します。
+	 * 
+	 * @return 表ドラ、槓ドラの配列
+	 */
+	Hai[] getDoras() {
+		return getYama().getDoras();
+	}
+
+	/**
+	 * 自風を取得します。
+	 */
+	int getJikaze() {
+		return activePlayer.getJikaze();
+	}
+
+	/**
+	 * リーチを取得します。
+	 * 
+	 * @param kaze
+	 *            風
+	 * @return リーチ
+	 */
+	boolean isReach(int kaze) {
+		return players[kazeToPlayerIdx[kaze]].isReach();
+	}
+
+	/**
+	 * 手牌をコピーします。
+	 * 
+	 * @param tehai
+	 *            手牌
+	 * @param kaze
+	 *            風
+	 */
+	void copyTehai(Tehai tehai, int kaze) {
 		if (activePlayer.getJikaze() == kaze) {
-			tehai.copy(activePlayer.tehai, true);
+			tehai.copy(activePlayer.getTehai(), true);
 		} else {
-			tehai.copy(players[kazeToPlayerIdx[kaze]].tehai, false);
+			tehai.copy(players[kazeToPlayerIdx[kaze]].getTehai(), false);
 		}
 	}
 
-	public void copyKawa(Kawa kawa, int kaze) {
-		kawa.copy(players[kazeToPlayerIdx[kaze]].kawa);
-	}
-
-	public int getJikaze() {
-		return activePlayer.getJikaze();
+	/**
+	 * 河をコピーします。
+	 * 
+	 * @param kawa
+	 *            河
+	 * @param kaze
+	 *            風
+	 */
+	void copyKawa(Kawa kawa, int kaze) {
+		kawa.copy(players[kazeToPlayerIdx[kaze]].getKawa());
 	}
 
 	/** カウントフォーマット */

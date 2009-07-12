@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 public class Man implements EventIF {
 	private Info info;
 
+	/** 捨牌のインデックス */
+	private int sutehaiIdx = 0;
+
 	public Man(Info info) {
 		this.info = info;
 	}
@@ -30,7 +33,7 @@ public class Man implements EventIF {
 			if (sutehaiIdx == 0)
 				return EID.TSUMOAGARI;
 			sutehaiIdx--;
-			info.setSutehaiIdx(sutehaiIdx);
+			this.sutehaiIdx = sutehaiIdx;
 			return EID.SUTEHAI;
 		case SUTEHAI:
 			if (fromKaze == 0) {
@@ -57,4 +60,7 @@ public class Man implements EventIF {
 		return EID.NAGASHI;
 	}
 
+	public int getSutehaiIdx() {
+		return sutehaiIdx;
+	}
 }

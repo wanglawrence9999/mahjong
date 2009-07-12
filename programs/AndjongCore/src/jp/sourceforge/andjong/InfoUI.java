@@ -6,6 +6,6 @@ public class InfoUI extends Info {
 	}
 
 	public Hai[] getDoraAll() {
-		return game.getYama().getDoraAll();
+		return game.getYama().getDorasAll();
 	}
 }

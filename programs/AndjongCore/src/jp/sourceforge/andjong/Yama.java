@@ -30,7 +30,7 @@ public class Yama {
 	private int rinshanIdx = TSUMO_END;
 
 	/**
-	 * 山を初期化します。
+	 * インスタンスを初期化します。
 	 */
 	public Yama() {
 		init();
@@ -38,9 +38,6 @@ public class Yama {
 
 	/**
 	 * 山を初期化します。
-	 * <p>
-	 * 力尽くで初期化します。
-	 * </p>
 	 */
 	private void init() {
 		int haiIdx = 0;
@@ -119,7 +116,7 @@ public class Yama {
 	 * 
 	 * @return 表ドラ、槓ドラの配列
 	 */
-	Hai[] getDora() {
+	Hai[] getDoras() {
 		int doraNum = 1 + (rinshanIdx - TSUMO_END);
 		Hai[] dora = new Hai[doraNum];
 
@@ -134,7 +131,7 @@ public class Yama {
 	 * 
 	 * @return 表ドラ、槓ドラ、裏ドラ、槓ウラの配列
 	 */
-	Hai[] getDoraAll() {
+	Hai[] getDorasAll() {
 		int doraNum = (1 + (rinshanIdx - TSUMO_END)) * 2;
 		Hai[] dora = new Hai[doraNum];
 

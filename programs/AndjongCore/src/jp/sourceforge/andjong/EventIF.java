@@ -11,6 +11,8 @@ public interface EventIF {
 		SENPAI,
 		/** サイ振り */
 		SAIFURI,
+		/** 流局 */
+		RYUUKYOKU,
 		/** 流し */
 		NAGASHI,
 		/** ツモ */
@@ -19,6 +21,8 @@ public interface EventIF {
 		TSUMOAGARI,
 		/** 捨牌 */
 		SUTEHAI,
+		/** リーチ */
+		REACH,
 		/** ロン */
 		RON,
 		/** ポン */
@@ -40,7 +44,14 @@ public interface EventIF {
 	 *            イベントを発行した風
 	 * @param toKaze
 	 *            イベントの対象となった風
-	 * @return
+	 * @return イベントID
 	 */
 	EID event(EID eid, int fromKaze, int toKaze);
+
+	/**
+	 * 捨牌のインデックスを取得します。
+	 * 
+	 * @return 捨牌のインデックス
+	 */
+	int getSutehaiIdx();
 }

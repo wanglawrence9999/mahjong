@@ -187,6 +187,22 @@ public class Tehai {
 
 		jyunTehaiLength--;
 	}
+	
+	public boolean removeJyunTehai(Hai hai) {
+		int haiId = hai.getId();
+		int haiProperty = hai.getProperty();
+		
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if(haiId == jyunTehai[i].getId()) {
+				if(haiProperty == jyunTehai[i].getProperty()) {
+					removeJyunTehai(i);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 
 	/**
 	 * –¾‡‚ð’Ç‰Á‚·‚éB

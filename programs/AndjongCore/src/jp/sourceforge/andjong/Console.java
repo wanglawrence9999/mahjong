@@ -41,23 +41,19 @@ public class Console implements EventIF {
 	 */
 	public EID event(EID eid, int fromKaze, int toKaze) {
 		switch (eid) {
-		// 場所決め
-		case BASHOGIME:
+		case BASHOGIME:// 場所決め
 			// 表示することはない。
 			break;
-		// 親決め
-		case OYAGIME:
+		case OYAGIME:// 親決め
 			// サイ振りを表示します。
 			Sai[] sai = infoUi.getSais();
 			System.out.println("[サイ振り][" + sai[0].getNo() + "]["
 					+ sai[1].getNo() + "]");
 			break;
-		// 洗牌
-		case SENPAI:
+		case SENPAI:// 洗牌
 			// 表示することはない。
 			break;
-		// サイ振り
-		case SAIFURI:
+		case SAIFURI:// サイ振り
 			// ドラ表示牌を表示します。
 			Hai[] doras = infoUi.getDoras();
 			System.out.print("[ドラ表示牌]");
@@ -66,16 +62,13 @@ public class Console implements EventIF {
 			}
 			System.out.println();
 			break;
-		// 流局
-		case RYUUKYOKU:
+		case RYUUKYOKU:// 流局
 			System.out.println("[流局]");
 			break;
-		// 流し
-		case NAGASHI:
+		case NAGASHI:// 流し
 			// 表示することはない。
 			break;
-		// ツモ
-		case TSUMO:
+		case TSUMO:// ツモ
 			System.out
 					.print("[" + jikazeToString(infoUi.getJikaze()) + "][ツモ]");
 
@@ -86,8 +79,7 @@ public class Console implements EventIF {
 			System.out
 					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
 			break;
-		// ツモあがり
-		case TSUMOAGARI:
+		case TSUMOAGARI:// ツモあがり
 			System.out.print("[" + jikazeToString(infoUi.getJikaze())
 					+ "][ツモあがり]");
 
@@ -98,8 +90,7 @@ public class Console implements EventIF {
 			System.out
 					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
 			break;
-		// 捨牌
-		case SUTEHAI:
+		case SUTEHAI:// 捨牌
 			// 自分の捨牌のみを表示します。
 			if (fromKaze == infoUi.getJikaze()) {
 				System.out.print("[" + jikazeToString(infoUi.getJikaze())
@@ -109,12 +100,27 @@ public class Console implements EventIF {
 				printKawa(kawa);
 
 				// 捨牌を表示します。
-				System.out.println(":"
-						+ idToString((infoUi.getSuteHai()).getId()));
+				// System.out.println(":"
+				// + idToString((infoUi.getSuteHai()).getId()));
+				System.out.println();
 			}
 			break;
-		// ロン
-		case RON:
+		case REACH:
+			// 自分の捨牌のみを表示します。
+			if (fromKaze == infoUi.getJikaze()) {
+				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+						+ "][リーチ]");
+
+				// 河を表示します。
+				printKawa(kawa);
+
+				// 捨牌を表示します。
+				// System.out.println(":"
+				// + idToString((infoUi.getSuteHai()).getId()));
+				System.out.println();
+			}
+			break;
+		case RON:// ロン
 			System.out
 					.print("[" + jikazeToString(infoUi.getJikaze()) + "][ロン]");
 

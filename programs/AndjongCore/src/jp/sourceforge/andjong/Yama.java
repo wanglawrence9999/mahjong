@@ -17,20 +17,26 @@ public class Yama {
 	/** 山牌 */
 	private Hai[] hais = new Hai[YAMA_MAX];
 
-	/** ツモ位置の最後 */
-	private final static int TSUMO_END = 122;
+	/** ツモの最大数 */
+	private final static int TSUMO_MAX = 122;
+
+	/** ツモ回数 */
+	private int tsumoCount;
 
 	/** ツモ位置 */
 	private int tsumoIdx;
 
-	/** リンシャンツモ位置の最後 */
-	private final static int RINSHAN_END = 126;
+	/** リンシャンツモの最大数 */
+	private final static int RINSHAN_MAX = 4;
+
+	/** リンシャンツモ回数 */
+	private int rinshanCount;
 
 	/** リンシャンツモ位置 */
-	private int rinshanIdx = TSUMO_END;
+	private int rinshanIdx = TSUMO_MAX;
 
 	/**
-	 * インスタンスを初期化します。
+	 * 山を初期化します。
 	 */
 	public Yama() {
 		init();
@@ -68,14 +74,12 @@ public class Yama {
 
 	/**
 	 * 洗牌をします。
-	 * <p>
-	 * ランダムで入れ替えます。
-	 * </p>
 	 */
 	void xipai() {
 		Random random = new Random();
 		Hai temp;
 
+		// ランダムで入れ替えます。
 		for (int i = 0, j, size = YAMA_MAX; i < YAMA_MAX; i++) {
 			j = random.nextInt(size);
 			temp = hais[i];
@@ -83,8 +87,8 @@ public class Yama {
 			hais[j] = temp;
 		}
 
-		tsumoIdx = 0;
-		rinshanIdx = TSUMO_END;
+		tsumoCount = 0;
+		rinshanCount = 0;
 	}
 
 	/**
@@ -93,10 +97,17 @@ public class Yama {
 	 * @return ツモ牌
 	 */
 	Hai tsumo() {
-		if (tsumoIdx < TSUMO_END)
-			return new Hai(hais[tsumoIdx++]);
+		if (tsumoCount >= TSUMO_MAX) {
+			return null;
+		}
+		tsumoCount++;
 
-		return null;
+		tsumoIdx++;
+		if (tsumoIdx >= YAMA_MAX) {
+			tsumoIdx = 0;
+		}
+
+		return new Hai(hais[tsumoIdx]);
 	}
 
 	/**
@@ -105,10 +116,17 @@ public class Yama {
 	 * @return リンシャンツモ牌
 	 */
 	Hai rinshan() {
-		if (rinshanIdx < RINSHAN_END)
-			return new Hai(hais[rinshanIdx++]);
+		if (rinshanCount >= RINSHAN_MAX) {
+			return null;
+		}
+		rinshanCount++;
 
-		return null;
+		rinshanIdx++;
+		if (rinshanIdx >= YAMA_MAX) {
+			rinshanIdx = 0;
+		}
+
+		return new Hai(hais[rinshanIdx]);
 	}
 
 	/**
@@ -117,11 +135,15 @@ public class Yama {
 	 * @return 表ドラ、槓ドラの配列
 	 */
 	Hai[] getDoras() {
-		int doraNum = 1 + (rinshanIdx - TSUMO_END);
+		int doraNum = 1 + rinshanCount;
 		Hai[] dora = new Hai[doraNum];
 
-		for (int i = 0, doraIdx = RINSHAN_END; i < doraNum; i++, doraIdx += 2)
+		for (int i = 0, doraIdx = rinshanIdx; i < doraNum; i++, doraIdx += 2) {
+			if (doraIdx >= YAMA_MAX) {
+				doraIdx = 0;
+			}
 			dora[i] = new Hai(hais[doraIdx]);
+		}
 
 		return dora;
 	}
@@ -132,11 +154,15 @@ public class Yama {
 	 * @return 表ドラ、槓ドラ、裏ドラ、槓ウラの配列
 	 */
 	Hai[] getDorasAll() {
-		int doraNum = (1 + (rinshanIdx - TSUMO_END)) * 2;
+		int doraNum = (1 + rinshanCount) * 2;
 		Hai[] dora = new Hai[doraNum];
 
-		for (int i = 0, doraIdx = RINSHAN_END; i < doraNum; i++, doraIdx++)
+		for (int i = 0, doraIdx = rinshanIdx; i < doraNum; i++, doraIdx++) {
+			if (doraIdx >= YAMA_MAX) {
+				doraIdx = 0;
+			}
 			dora[i] = new Hai(hais[doraIdx]);
+		}
 
 		return dora;
 	}
@@ -147,6 +173,22 @@ public class Yama {
 	 * @return ツモの残り数
 	 */
 	int getTsumoRemain() {
-		return TSUMO_END - tsumoIdx;
+		return TSUMO_MAX - tsumoCount;
+	}
+
+	/**
+	 * 山に割れ目を設定します。
+	 * 
+	 * @param sais
+	 *            サイコロの配列
+	 */
+	void setWareme(Sai[] sais) {
+		int sum = sais[0].getNo() + sais[1].getNo() - 1;
+		tsumoIdx = ((sum % 4) * 36) + sum;
+
+		rinshanIdx = tsumoIdx + TSUMO_MAX;
+		if (rinshanIdx >= YAMA_MAX) {
+			rinshanIdx -= YAMA_MAX;
+		}
 	}
 }

@@ -71,11 +71,7 @@ public class AI implements EventIF {
 	 *            イベントの対象となった風
 	 * @return イベントID
 	 */
-	public EID eidTsumo(int fromKaze, int toKaze) {
-		int score = 0;
-		int maxScore = 0;
-		sutehaiIdx = 13;
-
+	private EID eidTsumo(int fromKaze, int toKaze) {
 		// 自分の手牌をコピーします。
 		info.copyTehai(tehai, fromKaze);
 
@@ -83,14 +79,36 @@ public class AI implements EventIF {
 		Hai tsumoHai = info.getTsumoHai();
 
 		// ツモあがりの場合はイベント（ツモあがり）を返します。
-		int agariScore = info.getAgariScore(tehai, info.getSuteHai());
-		if (agariScore > 0)
+		int agariScore = info.getAgariScore(tehai, tsumoHai);
+		if (agariScore > 0) {
 			return EID.TSUMOAGARI;
-
-		// リーチの場合は流します。
-		if (info.isReach(info.getJikaze())) {
-			return EID.NAGASHI;
 		}
+
+		// リーチの場合はツモ切りします。
+		if (info.isReach(info.getJikaze())) {
+			sutehaiIdx = 13;
+			return EID.SUTEHAI;
+		}
+
+		thinkSutehai(tsumoHai);
+
+		// 捨牌を決めたので手牌を更新します。
+		if (sutehaiIdx != 13) {
+			tehai.removeJyunTehai(sutehaiIdx);
+			tehai.addJyunTehai(tsumoHai);
+		}
+
+		// リーチする場合はイベント（リーチ）を返します。
+		if (thinkReach(tehai)) {
+			return EID.REACH;
+		}
+
+		return EID.SUTEHAI;
+	}
+
+	private void thinkSutehai(Hai addHai) {
+		int score = 0;
+		int maxScore = 0;
 
 		tehai.getCountFormat(countFormat, null);
 		maxScore = getCountFormatScore(countFormat);
@@ -106,7 +124,7 @@ public class AI implements EventIF {
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			tehai.copyJyunTehaiIdx(hai, i);
 			tehai.removeJyunTehai(i);
-			tehai.getCountFormat(countFormat, tsumoHai);
+			tehai.getCountFormat(countFormat, addHai);
 			score = getCountFormatScore(countFormat);
 			// System.out.println("score:" + score + ",maxScore:" + maxScore +
 			// ",hai:" + UI.idToString(hai.getId()));
@@ -117,8 +135,35 @@ public class AI implements EventIF {
 			}
 			tehai.addJyunTehai(hai);
 		}
+	}
 
-		return EID.SUTEHAI;
+	private final static Hai[] haiTable = new Hai[] {
+			new Hai(Hai.KIND_WAN | 1), new Hai(Hai.KIND_WAN | 2),
+			new Hai(Hai.KIND_WAN | 3), new Hai(Hai.KIND_WAN | 4),
+			new Hai(Hai.KIND_WAN | 5), new Hai(Hai.KIND_WAN | 6),
+			new Hai(Hai.KIND_WAN | 7), new Hai(Hai.KIND_WAN | 8),
+			new Hai(Hai.KIND_WAN | 9), new Hai(Hai.KIND_PIN | 1),
+			new Hai(Hai.KIND_PIN | 2), new Hai(Hai.KIND_PIN | 3),
+			new Hai(Hai.KIND_PIN | 4), new Hai(Hai.KIND_PIN | 5),
+			new Hai(Hai.KIND_PIN | 6), new Hai(Hai.KIND_PIN | 7),
+			new Hai(Hai.KIND_PIN | 8), new Hai(Hai.KIND_PIN | 9),
+			new Hai(Hai.KIND_SOU | 1), new Hai(Hai.KIND_SOU | 2),
+			new Hai(Hai.KIND_SOU | 3), new Hai(Hai.KIND_SOU | 4),
+			new Hai(Hai.KIND_SOU | 5), new Hai(Hai.KIND_SOU | 6),
+			new Hai(Hai.KIND_SOU | 7), new Hai(Hai.KIND_SOU | 8),
+			new Hai(Hai.KIND_SOU | 9), new Hai(Hai.KIND_FON | 1),
+			new Hai(Hai.KIND_FON | 2), new Hai(Hai.KIND_FON | 3),
+			new Hai(Hai.KIND_SANGEN | 1), new Hai(Hai.KIND_SANGEN | 2),
+			new Hai(Hai.KIND_SANGEN | 3), new Hai(Hai.KIND_SANGEN | 4), };
+
+	private boolean thinkReach(Tehai tehai) {
+		for (Hai hai : haiTable) {
+			tehai.getCountFormat(countFormat, hai);
+			if (tehai.getCombi(combis, countFormat) > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private int getCountFormatScore(CountFormat countFormat) {

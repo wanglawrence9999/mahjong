@@ -356,7 +356,8 @@ public class Game {
 	 * 配牌します。
 	 */
 	private void haipai() {
-		// TODO 山に割れ目を設定する必要があります。
+		// 山に割れ目を設定します。
+		yama.setWareme(sais);
 
 		for (int i = 0, j = oyaIdx, max = players.length * 13; i < max; i++, j++) {
 			if (j >= players.length) {
@@ -395,18 +396,32 @@ public class Game {
 			if (sutehaiIdx == 13) {// ツモ切り
 				suteHai.copy(tsumoHai);
 				activePlayer.getKawa().add(suteHai);
-
-				// イベントを通知します。
-				retEid = notifyEvent(EID.SUTEHAI, fromKaze, fromKaze);
 			} else {// 手出し
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
 				activePlayer.getKawa().add(suteHai, Kawa.PROPERTY_TEDASHI);
-
-				// イベントを通知します。
-				retEid = notifyEvent(EID.SUTEHAI, fromKaze, fromKaze);
 			}
+
+			// イベントを通知します。
+			retEid = notifyEvent(EID.SUTEHAI, fromKaze, fromKaze);
+			break;
+		case REACH:
+			// 捨牌のインデックスを取得します。
+			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+			if (sutehaiIdx == 13) {// ツモ切り
+				suteHai.copy(tsumoHai);
+				activePlayer.getKawa().add(suteHai);
+				activePlayer.getKawa().add(suteHai, Kawa.PROPERTY_REACH);
+			} else {// 手出し
+				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
+				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
+				activePlayer.getTehai().addJyunTehai(tsumoHai);
+				activePlayer.getKawa().add(suteHai, Kawa.PROPERTY_TEDASHI | Kawa.PROPERTY_REACH);
+			}
+
+			// イベントを通知します。
+			retEid = notifyEvent(EID.REACH, fromKaze, fromKaze);
 			break;
 		default:
 			break;

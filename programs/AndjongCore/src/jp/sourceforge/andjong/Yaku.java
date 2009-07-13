@@ -6,48 +6,46 @@ import jp.sourceforge.andjong.Tehai.Combi;
 
 public class Yaku {
 	
-	YakuHantei yakuhantei[] = new YakuHantei[50];
+	YakuHantei yakuhantei[];
 	Yaku(Tehai tehai, Hai addHai, Combi combi){
-		int i = 0;
-		yakuhantei[i++] = new CheckTanyao(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckPinfu(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckIpeikou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckTon(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckNan(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSya(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckPei(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckHaku(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckHatu(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckCyun(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckCyanta(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckIkkituukan(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSansyokuDoukou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSansyokuDoujun(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckToitoi(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSanankou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSankantu(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckRyanpeikou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckHonitu(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckJunCyan(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSyousangen(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckHonroutou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckTinitu(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSuuankou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSuukantu(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckDaisangen(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckSyousuushi(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckDaisuushi(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckDaisangen(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckTuuisou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckChinroutou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckRyuuisou(tehai,addHai,combi);
-		yakuhantei[i++] = new CheckCyuurennpoutou(tehai,addHai,combi);
-		yakuhantei[i++] = null;
+		YakuHantei buffer[] = {new CheckTanyao(tehai,addHai,combi),
+							   new CheckPinfu(tehai,addHai,combi),
+							   new CheckIpeikou(tehai,addHai,combi),
+							   new CheckTon(tehai,addHai,combi),
+							   new CheckNan(tehai,addHai,combi),
+							   new CheckSya(tehai,addHai,combi),
+							   new CheckPei(tehai,addHai,combi),
+							   new CheckHaku(tehai,addHai,combi),
+							   new CheckHatu(tehai,addHai,combi),
+							   new CheckCyun(tehai,addHai,combi),
+							   new CheckCyanta(tehai,addHai,combi),
+							   new CheckIkkituukan(tehai,addHai,combi),
+							   new CheckSansyokuDoukou(tehai,addHai,combi),
+							   new CheckSansyokuDoujun(tehai,addHai,combi),
+							   new CheckToitoi(tehai,addHai,combi),
+							   new CheckSanankou(tehai,addHai,combi),
+							   new CheckSankantu(tehai,addHai,combi),
+							   new CheckRyanpeikou(tehai,addHai,combi),
+							   new CheckHonitu(tehai,addHai,combi),
+							   new CheckJunCyan(tehai,addHai,combi),
+							   new CheckSyousangen(tehai,addHai,combi),
+							   new CheckHonroutou(tehai,addHai,combi),
+							   new CheckTinitu(tehai,addHai,combi),
+							   new CheckSuuankou(tehai,addHai,combi),
+							   new CheckSuukantu(tehai,addHai,combi),
+							   new CheckDaisangen(tehai,addHai,combi),
+							   new CheckSyousuushi(tehai,addHai,combi),
+							   new CheckDaisuushi(tehai,addHai,combi),
+							   new CheckTuuisou(tehai,addHai,combi),
+							   new CheckChinroutou(tehai,addHai,combi),
+							   new CheckRyuuisou(tehai,addHai,combi),
+							   new CheckCyuurennpoutou(tehai,addHai,combi)};
+		yakuhantei = buffer;
 	}
 	
 	int getHanSuu(){
 		int hanSuu = 0;
-		for(int i = 0 ; yakuhantei[i] != null ; i++){
+		for(int i = 0 ; i < yakuhantei.length ; i++){
 			if( yakuhantei[i].getYakuHantei() == true){
 				hanSuu+= yakuhantei[i].getHanSuu();
 			}
@@ -55,13 +53,16 @@ public class Yaku {
 		return hanSuu;
 	}
 
-	String getYakuName(){
-		String yakuName ="";
-		for(int i = 0 ; yakuhantei[i] != null ; i++){
+	String[] getYakuName(){
+		String yakuName[] = new String[yakuhantei.length ];
+		int count = 0;
+		for(int i = 0 ; i < yakuhantei.length ; i++){
 			if( yakuhantei[i].getYakuHantei() == true){
-				yakuName = yakuhantei[i].getYakuName();
+				yakuName[count] = yakuhantei[i].getYakuName() + " " + yakuhantei[i].getHanSuu() + "役";
+				count++;
 			}
 		}
+		yakuName[count] = null;
 		return yakuName;
 	}
 	
@@ -264,6 +265,9 @@ public class Yaku {
 	private class CheckHonitu extends YakuHantei{
 		CheckHonitu(Tehai tehai, Hai addHai, Combi combi){
 			hantei = checkHonitu(tehai, addHai, combi);
+			if(checkTinitu(tehai, addHai, combi)){
+				hantei = false;
+			}
 			yakuName = "混一色";
 			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
 				hanSuu = 2;
@@ -857,7 +861,7 @@ public class Yaku {
 		if(combi.kouCount == 3){
 			return true;
 		}else{
-			return true;
+			return false;
 		}
 	}
 	
@@ -906,8 +910,8 @@ public class Yaku {
 			int jyunTehaiLength = tehai.getJyunTehaiLength();
 			for (int j = 0; j < jyunTehaiLength; j++) {
 				id = jyunTehai[j].getId();
-				//牌が(萬子、筒子、索子)もしくは字牌
-				if (((id & checkId[i]) != 0) || ((id & KIND_TSUU) != 0) ){
+				//牌が(萬子、筒子、索子)以外もしくは字牌以外
+				if (((id & checkId[i]) == 0) && ((id & KIND_TSUU) == 0) ){
 					honituflg = false;
 				}
 			}
@@ -916,8 +920,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getMinshunsLength(); j++){
 				checkHai = tehai.getMinshuns();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)もしくは字牌
-				if (((id & checkId[i]) != 0) || ((id & KIND_TSUU) != 0) ){
+				//牌が(萬子、筒子、索子)以外もしくは字牌以外
+				if (((id & checkId[i]) == 0) && ((id & KIND_TSUU) == 0) ){
 					honituflg = false;
 				}
 			}
@@ -926,8 +930,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getMinkousLength(); j++){
 				checkHai = tehai.getMinkous();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)もしくは字牌
-				if (((id & checkId[i]) != 0) || ((id & KIND_TSUU) != 0) ){
+				//牌が(萬子、筒子、索子)以外もしくは字牌以外
+				if (((id & checkId[i]) == 0) && ((id & KIND_TSUU) == 0) ){
 					honituflg = false;
 				}
 			}
@@ -936,8 +940,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getMinkansLength(); j++){
 				checkHai = tehai.getMinkans();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)もしくは字牌
-				if (((id & checkId[i]) != 0) || ((id & KIND_TSUU) != 0) ){
+				//牌が(萬子、筒子、索子)以外もしくは字牌以外
+				if (((id & checkId[i]) == 0) && ((id & KIND_TSUU) == 0) ){
 					honituflg = false;
 				}
 			}
@@ -946,8 +950,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getAnkansLength(); j++){
 				checkHai = tehai.getAnkans();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)もしくは字牌
-				if (((id & checkId[i]) != 0) || ((id & KIND_TSUU) != 0) ){
+				//牌が(萬子、筒子、索子)以外もしくは字牌以外
+				if (((id & checkId[i]) == 0) && ((id & KIND_TSUU) == 0) ){
 					honituflg = false;
 				}
 			}
@@ -1127,8 +1131,8 @@ public class Yaku {
 			int jyunTehaiLength = tehai.getJyunTehaiLength();
 			for (int j = 0; j < jyunTehaiLength; j++) {
 				id = jyunTehai[j].getId();
-				//牌が(萬子、筒子、索子)
-				if (((id & checkId[i]) != 0)){
+				//牌が(萬子、筒子、索子)以外
+				if (((id & checkId[i]) == 0)){
 					honituflg = false;
 				}
 			}
@@ -1137,8 +1141,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getMinshunsLength(); j++){
 				checkHai = tehai.getMinshuns();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)
-				if (((id & checkId[i]) != 0)){
+				//牌が(萬子、筒子、索子)以外
+				if (((id & checkId[i]) == 0)){
 					honituflg = false;
 				}
 			}
@@ -1147,8 +1151,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getMinkousLength(); j++){
 				checkHai = tehai.getMinkous();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)
-				if (((id & checkId[i]) != 0)){
+				//牌が(萬子、筒子、索子)以外
+				if (((id & checkId[i]) == 0)){
 					honituflg = false;
 				}
 			}
@@ -1157,8 +1161,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getMinkansLength(); j++){
 				checkHai = tehai.getMinkans();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)
-				if (((id & checkId[i]) != 0)){
+				//牌が(萬子、筒子、索子)以外
+				if (((id & checkId[i]) == 0)){
 					honituflg = false;
 				}
 			}
@@ -1167,8 +1171,8 @@ public class Yaku {
 			for(int j = 0; j < tehai.getAnkansLength(); j++){
 				checkHai = tehai.getAnkans();
 				id = checkHai[j][0].getId();
-				//牌が(萬子、筒子、索子)
-				if (((id & checkId[i]) != 0)){
+				//牌が(萬子、筒子、索子)以外
+				if (((id & checkId[i]) == 0)){
 					honituflg = false;
 				}
 			}
@@ -1190,7 +1194,7 @@ public class Yaku {
 		if(combi.kouCount == 4){
 			return true;
 		}else{
-			return true;
+			return false;
 		}
 	}
 

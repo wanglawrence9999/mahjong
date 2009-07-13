@@ -5097,3 +5097,408 @@ org.eclipse.core.runtime.CoreException: 'aapt' error. Pre Compiler Build aborted
 !MESSAGE 'aapt' error. Pre Compiler Build aborted.
 !SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2009-07-13 00:53:56.818
 !MESSAGE 'aapt' error. Pre Compiler Build aborted.
+
+!ENTRY org.eclipse.ui.console 4 2 2009-07-13 01:21:00.311
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.console".
+!STACK 0
+org.eclipse.swt.SWTException: Device is disposed
+	at org.eclipse.swt.SWT.error(SWT.java:3777)
+	at org.eclipse.swt.SWT.error(SWT.java:3695)
+	at org.eclipse.swt.SWT.error(SWT.java:3666)
+	at org.eclipse.swt.widgets.Display.error(Display.java:1180)
+	at org.eclipse.swt.widgets.Display.asyncExec(Display.java:648)
+	at org.eclipse.ui.internal.console.ConsoleDropDownAction.consolesRemoved(ConsoleDropDownAction.java:150)
+	at org.eclipse.ui.internal.console.ConsoleManager$ConsoleNotifier.run(ConsoleManager.java:154)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.ui.internal.console.ConsoleManager$ConsoleNotifier.notify(ConsoleManager.java:174)
+	at org.eclipse.ui.internal.console.ConsoleManager.fireUpdate(ConsoleManager.java:262)
+	at org.eclipse.ui.internal.console.ConsoleManager.removeConsoles(ConsoleManager.java:244)
+	at org.eclipse.ui.console.ConsolePlugin.stop(ConsolePlugin.java:175)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$3.run(BundleContextImpl.java:1050)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.stop(BundleContextImpl.java:1046)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.stopWorker(BundleHost.java:457)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.suspend(AbstractBundle.java:531)
+	at org.eclipse.osgi.framework.internal.core.Framework.suspendBundle(Framework.java:1104)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.decFWSL(StartLevelManager.java:655)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:312)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.shutdown(StartLevelManager.java:257)
+	at org.eclipse.osgi.framework.internal.core.SystemBundle.suspend(SystemBundle.java:236)
+	at org.eclipse.osgi.framework.internal.core.Framework.shutdown(Framework.java:678)
+	at org.eclipse.osgi.framework.internal.core.Framework.close(Framework.java:576)
+	at org.eclipse.osgi.framework.internal.core.OSGi.close(OSGi.java:41)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.shutdown(EclipseStarter.java:424)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:200)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:549)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:504)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1236)
+
+!ENTRY org.eclipse.ui.console 4 120 2009-07-13 01:21:00.311
+!MESSAGE An exception occurred during console notification
+!STACK 0
+org.eclipse.swt.SWTException: Device is disposed
+	at org.eclipse.swt.SWT.error(SWT.java:3777)
+	at org.eclipse.swt.SWT.error(SWT.java:3695)
+	at org.eclipse.swt.SWT.error(SWT.java:3666)
+	at org.eclipse.swt.widgets.Display.error(Display.java:1180)
+	at org.eclipse.swt.widgets.Display.asyncExec(Display.java:648)
+	at org.eclipse.ui.internal.console.ConsoleDropDownAction.consolesRemoved(ConsoleDropDownAction.java:150)
+	at org.eclipse.ui.internal.console.ConsoleManager$ConsoleNotifier.run(ConsoleManager.java:154)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.ui.internal.console.ConsoleManager$ConsoleNotifier.notify(ConsoleManager.java:174)
+	at org.eclipse.ui.internal.console.ConsoleManager.fireUpdate(ConsoleManager.java:262)
+	at org.eclipse.ui.internal.console.ConsoleManager.removeConsoles(ConsoleManager.java:244)
+	at org.eclipse.ui.console.ConsolePlugin.stop(ConsolePlugin.java:175)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$3.run(BundleContextImpl.java:1050)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.stop(BundleContextImpl.java:1046)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.stopWorker(BundleHost.java:457)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.suspend(AbstractBundle.java:531)
+	at org.eclipse.osgi.framework.internal.core.Framework.suspendBundle(Framework.java:1104)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.decFWSL(StartLevelManager.java:655)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:312)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.shutdown(StartLevelManager.java:257)
+	at org.eclipse.osgi.framework.internal.core.SystemBundle.suspend(SystemBundle.java:236)
+	at org.eclipse.osgi.framework.internal.core.Framework.shutdown(Framework.java:678)
+	at org.eclipse.osgi.framework.internal.core.Framework.close(Framework.java:576)
+	at org.eclipse.osgi.framework.internal.core.OSGi.close(OSGi.java:41)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.shutdown(EclipseStarter.java:424)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:200)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:549)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:504)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1236)
+!SESSION 2009-07-13 23:47:53.992 -----------------------------------------------
+eclipse.buildId=M20090211-1700
+java.version=1.6.0_05
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ja_JP
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.ui 4 4 2009-07-14 00:12:08.322
+!MESSAGE Could not create action delegate for id: com.android.ide.eclipse.adt.project.NewXmlFileWizardAction
+
+!ENTRY org.eclipse.equinox.registry 4 1 2009-07-14 00:12:08.390
+!MESSAGE Plug-in com.android.ide.eclipse.adt was unable to load class com.android.ide.eclipse.adt.project.NewXmlFileWizardAction.
+!STACK 0
+java.lang.ClassNotFoundException: com.android.ide.eclipse.adt.project.NewXmlFileWizardAction
+	at org.eclipse.osgi.framework.internal.core.BundleLoader.findClassInternal(BundleLoader.java:483)
+	at org.eclipse.osgi.framework.internal.core.BundleLoader.findClass(BundleLoader.java:399)
+	at org.eclipse.osgi.framework.internal.core.BundleLoader.findClass(BundleLoader.java:387)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:87)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.osgi.framework.internal.core.BundleLoader.loadClass(BundleLoader.java:315)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.loadClass(BundleHost.java:227)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.loadClass(AbstractBundle.java:1274)
+	at org.eclipse.core.internal.registry.osgi.RegistryStrategyOSGI.createExecutableExtension(RegistryStrategyOSGI.java:160)
+	at org.eclipse.core.internal.registry.ExtensionRegistry.createExecutableExtension(ExtensionRegistry.java:867)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:243)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:51)
+	at org.eclipse.ui.internal.WorkbenchPlugin.createExtension(WorkbenchPlugin.java:259)
+	at org.eclipse.ui.internal.PluginAction.createDelegate(PluginAction.java:122)
+	at org.eclipse.ui.internal.PluginAction.selectionChanged(PluginAction.java:275)
+	at org.eclipse.ui.internal.PluginAction.<init>(PluginAction.java:112)
+	at org.eclipse.ui.internal.ObjectPluginAction.<init>(ObjectPluginAction.java:83)
+	at org.eclipse.ui.internal.ActionDescriptor.createAction(ActionDescriptor.java:272)
+	at org.eclipse.ui.internal.ActionDescriptor.<init>(ActionDescriptor.java:176)
+	at org.eclipse.ui.internal.ActionDescriptor.<init>(ActionDescriptor.java:103)
+	at org.eclipse.ui.internal.ObjectActionContributor.createActionDescriptor(ObjectActionContributor.java:201)
+	at org.eclipse.ui.internal.PluginActionBuilder.readElement(PluginActionBuilder.java:158)
+	at org.eclipse.ui.internal.ObjectActionContributor.readElement(ObjectActionContributor.java:280)
+	at org.eclipse.ui.internal.registry.RegistryReader.readElements(RegistryReader.java:144)
+	at org.eclipse.ui.internal.registry.RegistryReader.readElementChildren(RegistryReader.java:133)
+	at org.eclipse.ui.internal.ObjectActionContributor.readConfigElement(ObjectActionContributor.java:251)
+	at org.eclipse.ui.internal.ObjectActionContributor.isApplicableTo(ObjectActionContributor.java:217)
+	at org.eclipse.ui.internal.ObjectContributorManager.isApplicableTo(ObjectContributorManager.java:303)
+	at org.eclipse.ui.internal.ObjectActionContributorManager.contributeObjectActions(ObjectActionContributorManager.java:83)
+	at org.eclipse.ui.internal.PopupMenuExtender.addObjectActions(PopupMenuExtender.java:261)
+	at org.eclipse.ui.internal.PopupMenuExtender.menuAboutToShow(PopupMenuExtender.java:337)
+	at org.eclipse.jface.action.MenuManager.fireAboutToShow(MenuManager.java:335)
+	at org.eclipse.jface.action.MenuManager.handleAboutToShow(MenuManager.java:463)
+	at org.eclipse.jface.action.MenuManager.access$1(MenuManager.java:459)
+	at org.eclipse.jface.action.MenuManager$2.menuShown(MenuManager.java:485)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:235)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1003)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1027)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1008)
+	at org.eclipse.swt.widgets.Control.WM_INITMENUPOPUP(Control.java:4111)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:3815)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:337)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1576)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:1937)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4528)
+	at org.eclipse.swt.internal.win32.OS.TrackPopupMenu(Native Method)
+	at org.eclipse.swt.widgets.Menu._setVisible(Menu.java:250)
+	at org.eclipse.swt.widgets.Display.runPopups(Display.java:3849)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3416)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2384)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2348)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2200)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:495)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:288)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:490)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:113)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:193)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:386)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:549)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:504)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1236)
+
+!ENTRY org.eclipse.core.resources 8 2 2009-07-14 00:42:23.844
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: 'aapt' error. Pre Compiler Build aborted.
+	at com.android.ide.eclipse.adt.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:633)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2009-07-14 00:42:23.844
+!MESSAGE 'aapt' error. Pre Compiler Build aborted.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2009-07-14 00:42:23.844
+!MESSAGE 'aapt' error. Pre Compiler Build aborted.
+
+!ENTRY org.eclipse.core.resources 8 2 2009-07-14 00:42:37.237
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: 'aapt' error. Pre Compiler Build aborted.
+	at com.android.ide.eclipse.adt.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:633)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2009-07-14 00:42:37.238
+!MESSAGE 'aapt' error. Pre Compiler Build aborted.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2009-07-14 00:42:37.238
+!MESSAGE 'aapt' error. Pre Compiler Build aborted.
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:14.180
+!MESSAGE AndroidManifest: Ignoring unknown 'b' XML element
+
+!ENTRY org.eclipse.core.resources 8 2 2009-07-14 00:43:16.389
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
+	at com.android.ide.eclipse.adt.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:633)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2009-07-14 00:43:16.389
+!MESSAGE Error in an XML file: aborting build.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2009-07-14 00:43:16.389
+!MESSAGE Error in an XML file: aborting build.
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:19.470
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:20.164
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:28.721
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:30.098
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:30.856
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:32.487
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:45.306
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:45.721
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:45.728
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:46.534
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:46.546
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:48.589
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:48.595
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:48.889
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:48.895
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:48.903
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:49.307
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:49.314
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:49.320
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:51.922
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:51.928
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:51.934
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:52.227
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:52.235
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:52.243
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:52.668
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:52.676
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:43:52.684
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.068
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.084
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.100
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.116
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.235
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.241
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.247
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.390
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.396
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.403
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.409
+!MESSAGE AndroidManifest: Ignoring unknown 'b' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.530
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.536
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.542
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.670
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.676
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.682
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.944
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.952
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:01.961
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:02.320
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:02.331
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:02.342
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:05.201
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:05.219
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:05.372
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:05.389
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:07.592
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2009-07-14 00:44:07.737
+!MESSAGE AndroidManifest: Ignoring unknown 'br' XML element

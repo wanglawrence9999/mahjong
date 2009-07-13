@@ -23,6 +23,7 @@ public final class R {
         public static final int new_button=0x7f070000;
         public static final int setting_button=0x7f070001;
         public static final int tanyao_setting=0x7f070003;
+        public static final int tensuu_setting=0x7f070004;
         public static final int text1=0x7f070002;
     }
     public static final class layout {
@@ -42,6 +43,7 @@ public final class R {
         public static final int music_title=0x7f060008;
         public static final int new_game_title=0x7f060004;
         public static final int settings_kuitan=0x7f06000b;
+        public static final int settings_tensuu=0x7f06000c;
         public static final int settings_title=0x7f06000a;
     }
 }

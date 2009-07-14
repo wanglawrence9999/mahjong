@@ -3,46 +3,66 @@ import static jp.sourceforge.andjong.Hai.*;
 import static jp.sourceforge.andjong.Tehai.JYUNTEHAI_MAX;
 import jp.sourceforge.andjong.Tehai.Combi;
 
-
+/**
+ * 手牌全体の役を判定するクラスです。
+ * 
+ * @author Hiroyuki Muromachi
+ * 
+ */
 public class Yaku {
-	
+	Tehai tehai;
+	Hai addHai;
+	Combi combi;
 	YakuHantei yakuhantei[];
+
+	/**
+	 * Yakuクラスのコンストラクタ。
+	 * 引数を保存し、YakuHanteiクラスの配列を作成する。
+	 */
 	Yaku(Tehai tehai, Hai addHai, Combi combi){
-		YakuHantei buffer[] = {new CheckTanyao(tehai,addHai,combi),
-							   new CheckPinfu(tehai,addHai,combi),
-							   new CheckIpeikou(tehai,addHai,combi),
-							   new CheckTon(tehai,addHai,combi),
-							   new CheckNan(tehai,addHai,combi),
-							   new CheckSya(tehai,addHai,combi),
-							   new CheckPei(tehai,addHai,combi),
-							   new CheckHaku(tehai,addHai,combi),
-							   new CheckHatu(tehai,addHai,combi),
-							   new CheckCyun(tehai,addHai,combi),
-							   new CheckCyanta(tehai,addHai,combi),
-							   new CheckIkkituukan(tehai,addHai,combi),
-							   new CheckSansyokuDoukou(tehai,addHai,combi),
-							   new CheckSansyokuDoujun(tehai,addHai,combi),
-							   new CheckToitoi(tehai,addHai,combi),
-							   new CheckSanankou(tehai,addHai,combi),
-							   new CheckSankantu(tehai,addHai,combi),
-							   new CheckRyanpeikou(tehai,addHai,combi),
-							   new CheckHonitu(tehai,addHai,combi),
-							   new CheckJunCyan(tehai,addHai,combi),
-							   new CheckSyousangen(tehai,addHai,combi),
-							   new CheckHonroutou(tehai,addHai,combi),
-							   new CheckTinitu(tehai,addHai,combi),
-							   new CheckSuuankou(tehai,addHai,combi),
-							   new CheckSuukantu(tehai,addHai,combi),
-							   new CheckDaisangen(tehai,addHai,combi),
-							   new CheckSyousuushi(tehai,addHai,combi),
-							   new CheckDaisuushi(tehai,addHai,combi),
-							   new CheckTuuisou(tehai,addHai,combi),
-							   new CheckChinroutou(tehai,addHai,combi),
-							   new CheckRyuuisou(tehai,addHai,combi),
-							   new CheckCyuurennpoutou(tehai,addHai,combi)};
+		this.tehai = tehai;
+		this.addHai = addHai;
+		this.combi  = combi;
+		YakuHantei buffer[] = {new CheckTanyao(),
+							   new CheckPinfu(),
+							   new CheckIpeikou(),
+							   new CheckTon(),
+							   new CheckNan(),
+							   new CheckSya(),
+							   new CheckPei(),
+							   new CheckHaku(),
+							   new CheckHatu(),
+							   new CheckCyun(),
+							   new CheckCyanta(),
+							   new CheckIkkituukan(),
+							   new CheckSansyokuDoukou(),
+							   new CheckSansyokuDoujun(),
+							   new CheckToitoi(),
+							   new CheckSanankou(),
+							   new CheckSankantu(),
+							   new CheckRyanpeikou(),
+							   new CheckHonitu(),
+							   new CheckJunCyan(),
+							   new CheckSyousangen(),
+							   new CheckHonroutou(),
+							   new CheckTinitu(),
+							   new CheckSuuankou(),
+							   new CheckSuukantu(),
+							   new CheckDaisangen(),
+							   new CheckSyousuushi(),
+							   new CheckDaisuushi(),
+							   new CheckTuuisou(),
+							   new CheckChinroutou(),
+							   new CheckRyuuisou(),
+							   new CheckCyuurennpoutou()};
 		yakuhantei = buffer;
 	}
 	
+	/**
+	 * 手牌全体の翻数を取得します。
+	 * 
+	 * @return 手牌全体の翻数
+	 */
 	int getHanSuu(){
 		int hanSuu = 0;
 		for(int i = 0 ; i < yakuhantei.length ; i++){
@@ -52,20 +72,38 @@ public class Yaku {
 		}
 		return hanSuu;
 	}
-
+	
+	/**
+	 * 成立している役の名前を取得します。
+	 * 
+	 * @return 成立している役の名前の配列
+	 */
 	String[] getYakuName(){
-		String yakuName[] = new String[yakuhantei.length ];
 		int count = 0;
+		
+		//成立している役の数をカウント
 		for(int i = 0 ; i < yakuhantei.length ; i++){
 			if( yakuhantei[i].getYakuHantei() == true){
-				yakuName[count] = yakuhantei[i].getYakuName() + " " + yakuhantei[i].getHanSuu() + "役";
 				count++;
 			}
 		}
-		yakuName[count] = null;
+		
+		String yakuName[] = new String[count];
+		count = 0;
+		for(int i = 0 ; i < yakuhantei.length ; i++){
+			if( yakuhantei[i].getYakuHantei() == true){
+				yakuName[count] = yakuhantei[i].getYakuName() + " " + yakuhantei[i].getHanSuu() + "翻";
+				count++;
+			}
+		}
 		return yakuName;
 	}
 	
+	/**
+	 * 役満が成立しているかを取得します。
+	 * 
+	 * @return 役満成立フラグ
+	 */	
 	boolean getYakumanflg(){
 		for(int i = 0 ; yakuhantei[i] != null ; i++){
 			if( yakuhantei[i].getYakuman() == true){
@@ -75,48 +113,79 @@ public class Yaku {
 		return false;		
 	}
 	
+	/**
+	 * 個別の役を判定するクラスです。
+	 * 
+	 * @author Hiroyuki Muromachi
+	 * 
+	 */
 	private class YakuHantei{
+		/** 役の成立判定フラグ */
 		boolean hantei = false;
+		/** 役満の判定フラグ */
 		boolean yakuman = false;
+		/** 役の名前 */
 		String  yakuName;
+		/** 役の翻数 */
 		int hanSuu;
 		
+		/**
+		 * 役の成立判定フラグを取得します。
+		 * 
+		 * @return 役の成立判定フラグ
+		 */
 		boolean getYakuHantei(){
 			return hantei;
 		}
+		
+		/**
+		 * 役の翻数を取得します。
+		 * 
+		 * @return 役の翻数
+		 */		
 		int getHanSuu(){
 			return hanSuu;
 		}
 		
+		/**
+		 * 役の名前を取得します。
+		 * 
+		 * @return 役の名前
+		 */			
 		String getYakuName(){
 			return yakuName;
 		}
 		
+		/**
+		 * 役満の判定フラグを取得します。
+		 * 
+		 * @return 役満の判定フラグ
+		 */			
 		boolean getYakuman(){
 			return yakuman;
 		}
 	}
 
 	private class CheckTanyao extends YakuHantei{
-		CheckTanyao(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkTanyao(tehai, addHai, combi);
+		CheckTanyao(){
+			hantei = checkTanyao();
 			yakuName = "断幺";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckPinfu extends YakuHantei{
-		CheckPinfu(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkPinfu(tehai, addHai, combi);
+		CheckPinfu(){
+			hantei = checkPinfu();
 			yakuName = "平和";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckIpeikou extends YakuHantei{
-		CheckIpeikou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkIpeikou(tehai, addHai, combi);
-			if(checkRyanpeikou(tehai, addHai, combi)){
+		CheckIpeikou(){
+			hantei = checkIpeikou();
+			if(checkRyanpeikou()){
 				hantei = false;
 			}
 			yakuName = "一盃口";
@@ -125,68 +194,68 @@ public class Yaku {
 	}
 
 	private class CheckTon extends YakuHantei{
-		CheckTon(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkTon(tehai, addHai, combi);
+		CheckTon(){
+			hantei = checkTon();
 			yakuName = "東";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckNan extends YakuHantei{
-		CheckNan(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkNan(tehai, addHai, combi);
+		CheckNan(){
+			hantei = checkNan();
 			yakuName = "南";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckSya extends YakuHantei{
-		CheckSya(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSya(tehai, addHai, combi);
+		CheckSya(){
+			hantei = checkSya();
 			yakuName = "西";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckPei extends YakuHantei{
-		CheckPei(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkPei(tehai, addHai, combi);
+		CheckPei(){
+			hantei = checkPei();
 			yakuName = "北";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckHaku extends YakuHantei{
-		CheckHaku(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkHaku(tehai, addHai, combi);
+		CheckHaku(){
+			hantei = checkHaku();
 			yakuName = "白";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckHatu extends YakuHantei{
-		CheckHatu(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkHatu(tehai, addHai, combi);
+		CheckHatu(){
+			hantei = checkHatu();
 			yakuName = "發";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckCyun extends YakuHantei{
-		CheckCyun(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkCyun(tehai, addHai, combi);
+		CheckCyun(){
+			hantei = checkCyun();
 			yakuName = "中";
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckCyanta extends YakuHantei{
-		CheckCyanta(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkCyanta(tehai, addHai, combi);
-			if(checkJunCyan(tehai, addHai, combi)){
+		CheckCyanta(){
+			hantei = checkCyanta();
+			if(checkJunCyan()){
 				hantei = false;
 			}
-			if(checkHonroutou(tehai, addHai, combi)){
+			if(checkHonroutou()){
 				hantei = false;
 			}	
 			yakuName = "全帯";
@@ -199,8 +268,8 @@ public class Yaku {
 	}
 
 	private class CheckIkkituukan extends YakuHantei{
-		CheckIkkituukan(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkIkkituukan(tehai, addHai, combi);
+		CheckIkkituukan(){
+			hantei = checkIkkituukan();
 			yakuName = "一気通貫";
 			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
 				hanSuu = 1;
@@ -211,8 +280,8 @@ public class Yaku {
 	}
 
 	private class CheckSansyokuDoujun extends YakuHantei{
-		CheckSansyokuDoujun(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSansyokuDoujun(tehai, addHai, combi);
+		CheckSansyokuDoujun(){
+			hantei = checkSansyokuDoujun();
 			yakuName = "三色同順";
 			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
 				hanSuu = 1;
@@ -223,49 +292,49 @@ public class Yaku {
 	}
 
 	private class CheckSansyokuDoukou extends YakuHantei{
-		CheckSansyokuDoukou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSansyokuDoukou(tehai, addHai, combi);
+		CheckSansyokuDoukou(){
+			hantei = checkSansyokuDoukou();
 			yakuName = "三色同刻";
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckToitoi extends YakuHantei{
-		CheckToitoi(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkToitoi(tehai, addHai, combi);
+		CheckToitoi(){
+			hantei = checkToitoi();
 			yakuName = "対々和";
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckSanankou extends YakuHantei{
-		CheckSanankou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSanankou(tehai, addHai, combi);
+		CheckSanankou(){
+			hantei = checkSanankou();
 			yakuName = "三暗刻";
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckSankantu extends YakuHantei{
-		CheckSankantu(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSankantu(tehai, addHai, combi);
+		CheckSankantu(){
+			hantei = checkSankantu();
 			yakuName = "三槓子";
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckRyanpeikou extends YakuHantei{
-		CheckRyanpeikou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkRyanpeikou(tehai, addHai, combi);
+		CheckRyanpeikou(){
+			hantei = checkRyanpeikou();
 			yakuName = "二盃口";
 			hanSuu = 3;
 		}
 	}
 
 	private class CheckHonitu extends YakuHantei{
-		CheckHonitu(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkHonitu(tehai, addHai, combi);
-			if(checkTinitu(tehai, addHai, combi)){
+		CheckHonitu(){
+			hantei = checkHonitu();
+			if(checkTinitu()){
 				hantei = false;
 			}
 			yakuName = "混一色";
@@ -278,8 +347,8 @@ public class Yaku {
 	}
 
 	private class CheckJunCyan extends YakuHantei{
-		CheckJunCyan(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkJunCyan(tehai, addHai, combi);
+		CheckJunCyan(){
+			hantei = checkJunCyan();
 			yakuName = "純全帯";
 			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
 				hanSuu = 2;
@@ -290,24 +359,24 @@ public class Yaku {
 	}
 
 	private class CheckSyousangen extends YakuHantei{
-		CheckSyousangen(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSyousangen(tehai, addHai, combi);
+		CheckSyousangen(){
+			hantei = checkSyousangen();
 			yakuName = "小三元";
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckHonroutou extends YakuHantei{
-		CheckHonroutou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkHonroutou(tehai, addHai, combi);
+		CheckHonroutou(){
+			hantei = checkHonroutou();
 			yakuName = "混老頭";
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckTinitu extends YakuHantei{
-		CheckTinitu(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkTinitu(tehai, addHai, combi);
+		CheckTinitu(){
+			hantei = checkTinitu();
 			yakuName = "清一色";
 			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
 				hanSuu = 5;
@@ -318,8 +387,8 @@ public class Yaku {
 	}
 
 	private class CheckSuuankou extends YakuHantei{
-		CheckSuuankou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSuuankou(tehai, addHai, combi);
+		CheckSuuankou(){
+			hantei = checkSuuankou();
 			yakuName = "四暗刻";
 			hanSuu = 13;
 			yakuman = true;
@@ -327,8 +396,8 @@ public class Yaku {
 	}
 
 	private class CheckSuukantu extends YakuHantei{
-		CheckSuukantu(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSuukantu(tehai, addHai, combi);
+		CheckSuukantu(){
+			hantei = checkSuukantu();
 			yakuName = "四槓子";
 			hanSuu = 13;
 			yakuman = true;
@@ -336,8 +405,8 @@ public class Yaku {
 	}
 
 	private class CheckDaisangen extends YakuHantei{
-		CheckDaisangen(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkDaisangen(tehai, addHai, combi);
+		CheckDaisangen(){
+			hantei = checkDaisangen();
 			yakuName = "大三元";
 			hanSuu = 13;
 			yakuman = true;
@@ -345,8 +414,8 @@ public class Yaku {
 	}
 
 	private class CheckSyousuushi extends YakuHantei{
-		CheckSyousuushi(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkSyousuushi(tehai, addHai, combi);
+		CheckSyousuushi(){
+			hantei = checkSyousuushi();
 			yakuName = "小四喜";
 			hanSuu = 13;
 			yakuman = true;
@@ -354,8 +423,8 @@ public class Yaku {
 	}
 
 	private class CheckDaisuushi extends YakuHantei{
-		CheckDaisuushi(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkDaisuushi(tehai, addHai, combi);
+		CheckDaisuushi(){
+			hantei = checkDaisuushi();
 			yakuName = "大四喜";
 			hanSuu = 13;
 			yakuman = true;
@@ -363,8 +432,8 @@ public class Yaku {
 	}
 
 	private class CheckTuuisou extends YakuHantei{
-		CheckTuuisou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkTuuisou(tehai, addHai, combi);
+		CheckTuuisou(){
+			hantei = checkTuuisou();
 			yakuName = "字一色";
 			hanSuu = 13;
 			yakuman = true;
@@ -372,8 +441,8 @@ public class Yaku {
 	}
 
 	private class CheckChinroutou extends YakuHantei{
-		CheckChinroutou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkChinroutou(tehai, addHai, combi);
+		CheckChinroutou(){
+			hantei = checkChinroutou();
 			yakuName = "清老頭";
 			hanSuu = 13;
 			yakuman = true;
@@ -381,16 +450,16 @@ public class Yaku {
 	}
 
 	private class CheckRyuuisou extends YakuHantei{
-		CheckRyuuisou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkRyuuisou(tehai, addHai, combi);
+		CheckRyuuisou(){
+			hantei = checkRyuuisou();
 			yakuName = "緑一色";
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 	private class CheckCyuurennpoutou extends YakuHantei{
-		CheckCyuurennpoutou(Tehai tehai, Hai addHai, Combi combi){
-			hantei = checkCyuurennpoutou(tehai, addHai, combi);
+		CheckCyuurennpoutou(){
+			hantei = checkCyuurennpoutou();
 			yakuName = "九蓮宝燈";
 			hanSuu = 13;
 			yakuman = true;
@@ -398,7 +467,7 @@ public class Yaku {
 	}
 
 	
-	boolean checkTanyao(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTanyao() {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
@@ -462,7 +531,7 @@ public class Yaku {
 		return true;
 	}
 
-	boolean checkPinfu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkPinfu() {
 		int id;
 		//鳴きが入っている場合は成立しない
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
@@ -493,7 +562,7 @@ public class Yaku {
 		return true;
 	}
 
-	boolean checkIpeikou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkIpeikou() {
 				
 		//鳴きが入っている場合は成立しない
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
@@ -511,15 +580,15 @@ public class Yaku {
 	}
 	//TODO リーチや一発系の役
 	/*
-	boolean checkReach(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkReach() {
 		return true;
 	}
 
-	boolean checkIppatu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkIppatu() {
 		return true;
 	}
 
-	boolean checkTumo(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTumo() {
 		//鳴きが入っている場合は成立しない
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
 			return false;
@@ -573,59 +642,59 @@ public class Yaku {
 		return false;
 	}
 	
-	boolean checkTon(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTon() {
 		return checkYakuHai(tehai,combi,KIND_TON);
 	}
 
-	boolean checkNan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkNan() {
 		return checkYakuHai(tehai,combi,KIND_NAN);
 	}
 
-	boolean checkSya(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSya() {
 		return checkYakuHai(tehai,combi,KIND_SYA);
 	}
 
-	boolean checkPei(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkPei() {
 		return checkYakuHai(tehai,combi,KIND_PEE);
 	}
 
-	boolean checkHaku(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHaku() {
 		return checkYakuHai(tehai,combi,KIND_HAKU);
 	}
 
-	boolean checkHatu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHatu() {
 		return checkYakuHai(tehai,combi,KIND_HATU);
 	}
 
-	boolean checkCyun(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkCyun() {
 		return checkYakuHai(tehai,combi,KIND_CYUN);
 	}
 	
 	//TODO 特殊な役は後回し
 /*
-	boolean checkHaitei(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHaitei() {
 
 		return true;
 	}
 	
-	boolean checkRinsyan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRinsyan() {
 
 		return true;
 	}
-	boolean checkCyankan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkCyankan() {
 		return true;
 	}
 	
-	boolean checkDoubleReach(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkDoubleReach() {
 		return true;
 	}
 	
-	boolean checkTeetoitu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTeetoitu() {
 		return true;
 	}
 */
 	
-	boolean checkCyanta(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkCyanta() {
 		int id;
 		Hai checkHai[][]; 
 
@@ -708,7 +777,7 @@ public class Yaku {
 		return true;
 	}
 
-	boolean checkIkkituukan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkIkkituukan() {
 		int id;
 		Hai checkHai[][]; 
 		boolean ikkituukanflg[]= {false,false,false,false,false,false,false,false,false};
@@ -759,7 +828,7 @@ public class Yaku {
 		}		
 	}
 	
-	boolean checkSansyokuDoujun(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSansyokuDoujun() {
 		int id;
 		Hai checkHai[][]; 
 		boolean sansyokuflg[][]= new boolean[3][9];
@@ -795,7 +864,7 @@ public class Yaku {
 		return false;
 	}
 
-	boolean checkSansyokuDoukou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSansyokuDoukou() {
 		int id;
 		Hai checkHai[][]; 
 		boolean sansyokuflg[][]= new boolean[3][9];
@@ -846,7 +915,7 @@ public class Yaku {
 		return false;
 	}
 	
-	boolean checkToitoi(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkToitoi() {
 		//手牌に順子がある
 		if((combi.shunCount != 0) || (tehai.getMinshunsLength() != 0) ){
 			return false;
@@ -855,7 +924,7 @@ public class Yaku {
 		}
 	}
 	
-	boolean checkSanankou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSanankou() {
 		//手牌の暗刻が３つ
 		//TODO 上がった際が出上がりかどうかの判定も必要？
 		if(combi.kouCount == 3){
@@ -865,7 +934,7 @@ public class Yaku {
 		}
 	}
 	
-	boolean checkSankantu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSankantu() {
 		int kansnumber = 0;
 		kansnumber += tehai.getAnkansLength();
 		kansnumber += tehai.getMinkansLength();
@@ -876,7 +945,7 @@ public class Yaku {
 		}
 	}
 
-	boolean checkRyanpeikou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRyanpeikou() {
 		//鳴きが入っている場合は成立しない
 		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
 			return false;
@@ -896,7 +965,7 @@ public class Yaku {
 		}
 	}
 	
-	boolean checkHonitu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHonitu() {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
@@ -967,7 +1036,7 @@ public class Yaku {
 
 	}
 	
-	boolean checkJunCyan(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkJunCyan() {
 		
 		int id;
 		Hai checkHai[][]; 
@@ -1076,19 +1145,19 @@ public class Yaku {
 		return true;
 	}
 	
-	boolean checkSyousangen(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSyousangen() {
 		//三元牌役が成立している個数を調べる
 		int countSangen = 0;
 		//白が刻子
-		if(checkHaku(tehai,addHai,combi) == true){
+		if(checkHaku() == true){
 			countSangen++;
 		}
 		//発が刻子
-		if(checkHatu(tehai,addHai,combi) == true){
+		if(checkHatu() == true){
 			countSangen++;
 		}
 		//中が刻子
-		if(checkCyun(tehai,addHai,combi) == true){
+		if(checkCyun() == true){
 			countSangen++;
 		}
 		//頭が三元牌 かつ、三元牌役が2つ成立
@@ -1099,25 +1168,25 @@ public class Yaku {
 		return false;
 	}
 	
-	boolean checkHonroutou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkHonroutou() {
 		//トイトイが成立している
-		if(checkToitoi(tehai,addHai,combi) == false){
+		if(checkToitoi() == false){
 			return false;
 		}
 		
 		//チャンタが成立している
-		if(checkCyanta(tehai,addHai,combi) == true){
+		if(checkCyanta() == true){
 			return true;
 		}else{
 			return false;
 		}
 	}
 /*	
-	boolean checkRenhou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRenhou() {
 		return true;
 	}
 */
-	boolean checkTinitu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTinitu() {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
@@ -1188,7 +1257,7 @@ public class Yaku {
 
 	}
 
-	boolean checkSuuankou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSuuankou() {
 		//手牌の暗刻が4つ
 		//TODO 上がった際が出上がり、ツモ上がりかどうかの判定も必要？
 		if(combi.kouCount == 4){
@@ -1198,7 +1267,7 @@ public class Yaku {
 		}
 	}
 
-	boolean checkSuukantu(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSuukantu() {
 		int kansnumber = 0;
 		kansnumber += tehai.getAnkansLength();
 		kansnumber += tehai.getMinkansLength();
@@ -1209,19 +1278,19 @@ public class Yaku {
 		}
 	}
 
-	boolean checkDaisangen(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkDaisangen() {
 		//三元牌役が成立している個数を調べる
 		int countSangen = 0;
 		//白が刻子
-		if(checkHaku(tehai,addHai,combi) == true){
+		if(checkHaku() == true){
 			countSangen++;
 		}
 		//発が刻子
-		if(checkHatu(tehai,addHai,combi) == true){
+		if(checkHatu() == true){
 			countSangen++;
 		}
 		//中が刻子
-		if(checkCyun(tehai,addHai,combi) == true){
+		if(checkCyun() == true){
 			countSangen++;
 		}
 		//３元牌が３つ揃っている
@@ -1233,32 +1302,32 @@ public class Yaku {
 	}
 	//TODO 天和、地和は後で考える。
 /*
-	boolean checkTenhou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTenhou() {
 		return true;
 	}
 
-	boolean checkTihou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTihou() {
 		return true;
 	}
 */
 	
-	boolean checkSyousuushi(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkSyousuushi() {
 		//風牌役が成立している個数を調べる
 		int countFon = 0;
 		//東が刻子
-		if(checkTon(tehai,addHai,combi) == true){
+		if(checkTon() == true){
 			countFon++;
 		}
 		//南が刻子
-		if(checkNan(tehai,addHai,combi) == true){
+		if(checkNan() == true){
 			countFon++;
 		}
 		//西が刻子
-		if(checkSya(tehai,addHai,combi) == true){
+		if(checkSya() == true){
 			countFon++;
 		}
 		//北が刻子
-		if(checkPei(tehai,addHai,combi) == true){
+		if(checkPei() == true){
 			countFon++;
 		}
 
@@ -1270,23 +1339,23 @@ public class Yaku {
 		}
 	}
 
-	boolean checkDaisuushi(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkDaisuushi() {
 		//風牌役が成立している個数を調べる
 		int countFon = 0;
 		//東が刻子
-		if(checkTon(tehai,addHai,combi) == true){
+		if(checkTon() == true){
 			countFon++;
 		}
 		//南が刻子
-		if(checkNan(tehai,addHai,combi) == true){
+		if(checkNan() == true){
 			countFon++;
 		}
 		//西が刻子
-		if(checkSya(tehai,addHai,combi) == true){
+		if(checkSya() == true){
 			countFon++;
 		}
 		//北が刻子
-		if(checkPei(tehai,addHai,combi) == true){
+		if(checkPei() == true){
 			countFon++;
 		}
 			//風牌役が4つ成立
@@ -1297,13 +1366,13 @@ public class Yaku {
 		}
 	}
 
-	boolean checkTuuisou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkTuuisou() {
 		int id;
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		Hai checkHai[][]; 
 		
 		//順子があるかどうか確認
-		if(checkToitoi(tehai,addHai,combi) == false){
+		if(checkToitoi() == false){
 			return false;
 		}
 		
@@ -1350,14 +1419,14 @@ public class Yaku {
 		return true;
 	}
 
-	boolean checkChinroutou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkChinroutou() {
 		//順子があるかどうか確認
-		if(checkToitoi(tehai,addHai,combi) == false){
+		if(checkToitoi() == false){
 			return false;
 		}
 		
 		//順子なしでジュンチャンが成立しているか（1と9のみで作成）
-		if(checkJunCyan(tehai,addHai,combi) == false){
+		if(checkJunCyan() == false){
 			return false;
 		}
 		
@@ -1365,7 +1434,7 @@ public class Yaku {
 		
 	}
 
-	boolean checkRyuuisou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkRyuuisou() {
 		int checkId[] = {KIND_SOU+2,KIND_SOU+3,KIND_SOU+4,KIND_SOU+6,KIND_SOU+8,KIND_HATU};
 		int id;
 		boolean ryuuisouflg = false;
@@ -1455,7 +1524,7 @@ public class Yaku {
 		return true;
 	}
 
-	boolean checkCyuurennpoutou(Tehai tehai, Hai addHai, Combi combi) {
+	boolean checkCyuurennpoutou() {
 		int id;
 		
 		//牌の数を調べるための配列 (0番地は使用しない）
@@ -1467,7 +1536,7 @@ public class Yaku {
 			return false;
 		}
 		//手牌が清一になっていない場合も成立しない
-		if(checkTinitu(tehai,addHai,combi) == false){
+		if(checkTinitu() == false){
 			return false;
 		}
 		

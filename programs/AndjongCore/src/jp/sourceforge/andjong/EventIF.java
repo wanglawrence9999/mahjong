@@ -17,6 +17,8 @@ public interface EventIF {
 		NAGASHI,
 		/** ƒcƒ‚ */
 		TSUMO,
+		/** ŽÌ”v‘I‘ð */
+		SUTEHAISELECT,
 		/** ƒcƒ‚‚ ‚ª‚è */
 		TSUMOAGARI,
 		/** ŽÌ”v */

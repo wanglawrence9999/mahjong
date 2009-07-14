@@ -112,4 +112,13 @@ public class Info {
 	public boolean isReach(int kaze) {
 		return game.isReach(kaze);
 	}
+
+	/**
+	 * ツモの残り数を取得します。
+	 * 
+	 * @return ツモの残り数
+	 */
+	public int getTsumoRemain() {
+		return game.getTsumoRemain();
+	}
 }

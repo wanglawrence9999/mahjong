@@ -187,20 +187,20 @@ public class Tehai {
 
 		jyunTehaiLength--;
 	}
-	
+
 	public boolean removeJyunTehai(Hai hai) {
 		int haiId = hai.getId();
 		int haiProperty = hai.getProperty();
-		
+
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if(haiId == jyunTehai[i].getId()) {
-				if(haiProperty == jyunTehai[i].getProperty()) {
+			if (haiId == jyunTehai[i].getId()) {
+				if (haiProperty == jyunTehai[i].getProperty()) {
 					removeJyunTehai(i);
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -414,6 +414,52 @@ public class Tehai {
 			ankans[i][3].copy(this.ankans[i][3]);
 		}
 		return this.ankansLength;
+	}
+
+	/**
+	 * ポンの可否をチェックします。
+	 * 
+	 * @param suteHai
+	 *            捨牌
+	 * @return ポンの可否
+	 */
+	public boolean validPon(Hai suteHai) {
+		int haiId = suteHai.getId();
+		int count = 0;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (haiId == jyunTehai[i].getId()) {
+				count++;
+			}
+		}
+
+		if (count >= 2) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * ポンを設定します。
+	 * 
+	 * @param suteHai
+	 *            捨牌
+	 */
+	public void setPon(Hai suteHai) {
+		int haiId = suteHai.getId();
+		Hai[] minkou = new Hai[3];
+		int minkouIdx = 0;
+
+		minkou[minkouIdx++] = suteHai;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (haiId == jyunTehai[i].getId()) {
+				removeJyunTehai(i--);
+				minkou[minkouIdx++] = suteHai;
+				if (minkouIdx >= 3) {
+					break;
+				}
+			}
+		}
+		addMinkou(minkou);
 	}
 
 	/**

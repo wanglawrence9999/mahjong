@@ -155,7 +155,7 @@ public class Game {
 		ui.event(EID.OYAGIME, 0, 0);
 
 		// 局を開始します。
-		while (kyoku < kyokuMax) {
+		while (kyoku <= kyokuMax) {
 			startKyoku();
 			if (!renchan) {
 				kyoku++;
@@ -417,7 +417,8 @@ public class Game {
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
-				activePlayer.getKawa().add(suteHai, Kawa.PROPERTY_TEDASHI | Kawa.PROPERTY_REACH);
+				activePlayer.getKawa().add(suteHai,
+						Kawa.PROPERTY_TEDASHI | Kawa.PROPERTY_REACH);
 			}
 
 			// イベントを通知します。
@@ -472,6 +473,25 @@ public class Game {
 				this.fromKaze = j;
 				this.toKaze = toKaze;
 				activePlayer = players[kazeToPlayerIdx[this.fromKaze]];
+				break NOTIFYLOOP;
+			case PON:
+				// アクティブプレイヤーを設定します。
+				this.fromKaze = j;
+				this.toKaze = fromKaze;
+				activePlayer = players[kazeToPlayerIdx[this.fromKaze]];
+				activePlayer.getTehai().setPon(suteHai);
+
+				notifyEvent(EID.SUTEHAISELECT, this.fromKaze, this.toKaze);
+
+				// 捨牌のインデックスを取得します。
+				int sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
+				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
+				activePlayer.getKawa().add(suteHai,
+						Kawa.PROPERTY_TEDASHI | Kawa.PROPERTY_NAKI);
+
+				// イベントを通知します。
+				retEid = notifyEvent(EID.PON, this.fromKaze, this.toKaze);
 				break NOTIFYLOOP;
 			default:
 				break;
@@ -538,6 +558,15 @@ public class Game {
 	 */
 	void copyKawa(Kawa kawa, int kaze) {
 		kawa.copy(players[kazeToPlayerIdx[kaze]].getKawa());
+	}
+
+	/**
+	 * ツモの残り数を取得します。
+	 * 
+	 * @return ツモの残り数
+	 */
+	int getTsumoRemain() {
+		return yama.getTsumoRemain();
 	}
 
 	/** カウントフォーマット */

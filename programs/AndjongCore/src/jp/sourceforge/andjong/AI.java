@@ -44,22 +44,38 @@ public class AI implements EventIF {
 			returnEid = eidTsumo(fromKaze, toKaze);
 			break;
 		case SUTEHAI:// 捨牌
-			if (fromKaze == info.getJikaze()) {
-				returnEid = EID.NAGASHI;
-				break;
-			}
-			int agariScore = info.getAgariScore(tehai, info.getSuteHai());
-			if (agariScore > 0) {
-				returnEid = EID.RON;
-			} else {
-				returnEid = EID.NAGASHI;
-			}
+			returnEid = eidSutehai(fromKaze, toKaze);
+			break;
+		case SUTEHAISELECT:
+			// 自分の手牌をコピーします。
+			info.copyTehai(tehai, fromKaze);
+			thinkSutehai(null);
 			break;
 		default:
 			break;
 		}
 
 		return returnEid;
+	}
+
+	private EID eidSutehai(int fromKaze, int toKaze) {
+		if (fromKaze == info.getJikaze()) {
+			return EID.NAGASHI;
+		}
+		int agariScore = info.getAgariScore(tehai, info.getSuteHai());
+		if (agariScore > 0) {
+			return EID.RON;
+		}
+
+		// 牌が少なくなったら鳴いてみます。
+		if (info.getTsumoRemain() < 16) {
+			// ポンできるかチェックします。
+			if (tehai.validPon(info.getSuteHai())) {
+				return EID.PON;
+			}
+		}
+
+		return EID.NAGASHI;
 	}
 
 	/**

@@ -105,6 +105,29 @@ public class Console implements EventIF {
 				System.out.println();
 			}
 			break;
+		case PON:// ポン
+			// 自分の捨牌のみを表示します。
+			if (fromKaze == infoUi.getJikaze()) {
+				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+						+ "][ポン]");
+
+				// 手牌を表示します。
+				printJyunTehai(tehai);
+
+				System.out.println();
+
+				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+						+ "][捨牌]");
+
+				// 河を表示します。
+				printKawa(kawa);
+
+				// 捨牌を表示します。
+				// System.out.println(":"
+				// + idToString((infoUi.getSuteHai()).getId()));
+				System.out.println();
+			}
+			break;
 		case REACH:
 			// 自分の捨牌のみを表示します。
 			if (fromKaze == infoUi.getJikaze()) {
@@ -156,6 +179,16 @@ public class Console implements EventIF {
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		for (int i = 0; i < jyunTehaiLength; i++)
 			System.out.print(idToString(jyunTehai[i].getId()));
+
+		int minkousLength = tehai.getMinkousLength();
+		Hai[][] minkous = tehai.getMinkous();
+		for (int i = 0; i < minkousLength; i++) {
+			System.out.print("[");
+			System.out.print(idToString(minkous[i][0].getId()));
+			System.out.print(idToString(minkous[i][1].getId()));
+			System.out.print(idToString(minkous[i][2].getId()));
+			System.out.print("]");
+		}
 	}
 
 	/**

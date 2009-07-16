@@ -578,20 +578,42 @@ public class Game {
 			combis[i] = new Combi();
 	}
 
-	private int countHu(Tehai tehai, Hai addHai, int combisCount, Combi combi) {
+	
+	/**
+	 * 符を計算します。
+	 * 
+	 * @param tehai 手牌  addHai 和了った牌  combi 手牌の組み合わせ　
+	 *           
+	 * @return int 符
+	 *            
+	 */	
+	private int countHu(Tehai tehai, Hai addHai, Combi combi) {
 		int countHu = 20;
 		int id;
 		Hai checkHai[][];
 
 		id = combi.atamaId;
-		/*
-		 * // TODO 役牌の識別が必要
-		 * 
-		 * //頭が役牌 if((combi.atamaId & KIND_TSUU) != 0 ){ //２ 符追加 countHan += 2;
-		 * }
-		 */
-		// TODO 単騎、カンチャン、ペンチャンならば
+		 
+		//３元牌なら２符追加
+		if((id & KIND_SANGEN) != 0){
+			countHu += 2;
+		}
+		
+		//TODO　南入した場合の対応も必要になる
+		//場風なら２符追加
+		if(id == KIND_TON){
+			countHu += 2;
+		}
+		
+		//自風なら２符追加
+		if(((id & KIND_FON) != 0) &&
+			(id & KIND_MASK) == (info.getJikaze()+1)){
+			countHu += 2;
+		}
+		
+		// TODO 待ちが単騎、カンチャン、ペンチャンならば
 		// countHu += 2;
+		
 		// 刻子による追加
 		// 暗刻による加点
 		for (int i = 0; i < combi.kouCount; i++) {
@@ -632,8 +654,8 @@ public class Game {
 		}
 
 		// 暗槓による加点
-		for (int i = 0; i < tehai.getMinkansLength(); i++) {
-			checkHai = tehai.getMinkans();
+		for (int i = 0; i < tehai.getAnkansLength(); i++) {
+			checkHai = tehai.getAnkans();
 			id = checkHai[i][0].getId();
 			// 牌が字牌もしくは1,9
 			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
@@ -653,15 +675,38 @@ public class Game {
 			// countHu += 10;
 		}
 
+		//一の位がある場合は、切り上げ
+		if(countHu % 10 != 0){
+			countHu = countHu -(countHu%10) + 10;
+		}
+		
 		return countHu;
 	}
 
+	
+
+	/**
+	 * 上がり点数を取得します。
+	 * 
+	 * @param tehai 手牌  addHai 和了った牌  combi 手牌の組み合わせ　
+	 *  
+	 * @return int 和了り点           
+	 */
 	public int getScore(int hanSuu, int huSuu) {
 		int score;
-		// 符　× ２の　（役数　+　場ゾロの2役)
+		// 符　× ２の　（翻数　+　場ゾロの2翻)乗
 		score = huSuu * (int) Math.pow(2, hanSuu + 2);
 		// 子は上の4倍が基本点(親は6倍)
 		score *= 4;
+
+		// 100で割り切れない数がある場合100点繰上げ
+		if (score % 100 != 0) {
+			score = score - (score % 100) + 100;
+		}
+		// 7700以上は8000とする
+		if (score >= 7700) {
+			score = 8000;
+		}
 
 		if (hanSuu >= 13) { // 13翻以上は役満
 			score = 32000;
@@ -673,16 +718,6 @@ public class Game {
 			score = 12000;
 		} else if (hanSuu >= 5) { // 5翻以上は満貫
 			score = 8000;
-		}
-
-		// 7700は8000とする
-		if (score > 7600) {
-			score = 8000;
-		}
-
-		// 100で割り切れない数がある場合100点繰上げ
-		if (score % 100 != 0) {
-			score = score - (score % 100) + 100;
 		}
 
 		return score;
@@ -709,9 +744,9 @@ public class Game {
 		int maxagariScore = 0;
 
 		for (int i = 0; i < combisCount; i++) {
-			Yaku yaku = new Yaku(tehai, addHai, combis[i]);
+			Yaku yaku = new Yaku(tehai, addHai, combis[i],info);
 			hanSuu[i] = yaku.getHanSuu();
-			huSuu[i] = countHu(tehai, addHai, combisCount, combis[i]);
+			huSuu[i] = countHu(tehai, addHai, combis[i]);
 			// TODO ドラの計算
 			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
 		}

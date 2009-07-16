@@ -10,22 +10,41 @@ import jp.sourceforge.andjong.Tehai.Combi;
  * 
  */
 public class Yaku {
+	public static final int JIKAZE_TON = 0;
+	public static final int JIKAZE_NAN = 1;
+	public static final int JIKAZE_SYA = 2;
+	public static final int JIKAZE_PEI = 3;
+	
 	Tehai tehai;
 	Hai addHai;
 	Combi combi;
+	Info info;
 	YakuHantei yakuhantei[];
+	boolean nakiflg = false;
 
 	/**
 	 * Yakuクラスのコンストラクタ。
 	 * 引数を保存し、YakuHanteiクラスの配列を作成する。
+	 * @param tehai 手牌　addHai 上がった牌  combi 手牌 の組み合わせ info 情報
 	 */
-	Yaku(Tehai tehai, Hai addHai, Combi combi){
+	Yaku(Tehai tehai, Hai addHai, Combi combi,Info info){
 		this.tehai = tehai;
 		this.addHai = addHai;
 		this.combi  = combi;
+		this.info   = info;
+		//鳴きがある場合
+		if((tehai.getMinkansLength() != 0)
+		|| (tehai.getMinkousLength() != 0)
+		|| (tehai.getMinshunsLength() != 0)
+		){
+			nakiflg = true;
+		}
+		
 		YakuHantei buffer[] = {new CheckTanyao(),
 							   new CheckPinfu(),
 							   new CheckIpeikou(),
+							   new CheckReach(),
+							   new CheckIppatu(),
 							   new CheckTon(),
 							   new CheckNan(),
 							   new CheckSya(),
@@ -33,6 +52,11 @@ public class Yaku {
 							   new CheckHaku(),
 							   new CheckHatu(),
 							   new CheckCyun(),
+							   new CheckHaitei(),
+							   new CheckRinsyan(),
+							   new CheckCyankan(),
+							   new CheckDoubleReach(),
+							   new CheckTeetoitu(),
 							   new CheckCyanta(),
 							   new CheckIkkituukan(),
 							   new CheckSansyokuDoukou(),
@@ -54,8 +78,22 @@ public class Yaku {
 							   new CheckTuuisou(),
 							   new CheckChinroutou(),
 							   new CheckRyuuisou(),
-							   new CheckCyuurennpoutou()};
+							   new CheckCyuurennpoutou(),
+							   new CheckKokushi()
+		};
+		
 		yakuhantei = buffer;
+
+		//役満成立時は他の一般役は切り捨てる
+		for(int i = 0 ; i < yakuhantei.length ; i++){
+			if((yakuhantei[i].getYakuman() == true) && (yakuhantei[i].getYakuHantei() == true)) {
+				for(int j = 0 ; j < yakuhantei.length; j++){
+					if(yakuhantei[j].getYakuman() == false){
+						yakuhantei[j].setYakuHantei(false);
+					}
+				}
+			}
+		}
 	}
 	
 	/**
@@ -70,6 +108,7 @@ public class Yaku {
 				hanSuu+= yakuhantei[i].getHanSuu();
 			}
 		}
+
 		return hanSuu;
 	}
 	
@@ -139,6 +178,15 @@ public class Yaku {
 		}
 		
 		/**
+		 * 役の成立判定フラグを設定します。
+		 * 
+		 * @param hantei
+		 */
+		void setYakuHantei(boolean hantei){
+			this.hantei = hantei;
+		}
+		
+		/**
 		 * 役の翻数を取得します。
 		 * 
 		 * @return 役の翻数
@@ -192,12 +240,33 @@ public class Yaku {
 			hanSuu = 1;
 		}
 	}
+	
+	private class CheckReach extends YakuHantei{
+		CheckReach(){
+			hantei = checkReach();
+			yakuName = "立直";
+			hanSuu = 1;
+		}
+	}
+	
+	private class CheckIppatu extends YakuHantei{
+		CheckIppatu(){
+			hantei = checkIppatu();
+			yakuName = "一発";
+			hanSuu = 1;
+		}
+	}
 
 	private class CheckTon extends YakuHantei{
 		CheckTon(){
 			hantei = checkTon();
-			yakuName = "東";
-			hanSuu = 1;
+			if(info.getJikaze() == JIKAZE_TON){
+				yakuName = "ダブ東";
+				hanSuu = 2;
+			}else{
+				yakuName = "東";
+				hanSuu = 1;
+			}
 		}
 	}
 
@@ -248,6 +317,46 @@ public class Yaku {
 			hanSuu = 1;
 		}
 	}
+	
+	private class CheckHaitei extends YakuHantei{
+		CheckHaitei(){
+			hantei = checkHaitei();
+			yakuName = "海底摸月";
+			hanSuu = 1;
+		}
+	}	
+	
+	private class CheckRinsyan extends YakuHantei{
+		CheckRinsyan(){
+			hantei = checkRinsyan();
+			yakuName = "嶺上開花";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckCyankan extends YakuHantei{
+		CheckCyankan(){
+			hantei = checkCyankan();
+			yakuName = "槍槓";
+			hanSuu = 1;
+		}
+	}
+
+	private class CheckDoubleReach extends YakuHantei{
+		CheckDoubleReach(){
+			hantei = checkDoubleReach();
+			yakuName = "ダブル立直";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckTeetoitu extends YakuHantei{
+		CheckTeetoitu(){
+			hantei = checkTeetoitu();
+			yakuName = "七対子";
+			hanSuu = 2;
+		}
+	}
 
 	private class CheckCyanta extends YakuHantei{
 		CheckCyanta(){
@@ -259,7 +368,7 @@ public class Yaku {
 				hantei = false;
 			}	
 			yakuName = "全帯";
-			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+			if (nakiflg == true) {
 				hanSuu = 1;
 			}else{
 				hanSuu = 2;
@@ -271,7 +380,7 @@ public class Yaku {
 		CheckIkkituukan(){
 			hantei = checkIkkituukan();
 			yakuName = "一気通貫";
-			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+			if (nakiflg == true) {
 				hanSuu = 1;
 			}else{
 				hanSuu = 2;
@@ -283,7 +392,7 @@ public class Yaku {
 		CheckSansyokuDoujun(){
 			hantei = checkSansyokuDoujun();
 			yakuName = "三色同順";
-			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+			if (nakiflg == true) {
 				hanSuu = 1;
 			}else{
 				hanSuu = 2;
@@ -338,7 +447,7 @@ public class Yaku {
 				hantei = false;
 			}
 			yakuName = "混一色";
-			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+			if (nakiflg == true) {
 				hanSuu = 2;
 			}else{
 				hanSuu = 3;
@@ -350,7 +459,7 @@ public class Yaku {
 		CheckJunCyan(){
 			hantei = checkJunCyan();
 			yakuName = "純全帯";
-			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+			if (nakiflg == true) {
 				hanSuu = 2;
 			}else{
 				hanSuu = 3;
@@ -378,7 +487,7 @@ public class Yaku {
 		CheckTinitu(){
 			hantei = checkTinitu();
 			yakuName = "清一色";
-			if (tehai.getJyunTehaiLength() < Tehai.JYUNTEHAI_MAX) {
+			if (nakiflg == true) {
 				hanSuu = 5;
 			}else{
 				hanSuu = 6;
@@ -465,6 +574,14 @@ public class Yaku {
 			yakuman = true;
 		}
 	}
+	private class CheckKokushi extends YakuHantei{
+		CheckKokushi(){
+			hantei = checkKokushi();
+			yakuName = "国士無双";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
 
 	
 	boolean checkTanyao() {
@@ -534,7 +651,7 @@ public class Yaku {
 	boolean checkPinfu() {
 		int id;
 		//鳴きが入っている場合は成立しない
-		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
+		if(nakiflg == true){
 			return false;
 		}
 		
@@ -549,12 +666,17 @@ public class Yaku {
 			return false;
 		}
 		
-		//頭が風牌
-		if( (id & KIND_FON) != 0){
-			//if()//TODO 場風もしくは自風ならばfalse	
-				return false;
+		//頭が場風
+		if( (id & KIND_TON) != 0){
+			return false;
 		}
 		
+		//頭が自風
+		if(((id & KIND_FON) != 0) && 
+				(id & KIND_MASK) == (info.getJikaze()+1)){
+			return false;
+		}		
+
 		//待ちが両面待ちか
 		//TODO 両面待ちかどうか判定
 		
@@ -563,9 +685,8 @@ public class Yaku {
 	}
 
 	boolean checkIpeikou() {
-				
 		//鳴きが入っている場合は成立しない
-		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
+		if(nakiflg == true){
 			return false;
 		}
 		
@@ -575,28 +696,28 @@ public class Yaku {
 				return true;
 			}
 		}
-		
 		return false;
 	}
-	//TODO リーチや一発系の役
-	/*
+	
+	
 	boolean checkReach() {
-		return true;
+		return info.isReach(info.getJikaze());
 	}
-
+	
 	boolean checkIppatu() {
-		return true;
+		//TODO 一発の判定
+		return false;
 	}
 
 	boolean checkTumo() {
 		//鳴きが入っている場合は成立しない
-		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
+		if(nakiflg == true){
 			return false;
 		}
-		
+		//TODO ツモ上がりかどうかの判定
 		return true;
 	}
-*/
+
 
 	//役牌ができているかどうかの判定に使う補助メソッド
 	private boolean checkYakuHai(Tehai tehai, Combi combi , int yakuHaiId) {
@@ -647,15 +768,27 @@ public class Yaku {
 	}
 
 	boolean checkNan() {
-		return checkYakuHai(tehai,combi,KIND_NAN);
+		if(info.getJikaze() == JIKAZE_NAN){
+			return checkYakuHai(tehai,combi,KIND_NAN);
+		}else{
+			return false;
+		}
 	}
 
 	boolean checkSya() {
-		return checkYakuHai(tehai,combi,KIND_SYA);
+		if(info.getJikaze() == JIKAZE_SYA){
+			return checkYakuHai(tehai,combi,KIND_NAN);
+		}else{
+			return false;
+		}
 	}
 
 	boolean checkPei() {
-		return checkYakuHai(tehai,combi,KIND_PEE);
+		if(info.getJikaze() == JIKAZE_PEI){
+			return checkYakuHai(tehai,combi,KIND_NAN);
+		}else{
+			return false;
+		}
 	}
 
 	boolean checkHaku() {
@@ -671,28 +804,34 @@ public class Yaku {
 	}
 	
 	//TODO 特殊な役は後回し
-/*
-	boolean checkHaitei() {
 
-		return true;
+	boolean checkHaitei() {
+		//TODO　海底摸月
+		return false;
 	}
 	
 	boolean checkRinsyan() {
-
-		return true;
+		//TODO 嶺上開花
+		return false;
 	}
 	boolean checkCyankan() {
-		return true;
+		//TODO 槍槓
+		return false;
 	}
 	
 	boolean checkDoubleReach() {
-		return true;
+		//TODO ダブルリーチ
+		return false;
 	}
 	
 	boolean checkTeetoitu() {
-		return true;
+		//鳴きが入っている場合は成立しない
+		if(nakiflg == true){
+			return false;
+		}
+		//TODO 七対子
+		return false;
 	}
-*/
 	
 	boolean checkCyanta() {
 		int id;
@@ -947,7 +1086,7 @@ public class Yaku {
 
 	boolean checkRyanpeikou() {
 		//鳴きが入っている場合は成立しない
-		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
+		if(nakiflg == true){
 			return false;
 		}
 		
@@ -1301,15 +1440,13 @@ public class Yaku {
 		}
 	}
 	//TODO 天和、地和は後で考える。
-/*
 	boolean checkTenhou() {
-		return true;
+		return false;
 	}
 
 	boolean checkTihou() {
-		return true;
+		return false;
 	}
-*/
 	
 	boolean checkSyousuushi() {
 		//風牌役が成立している個数を調べる
@@ -1532,7 +1669,7 @@ public class Yaku {
 		Hai checkHai[] = new Hai[JYUNTEHAI_MAX];
 		
 		//鳴きがある場合は成立しない
-		if(tehai.getJyunTehaiLength() < JYUNTEHAI_MAX){
+		if(nakiflg == true){
 			return false;
 		}
 		//手牌が清一になっていない場合も成立しない
@@ -1565,6 +1702,10 @@ public class Yaku {
 			return true;
 		}
 		
+		return false;
+	}
+	
+	boolean checkKokushi() {
 		return false;
 	}
 }

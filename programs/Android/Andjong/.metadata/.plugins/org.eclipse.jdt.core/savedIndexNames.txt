@@ -1,3 +1,0 @@
-INDEX VERSION 1.125+D:\Project\andjong\trunk\programs\Android\Andjong\.metadata\.plugins\org.eclipse.jdt.core
-3827552546.index
-3018746975.index

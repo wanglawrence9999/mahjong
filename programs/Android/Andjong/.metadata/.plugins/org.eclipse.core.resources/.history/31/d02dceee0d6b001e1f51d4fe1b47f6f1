@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<Button android:text="@string/New_Game" android:layout_width="fill_parent" android:layout_height="wrap_content" ></Button>

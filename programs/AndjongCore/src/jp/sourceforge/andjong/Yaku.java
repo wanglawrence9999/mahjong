@@ -677,8 +677,54 @@ public class Yaku {
 			return false;
 		}		
 
-		//待ちが両面待ちか
-		//TODO 両面待ちかどうか判定
+		int addHaiid = addHai.getId();
+		//字牌の頭待ちの場合は不成立
+		if((addHaiid & KIND_TSUU) != 0){
+			return false;
+		}
+
+		//待ちが両面待ちか判定
+		boolean ryanmenflg = false;
+		//上がり牌の数をチェックして場合分け
+		switch(addHaiid & KIND_MASK){
+			//上がり牌が1,2,3の場合は123,234,345の順子ができているかどうかチェック
+			case 1:
+			case 2:
+			case 3:
+				for(int i = 0 ; i < combi.shunCount ; i++){
+					if(addHaiid == combi.shunIds[i]){
+						ryanmenflg = true;
+					}
+				}
+				break;
+			//上がり牌が4,5,6の場合は456か234,567か345,678か456の順子ができているかどうかチェック
+			case 4:
+			case 5:
+			case 6:
+				for(int i = 0 ; i < combi.shunCount ; i++){
+					if((addHaiid == combi.shunIds[i])
+					 ||(addHaiid-2 == combi.shunIds[i])){
+						ryanmenflg = true;
+					}
+				}
+				break;
+			//上がり牌が7,8,9の場合は567,678,789の順子ができているかどうかチェック
+			case 7:
+			case 8:
+			case 9:
+				for(int i = 0 ; i < combi.shunCount ; i++){
+					if(addHaiid-2 == (combi.shunIds[i])){
+						ryanmenflg = true;
+					}
+				}
+				break;
+			default:
+				break;
+		}
+		if(ryanmenflg == false){
+			return false;
+		}
+
 		
 		//条件を満たしていれば、約成立
 		return true;

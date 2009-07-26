@@ -147,7 +147,7 @@ class Player {
 		tehai.init();
 
 		// ‰Í‚ğ‰Šú‰»‚µ‚Ü‚·B
-		kawa.init();
+		kawa.initialize();
 
 		// “_–_‚ğ‰Šú‰»‚µ‚Ü‚·B
 		tenbou = 25000;

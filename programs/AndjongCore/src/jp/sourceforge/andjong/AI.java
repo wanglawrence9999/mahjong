@@ -154,23 +154,25 @@ public class AI implements EventIF {
 	}
 
 	private final static Hai[] haiTable = new Hai[] {
-			new Hai(Hai.KIND_WAN | 1), new Hai(Hai.KIND_WAN | 2),
-			new Hai(Hai.KIND_WAN | 3), new Hai(Hai.KIND_WAN | 4),
-			new Hai(Hai.KIND_WAN | 5), new Hai(Hai.KIND_WAN | 6),
-			new Hai(Hai.KIND_WAN | 7), new Hai(Hai.KIND_WAN | 8),
-			new Hai(Hai.KIND_WAN | 9), new Hai(Hai.KIND_PIN | 1),
-			new Hai(Hai.KIND_PIN | 2), new Hai(Hai.KIND_PIN | 3),
-			new Hai(Hai.KIND_PIN | 4), new Hai(Hai.KIND_PIN | 5),
-			new Hai(Hai.KIND_PIN | 6), new Hai(Hai.KIND_PIN | 7),
-			new Hai(Hai.KIND_PIN | 8), new Hai(Hai.KIND_PIN | 9),
-			new Hai(Hai.KIND_SOU | 1), new Hai(Hai.KIND_SOU | 2),
-			new Hai(Hai.KIND_SOU | 3), new Hai(Hai.KIND_SOU | 4),
-			new Hai(Hai.KIND_SOU | 5), new Hai(Hai.KIND_SOU | 6),
-			new Hai(Hai.KIND_SOU | 7), new Hai(Hai.KIND_SOU | 8),
-			new Hai(Hai.KIND_SOU | 9), new Hai(Hai.KIND_FON | 1),
-			new Hai(Hai.KIND_FON | 2), new Hai(Hai.KIND_FON | 3),
-			new Hai(Hai.KIND_SANGEN | 1), new Hai(Hai.KIND_SANGEN | 2),
-			new Hai(Hai.KIND_SANGEN | 3), new Hai(Hai.KIND_SANGEN | 4), };
+			new Hai(Hai.ID_WAN_1), new Hai(Hai.ID_WAN_2),
+			new Hai(Hai.ID_WAN_3), new Hai(Hai.ID_WAN_4),
+			new Hai(Hai.ID_WAN_5), new Hai(Hai.ID_WAN_6),
+			new Hai(Hai.ID_WAN_7), new Hai(Hai.ID_WAN_8),
+			new Hai(Hai.ID_WAN_9),
+			new Hai(Hai.ID_PIN_1), new Hai(Hai.ID_PIN_2),
+			new Hai(Hai.ID_PIN_3), new Hai(Hai.ID_PIN_4),
+			new Hai(Hai.ID_PIN_5), new Hai(Hai.ID_PIN_6),
+			new Hai(Hai.ID_PIN_7), new Hai(Hai.ID_PIN_8),
+			new Hai(Hai.ID_PIN_9),
+			new Hai(Hai.ID_SOU_1), new Hai(Hai.ID_SOU_2),
+			new Hai(Hai.ID_SOU_3), new Hai(Hai.ID_SOU_4),
+			new Hai(Hai.ID_SOU_5), new Hai(Hai.ID_SOU_6),
+			new Hai(Hai.ID_SOU_7), new Hai(Hai.ID_SOU_8),
+			new Hai(Hai.ID_SOU_9),
+			new Hai(Hai.ID_TON), new Hai(Hai.ID_NAN),
+			new Hai(Hai.ID_SHA), new Hai(Hai.ID_PE),
+			new Hai(Hai.ID_HAKU), new Hai(Hai.ID_HATSU),
+			new Hai(Hai.ID_CYUN) };
 
 	private boolean thinkReach(Tehai tehai) {
 		for (Hai hai : haiTable) {
@@ -186,7 +188,7 @@ public class AI implements EventIF {
 		int score = 0;
 
 		for (int i = 0; i < countFormat.length; i++) {
-			if ((countFormat.counts[i].id & Hai.KIND_SHUU) != 0) {
+			if ((countFormat.counts[i].id & Hai.OLD_KIND_SHUU) != 0) {
 				score += countFormat.counts[i].length * HYOUKA_SHUU;
 			}
 
@@ -198,7 +200,7 @@ public class AI implements EventIF {
 				score += 8;
 			}
 
-			if ((countFormat.counts[i].id & Hai.KIND_SHUU) > 0) {
+			if ((countFormat.counts[i].id & Hai.OLD_KIND_SHUU) > 0) {
 				if ((countFormat.counts[i].id + 1) == countFormat.counts[i + 1].id) {
 					score += 4;
 				}

@@ -113,6 +113,11 @@ public class Game {
 		return sais;
 	}
 
+	public final static int KAZE_TON = 1;
+	public final static int KAZE_NAN = 2;
+	public final static int KAZE_SHA = 3;
+	public final static int KAZE_PE = 4;
+
 	/** 割れ目 */
 	private int wareme;
 
@@ -241,6 +246,9 @@ public class Game {
 		sais[1].saifuri();
 		wareme = (sais[0].getNo() + sais[1].getNo() - 1) % 4;
 
+		// 山に割れ目を設定します。
+		yama.setWareme(sais);
+
 		// UIイベント（サイ振り）を発行します。
 		ui.event(EID.SAIFURI, fromKaze, toKaze);
 
@@ -356,9 +364,6 @@ public class Game {
 	 * 配牌します。
 	 */
 	private void haipai() {
-		// 山に割れ目を設定します。
-		yama.setWareme(sais);
-
 		for (int i = 0, j = oyaIdx, max = players.length * 13; i < max; i++, j++) {
 			if (j >= players.length) {
 				j = 0;
@@ -400,7 +405,8 @@ public class Game {
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
-				activePlayer.getKawa().add(suteHai, Kawa.PROPERTY_TEDASHI);
+				activePlayer.getKawa().add(suteHai);
+				activePlayer.getKawa().setTedashi(true);
 			}
 
 			// イベントを通知します。
@@ -412,13 +418,14 @@ public class Game {
 			if (sutehaiIdx == 13) {// ツモ切り
 				suteHai.copy(tsumoHai);
 				activePlayer.getKawa().add(suteHai);
-				activePlayer.getKawa().add(suteHai, Kawa.PROPERTY_REACH);
+				activePlayer.getKawa().setReach(true);
 			} else {// 手出し
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
-				activePlayer.getKawa().add(suteHai,
-						Kawa.PROPERTY_TEDASHI | Kawa.PROPERTY_REACH);
+				activePlayer.getKawa().add(suteHai);
+				activePlayer.getKawa().setTedashi(true);
+				activePlayer.getKawa().setReach(true);
 			}
 
 			// イベントを通知します。
@@ -487,8 +494,9 @@ public class Game {
 				int sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
-				activePlayer.getKawa().add(suteHai,
-						Kawa.PROPERTY_TEDASHI | Kawa.PROPERTY_NAKI);
+				activePlayer.getKawa().add(suteHai);
+				activePlayer.getKawa().setNaki(true);
+				activePlayer.getKawa().setTedashi(true);
 
 				// イベントを通知します。
 				retEid = notifyEvent(EID.PON, this.fromKaze, this.toKaze);
@@ -511,7 +519,7 @@ public class Game {
 	 * @return 表ドラ、槓ドラの配列
 	 */
 	Hai[] getDoras() {
-		return getYama().getDoras();
+		return getYama().getDoraHais();
 	}
 
 	/**
@@ -566,7 +574,7 @@ public class Game {
 	 * @return ツモの残り数
 	 */
 	int getTsumoRemain() {
-		return yama.getTsumoRemain();
+		return yama.getTsumoNokori();
 	}
 
 	/** カウントフォーマット */
@@ -578,49 +586,49 @@ public class Game {
 			combis[i] = new Combi();
 	}
 
-	
 	/**
 	 * 符を計算します。
 	 * 
-	 * @param tehai 手牌  addHai 和了った牌  combi 手牌の組み合わせ　
-	 *           
+	 * @param tehai
+	 *            手牌 addHai 和了った牌 combi 手牌の組み合わせ　
+	 * 
 	 * @return int 符
-	 *            
-	 */	
+	 * 
+	 */
 	private int countHu(Tehai tehai, Hai addHai, Combi combi) {
 		int countHu = 20;
 		int id;
 		Hai checkHai[][];
 
 		id = combi.atamaId;
-		 
-		//３元牌なら２符追加
-		if((id & KIND_SANGEN) != 0){
+
+		// ３元牌なら２符追加
+		if ((id & OLD_KIND_SANGEN) != 0) {
 			countHu += 2;
 		}
-		
-		//TODO　南入した場合の対応も必要になる
-		//場風なら２符追加
-		if(id == KIND_TON){
+
+		// TODO　南入した場合の対応も必要になる
+		// 場風なら２符追加
+		if (id == OLD_KIND_TON) {
 			countHu += 2;
 		}
-		
-		//自風なら２符追加
-		if(((id & KIND_FON) != 0) &&
-			(id & KIND_MASK) == (info.getJikaze()+1)){
+
+		// 自風なら２符追加
+		if (((id & OLD_KIND_FON) != 0)
+				&& (id & OLD_KIND_MASK) == (info.getJikaze() + 1)) {
 			countHu += 2;
 		}
-		
+
 		// TODO 待ちが単騎、カンチャン、ペンチャンならば
 		// countHu += 2;
-		
+
 		// 刻子による追加
 		// 暗刻による加点
 		for (int i = 0; i < combi.kouCount; i++) {
 			id = combi.kouIds[i];
 			// 牌が字牌もしくは1,9
-			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
-					|| ((id & KIND_MASK) == 9)) {
+			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
+					|| ((id & OLD_KIND_MASK) == 9)) {
 				countHu += 8;
 			} else {
 				countHu += 4;
@@ -630,10 +638,10 @@ public class Game {
 		// 明刻による加点
 		for (int i = 0; i < tehai.getMinkousLength(); i++) {
 			checkHai = tehai.getMinkous();
-			id = checkHai[i][0].getId();
+			id = checkHai[i][0].getOldId();
 			// 牌が字牌もしくは1,9
-			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
-					|| ((id & KIND_MASK) == 9)) {
+			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
+					|| ((id & OLD_KIND_MASK) == 9)) {
 				countHu += 4;
 			} else {
 				countHu += 2;
@@ -643,10 +651,10 @@ public class Game {
 		// 明槓による加点
 		for (int i = 0; i < tehai.getMinkansLength(); i++) {
 			checkHai = tehai.getMinkans();
-			id = checkHai[i][0].getId();
+			id = checkHai[i][0].getOldId();
 			// 牌が字牌もしくは1,9
-			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
-					|| ((id & KIND_MASK) == 9)) {
+			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
+					|| ((id & OLD_KIND_MASK) == 9)) {
 				countHu += 16;
 			} else {
 				countHu += 8;
@@ -656,10 +664,10 @@ public class Game {
 		// 暗槓による加点
 		for (int i = 0; i < tehai.getAnkansLength(); i++) {
 			checkHai = tehai.getAnkans();
-			id = checkHai[i][0].getId();
+			id = checkHai[i][0].getOldId();
 			// 牌が字牌もしくは1,9
-			if (((id & KIND_TSUU) != 0) || ((id & KIND_MASK) == 1)
-					|| ((id & KIND_MASK) == 9)) {
+			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
+					|| ((id & OLD_KIND_MASK) == 9)) {
 				countHu += 32;
 			} else {
 				countHu += 16;
@@ -675,22 +683,21 @@ public class Game {
 			// countHu += 10;
 		}
 
-		//一の位がある場合は、切り上げ
-		if(countHu % 10 != 0){
-			countHu = countHu -(countHu%10) + 10;
+		// 一の位がある場合は、切り上げ
+		if (countHu % 10 != 0) {
+			countHu = countHu - (countHu % 10) + 10;
 		}
-		
+
 		return countHu;
 	}
-
-	
 
 	/**
 	 * 上がり点数を取得します。
 	 * 
-	 * @param tehai 手牌  addHai 和了った牌  combi 手牌の組み合わせ　
-	 *  
-	 * @return int 和了り点           
+	 * @param tehai
+	 *            手牌 addHai 和了った牌 combi 手牌の組み合わせ　
+	 * 
+	 * @return int 和了り点
 	 */
 	public int getScore(int hanSuu, int huSuu) {
 		int score;
@@ -744,7 +751,7 @@ public class Game {
 		int maxagariScore = 0;
 
 		for (int i = 0; i < combisCount; i++) {
-			Yaku yaku = new Yaku(tehai, addHai, combis[i],info);
+			Yaku yaku = new Yaku(tehai, addHai, combis[i], info);
 			hanSuu[i] = yaku.getHanSuu();
 			huSuu[i] = countHu(tehai, addHai, combis[i]);
 			// TODO ドラの計算

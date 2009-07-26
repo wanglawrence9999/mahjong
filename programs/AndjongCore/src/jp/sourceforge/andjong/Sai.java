@@ -3,7 +3,7 @@ package jp.sourceforge.andjong;
 import java.util.Random;
 
 /**
- * サイコロを管理するクラスです。
+ * サイコロを管理するクラス
  * 
  * @author Yuji Urushibara
  * 
@@ -13,7 +13,7 @@ public class Sai {
 	private int no;
 
 	/**
-	 * 番号を取得します。
+	 * 番号を取得する。
 	 * 
 	 * @return 番号
 	 */
@@ -22,11 +22,11 @@ public class Sai {
 	}
 
 	/**
-	 * サイコロを振って番号を取得します。
+	 * サイコロを振って番号を取得する。
 	 * 
 	 * @return 番号
 	 */
-	public int saifuri() {
+	int saifuri() {
 		return no = new Random().nextInt(6) + 1;
 	}
 }

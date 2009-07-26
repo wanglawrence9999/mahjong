@@ -115,10 +115,7 @@ public class Tehai {
 
 		int i;
 		for (i = jyunTehaiLength; i > 0; i--) {
-			if (jyunTehai[i - 1].getId() == hai.getId()) {
-				if (jyunTehai[i - 1].getProperty() < (hai.getProperty() & PROPERTY_AKA))
-					break;
-			} else if (jyunTehai[i - 1].getId() < hai.getId())
+			if (jyunTehai[i - 1].getOldId() <= hai.getOldId())
 				break;
 
 			jyunTehai[i].copy(jyunTehai[i - 1]);
@@ -189,15 +186,12 @@ public class Tehai {
 	}
 
 	public boolean removeJyunTehai(Hai hai) {
-		int haiId = hai.getId();
-		int haiProperty = hai.getProperty();
+		int haiId = hai.getOldId();
 
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getId()) {
-				if (haiProperty == jyunTehai[i].getProperty()) {
-					removeJyunTehai(i);
-					return true;
-				}
+			if (haiId == jyunTehai[i].getOldId()) {
+				removeJyunTehai(i);
+				return true;
 			}
 		}
 
@@ -424,10 +418,10 @@ public class Tehai {
 	 * @return ポンの可否
 	 */
 	public boolean validPon(Hai suteHai) {
-		int haiId = suteHai.getId();
+		int haiId = suteHai.getOldId();
 		int count = 0;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getId()) {
+			if (haiId == jyunTehai[i].getOldId()) {
 				count++;
 			}
 		}
@@ -445,13 +439,13 @@ public class Tehai {
 	 *            捨牌
 	 */
 	public void setPon(Hai suteHai) {
-		int haiId = suteHai.getId();
+		int haiId = suteHai.getOldId();
 		Hai[] minkou = new Hai[3];
 		int minkouIdx = 0;
 
 		minkou[minkouIdx++] = suteHai;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getId()) {
+			if (haiId == jyunTehai[i].getOldId()) {
 				removeJyunTehai(i--);
 				minkou[minkouIdx++] = suteHai;
 				if (minkouIdx >= 3) {
@@ -533,12 +527,12 @@ public class Tehai {
 		countFormat.length = 0;
 
 		if (addHai != null) {
-			addHaiId = addHai.getId();
+			addHaiId = addHai.getOldId();
 			set = false;
 		}
 
 		for (int i = 0; i < jyunTehaiLength;) {
-			jyunTehaiId = jyunTehai[i].getId();
+			jyunTehaiId = jyunTehai[i].getOldId();
 
 			if (!set && (jyunTehaiId > addHaiId)) {
 				set = true;
@@ -557,7 +551,7 @@ public class Tehai {
 			}
 
 			while (++i < jyunTehaiLength)
-				if (jyunTehaiId == jyunTehai[i].getId())
+				if (jyunTehaiId == jyunTehai[i].getOldId())
 					countFormat.counts[countFormat.length].length++;
 				else
 					break;
@@ -722,7 +716,7 @@ public class Tehai {
 		 * 順子をチェックする。
 		 */
 		if (((pos + 2) < countFormat.length)
-				&& ((countFormat.counts[pos + 2].id & KIND_TSUU) == 0)) {
+				&& ((countFormat.counts[pos + 2].id & OLD_KIND_TSUU) == 0)) {
 			if ((countFormat.counts[pos].id + 1 == countFormat.counts[pos + 1].id)
 					&& (countFormat.counts[pos + 1].length > 0)) {
 				if ((countFormat.counts[pos].id + 2 == countFormat.counts[pos + 2].id)

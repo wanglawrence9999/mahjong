@@ -58,7 +58,7 @@ public class Console implements EventIF {
 			Hai[] doras = infoUi.getDoras();
 			System.out.print("[ƒhƒ‰•\¦”v]");
 			for (Hai hai : doras) {
-				System.out.print("[" + idToString(hai.getId()) + "]");
+				System.out.print("[" + idToString(hai.getOldId()) + "]");
 			}
 			System.out.println();
 			break;
@@ -77,7 +77,7 @@ public class Console implements EventIF {
 
 			// ƒcƒ‚”v‚ğ•\¦‚µ‚Ü‚·B
 			System.out
-					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
+					.println(":" + idToString((infoUi.getTsumoHai()).getOldId()));
 			break;
 		case TSUMOAGARI:// ƒcƒ‚‚ ‚ª‚è
 			System.out.print("[" + jikazeToString(infoUi.getJikaze())
@@ -88,7 +88,7 @@ public class Console implements EventIF {
 
 			// ƒcƒ‚”v‚ğ•\¦‚µ‚Ü‚·B
 			System.out
-					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
+					.println(":" + idToString((infoUi.getTsumoHai()).getOldId()));
 			break;
 		case SUTEHAI:// Ì”v
 			// ©•ª‚ÌÌ”v‚Ì‚İ‚ğ•\¦‚µ‚Ü‚·B
@@ -151,7 +151,7 @@ public class Console implements EventIF {
 			printJyunTehai(tehai);
 
 			// “–‚½‚è”v‚ğ•\¦‚µ‚Ü‚·B
-			System.out.println(":" + idToString((infoUi.getSuteHai()).getId()));
+			System.out.println(":" + idToString((infoUi.getSuteHai()).getOldId()));
 			break;
 		default:
 			break;
@@ -178,15 +178,15 @@ public class Console implements EventIF {
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		for (int i = 0; i < jyunTehaiLength; i++)
-			System.out.print(idToString(jyunTehai[i].getId()));
+			System.out.print(idToString(jyunTehai[i].getOldId()));
 
 		int minkousLength = tehai.getMinkousLength();
 		Hai[][] minkous = tehai.getMinkous();
 		for (int i = 0; i < minkousLength; i++) {
 			System.out.print("[");
-			System.out.print(idToString(minkous[i][0].getId()));
-			System.out.print(idToString(minkous[i][1].getId()));
-			System.out.print(idToString(minkous[i][2].getId()));
+			System.out.print(idToString(minkous[i][0].getOldId()));
+			System.out.print(idToString(minkous[i][1].getOldId()));
+			System.out.print(idToString(minkous[i][2].getOldId()));
 			System.out.print("]");
 		}
 	}
@@ -199,10 +199,10 @@ public class Console implements EventIF {
 	 */
 	private void printKawa(Kawa kawa) {
 		infoUi.copyKawa(kawa, infoUi.getJikaze());
-		KawaHai[] kawaHais = kawa.getKawaHai();
-		int kawaLength = kawa.getKawaHaiLength();
+		SuteHai[] SuteHai = kawa.getSuteHais();
+		int kawaLength = kawa.getSuteHaiLength();
 		for (int i = 0; i < kawaLength; i++)
-			System.out.print(idToString(kawaHais[i].getId()));
+			System.out.print(idToString(SuteHai[i].getOldId()));
 	}
 
 	/**
@@ -213,11 +213,11 @@ public class Console implements EventIF {
 	 * @return •¶š—ñ
 	 */
 	static public String idToString(int id) {
-		int kind = id & (Hai.KIND_SHUU | Hai.KIND_TSUU);
-		id &= ~(Hai.KIND_SHUU | Hai.KIND_TSUU);
+		int kind = id & (Hai.OLD_KIND_SHUU | Hai.OLD_KIND_TSUU);
+		id &= ~(Hai.OLD_KIND_SHUU | Hai.OLD_KIND_TSUU);
 
 		switch (kind) {
-		case Hai.KIND_WAN:
+		case Hai.OLD_KIND_WAN:
 			switch (id) {
 			case 1:
 				return "ˆê";
@@ -239,7 +239,7 @@ public class Console implements EventIF {
 				return "‹ã";
 			}
 			break;
-		case Hai.KIND_PIN:
+		case Hai.OLD_KIND_PIN:
 			switch (id) {
 			case 1:
 				return "‡@";
@@ -261,7 +261,7 @@ public class Console implements EventIF {
 				return "‡H";
 			}
 			break;
-		case Hai.KIND_SOU:
+		case Hai.OLD_KIND_SOU:
 			switch (id) {
 			case 1:
 				return "‚P";
@@ -283,7 +283,7 @@ public class Console implements EventIF {
 				return "‚X";
 			}
 			break;
-		case Hai.KIND_FON:
+		case Hai.OLD_KIND_FON:
 			switch (id) {
 			case 1:
 				return "“Œ";
@@ -295,7 +295,7 @@ public class Console implements EventIF {
 				return "–k";
 			}
 			break;
-		case Hai.KIND_SANGEN:
+		case Hai.OLD_KIND_SANGEN:
 			switch (id) {
 			case 1:
 				return "”’";

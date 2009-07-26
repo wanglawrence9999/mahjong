@@ -1,73 +1,92 @@
 package jp.sourceforge.andjong;
 
 /**
- * 河を管理するクラスです。
+ * 河を管理するクラス
  * 
  * @author Yuji Urushibara
  * 
  */
 public class Kawa {
-	/** プロパティ（リーチ） */
-	public final static int PROPERTY_REACH = 0x00000002;
-	/** プロパティ（鳴き） */
-	public final static int PROPERTY_NAKI = 0x00000004;
-	/** プロパティ（手出し） */
-	public final static int PROPERTY_TEDASHI = 0x00000008;
+	/** 捨牌の長さの最大値 */
+	public final static int SUTEHAIS_LENGTH_MAX = 32;
 
-	/** 河の最大数 */
-	public final static int KAWA_MAX = 25;
+	/** 捨牌 */
+	private SuteHai[] suteHais = new SuteHai[SUTEHAIS_LENGTH_MAX];
 
-	/** 河 */
-	private KawaHai[] kawaHais = new KawaHai[KAWA_MAX];
-
-	/** 河の長さ */
-	private int kawaLength;
+	/** 捨牌の長さ */
+	private int suteHaisLength;
 
 	{
-		for (int i = 0; i < kawaHais.length; i++)
-			kawaHais[i] = new KawaHai();
+		for (int i = 0; i < SUTEHAIS_LENGTH_MAX; i++) {
+			suteHais[i] = new SuteHai();
+		}
 	}
 
 	/**
 	 * 河を初期化する。
 	 */
-	void init() {
-		kawaLength = 0;
+	public void initialize() {
+		suteHaisLength = 0;
 	}
 
 	/**
-	 * 河に牌を追加する。
+	 * 捨牌に牌を追加する。
 	 * 
-	 * @param addHai
+	 * @param hai
 	 *            追加する牌
 	 */
-	void add(Hai addHai) {
-		kawaHais[kawaLength].copy(addHai);
-		kawaLength++;
+	public boolean add(Hai hai) {
+		if (suteHaisLength >= SUTEHAIS_LENGTH_MAX) {
+			return false;
+		}
+
+		suteHais[suteHaisLength++].copy(hai);
+		return true;
 	}
 
 	/**
-	 * 河に牌を追加する。
+	 * 捨牌の最後の牌に、鳴きフラグを設定する。
 	 * 
-	 * @param addHai
-	 *            追加する牌
-	 * @param property
-	 *            追加するプロパティ
+	 * @param naki
+	 *            鳴きフラグ
 	 */
-	void add(Hai addHai, int property) {
-		kawaHais[kawaLength].copy(addHai);
-		addProperty(property);
-		kawaLength++;
+	public boolean setNaki(boolean naki) {
+		if (suteHaisLength <= 0) {
+			return false;
+		}
+
+		suteHais[suteHaisLength - 1].setNaki(naki);
+		return true;
 	}
 
 	/**
-	 * 河の最後の牌にプロパティを追加する。
+	 * 捨牌の最後の牌に、リーチフラグを設定する。
 	 * 
-	 * @param property
-	 *            追加するプロパティ
+	 * @param reach
+	 *            リーチフラグ
 	 */
-	void addProperty(int property) {
-		kawaHais[kawaLength].addKawaProperty(property);
+	public boolean setReach(boolean reach) {
+		if (suteHaisLength <= 0) {
+			return false;
+		}
+
+		suteHais[suteHaisLength - 1].setReach(reach);
+		return true;
+	}
+
+	/**
+	 * 捨牌の最後の牌に、手出しフラグを設定する。
+	 * 
+	 * @param tedashi
+	 *            手出しフラグ
+	 */
+	public boolean setTedashi(boolean tedashi) {
+		if (suteHaisLength <= 0) {
+			return false;
+		}
+
+		suteHais[suteHaisLength - 1].setTedashi(tedashi);
+		return true;
 	}
 
 	/**
@@ -77,7 +96,7 @@ public class Kawa {
 	 *            河
 	 */
 	void copy(Kawa kawa) {
-		this.kawaLength = kawa.copyKawaHai(this.kawaHais);
+		this.suteHaisLength = kawa.copySuteHai(this.suteHais);
 	}
 
 	/**
@@ -85,8 +104,8 @@ public class Kawa {
 	 * 
 	 * @return 河
 	 */
-	KawaHai[] getKawaHai() {
-		return kawaHais;
+	SuteHai[] getSuteHais() {
+		return suteHais;
 	}
 
 	/**
@@ -94,20 +113,20 @@ public class Kawa {
 	 * 
 	 * @return 河の長さ
 	 */
-	int getKawaHaiLength() {
-		return kawaLength;
+	int getSuteHaiLength() {
+		return suteHaisLength;
 	}
 
 	/**
 	 * 河をコピーする。
 	 * 
-	 * @param kawaHais
+	 * @param SuteHais
 	 *            河
 	 * @return 河の長さ
 	 */
-	int copyKawaHai(KawaHai[] kawaHais) {
-		for (int i = 0; i < this.kawaLength; i++)
-			kawaHais[i].copy(this.kawaHais[i]);
-		return this.kawaLength;
+	int copySuteHai(SuteHai[] SuteHais) {
+		for (int i = 0; i < this.suteHaisLength; i++)
+			SuteHais[i].copy(this.suteHais[i]);
+		return this.suteHaisLength;
 	}
 }

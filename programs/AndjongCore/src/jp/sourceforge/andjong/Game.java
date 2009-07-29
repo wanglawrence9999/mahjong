@@ -26,6 +26,15 @@ public class Game {
 		return yama;
 	}
 
+	/** “Œˆê‹Ç */
+	public final static int KYOKU_TON_1 = 1;
+	/** “Œ“ñ‹Ç */
+	public final static int KYOKU_TON_2 = 2;
+	/** “ŒŽO‹Ç */
+	public final static int KYOKU_TON_3 = 3;
+	/** “ŒŽl‹Ç */
+	public final static int KYOKU_TON_4 = 4;
+
 	/** ‹Ç */
 	private int kyoku;
 

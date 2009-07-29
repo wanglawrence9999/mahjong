@@ -121,4 +121,13 @@ public class Info {
 	public int getTsumoRemain() {
 		return game.getTsumoRemain();
 	}
+
+	/**
+	 * ‹Ç‚ğæ“¾‚µ‚Ü‚·B
+	 * 
+	 * @return ‹Ç
+	 */
+	int getkyoku() {
+		return game.getkyoku();
+	}
 }

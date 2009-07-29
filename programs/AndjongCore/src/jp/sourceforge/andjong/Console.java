@@ -47,11 +47,26 @@ public class Console implements EventIF {
 		case OYAGIME:// 親決め
 			// サイ振りを表示します。
 			Sai[] sai = infoUi.getSais();
-			System.out.println("[サイ振り][" + sai[0].getNo() + "]["
+			System.out.println("[親決め][" + sai[0].getNo() + "]["
 					+ sai[1].getNo() + "]");
 			break;
 		case SENPAI:// 洗牌
 			// 表示することはない。
+			int kyoku = infoUi.getkyoku();
+			switch(kyoku) {
+			case Game.KYOKU_TON_1:
+				System.out.println("[東一局]");
+				break;
+			case Game.KYOKU_TON_2:
+				System.out.println("[東二局]");
+				break;
+			case Game.KYOKU_TON_3:
+				System.out.println("[東三局]");
+				break;
+			case Game.KYOKU_TON_4:
+				System.out.println("[東四局]");
+				break;
+			}
 			break;
 		case SAIFURI:// サイ振り
 			// ドラ表示牌を表示します。

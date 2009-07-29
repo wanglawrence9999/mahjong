@@ -56,4 +56,6 @@ public interface EventIF {
 	 * @return 捨牌のインデックス
 	 */
 	int getSutehaiIdx();
+	
+	String getName();
 }

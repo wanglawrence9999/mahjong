@@ -127,7 +127,38 @@ public class Info {
 	 * 
 	 * @return 局
 	 */
-	int getkyoku() {
+	public int getkyoku() {
 		return game.getkyoku();
+	}
+
+	/**
+	 * 名前を取得します。
+	 * 
+	 * @param kaze
+	 *            風
+	 * @return 名前
+	 */
+	public String getName(int kaze) {
+		return game.getName(kaze);
+	}
+
+	/**
+	 * 本場を取得します。
+	 * 
+	 * @return 本場
+	 */
+	public int getHonba() {
+		return game.getHonba();
+	}
+
+	/**
+	 * 点棒を取得します。
+	 * 
+	 * @param kaze
+	 *            風
+	 * @return 点棒
+	 */
+	int getTenbou(int kaze) {
+		return game.getTenbou(kaze);
 	}
 }

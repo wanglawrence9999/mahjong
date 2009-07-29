@@ -10,8 +10,15 @@ public class Man implements EventIF {
 	/** 捨牌のインデックス */
 	private int sutehaiIdx = 0;
 
-	public Man(Info info) {
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public Man(Info info, String name) {
 		this.info = info;
+		this.name = name;
 	}
 
 	@Override

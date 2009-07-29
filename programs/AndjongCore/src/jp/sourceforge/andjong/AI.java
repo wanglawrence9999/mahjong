@@ -22,6 +22,12 @@ public class AI implements EventIF {
 	public int getSutehaiIdx() {
 		return sutehaiIdx;
 	}
+	
+	private String name;
+
+	public String getName() {
+		return name;
+	}
 
 	private final static int HYOUKA_SHUU = 1;
 
@@ -31,8 +37,9 @@ public class AI implements EventIF {
 			combis[i] = new Combi();
 	}
 
-	public AI(Info info) {
+	public AI(Info info, String name) {
 		this.info = info;
+		this.name = name;
 	}
 
 	public EID event(EID eid, int fromKaze, int toKaze) {

@@ -19,14 +19,61 @@ public class Console implements EventIF {
 	/** 捨牌のインデックス */
 	private int sutehaiIdx = 0;
 
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
 	/**
 	 * UIを初期化します。
 	 * 
 	 * @param infoUi
 	 *            InfoUIオブジェクト
 	 */
-	public Console(InfoUI infoUi) {
+	public Console(InfoUI infoUi, String name) {
 		this.infoUi = infoUi;
+		this.name = name;
+	}
+
+	private void dispInfo() {
+		System.out.println("-------- INFO --------");
+		int kyoku = infoUi.getkyoku();
+		switch (kyoku) {
+		case Game.KYOKU_TON_1:
+			System.out.print("[東一局]");
+			break;
+		case Game.KYOKU_TON_2:
+			System.out.print("[東二局]");
+			break;
+		case Game.KYOKU_TON_3:
+			System.out.print("[東三局]");
+			break;
+		case Game.KYOKU_TON_4:
+			System.out.print("[東四局]");
+			break;
+		}
+		System.out.print("[" + infoUi.getHonba() + "本場]");
+		System.out.println("[残り:" + infoUi.getTsumoRemain() + "]");
+		// ドラ表示牌を表示します。
+		Hai[] doras = infoUi.getDoras();
+		System.out.print("[ドラ表示牌]");
+		for (Hai hai : doras) {
+			System.out.print("[" + idToString(hai.getOldId()) + "]");
+		}
+		System.out.println();
+
+		// 名前などを表示してみる。
+		System.out.println("[" + jikazeToString(0) + "][" + infoUi.getName(0)
+				+ "][" + infoUi.getTenbou(0) + "]");
+		System.out.println("[" + jikazeToString(1) + "][" + infoUi.getName(1)
+				+ "][" + infoUi.getTenbou(1) + "]");
+		System.out.println("[" + jikazeToString(2) + "][" + infoUi.getName(2)
+				+ "][" + infoUi.getTenbou(2) + "]");
+		System.out.println("[" + jikazeToString(3) + "][" + infoUi.getName(3)
+				+ "][" + infoUi.getTenbou(3) + "]");
+
+		System.out.println("----------------------");
 	}
 
 	/**
@@ -46,36 +93,14 @@ public class Console implements EventIF {
 			break;
 		case OYAGIME:// 親決め
 			// サイ振りを表示します。
-			Sai[] sai = infoUi.getSais();
-			System.out.println("[親決め][" + sai[0].getNo() + "]["
-					+ sai[1].getNo() + "]");
+			// Sai[] sai = infoUi.getSais();
+			// System.out.println("[親決め][" + sai[0].getNo() + "]["
+			// + sai[1].getNo() + "]");
 			break;
 		case SENPAI:// 洗牌
-			// 表示することはない。
-			int kyoku = infoUi.getkyoku();
-			switch(kyoku) {
-			case Game.KYOKU_TON_1:
-				System.out.println("[東一局]");
-				break;
-			case Game.KYOKU_TON_2:
-				System.out.println("[東二局]");
-				break;
-			case Game.KYOKU_TON_3:
-				System.out.println("[東三局]");
-				break;
-			case Game.KYOKU_TON_4:
-				System.out.println("[東四局]");
-				break;
-			}
 			break;
 		case SAIFURI:// サイ振り
-			// ドラ表示牌を表示します。
-			Hai[] doras = infoUi.getDoras();
-			System.out.print("[ドラ表示牌]");
-			for (Hai hai : doras) {
-				System.out.print("[" + idToString(hai.getOldId()) + "]");
-			}
-			System.out.println();
+			dispInfo();
 			break;
 		case RYUUKYOKU:// 流局
 			System.out.println("[流局]");
@@ -91,8 +116,8 @@ public class Console implements EventIF {
 			printJyunTehai(tehai);
 
 			// ツモ牌を表示します。
-			System.out
-					.println(":" + idToString((infoUi.getTsumoHai()).getOldId()));
+			System.out.println(":"
+					+ idToString((infoUi.getTsumoHai()).getOldId()));
 			break;
 		case TSUMOAGARI:// ツモあがり
 			System.out.print("[" + jikazeToString(infoUi.getJikaze())
@@ -102,8 +127,8 @@ public class Console implements EventIF {
 			printJyunTehai(tehai);
 
 			// ツモ牌を表示します。
-			System.out
-					.println(":" + idToString((infoUi.getTsumoHai()).getOldId()));
+			System.out.println(":"
+					+ idToString((infoUi.getTsumoHai()).getOldId()));
 			break;
 		case SUTEHAI:// 捨牌
 			// 自分の捨牌のみを表示します。
@@ -166,7 +191,8 @@ public class Console implements EventIF {
 			printJyunTehai(tehai);
 
 			// 当たり牌を表示します。
-			System.out.println(":" + idToString((infoUi.getSuteHai()).getOldId()));
+			System.out.println(":"
+					+ idToString((infoUi.getSuteHai()).getOldId()));
 			break;
 		default:
 			break;

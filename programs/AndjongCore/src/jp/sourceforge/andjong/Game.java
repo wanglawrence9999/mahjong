@@ -210,9 +210,13 @@ public class Game {
 
 		// プレイヤー配列を初期化します。
 		players = new Player[playerLength];
-		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player((EventIF) new AI(info));
-		}
+		// for (int i = 0; i < players.length; i++) {
+		// players[i] = new Player((EventIF) new AI(info));
+		// }
+		players[0] = new Player((EventIF) new AI(info, "一郎"));
+		players[1] = new Player((EventIF) new AI(info, "二郎"));
+		players[2] = new Player((EventIF) new AI(info, "三郎"));
+		players[3] = new Player((EventIF) new AI(info, "四郎"));
 		// players[0] = new Player((EventIF) new Man(info));
 
 		// 風をプレイヤーインデックスに変換する配列を初期化します。
@@ -222,7 +226,7 @@ public class Game {
 		infoUi = new InfoUI(this);
 
 		// UIを初期化します。
-		ui = new Console(infoUi);
+		ui = new Console(infoUi, "コンソール");
 	}
 
 	/**
@@ -258,13 +262,13 @@ public class Game {
 		// 山に割れ目を設定します。
 		yama.setWareme(sais);
 
-		// UIイベント（サイ振り）を発行します。
-		ui.event(EID.SAIFURI, fromKaze, toKaze);
-
 		// プレイヤー配列を初期化します。
 		for (int i = 0; i < players.length; i++) {
 			players[i].init();
 		}
+
+		// UIイベント（サイ振り）を発行します。
+		ui.event(EID.SAIFURI, fromKaze, toKaze);
 
 		// 配牌をします。
 		haipai();
@@ -539,6 +543,15 @@ public class Game {
 	}
 
 	/**
+	 * 本場を取得します。
+	 * 
+	 * @return 本場
+	 */
+	int getHonba() {
+		return honba;
+	}
+
+	/**
 	 * リーチを取得します。
 	 * 
 	 * @param kaze
@@ -584,6 +597,14 @@ public class Game {
 	 */
 	int getTsumoRemain() {
 		return yama.getTsumoNokori();
+	}
+
+	String getName(int kaze) {
+		return players[kazeToPlayerIdx[kaze]].getEventIf().getName();
+	}
+
+	int getTenbou(int kaze) {
+		return players[kazeToPlayerIdx[kaze]].getTenbou();
 	}
 
 	/** カウントフォーマット */

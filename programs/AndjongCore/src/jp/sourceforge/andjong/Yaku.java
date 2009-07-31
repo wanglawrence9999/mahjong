@@ -2,6 +2,7 @@ package jp.sourceforge.andjong;
 import static jp.sourceforge.andjong.Hai.*;
 import static jp.sourceforge.andjong.Tehai.JYUNTEHAI_MAX;
 import jp.sourceforge.andjong.Tehai.Combi;
+import static jp.sourceforge.andjong.AgariSetting.YakuflgName.*;
 
 /**
  * 手牌全体の役を判定するクラスです。
@@ -18,7 +19,7 @@ public class Yaku {
 	Tehai tehai;
 	Hai addHai;
 	Combi combi;
-	Info info;
+	AgariSetting setting;
 	YakuHantei yakuhantei[];
 	boolean nakiflg = false;
 
@@ -27,11 +28,11 @@ public class Yaku {
 	 * 引数を保存し、YakuHanteiクラスの配列を作成する。
 	 * @param tehai 手牌　addHai 上がった牌  combi 手牌 の組み合わせ info 情報
 	 */
-	Yaku(Tehai tehai, Hai addHai, Combi combi,Info info){
+	Yaku(Tehai tehai, Hai addHai, Combi combi,AgariSetting setting){
 		this.tehai = tehai;
 		this.addHai = addHai;
 		this.combi  = combi;
-		this.info   = info;
+		this.setting = setting;
 		//鳴きがある場合
 		if((tehai.getMinkansLength() != 0)
 		|| (tehai.getMinkousLength() != 0)
@@ -53,6 +54,7 @@ public class Yaku {
 							   new CheckHatu(),
 							   new CheckCyun(),
 							   new CheckHaitei(),
+							   new CheckHoutei(),
 							   new CheckRinsyan(),
 							   new CheckCyankan(),
 							   new CheckDoubleReach(),
@@ -244,6 +246,9 @@ public class Yaku {
 	private class CheckReach extends YakuHantei{
 		CheckReach(){
 			hantei = checkReach();
+			if(checkDoubleReach() == true){
+				hantei = false;
+			}
 			yakuName = "立直";
 			hanSuu = 1;
 		}
@@ -260,7 +265,7 @@ public class Yaku {
 	private class CheckTon extends YakuHantei{
 		CheckTon(){
 			hantei = checkTon();
-			if(info.getJikaze() == JIKAZE_TON){
+			if(setting.getJikaze() == JIKAZE_TON){
 				yakuName = "ダブ東";
 				hanSuu = 2;
 			}else{
@@ -325,6 +330,14 @@ public class Yaku {
 			hanSuu = 1;
 		}
 	}	
+	
+	private class CheckHoutei extends YakuHantei{
+		CheckHoutei(){
+			hantei = checkHoutei();
+			yakuName = "河底撈魚";
+			hanSuu = 1;
+		}
+	}
 	
 	private class CheckRinsyan extends YakuHantei{
 		CheckRinsyan(){
@@ -673,7 +686,7 @@ public class Yaku {
 		
 		//頭が自風
 		if(((id & OLD_KIND_FON) != 0) && 
-				(id & OLD_KIND_MASK) == (info.getJikaze()+1)){
+				(id & OLD_KIND_MASK) == (setting.getJikaze())){
 			return false;
 		}		
 
@@ -747,12 +760,11 @@ public class Yaku {
 	
 	
 	boolean checkReach() {
-		return info.isReach(info.getJikaze());
+		return setting.getYakuflg(REACH.ordinal());
 	}
 	
 	boolean checkIppatu() {
-		//TODO 一発の判定
-		return false;
+		return setting.getYakuflg(IPPATU.ordinal());
 	}
 
 	boolean checkTumo() {
@@ -760,8 +772,7 @@ public class Yaku {
 		if(nakiflg == true){
 			return false;
 		}
-		//TODO ツモ上がりかどうかの判定
-		return true;
+		return setting.getYakuflg(TUMO.ordinal());
 	}
 
 
@@ -814,7 +825,7 @@ public class Yaku {
 	}
 
 	boolean checkNan() {
-		if(info.getJikaze() == JIKAZE_NAN){
+		if(setting.getJikaze() == JIKAZE_NAN){
 			return checkYakuHai(tehai,combi,OLD_KIND_NAN);
 		}else{
 			return false;
@@ -822,7 +833,7 @@ public class Yaku {
 	}
 
 	boolean checkSya() {
-		if(info.getJikaze() == JIKAZE_SYA){
+		if(setting.getJikaze() == JIKAZE_SYA){
 			return checkYakuHai(tehai,combi,OLD_KIND_NAN);
 		}else{
 			return false;
@@ -830,7 +841,7 @@ public class Yaku {
 	}
 
 	boolean checkPei() {
-		if(info.getJikaze() == JIKAZE_PEI){
+		if(setting.getJikaze() == JIKAZE_PEI){
 			return checkYakuHai(tehai,combi,OLD_KIND_NAN);
 		}else{
 			return false;
@@ -848,26 +859,25 @@ public class Yaku {
 	boolean checkCyun() {
 		return checkYakuHai(tehai,combi,OLD_KIND_CYUN);
 	}
-	
-	//TODO 特殊な役は後回し
 
 	boolean checkHaitei() {
-		//TODO　海底摸月
-		return false;
+		return setting.getYakuflg(HAITEI.ordinal());
 	}
-	
+
+	boolean checkHoutei(){
+		return setting.getYakuflg(HOUTEI.ordinal());
+	}
+
 	boolean checkRinsyan() {
-		//TODO 嶺上開花
-		return false;
+		return setting.getYakuflg(RINSYAN.ordinal());
 	}
+
 	boolean checkCyankan() {
-		//TODO 槍槓
-		return false;
+		return setting.getYakuflg(CHANKAN.ordinal());
 	}
 	
 	boolean checkDoubleReach() {
-		//TODO ダブルリーチ
-		return false;
+		return setting.getYakuflg(DOUBLEREACH.ordinal());
 	}
 	
 	boolean checkTeetoitu() {
@@ -1017,7 +1027,6 @@ public class Yaku {
 		int id;
 		Hai checkHai[][]; 
 		boolean sansyokuflg[][]= new boolean[3][9];
-		
 		
 		//フラグの初期化
 		for(int i = 0 ; i<sansyokuflg.length; i++){
@@ -1485,13 +1494,13 @@ public class Yaku {
 			return false;
 		}
 	}
-	//TODO 天和、地和は後で考える。
+
 	boolean checkTenhou() {
-		return false;
+		return setting.getYakuflg(TENHOU.ordinal());
 	}
 
 	boolean checkTihou() {
-		return false;
+		return setting.getYakuflg(TIHOU.ordinal());
 	}
 	
 	boolean checkSyousuushi() {

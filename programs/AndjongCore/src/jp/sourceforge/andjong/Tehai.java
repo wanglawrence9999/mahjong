@@ -115,7 +115,7 @@ public class Tehai {
 
 		int i;
 		for (i = jyunTehaiLength; i > 0; i--) {
-			if (jyunTehai[i - 1].getOldId() <= hai.getOldId())
+			if (jyunTehai[i - 1].getId() <= hai.getId())
 				break;
 
 			jyunTehai[i].copy(jyunTehai[i - 1]);
@@ -186,10 +186,10 @@ public class Tehai {
 	}
 
 	public boolean removeJyunTehai(Hai hai) {
-		int haiId = hai.getOldId();
+		int haiId = hai.getId();
 
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getOldId()) {
+			if (haiId == jyunTehai[i].getId()) {
 				removeJyunTehai(i);
 				return true;
 			}
@@ -418,10 +418,10 @@ public class Tehai {
 	 * @return ƒ|ƒ“‚Ì‰Â”Û
 	 */
 	public boolean validPon(Hai suteHai) {
-		int haiId = suteHai.getOldId();
+		int haiId = suteHai.getId();
 		int count = 0;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getOldId()) {
+			if (haiId == jyunTehai[i].getId()) {
 				count++;
 			}
 		}
@@ -439,13 +439,13 @@ public class Tehai {
 	 *            ŽÌ”v
 	 */
 	public void setPon(Hai suteHai) {
-		int haiId = suteHai.getOldId();
+		int haiId = suteHai.getId();
 		Hai[] minkou = new Hai[3];
 		int minkouIdx = 0;
 
 		minkou[minkouIdx++] = suteHai;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getOldId()) {
+			if (haiId == jyunTehai[i].getId()) {
 				removeJyunTehai(i--);
 				minkou[minkouIdx++] = suteHai;
 				if (minkouIdx >= 3) {

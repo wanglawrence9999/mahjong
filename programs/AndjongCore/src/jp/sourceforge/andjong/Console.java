@@ -1,5 +1,7 @@
 package jp.sourceforge.andjong;
 
+import static jp.sourceforge.andjong.Hai.*;
+
 /**
  * Console‚ğÀ‘•‚·‚éƒNƒ‰ƒX‚Å‚·B
  * 
@@ -59,7 +61,7 @@ public class Console implements EventIF {
 		Hai[] doras = infoUi.getDoras();
 		System.out.print("[ƒhƒ‰•\¦”v]");
 		for (Hai hai : doras) {
-			System.out.print("[" + idToString(hai.getOldId()) + "]");
+			System.out.print("[" + idToString(hai.getId()) + "]");
 		}
 		System.out.println();
 
@@ -116,8 +118,8 @@ public class Console implements EventIF {
 			printJyunTehai(tehai);
 
 			// ƒcƒ‚”v‚ğ•\¦‚µ‚Ü‚·B
-			System.out.println(":"
-					+ idToString((infoUi.getTsumoHai()).getOldId()));
+			System.out
+					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
 			break;
 		case TSUMOAGARI:// ƒcƒ‚‚ ‚ª‚è
 			System.out.print("[" + jikazeToString(infoUi.getJikaze())
@@ -127,8 +129,8 @@ public class Console implements EventIF {
 			printJyunTehai(tehai);
 
 			// ƒcƒ‚”v‚ğ•\¦‚µ‚Ü‚·B
-			System.out.println(":"
-					+ idToString((infoUi.getTsumoHai()).getOldId()));
+			System.out
+					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
 			break;
 		case SUTEHAI:// Ì”v
 			// ©•ª‚ÌÌ”v‚Ì‚İ‚ğ•\¦‚µ‚Ü‚·B
@@ -191,8 +193,7 @@ public class Console implements EventIF {
 			printJyunTehai(tehai);
 
 			// “–‚½‚è”v‚ğ•\¦‚µ‚Ü‚·B
-			System.out.println(":"
-					+ idToString((infoUi.getSuteHai()).getOldId()));
+			System.out.println(":" + idToString((infoUi.getSuteHai()).getId()));
 			break;
 		default:
 			break;
@@ -219,15 +220,15 @@ public class Console implements EventIF {
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		for (int i = 0; i < jyunTehaiLength; i++)
-			System.out.print(idToString(jyunTehai[i].getOldId()));
+			System.out.print(idToString(jyunTehai[i].getId()));
 
 		int minkousLength = tehai.getMinkousLength();
 		Hai[][] minkous = tehai.getMinkous();
 		for (int i = 0; i < minkousLength; i++) {
 			System.out.print("[");
-			System.out.print(idToString(minkous[i][0].getOldId()));
-			System.out.print(idToString(minkous[i][1].getOldId()));
-			System.out.print(idToString(minkous[i][2].getOldId()));
+			System.out.print(idToString(minkous[i][0].getId()));
+			System.out.print(idToString(minkous[i][1].getId()));
+			System.out.print(idToString(minkous[i][2].getId()));
 			System.out.print("]");
 		}
 	}
@@ -243,7 +244,7 @@ public class Console implements EventIF {
 		SuteHai[] SuteHai = kawa.getSuteHais();
 		int kawaLength = kawa.getSuteHaiLength();
 		for (int i = 0; i < kawaLength; i++)
-			System.out.print(idToString(SuteHai[i].getOldId()));
+			System.out.print(idToString(SuteHai[i].getId()));
 	}
 
 	/**
@@ -254,98 +255,75 @@ public class Console implements EventIF {
 	 * @return •¶š—ñ
 	 */
 	static public String idToString(int id) {
-		int kind = id & (Hai.OLD_KIND_SHUU | Hai.OLD_KIND_TSUU);
-		id &= ~(Hai.OLD_KIND_SHUU | Hai.OLD_KIND_TSUU);
-
-		switch (kind) {
-		case Hai.OLD_KIND_WAN:
-			switch (id) {
-			case 1:
-				return "ˆê";
-			case 2:
-				return "“ñ";
-			case 3:
-				return "O";
-			case 4:
-				return "l";
-			case 5:
-				return "ŒÜ";
-			case 6:
-				return "˜Z";
-			case 7:
-				return "µ";
-			case 8:
-				return "”ª";
-			case 9:
-				return "‹ã";
-			}
-			break;
-		case Hai.OLD_KIND_PIN:
-			switch (id) {
-			case 1:
-				return "‡@";
-			case 2:
-				return "‡A";
-			case 3:
-				return "‡B";
-			case 4:
-				return "‡C";
-			case 5:
-				return "‡D";
-			case 6:
-				return "‡E";
-			case 7:
-				return "‡F";
-			case 8:
-				return "‡G";
-			case 9:
-				return "‡H";
-			}
-			break;
-		case Hai.OLD_KIND_SOU:
-			switch (id) {
-			case 1:
-				return "‚P";
-			case 2:
-				return "‚Q";
-			case 3:
-				return "‚R";
-			case 4:
-				return "‚S";
-			case 5:
-				return "‚T";
-			case 6:
-				return "‚U";
-			case 7:
-				return "‚V";
-			case 8:
-				return "‚W";
-			case 9:
-				return "‚X";
-			}
-			break;
-		case Hai.OLD_KIND_FON:
-			switch (id) {
-			case 1:
-				return "“Œ";
-			case 2:
-				return "“ì";
-			case 3:
-				return "¼";
-			case 4:
-				return "–k";
-			}
-			break;
-		case Hai.OLD_KIND_SANGEN:
-			switch (id) {
-			case 1:
-				return "”’";
-			case 2:
-				return "á¢";
-			case 3:
-				return "’†";
-			}
-			break;
+		switch (id) {
+		case ID_WAN_1:
+			return "ˆê";
+		case ID_WAN_2:
+			return "“ñ";
+		case ID_WAN_3:
+			return "O";
+		case ID_WAN_4:
+			return "l";
+		case ID_WAN_5:
+			return "ŒÜ";
+		case ID_WAN_6:
+			return "˜Z";
+		case ID_WAN_7:
+			return "µ";
+		case ID_WAN_8:
+			return "”ª";
+		case ID_WAN_9:
+			return "‹ã";
+		case ID_PIN_1:
+			return "‡@";
+		case ID_PIN_2:
+			return "‡A";
+		case ID_PIN_3:
+			return "‡B";
+		case ID_PIN_4:
+			return "‡C";
+		case ID_PIN_5:
+			return "‡D";
+		case ID_PIN_6:
+			return "‡E";
+		case ID_PIN_7:
+			return "‡F";
+		case ID_PIN_8:
+			return "‡G";
+		case ID_PIN_9:
+			return "‡H";
+		case ID_SOU_1:
+			return "‚P";
+		case ID_SOU_2:
+			return "‚Q";
+		case ID_SOU_3:
+			return "‚R";
+		case ID_SOU_4:
+			return "‚S";
+		case ID_SOU_5:
+			return "‚T";
+		case ID_SOU_6:
+			return "‚U";
+		case ID_SOU_7:
+			return "‚V";
+		case ID_SOU_8:
+			return "‚W";
+		case ID_SOU_9:
+			return "‚X";
+		case ID_TON:
+			return "“Œ";
+		case ID_NAN:
+			return "“ì";
+		case ID_SHA:
+			return "¼";
+		case ID_PE:
+			return "–k";
+		case ID_HAKU:
+			return "”’";
+		case ID_HATSU:
+			return "á¢";
+		case ID_CYUN:
+			return "’†";
 		}
 
 		return null;

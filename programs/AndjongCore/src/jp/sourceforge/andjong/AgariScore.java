@@ -21,7 +21,7 @@ public class AgariScore {
 	 * @return int •„
 	 * 
 	 */
-	private int countHu(Tehai tehai, Hai addHai, Combi combi, Yaku yaku,AgariSetting setting) {
+	int countHu(Tehai tehai, Hai addHai, Combi combi, Yaku yaku,AgariSetting setting) {
 		int countHu = 20;
 		int id;
 		Hai checkHai[][];
@@ -31,6 +31,7 @@ public class AgariScore {
 			return 25;
 		}
 
+		//“ª‚Ì”vID‚ðŽæ“¾
 		id = combi.atamaId;
 
 		// ‚RŒ³”v‚È‚ç‚Q•„’Ç‰Á

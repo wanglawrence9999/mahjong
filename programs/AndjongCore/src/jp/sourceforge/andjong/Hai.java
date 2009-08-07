@@ -195,6 +195,9 @@ public class Hai {
 	/** 字牌フラグ */
 	private boolean tsuu;
 
+	/** 一九字牌フラグ */
+	private boolean yaotyuu;
+	
 	/**
 	 * 空の牌を作成する。
 	 */
@@ -215,30 +218,47 @@ public class Hai {
 			this.no = id - ID_PE;
 			this.kind = KIND_SANGEN;
 			this.tsuu = true;
+			this.yaotyuu = true;
 
 			this.oldId = this.no | OLD_KIND_SANGEN;
 		} else if (id > ID_SOU_9) {
 			this.no = id - ID_SOU_9;
 			this.kind = KIND_FON;
 			this.tsuu = true;
+			this.yaotyuu = true;
 
 			this.oldId = this.no | OLD_KIND_FON;
 		} else if (id > ID_PIN_9) {
 			this.no = id - ID_PIN_9;
 			this.kind = KIND_SOU;
 			this.tsuu = false;
+			if(this.no == NO_1 || this.no == NO_9){
+				this.yaotyuu = true;
+			}else{
+				this.yaotyuu = false;
+			}
 
 			this.oldId = this.no | OLD_KIND_SOU;
 		} else if (id > ID_WAN_9) {
 			this.no = id - ID_WAN_9;
 			this.kind = KIND_PIN;
 			this.tsuu = false;
+			if(this.no == NO_1 || this.no == NO_9){
+				this.yaotyuu = true;
+			}else{
+				this.yaotyuu = false;
+			}
 
 			this.oldId = this.no | OLD_KIND_PIN;
 		} else {
 			this.no = id + 1;
 			this.kind = KIND_WAN;
 			this.tsuu = false;
+			if(this.no == NO_1 || this.no == NO_9){
+				this.yaotyuu = true;
+			}else{
+				this.yaotyuu = false;
+			}
 
 			this.oldId = this.no | OLD_KIND_WAN;
 		}
@@ -255,6 +275,7 @@ public class Hai {
 		this.no = hai.no;
 		this.kind = hai.kind;
 		this.tsuu = hai.tsuu;
+		this.yaotyuu = hai.yaotyuu;
 
 		this.oldId = hai.oldId;
 	}
@@ -270,6 +291,7 @@ public class Hai {
 		this.no = hai.no;
 		this.kind = hai.kind;
 		this.tsuu = hai.tsuu;
+		this.yaotyuu = hai.yaotyuu;
 
 		this.oldId = hai.oldId;
 	}
@@ -309,6 +331,16 @@ public class Hai {
 	public boolean isTsuu() {
 		return tsuu;
 	}
+
+	/**
+	 * フラグを取得する。
+	 * 
+	 * @return 一九字牌フラグ
+	 */
+	public boolean isYaotyuu() {
+		return yaotyuu;
+	}	
+	
 
 	/** 萬子 */
 	public final static int OLD_KIND_WAN = 0x00000010;

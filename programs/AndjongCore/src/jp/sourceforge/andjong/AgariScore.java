@@ -1,10 +1,6 @@
 package jp.sourceforge.andjong;
 
-import static jp.sourceforge.andjong.Hai.OLD_KIND_FON;
-import static jp.sourceforge.andjong.Hai.OLD_KIND_MASK;
-import static jp.sourceforge.andjong.Hai.OLD_KIND_SANGEN;
-import static jp.sourceforge.andjong.Hai.OLD_KIND_TON;
-import static jp.sourceforge.andjong.Hai.OLD_KIND_TSUU;
+import static jp.sourceforge.andjong.Hai.*;
 import jp.sourceforge.andjong.Tehai.Combi;
 import jp.sourceforge.andjong.Tehai.CountFormat;
 
@@ -23,65 +19,61 @@ public class AgariScore {
 	 */
 	int countHu(Tehai tehai, Hai addHai, Combi combi, Yaku yaku,AgariSetting setting) {
 		int countHu = 20;
-		int id;
-		Hai checkHai[][];
+		Hai checkHais[][];
 		
 		//Žµ‘ÎŽq‚Ìê‡‚Í‚Q‚T•„
 		if(yaku.checkTeetoitu() == true){
 			return 25;
 		}
 
-		//“ª‚Ì”vID‚ðŽæ“¾
-		id = combi.atamaId;
+		//“ª‚Ì”v‚ðŽæ“¾
+		Hai atamaHai = new Hai(combi.atamaId);
 
 		// ‚RŒ³”v‚È‚ç‚Q•„’Ç‰Á
-		if ((id & OLD_KIND_SANGEN) != 0) {
+		if (atamaHai.getKind() == KIND_SANGEN) {
 			countHu += 2;
 		}
 
 		// ê•—‚È‚ç‚Q•„’Ç‰Á
-		if (id == OLD_KIND_TON) {
+		if (atamaHai.getId() == setting.getBakaze()){
 			countHu += 2;
 		}
 
 		// Ž©•—‚È‚ç‚Q•„’Ç‰Á
-		if (((id & OLD_KIND_FON) != 0)
-				&& (id & OLD_KIND_MASK) == (setting.getJikaze())) {
+		if (atamaHai.getId() == setting.getJikaze()){
 			countHu += 2;
 		}
 		
 		//•½˜a‚ª¬—§‚·‚éê‡‚ÍA‘Ò‚¿‚É‚æ‚é‚Q•„’Ç‰Á‚æ‚è‚à—Dæ‚³‚ê‚é
 		if(yaku.checkPinfu() == false){
 			// ’P‹R‘Ò‚¿‚Ìê‡‚Q•„’Ç‰Á
-			if(id == combi.atamaId){
+			if(addHai.getId() == combi.atamaId){
 				countHu += 2;
 			}
 			
 			// ›Æ’£‘Ò‚¿‚Ìê‡‚Q•„’Ç‰Á
-			id = addHai.getId();
 			//””v‚Ì‚Q`‚W‚©‚Ç‚¤‚©”»’è
-			if(((id & OLD_KIND_TSUU) == 0 )
-					&& ( ((id & OLD_KIND_MASK) >=2) || ((id & OLD_KIND_MASK) <= 8))){
+			if(addHai.isYaotyuu() == false){
 				for(int i = 0 ; i < combi.shunCount ; i++){
-					if( (id-1) == combi.shunIds[i]){
+					if((addHai.getNo()-1) == combi.shunIds[i]){
 						countHu += 2;
 					}
 				}
 			}
 	
 			// •Ó’£‘Ò‚¿(3)‚Ìê‡‚Q•„’Ç‰Á
-			if(((id & OLD_KIND_TSUU) == 0 ) && ((id & OLD_KIND_MASK) ==3) ){
+			if((addHai.isYaotyuu() == false) && (addHai.getNo() == NO_3)){
 				for(int i = 0 ; i < combi.shunCount ; i++){
-					if( (id-2) == combi.shunIds[i]){
+					if( (addHai.getId()-2) == combi.shunIds[i]){
 						countHu += 2;
 					}
 				}
 			}
 	
 			// •Ó’£‘Ò‚¿(7)‚Ìê‡‚Q•„’Ç‰Á
-			if(((id & OLD_KIND_TSUU) == 0 ) && ((id & OLD_KIND_MASK) ==7) ){
+			if((addHai.isYaotyuu() == false) && (addHai.getNo() == NO_7)){
 				for(int i = 0 ; i < combi.shunCount ; i++){
-					if( id == combi.shunIds[i]){
+					if( addHai.getId() == combi.shunIds[i]){
 						countHu += 2;
 					}
 				}
@@ -90,10 +82,9 @@ public class AgariScore {
 
 		// ˆÃ‚É‚æ‚é‰Á“_
 		for (int i = 0; i < combi.kouCount; i++) {
-			id = combi.kouIds[i];
+			Hai checkHai = new Hai(combi.kouIds[i]);
 			// ”v‚ªŽš”v‚à‚µ‚­‚Í1,9
-			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
-					|| ((id & OLD_KIND_MASK) == 9)) {
+			if (checkHai.isYaotyuu() == true) {
 				countHu += 8;
 			} else {
 				countHu += 4;
@@ -102,11 +93,9 @@ public class AgariScore {
 
 		// –¾‚É‚æ‚é‰Á“_
 		for (int i = 0; i < tehai.getMinkousLength(); i++) {
-			checkHai = tehai.getMinkous();
-			id = checkHai[i][0].getOldId();
+			checkHais = tehai.getMinkous();
 			// ”v‚ªŽš”v‚à‚µ‚­‚Í1,9
-			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
-					|| ((id & OLD_KIND_MASK) == 9)) {
+			if (checkHais[i][0].isYaotyuu() == true) {
 				countHu += 4;
 			} else {
 				countHu += 2;
@@ -115,11 +104,9 @@ public class AgariScore {
 
 		// –¾žÈ‚É‚æ‚é‰Á“_
 		for (int i = 0; i < tehai.getMinkansLength(); i++) {
-			checkHai = tehai.getMinkans();
-			id = checkHai[i][0].getOldId();
+			checkHais = tehai.getMinkans();
 			// ”v‚ªŽš”v‚à‚µ‚­‚Í1,9
-			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
-					|| ((id & OLD_KIND_MASK) == 9)) {
+			if (checkHais[i][0].isYaotyuu() == true) {
 				countHu += 16;
 			} else {
 				countHu += 8;
@@ -128,11 +115,9 @@ public class AgariScore {
 
 		// ˆÃžÈ‚É‚æ‚é‰Á“_
 		for (int i = 0; i < tehai.getAnkansLength(); i++) {
-			checkHai = tehai.getAnkans();
-			id = checkHai[i][0].getOldId();
+			checkHais = tehai.getAnkans();
 			// ”v‚ªŽš”v‚à‚µ‚­‚Í1,9
-			if (((id & OLD_KIND_TSUU) != 0) || ((id & OLD_KIND_MASK) == 1)
-					|| ((id & OLD_KIND_MASK) == 9)) {
+			if (checkHais[i][0].isYaotyuu() == true) {
 				countHu += 32;
 			} else {
 				countHu += 16;

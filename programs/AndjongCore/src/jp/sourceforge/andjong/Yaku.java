@@ -853,7 +853,7 @@ public class Yaku {
 	}
 
 	boolean checkCyun() {
-		return checkYakuHai(tehai,combi,ID_CYUN);
+		return checkYakuHai(tehai,combi,ID_CHUN);
 	}
 
 	boolean checkHaitei() {
@@ -1807,7 +1807,7 @@ public class Yaku {
 	boolean checkKokushi() {
 		//牌の数を調べるための配列 (0番地は使用しない）
 		int checkId[] = {ID_WAN_1,ID_WAN_9,ID_PIN_1,ID_PIN_9,ID_SOU_1,ID_SOU_9,
-								ID_TON,ID_NAN,ID_SHA,ID_PE,ID_HAKU,ID_HATSU,ID_CYUN};
+								ID_TON,ID_NAN,ID_SHA,ID_PE,ID_HAKU,ID_HATSU,ID_CHUN};
 		int countHai[] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
 		Hai checkHai[] = new Hai[JYUNTEHAI_MAX];
 		

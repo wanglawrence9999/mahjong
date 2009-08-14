@@ -5,9 +5,9 @@ import jp.sourceforge.andjong.Tehai.CountFormat;
 
 /**
  * AIを実装するクラスです。
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class AI implements EventIF {
 	private Info info;
@@ -22,7 +22,7 @@ public class AI implements EventIF {
 	public int getSutehaiIdx() {
 		return sutehaiIdx;
 	}
-	
+
 	private String name;
 
 	public String getName() {
@@ -87,7 +87,7 @@ public class AI implements EventIF {
 
 	/**
 	 * イベント（ツモ）を処理する。
-	 * 
+	 *
 	 * @param fromKaze
 	 *            イベントを発行した風
 	 * @param toKaze
@@ -179,7 +179,7 @@ public class AI implements EventIF {
 			new Hai(Hai.ID_TON), new Hai(Hai.ID_NAN),
 			new Hai(Hai.ID_SHA), new Hai(Hai.ID_PE),
 			new Hai(Hai.ID_HAKU), new Hai(Hai.ID_HATSU),
-			new Hai(Hai.ID_CYUN) };
+			new Hai(Hai.ID_CHUN) };
 
 	private boolean thinkReach(Tehai tehai) {
 		for (Hai hai : haiTable) {
@@ -195,7 +195,7 @@ public class AI implements EventIF {
 		int score = 0;
 
 		for (int i = 0; i < countFormat.length; i++) {
-			if ((countFormat.counts[i].id & Hai.OLD_KIND_SHUU) != 0) {
+			if ((countFormat.counts[i].id & Hai.ID_A_SHUU) != 0) {
 				score += countFormat.counts[i].length * HYOUKA_SHUU;
 			}
 
@@ -207,7 +207,7 @@ public class AI implements EventIF {
 				score += 8;
 			}
 
-			if ((countFormat.counts[i].id & Hai.OLD_KIND_SHUU) > 0) {
+			if ((countFormat.counts[i].id & Hai.ID_A_SHUU) > 0) {
 				if ((countFormat.counts[i].id + 1) == countFormat.counts[i + 1].id) {
 					score += 4;
 				}

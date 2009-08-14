@@ -4,9 +4,9 @@ import static jp.sourceforge.andjong.Hai.*;
 
 /**
  * 手牌を管理するクラスです。
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class Tehai {
 	/** 純手牌の最大数 */
@@ -81,7 +81,7 @@ public class Tehai {
 
 	/**
 	 * 手牌オブジェクトをコピーする。
-	 * 
+	 *
 	 * @param tehai
 	 *            手牌オブジェクト
 	 * @param jyunTehaiCopy
@@ -105,7 +105,7 @@ public class Tehai {
 	 * Haiオブジェクトをコピーします。<br>
 	 * TODO もっとスマートな方法がありそうです。
 	 * </p>
-	 * 
+	 *
 	 * @param hai
 	 *            追加する牌
 	 */
@@ -127,7 +127,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌のインデックスを指定して、牌をコピーする。
-	 * 
+	 *
 	 * @param hai
 	 *            牌
 	 * @param idx
@@ -139,7 +139,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌を取得する。
-	 * 
+	 *
 	 * @return 純手牌
 	 */
 	public Hai[] getJyunTehai() {
@@ -148,7 +148,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌の長さを取得する。
-	 * 
+	 *
 	 * @return 純手牌の長さ
 	 */
 	public int getJyunTehaiLength() {
@@ -157,7 +157,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌をコピーする。
-	 * 
+	 *
 	 * @param jyunTehai
 	 *            純手牌
 	 * @return 純手牌の長さ
@@ -170,7 +170,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌から指定位置の牌を削除する。
-	 * 
+	 *
 	 * @param idx
 	 *            指定位置
 	 */
@@ -203,7 +203,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 * 
+	 *
 	 * @param minshun
 	 *            明順
 	 */
@@ -218,7 +218,7 @@ public class Tehai {
 
 	/**
 	 * 明順の配列を取得する。
-	 * 
+	 *
 	 * @return 明順の配列
 	 */
 	public Hai[][] getMinshuns() {
@@ -227,7 +227,7 @@ public class Tehai {
 
 	/**
 	 * 明順の配列の長さを取得する。
-	 * 
+	 *
 	 * @return 明順の配列の長さ
 	 */
 	public int getMinshunsLength() {
@@ -236,7 +236,7 @@ public class Tehai {
 
 	/**
 	 * 明順の配列をコピーする。
-	 * 
+	 *
 	 * @param minshuns
 	 *            明順の配列
 	 * @return 明順の配列の長さ
@@ -255,7 +255,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 * 
+	 *
 	 * @param minkou
 	 *            明刻
 	 */
@@ -270,7 +270,7 @@ public class Tehai {
 
 	/**
 	 * 明刻の配列を取得する。
-	 * 
+	 *
 	 * @return 明刻の配列
 	 */
 	public Hai[][] getMinkous() {
@@ -279,7 +279,7 @@ public class Tehai {
 
 	/**
 	 * 明刻の配列の長さを取得する。
-	 * 
+	 *
 	 * @return 明刻の配列の長さ
 	 */
 	public int getMinkousLength() {
@@ -288,7 +288,7 @@ public class Tehai {
 
 	/**
 	 * 明刻の配列をコピーする。
-	 * 
+	 *
 	 * @param minkous
 	 *            明刻の配列
 	 * @return 明刻の配列の長さ
@@ -307,7 +307,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 * 
+	 *
 	 * @param minkan
 	 *            明槓
 	 */
@@ -323,7 +323,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列を取得する。
-	 * 
+	 *
 	 * @return 明槓の配列
 	 */
 	public Hai[][] getMinkans() {
@@ -332,7 +332,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列の長さを取得する。
-	 * 
+	 *
 	 * @return 明槓の配列の長さ
 	 */
 	public int getMinkansLength() {
@@ -341,7 +341,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列をコピーする。
-	 * 
+	 *
 	 * @param minkans
 	 *            明槓の配列
 	 * @return 明槓の配列の長さ
@@ -361,7 +361,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 * 
+	 *
 	 * @param ankan
 	 *            暗槓
 	 */
@@ -377,7 +377,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列を取得する。
-	 * 
+	 *
 	 * @return 暗槓の配列
 	 */
 	public Hai[][] getAnkans() {
@@ -386,7 +386,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列の長さを取得する。
-	 * 
+	 *
 	 * @return 暗槓の配列の長さ
 	 */
 	public int getAnkansLength() {
@@ -395,7 +395,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列をコピーする。
-	 * 
+	 *
 	 * @param minkans
 	 *            暗槓の配列
 	 * @return 暗槓の配列の長さ
@@ -412,7 +412,7 @@ public class Tehai {
 
 	/**
 	 * ポンの可否をチェックします。
-	 * 
+	 *
 	 * @param suteHai
 	 *            捨牌
 	 * @return ポンの可否
@@ -434,7 +434,7 @@ public class Tehai {
 
 	/**
 	 * ポンを設定します。
-	 * 
+	 *
 	 * @param suteHai
 	 *            捨牌
 	 */
@@ -461,9 +461,9 @@ public class Tehai {
 	 * <p>
 	 * 構造体のように使用します。
 	 * </p>
-	 * 
+	 *
 	 * @author Yuji Urushibara
-	 * 
+	 *
 	 */
 	public static class CountFormat {
 		/**
@@ -471,9 +471,9 @@ public class Tehai {
 		 * <p>
 		 * 構造体のように使用します。
 		 * </p>
-		 * 
+		 *
 		 * @author Yuji Urushibara
-		 * 
+		 *
 		 */
 		public static class Count {
 			/** 牌番号 */
@@ -499,7 +499,7 @@ public class Tehai {
 
 		/**
 		 * カウントの配列の長さの合計を取得する。
-		 * 
+		 *
 		 * @return　カウントの配列の長さの合計
 		 */
 		public int getTotalCountLength() {
@@ -514,7 +514,7 @@ public class Tehai {
 
 	/**
 	 * カウントフォーマットを取得する。
-	 * 
+	 *
 	 * @param addHai
 	 *            手牌に追加する牌。nullでも良い。
 	 * @return カウントフォーマット
@@ -527,12 +527,12 @@ public class Tehai {
 		countFormat.length = 0;
 
 		if (addHai != null) {
-			addHaiId = addHai.getOldId();
+			addHaiId = addHai.getIdA();
 			set = false;
 		}
 
 		for (int i = 0; i < jyunTehaiLength;) {
-			jyunTehaiId = jyunTehai[i].getOldId();
+			jyunTehaiId = jyunTehai[i].getIdA();
 
 			if (!set && (jyunTehaiId > addHaiId)) {
 				set = true;
@@ -551,7 +551,7 @@ public class Tehai {
 			}
 
 			while (++i < jyunTehaiLength)
-				if (jyunTehaiId == jyunTehai[i].getOldId())
+				if (jyunTehaiId == jyunTehai[i].getIdA())
 					countFormat.counts[countFormat.length].length++;
 				else
 					break;
@@ -562,9 +562,9 @@ public class Tehai {
 
 	/**
 	 * 上がりの組み合わせのクラスです。
-	 * 
+	 *
 	 * @author Yuji Urushibara
-	 * 
+	 *
 	 */
 	public static class Combi {
 		/** 頭の牌番号 */
@@ -584,7 +584,7 @@ public class Tehai {
 
 		/**
 		 * Combiオブジェクトをコピーします。
-		 * 
+		 *
 		 * @param combi
 		 *            Combiオブジェクト
 		 */
@@ -607,9 +607,9 @@ public class Tehai {
 
 	/**
 	 * 上がりの組み合わせの構築を管理するクラスです。
-	 * 
+	 *
 	 * @author Yuji Urushibara
-	 * 
+	 *
 	 */
 	private static class CombiManage {
 		/** 上がりの組み合わせ（作業領域） */
@@ -631,7 +631,7 @@ public class Tehai {
 
 		/**
 		 * 作業領域を初期化する。
-		 * 
+		 *
 		 * @param totalCount
 		 *            カウントの配列の長さの残り
 		 */
@@ -668,7 +668,7 @@ public class Tehai {
 	 * 処理速度が重要です。<br>
 	 * TODO 最適化の手段を検討すること。
 	 * </p>
-	 * 
+	 *
 	 * @param pos
 	 *            検索位置
 	 */
@@ -716,7 +716,7 @@ public class Tehai {
 		 * 順子をチェックする。
 		 */
 		if (((pos + 2) < countFormat.length)
-				&& ((countFormat.counts[pos + 2].id & OLD_KIND_TSUU) == 0)) {
+				&& ((countFormat.counts[pos + 2].id & ID_A_TSUU) == 0)) {
 			if ((countFormat.counts[pos].id + 1 == countFormat.counts[pos + 1].id)
 					&& (countFormat.counts[pos + 1].length > 0)) {
 				if ((countFormat.counts[pos].id + 2 == countFormat.counts[pos + 2].id)

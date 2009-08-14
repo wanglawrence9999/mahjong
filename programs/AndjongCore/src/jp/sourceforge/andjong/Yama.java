@@ -53,7 +53,7 @@ public class Yama {
 	 * ”v‚ğ‰Šú‰»‚·‚éB
 	 */
 	private void initialize() {
-		for (int id = Hai.ID_WAN_1, idx = 0; id <= Hai.ID_CYUN; id++) {
+		for (int id = Hai.ID_WAN_1, idx = 0; id <= Hai.ID_CHUN; id++) {
 			for (int i = 0; i < 4; i++, idx++) {
 				hais[idx] = new Hai(id);
 			}

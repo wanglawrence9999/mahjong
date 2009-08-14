@@ -322,7 +322,7 @@ public class Console implements EventIF {
 			return "”’";
 		case ID_HATSU:
 			return "á¢";
-		case ID_CYUN:
+		case ID_CHUN:
 			return "’†";
 		}
 

@@ -311,6 +311,243 @@ public class Tehai {
 	}
 
 	/**
+	 * チー(左)の可否をチェックする。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return チー(左)の可否
+	 */
+	public boolean validChiiLeft(Hai suteHai) {
+		if (suteHai.isTsuu()) {
+			return false;
+		}
+
+		if (suteHai.getNo() == Hai.NO_8) {
+			return false;
+		}
+
+		if (suteHai.getNo() == Hai.NO_9) {
+			return false;
+		}
+
+		if (minShunsLength >= FUURO_MAX) {
+			return false;
+		}
+
+		if (jyunTehaiLength <= MENTSU_LENGTH_3) {
+			return false;
+		}
+
+		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiR1IdA = suteHaiIdA + 1;
+		int suteHaiR2IdA = suteHaiIdA + 2;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (jyunTehai[i].getIdA() == suteHaiR1IdA) {
+				for (int j = i + 1; j < jyunTehaiLength; j++) {
+					if (jyunTehai[j].getIdA() == suteHaiR2IdA) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * チー(左)を設定する。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return 結果
+	 */
+	public boolean setChiiLeft(Hai suteHai) {
+		if (!validChiiLeft(suteHai)) {
+			return false;
+		}
+
+		Hai.copy(minShuns[minShunsLength][0], suteHai);
+
+		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiR1IdA = suteHaiIdA + 1;
+		int suteHaiR2IdA = suteHaiIdA + 2;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (jyunTehai[i].getIdA() == suteHaiR1IdA) {
+				Hai.copy(minShuns[minShunsLength][1], jyunTehai[i]);
+				rmJyunTehai(i);
+				for (int j = i; j < jyunTehaiLength; j++) {
+					if (jyunTehai[j].getIdA() == suteHaiR2IdA) {
+						Hai.copy(minShuns[minShunsLength][2], jyunTehai[j]);
+						rmJyunTehai(j);
+						minShunsLength++;
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * チー(中央)の可否をチェックする。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return チー(中央)の可否
+	 */
+	public boolean validChiiCenter(Hai suteHai) {
+		if (suteHai.isTsuu()) {
+			return false;
+		}
+
+		if (suteHai.getNo() == Hai.NO_1) {
+			return false;
+		}
+
+		if (suteHai.getNo() == Hai.NO_9) {
+			return false;
+		}
+
+		if (minShunsLength >= FUURO_MAX) {
+			return false;
+		}
+
+		if (jyunTehaiLength <= MENTSU_LENGTH_3) {
+			return false;
+		}
+
+		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiL1IdA = suteHaiIdA - 1;
+		int suteHaiR1IdA = suteHaiIdA + 1;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (jyunTehai[i].getIdA() == suteHaiL1IdA) {
+				for (int j = i + 1; j < jyunTehaiLength; j++) {
+					if (jyunTehai[j].getIdA() == suteHaiR1IdA) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * チー(中央)を設定する。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return 結果
+	 */
+	public boolean setChiiCenter(Hai suteHai) {
+		if (!validChiiCenter(suteHai)) {
+			return false;
+		}
+
+		Hai.copy(minShuns[minShunsLength][1], suteHai);
+
+		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiL1IdA = suteHaiIdA - 1;
+		int suteHaiR1IdA = suteHaiIdA + 1;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (jyunTehai[i].getIdA() == suteHaiL1IdA) {
+				Hai.copy(minShuns[minShunsLength][0], jyunTehai[i]);
+				rmJyunTehai(i);
+				for (int j = i; j < jyunTehaiLength; j++) {
+					if (jyunTehai[j].getIdA() == suteHaiR1IdA) {
+						Hai.copy(minShuns[minShunsLength][2], jyunTehai[j]);
+						rmJyunTehai(j);
+						minShunsLength++;
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * チー(右)の可否をチェックする。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return チー(右)の可否
+	 */
+	public boolean validChiiRight(Hai suteHai) {
+		if (suteHai.isTsuu()) {
+			return false;
+		}
+
+		if (suteHai.getNo() == Hai.NO_1) {
+			return false;
+		}
+
+		if (suteHai.getNo() == Hai.NO_2) {
+			return false;
+		}
+
+		if (minShunsLength >= FUURO_MAX) {
+			return false;
+		}
+
+		if (jyunTehaiLength <= MENTSU_LENGTH_3) {
+			return false;
+		}
+
+		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiL2IdA = suteHaiIdA - 2;
+		int suteHaiL1IdA = suteHaiIdA - 1;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (jyunTehai[i].getIdA() == suteHaiL2IdA) {
+				for (int j = i + 1; j < jyunTehaiLength; j++) {
+					if (jyunTehai[j].getIdA() == suteHaiL1IdA) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * チー(右)を設定する。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return 結果
+	 */
+	public boolean setChiiRight(Hai suteHai) {
+		if (!validChiiRight(suteHai)) {
+			return false;
+		}
+
+		Hai.copy(minShuns[minShunsLength][2], suteHai);
+
+		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiL2IdA = suteHaiIdA - 2;
+		int suteHaiL1IdA = suteHaiIdA - 1;
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (jyunTehai[i].getIdA() == suteHaiL2IdA) {
+				Hai.copy(minShuns[minShunsLength][0], jyunTehai[i]);
+				rmJyunTehai(i);
+				for (int j = i; j < jyunTehaiLength; j++) {
+					if (jyunTehai[j].getIdA() == suteHaiL1IdA) {
+						Hai.copy(minShuns[minShunsLength][1], jyunTehai[j]);
+						rmJyunTehai(j);
+						minShunsLength++;
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * 明刻を追加する。
 	 *
 	 * @param minKou
@@ -382,6 +619,10 @@ public class Tehai {
 	 * @return ポンの可否
 	 */
 	public boolean validPon(Hai suteHai) {
+		if (minKousLength >= FUURO_MAX) {
+			return false;
+		}
+
 		int suteHaiId = suteHai.getId();
 		for (int i = 0, minKouIdx = 1; i < jyunTehaiLength; i++) {
 			if (suteHaiId == jyunTehai[i].getId()) {
@@ -403,10 +644,6 @@ public class Tehai {
 	 * @return 結果
 	 */
 	public boolean setPon(Hai suteHai) {
-		if (minKousLength >= FUURO_MAX) {
-			return false;
-		}
-
 		if (!validPon(suteHai)) {
 			return false;
 		}
@@ -501,18 +738,26 @@ public class Tehai {
 	}
 
 	/**
-	 * 槓の可否をチェックする。
+	 * 明槓の可否をチェックする。
 	 *
 	 * @param addHai
 	 *            追加する牌
-	 * @return 槓の可否
+	 * @return 明槓の可否
 	 */
-	public boolean validKan(Hai addHai) {
+	public boolean validMinKan(Hai addHai) {
+		if (jyunTehaiLength <= MENTSU_LENGTH_4) {
+			return false;
+		}
+
+		if (minKansLength >= FUURO_MAX) {
+			return false;
+		}
+
 		int addHaiId = addHai.getId();
-		for (int i = 0, kanIdx = 1; i < jyunTehaiLength; i++) {
+		for (int i = 0, minKanIdx = 1; i < jyunTehaiLength; i++) {
 			if (addHaiId == jyunTehai[i].getId()) {
-				kanIdx++;
-				if (kanIdx >= MENTSU_LENGTH_4) {
+				minKanIdx++;
+				if (minKanIdx >= MENTSU_LENGTH_4) {
 					return true;
 				}
 			}
@@ -529,11 +774,7 @@ public class Tehai {
 	 * @return 結果
 	 */
 	public boolean setMinKan(Hai suteHai) {
-		if (minKansLength >= FUURO_MAX) {
-			return false;
-		}
-
-		if (!validKan(suteHai)) {
+		if (!validMinKan(suteHai)) {
 			return false;
 		}
 
@@ -627,6 +868,35 @@ public class Tehai {
 	}
 
 	/**
+	 * 暗槓の可否をチェックする。
+	 *
+	 * @param addHai
+	 *            追加する牌
+	 * @return 暗槓の可否
+	 */
+	public boolean validAnKan(Hai addHai) {
+		if (jyunTehaiLength <= MENTSU_LENGTH_4) {
+			return false;
+		}
+
+		if (anKansLength >= FUURO_MAX) {
+			return false;
+		}
+
+		int addHaiId = addHai.getId();
+		for (int i = 0, anKanIdx = 1; i < jyunTehaiLength; i++) {
+			if (addHaiId == jyunTehai[i].getId()) {
+				anKanIdx++;
+				if (anKanIdx >= MENTSU_LENGTH_4) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * 暗槓を設定する。
 	 *
 	 * @param tsumoHai
@@ -634,11 +904,7 @@ public class Tehai {
 	 * @return 結果
 	 */
 	public boolean setAnKan(Hai tsumoHai) {
-		if (anKansLength >= FUURO_MAX) {
-			return false;
-		}
-
-		if (!validKan(tsumoHai)) {
+		if (!validAnKan(tsumoHai)) {
 			return false;
 		}
 

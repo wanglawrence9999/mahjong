@@ -73,6 +73,23 @@ public class AI implements EventIF {
 			return EID.RON;
 		}
 
+//		{
+//			if (tehai.validChiiRight(info.getSuteHai())) {
+//				System.out.println("validChiiRight！！！！！！！！！！！！！！！！！！！");
+//				Hai[] jyunTehai = tehai.getJyunTehai();
+//				int jyunTehaiLength = tehai.getJyunTehaiLength();
+//				for (int i = 0; i < jyunTehaiLength; i++)
+//					System.out.print(Console.idToString(jyunTehai[i].getId()));
+//				System.out.println();
+//				tehai.setChiiRight(info.getSuteHai());
+//				jyunTehai = tehai.getJyunTehai();
+//				jyunTehaiLength = tehai.getJyunTehaiLength();
+//				for (int i = 0; i < jyunTehaiLength; i++)
+//					System.out.print(Console.idToString(jyunTehai[i].getId()));
+//				System.out.println();
+//			}
+//		}
+
 		// 牌が少なくなったら鳴いてみます。
 		if (info.getTsumoRemain() < 16) {
 			// ポンできるかチェックします。

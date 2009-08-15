@@ -383,10 +383,10 @@ public class Tehai {
 	 */
 	public boolean validPon(Hai suteHai) {
 		int suteHaiId = suteHai.getId();
-		for (int i = 0, count = 1; i < jyunTehaiLength; i++) {
+		for (int i = 0, minKouIdx = 1; i < jyunTehaiLength; i++) {
 			if (suteHaiId == jyunTehai[i].getId()) {
-				count++;
-				if (count >= MENTSU_LENGTH_3) {
+				minKouIdx++;
+				if (minKouIdx >= MENTSU_LENGTH_3) {
 					return true;
 				}
 			}
@@ -426,11 +426,12 @@ public class Tehai {
 				rmJyunTehai(i--);
 
 				if (minKouIdx >= MENTSU_LENGTH_3) {
-					minKousLength++;
 					break;
 				}
 			}
 		}
+
+		minKousLength++;
 
 		return true;
 	}
@@ -500,6 +501,68 @@ public class Tehai {
 	}
 
 	/**
+	 * 槓の可否をチェックする。
+	 *
+	 * @param addHai
+	 *            追加する牌
+	 * @return 槓の可否
+	 */
+	public boolean validKan(Hai addHai) {
+		int addHaiId = addHai.getId();
+		for (int i = 0, kanIdx = 1; i < jyunTehaiLength; i++) {
+			if (addHaiId == jyunTehai[i].getId()) {
+				kanIdx++;
+				if (kanIdx >= MENTSU_LENGTH_4) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 明槓を設定する。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return 結果
+	 */
+	public boolean setMinKan(Hai suteHai) {
+		if (minKansLength >= FUURO_MAX) {
+			return false;
+		}
+
+		if (!validKan(suteHai)) {
+			return false;
+		}
+
+		int minKanIdx = 0;
+
+		Hai.copy(minKans[minKansLength][minKanIdx], suteHai);
+		minKanIdx++;
+
+		int suteHaiId = suteHai.getId();
+
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (suteHaiId == jyunTehai[i].getId()) {
+				Hai.copy(minKans[minKansLength][minKanIdx], jyunTehai[i]);
+				minKanIdx++;
+
+				rmJyunTehai(i--);
+
+				if (minKanIdx >= MENTSU_LENGTH_4) {
+					break;
+				}
+			}
+		}
+
+		minKansLength++;
+
+		return true;
+	}
+
+	/**
 	 * 暗槓を追加する。
 	 *
 	 * @param anKan
@@ -559,6 +622,47 @@ public class Tehai {
 				Hai.copy(destAnKans[i][j], srcAnKans[i][j]);
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * 暗槓を設定する。
+	 *
+	 * @param tsumoHai
+	 *            ツモ牌
+	 * @return 結果
+	 */
+	public boolean setAnKan(Hai tsumoHai) {
+		if (anKansLength >= FUURO_MAX) {
+			return false;
+		}
+
+		if (!validKan(tsumoHai)) {
+			return false;
+		}
+
+		int anKanIdx = 0;
+
+		Hai.copy(anKans[anKansLength][anKanIdx], tsumoHai);
+		anKanIdx++;
+
+		int tsumoHaiId = tsumoHai.getId();
+
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (tsumoHaiId == jyunTehai[i].getId()) {
+				Hai.copy(anKans[anKansLength][anKanIdx], jyunTehai[i]);
+				anKanIdx++;
+
+				rmJyunTehai(i--);
+
+				if (anKanIdx >= MENTSU_LENGTH_4) {
+					break;
+				}
+			}
+		}
+
+		anKansLength++;
 
 		return true;
 	}

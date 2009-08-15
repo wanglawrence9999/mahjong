@@ -2,9 +2,9 @@ package jp.sourceforge.andjong;
 
 /**
  * 河を管理するクラス
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class Kawa {
 	/** 捨牌の長さの最大値 */
@@ -31,7 +31,7 @@ public class Kawa {
 
 	/**
 	 * 捨牌に牌を追加する。
-	 * 
+	 *
 	 * @param hai
 	 *            追加する牌
 	 */
@@ -40,13 +40,13 @@ public class Kawa {
 			return false;
 		}
 
-		suteHais[suteHaisLength++].copy(hai);
+		Hai.copy(suteHais[suteHaisLength++], hai);
 		return true;
 	}
 
 	/**
 	 * 捨牌の最後の牌に、鳴きフラグを設定する。
-	 * 
+	 *
 	 * @param naki
 	 *            鳴きフラグ
 	 */
@@ -61,7 +61,7 @@ public class Kawa {
 
 	/**
 	 * 捨牌の最後の牌に、リーチフラグを設定する。
-	 * 
+	 *
 	 * @param reach
 	 *            リーチフラグ
 	 */
@@ -76,7 +76,7 @@ public class Kawa {
 
 	/**
 	 * 捨牌の最後の牌に、手出しフラグを設定する。
-	 * 
+	 *
 	 * @param tedashi
 	 *            手出しフラグ
 	 */
@@ -91,7 +91,7 @@ public class Kawa {
 
 	/**
 	 * 河オブジェクトをコピーする。
-	 * 
+	 *
 	 * @param kawa
 	 *            河
 	 */
@@ -101,7 +101,7 @@ public class Kawa {
 
 	/**
 	 * 河を取得する。
-	 * 
+	 *
 	 * @return 河
 	 */
 	SuteHai[] getSuteHais() {
@@ -110,7 +110,7 @@ public class Kawa {
 
 	/**
 	 * 河の長さを取得する。
-	 * 
+	 *
 	 * @return 河の長さ
 	 */
 	int getSuteHaiLength() {
@@ -119,14 +119,14 @@ public class Kawa {
 
 	/**
 	 * 河をコピーする。
-	 * 
+	 *
 	 * @param SuteHais
 	 *            河
 	 * @return 河の長さ
 	 */
 	int copySuteHai(SuteHai[] SuteHais) {
 		for (int i = 0; i < this.suteHaisLength; i++)
-			SuteHais[i].copy(this.suteHais[i]);
+			Hai.copy(SuteHais[i], this.suteHais[i]);
 		return this.suteHaisLength;
 	}
 }

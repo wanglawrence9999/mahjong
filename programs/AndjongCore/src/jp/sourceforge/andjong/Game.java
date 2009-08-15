@@ -413,7 +413,7 @@ public class Game {
 			// 捨牌のインデックスを取得します。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 			if (sutehaiIdx == 13) {// ツモ切り
-				suteHai.copy(tsumoHai);
+				Hai.copy(suteHai, tsumoHai);
 				activePlayer.getKawa().add(suteHai);
 			} else {// 手出し
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
@@ -430,7 +430,7 @@ public class Game {
 			// 捨牌のインデックスを取得します。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 			if (sutehaiIdx == 13) {// ツモ切り
-				suteHai.copy(tsumoHai);
+				Hai.copy(suteHai, tsumoHai);
 				activePlayer.getKawa().add(suteHai);
 				activePlayer.getKawa().setReach(true);
 			} else {// 手出し

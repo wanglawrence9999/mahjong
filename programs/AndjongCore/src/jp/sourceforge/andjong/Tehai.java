@@ -2,9 +2,9 @@ package jp.sourceforge.andjong;
 
 /**
  * 手牌を管理する。
- *
+ * 
  * @author Yuji Urushibara
- *
+ * 
  */
 public class Tehai {
 	/** 純手牌の最大値 */
@@ -85,7 +85,7 @@ public class Tehai {
 
 	/**
 	 * 手牌オブジェクトをコピーする。
-	 *
+	 * 
 	 * @param tehai
 	 *            手牌オブジェクト
 	 * @param jyunTehaiCopy
@@ -104,7 +104,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌を取得する。
-	 *
+	 * 
 	 * @return 純手牌
 	 */
 	public Hai[] getJyunTehai() {
@@ -113,7 +113,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌の長さを取得する。
-	 *
+	 * 
 	 * @return 純手牌の長さ
 	 */
 	public int getJyunTehaiLength() {
@@ -122,7 +122,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌に牌を追加する。
-	 *
+	 * 
 	 * @param hai
 	 *            追加する牌
 	 * @return 結果
@@ -138,10 +138,10 @@ public class Tehai {
 				break;
 			}
 
-			jyunTehai[i].copy(jyunTehai[i - 1]);
+			Hai.copy(jyunTehai[i], jyunTehai[i - 1]);
 		}
 
-		jyunTehai[i].copy(hai);
+		Hai.copy(jyunTehai[i], hai);
 		jyunTehaiLength++;
 
 		return true;
@@ -149,7 +149,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌から指定位置の牌を削除する。
-	 *
+	 * 
 	 * @param idx
 	 *            指定位置
 	 * @return 結果
@@ -160,7 +160,7 @@ public class Tehai {
 		}
 
 		for (int i = idx; i < jyunTehaiLength - 1; i++) {
-			jyunTehai[i].copy(jyunTehai[i + 1]);
+			Hai.copy(jyunTehai[i], jyunTehai[i + 1]);
 		}
 
 		jyunTehaiLength--;
@@ -170,7 +170,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌から指定の牌を削除する。
-	 *
+	 * 
 	 * @param hai
 	 *            指定の牌
 	 * @return 結果
@@ -189,28 +189,36 @@ public class Tehai {
 	}
 
 	/**
-	 * 純手牌のインデックスを指定して、牌をコピーする。
-	 *
-	 * @param hai
-	 *            牌
-	 * @param idx
-	 *            純手牌のインデックス
-	 */
-	public void copyJyunTehaiIdx(Hai hai, int idx) {
-		hai.copy(jyunTehai[idx]);
-	}
-
-	/**
 	 * 純手牌をコピーする。
-	 *
+	 * 
 	 * @param jyunTehai
 	 *            純手牌
 	 * @return 純手牌の長さ
 	 */
 	public int copyJyunTehai(Hai[] jyunTehai) {
-		for (int i = 0; i < this.jyunTehaiLength; i++)
-			jyunTehai[i].copy(this.jyunTehai[i]);
+		for (int i = 0; i < this.jyunTehaiLength; i++) {
+			Hai.copy(jyunTehai[i], this.jyunTehai[i]);
+		}
+
 		return this.jyunTehaiLength;
+	}
+
+	/**
+	 * 純手牌の指定位置の牌をコピーする。
+	 * 
+	 * @param hai
+	 *            牌
+	 * @param idx
+	 *            指定位置
+	 */
+	public boolean copyJyunTehaiIdx(Hai hai, int idx) {
+		if (idx >= jyunTehaiLength) {
+			return false;
+		}
+
+		Hai.copy(hai, jyunTehai[idx]);
+
+		return true;
 	}
 
 	/**
@@ -218,7 +226,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 *
+	 * 
 	 * @param minshun
 	 *            明順
 	 */
@@ -226,14 +234,14 @@ public class Tehai {
 		if (minShunsLength >= 4)
 			return;
 
-		minShuns[minShunsLength][0].copy(minshun[0]);
-		minShuns[minShunsLength][1].copy(minshun[1]);
-		minShuns[minShunsLength++][2].copy(minshun[2]);
+		Hai.copy(minShuns[minShunsLength][0], minshun[0]);
+		Hai.copy(minShuns[minShunsLength][1], minshun[1]);
+		Hai.copy(minShuns[minShunsLength++][2], minshun[2]);
 	}
 
 	/**
 	 * 明順の配列を取得する。
-	 *
+	 * 
 	 * @return 明順の配列
 	 */
 	public Hai[][] getMinshuns() {
@@ -242,7 +250,7 @@ public class Tehai {
 
 	/**
 	 * 明順の配列の長さを取得する。
-	 *
+	 * 
 	 * @return 明順の配列の長さ
 	 */
 	public int getMinshunsLength() {
@@ -251,16 +259,16 @@ public class Tehai {
 
 	/**
 	 * 明順の配列をコピーする。
-	 *
+	 * 
 	 * @param minshuns
 	 *            明順の配列
 	 * @return 明順の配列の長さ
 	 */
 	public int copyMinshuns(Hai[][] minshuns) {
 		for (int i = 0; i < this.minShunsLength; i++) {
-			minshuns[i][0].copy(this.minShuns[i][0]);
-			minshuns[i][1].copy(this.minShuns[i][1]);
-			minshuns[i][2].copy(this.minShuns[i][2]);
+			Hai.copy(minshuns[i][0], this.minShuns[i][0]);
+			Hai.copy(minshuns[i][1], this.minShuns[i][1]);
+			Hai.copy(minshuns[i][2], this.minShuns[i][2]);
 		}
 		return this.minShunsLength;
 	}
@@ -270,7 +278,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 *
+	 * 
 	 * @param minkou
 	 *            明刻
 	 */
@@ -278,14 +286,14 @@ public class Tehai {
 		if (minKousLength >= 4)
 			return;
 
-		minKous[minKousLength][0].copy(minkou[0]);
-		minKous[minKousLength][1].copy(minkou[1]);
-		minKous[minKousLength++][2].copy(minkou[2]);
+		Hai.copy(minKous[minKousLength][0], minkou[0]);
+		Hai.copy(minKous[minKousLength][1], minkou[1]);
+		Hai.copy(minKous[minKousLength++][2], minkou[2]);
 	}
 
 	/**
 	 * 明刻の配列を取得する。
-	 *
+	 * 
 	 * @return 明刻の配列
 	 */
 	public Hai[][] getMinkous() {
@@ -294,7 +302,7 @@ public class Tehai {
 
 	/**
 	 * 明刻の配列の長さを取得する。
-	 *
+	 * 
 	 * @return 明刻の配列の長さ
 	 */
 	public int getMinkousLength() {
@@ -303,16 +311,16 @@ public class Tehai {
 
 	/**
 	 * 明刻の配列をコピーする。
-	 *
+	 * 
 	 * @param minkous
 	 *            明刻の配列
 	 * @return 明刻の配列の長さ
 	 */
 	public int copyMinkous(Hai[][] minkous) {
 		for (int i = 0; i < this.minKousLength; i++) {
-			minkous[i][0].copy(this.minKous[i][0]);
-			minkous[i][1].copy(this.minKous[i][1]);
-			minkous[i][2].copy(this.minKous[i][2]);
+			Hai.copy(minkous[i][0], this.minKous[i][0]);
+			Hai.copy(minkous[i][1], this.minKous[i][1]);
+			Hai.copy(minkous[i][2], this.minKous[i][2]);
 		}
 		return this.minKousLength;
 	}
@@ -322,7 +330,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 *
+	 * 
 	 * @param minkan
 	 *            明槓
 	 */
@@ -330,15 +338,15 @@ public class Tehai {
 		if (minKansLength >= 4)
 			return;
 
-		minKans[minKansLength][0].copy(minkan[0]);
-		minKans[minKansLength][1].copy(minkan[1]);
-		minKans[minKansLength][2].copy(minkan[2]);
-		minKans[minKansLength++][3].copy(minkan[3]);
+		Hai.copy(minKans[minKansLength][0], minkan[0]);
+		Hai.copy(minKans[minKansLength][1], minkan[1]);
+		Hai.copy(minKans[minKansLength][2], minkan[2]);
+		Hai.copy(minKans[minKansLength++][3], minkan[3]);
 	}
 
 	/**
 	 * 明槓の配列を取得する。
-	 *
+	 * 
 	 * @return 明槓の配列
 	 */
 	public Hai[][] getMinkans() {
@@ -347,7 +355,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列の長さを取得する。
-	 *
+	 * 
 	 * @return 明槓の配列の長さ
 	 */
 	public int getMinkansLength() {
@@ -356,17 +364,17 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列をコピーする。
-	 *
+	 * 
 	 * @param minkans
 	 *            明槓の配列
 	 * @return 明槓の配列の長さ
 	 */
 	public int copyMinkans(Hai[][] minkans) {
 		for (int i = 0; i < this.minKansLength; i++) {
-			minkans[i][0].copy(this.minKans[i][0]);
-			minkans[i][1].copy(this.minKans[i][1]);
-			minkans[i][2].copy(this.minKans[i][2]);
-			minkans[i][3].copy(this.minKans[i][3]);
+			Hai.copy(minkans[i][0], this.minKans[i][0]);
+			Hai.copy(minkans[i][1], this.minKans[i][1]);
+			Hai.copy(minkans[i][2], this.minKans[i][2]);
+			Hai.copy(minkans[i][3], this.minKans[i][3]);
 		}
 		return this.minKansLength;
 	}
@@ -376,7 +384,7 @@ public class Tehai {
 	 * <p>
 	 * Haiオブジェクトをコピーします。
 	 * </p>
-	 *
+	 * 
 	 * @param ankan
 	 *            暗槓
 	 */
@@ -384,15 +392,15 @@ public class Tehai {
 		if (anKansLength >= 4)
 			return;
 
-		anKans[anKansLength][0].copy(ankan[0]);
-		anKans[anKansLength][1].copy(ankan[1]);
-		anKans[anKansLength][2].copy(ankan[2]);
-		anKans[anKansLength++][3].copy(ankan[3]);
+		Hai.copy(anKans[anKansLength][0], ankan[0]);
+		Hai.copy(anKans[anKansLength][1], ankan[1]);
+		Hai.copy(anKans[anKansLength][2], ankan[2]);
+		Hai.copy(anKans[anKansLength++][3], ankan[3]);
 	}
 
 	/**
 	 * 暗槓の配列を取得する。
-	 *
+	 * 
 	 * @return 暗槓の配列
 	 */
 	public Hai[][] getAnkans() {
@@ -401,7 +409,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列の長さを取得する。
-	 *
+	 * 
 	 * @return 暗槓の配列の長さ
 	 */
 	public int getAnkansLength() {
@@ -410,24 +418,24 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列をコピーする。
-	 *
+	 * 
 	 * @param minKans
 	 *            暗槓の配列
 	 * @return 暗槓の配列の長さ
 	 */
 	public int copyAnkans(Hai[][] ankans) {
 		for (int i = 0; i < this.anKansLength; i++) {
-			ankans[i][0].copy(this.anKans[i][0]);
-			ankans[i][1].copy(this.anKans[i][1]);
-			ankans[i][2].copy(this.anKans[i][2]);
-			ankans[i][3].copy(this.anKans[i][3]);
+			Hai.copy(ankans[i][0], this.anKans[i][0]);
+			Hai.copy(ankans[i][1], this.anKans[i][1]);
+			Hai.copy(ankans[i][2], this.anKans[i][2]);
+			Hai.copy(ankans[i][3], this.anKans[i][3]);
 		}
 		return this.anKansLength;
 	}
 
 	/**
 	 * ポンの可否をチェックします。
-	 *
+	 * 
 	 * @param suteHai
 	 *            捨牌
 	 * @return ポンの可否
@@ -449,7 +457,7 @@ public class Tehai {
 
 	/**
 	 * ポンを設定します。
-	 *
+	 * 
 	 * @param suteHai
 	 *            捨牌
 	 */
@@ -476,9 +484,9 @@ public class Tehai {
 	 * <p>
 	 * 構造体のように使用します。
 	 * </p>
-	 *
+	 * 
 	 * @author Yuji Urushibara
-	 *
+	 * 
 	 */
 	public static class CountFormat {
 		/**
@@ -486,9 +494,9 @@ public class Tehai {
 		 * <p>
 		 * 構造体のように使用します。
 		 * </p>
-		 *
+		 * 
 		 * @author Yuji Urushibara
-		 *
+		 * 
 		 */
 		public static class Count {
 			/** 牌番号 */
@@ -514,7 +522,7 @@ public class Tehai {
 
 		/**
 		 * カウントの配列の長さの合計を取得する。
-		 *
+		 * 
 		 * @return　カウントの配列の長さの合計
 		 */
 		public int getTotalCountLength() {
@@ -529,7 +537,7 @@ public class Tehai {
 
 	/**
 	 * カウントフォーマットを取得する。
-	 *
+	 * 
 	 * @param addHai
 	 *            手牌に追加する牌。nullでも良い。
 	 * @return カウントフォーマット
@@ -577,9 +585,9 @@ public class Tehai {
 
 	/**
 	 * 上がりの組み合わせのクラスです。
-	 *
+	 * 
 	 * @author Yuji Urushibara
-	 *
+	 * 
 	 */
 	public static class Combi {
 		/** 頭の牌番号 */
@@ -599,7 +607,7 @@ public class Tehai {
 
 		/**
 		 * Combiオブジェクトをコピーします。
-		 *
+		 * 
 		 * @param combi
 		 *            Combiオブジェクト
 		 */
@@ -622,9 +630,9 @@ public class Tehai {
 
 	/**
 	 * 上がりの組み合わせの構築を管理するクラスです。
-	 *
+	 * 
 	 * @author Yuji Urushibara
-	 *
+	 * 
 	 */
 	private static class CombiManage {
 		/** 上がりの組み合わせ（作業領域） */
@@ -646,7 +654,7 @@ public class Tehai {
 
 		/**
 		 * 作業領域を初期化する。
-		 *
+		 * 
 		 * @param totalCount
 		 *            カウントの配列の長さの残り
 		 */
@@ -683,7 +691,7 @@ public class Tehai {
 	 * 処理速度が重要です。<br>
 	 * TODO 最適化の手段を検討すること。
 	 * </p>
-	 *
+	 * 
 	 * @param pos
 	 *            検索位置
 	 */

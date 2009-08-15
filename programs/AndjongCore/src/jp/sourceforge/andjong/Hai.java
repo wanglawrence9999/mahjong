@@ -294,17 +294,19 @@ public class Hai {
 	 *            牌
 	 */
 	public Hai(Hai hai) {
-		copy(hai);
+		copy(this, hai);
 	}
 
 	/**
 	 * 牌をコピーする。
 	 *
-	 * @param hai
-	 *            牌
+	 * @param destHai
+	 *            コピー先の牌
+	 * @param srcHai
+	 *            コピー元の牌
 	 */
-	public void copy(Hai hai) {
-		this.id = hai.id;
+	public static void copy(Hai destHai, Hai srcHai) {
+		destHai.id = srcHai.id;
 	}
 
 	/**

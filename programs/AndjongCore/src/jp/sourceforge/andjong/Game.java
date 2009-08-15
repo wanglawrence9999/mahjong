@@ -2,17 +2,16 @@ package jp.sourceforge.andjong;
 
 import static jp.sourceforge.andjong.Hai.*;
 
+import jp.sourceforge.andjong.CountFormat.Combi;
 import jp.sourceforge.andjong.EventIF.EID;
-import jp.sourceforge.andjong.Tehai.Combi;
-import jp.sourceforge.andjong.Tehai.CountFormat;
 import jp.sourceforge.andjong.Yaku;
 import jp.sourceforge.andjong.AgariScore;
 
 /**
  * ゲームを管理するクラスです。
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class Game {
 	/** 山 */
@@ -20,7 +19,7 @@ public class Game {
 
 	/**
 	 * 山を取得します。
-	 * 
+	 *
 	 * @return 山
 	 */
 	Yama getYama() {
@@ -41,7 +40,7 @@ public class Game {
 
 	/**
 	 * 局を取得します。
-	 * 
+	 *
 	 * @return 局
 	 */
 	int getkyoku() {
@@ -56,7 +55,7 @@ public class Game {
 
 	/**
 	 * ツモ牌を取得します。
-	 * 
+	 *
 	 * @return ツモ牌
 	 */
 	Hai getTsumoHai() {
@@ -68,7 +67,7 @@ public class Game {
 
 	/**
 	 * 捨牌を取得します。
-	 * 
+	 *
 	 * @return 捨牌
 	 */
 	Hai getSuteHai() {
@@ -116,7 +115,7 @@ public class Game {
 
 	/**
 	 * サイコロの配列を取得します。
-	 * 
+	 *
 	 * @return サイコロの配列
 	 */
 	Sai[] getSais() {
@@ -136,7 +135,7 @@ public class Game {
 
 	/**
 	 * メイン処理を開始します。
-	 * 
+	 *
 	 * @param args
 	 *            コマンドライン引数
 	 */
@@ -389,7 +388,7 @@ public class Game {
 
 	/**
 	 * イベント（ツモ）を発行します。
-	 * 
+	 *
 	 * @return イベントID
 	 */
 	private EID tsumoEvent() {
@@ -454,7 +453,7 @@ public class Game {
 
 	/**
 	 * イベントを通知します。
-	 * 
+	 *
 	 * @param eid
 	 *            イベントID
 	 * @param fromKaze
@@ -529,7 +528,7 @@ public class Game {
 
 	/**
 	 * 表ドラ、槓ドラの配列を取得します。
-	 * 
+	 *
 	 * @return 表ドラ、槓ドラの配列
 	 */
 	Hai[] getDoras() {
@@ -538,13 +537,13 @@ public class Game {
 
 	/**
 	 * 表ドラ、槓ドラの配列を取得します。
-	 * 
+	 *
 	 * @return 表ドラ、槓ドラの配列
 	 */
 	Hai[] getUraDoras() {
 		return getYama().getUraDoraHais();
 	}
-	
+
 	/**
 	 * 自風を取得します。
 	 */
@@ -554,7 +553,7 @@ public class Game {
 
 	/**
 	 * 本場を取得します。
-	 * 
+	 *
 	 * @return 本場
 	 */
 	int getHonba() {
@@ -563,7 +562,7 @@ public class Game {
 
 	/**
 	 * リーチを取得します。
-	 * 
+	 *
 	 * @param kaze
 	 *            風
 	 * @return リーチ
@@ -574,7 +573,7 @@ public class Game {
 
 	/**
 	 * 手牌をコピーします。
-	 * 
+	 *
 	 * @param tehai
 	 *            手牌
 	 * @param kaze
@@ -590,7 +589,7 @@ public class Game {
 
 	/**
 	 * 河をコピーします。
-	 * 
+	 *
 	 * @param kawa
 	 *            河
 	 * @param kaze
@@ -602,7 +601,7 @@ public class Game {
 
 	/**
 	 * ツモの残り数を取得します。
-	 * 
+	 *
 	 * @return ツモの残り数
 	 */
 	int getTsumoRemain() {

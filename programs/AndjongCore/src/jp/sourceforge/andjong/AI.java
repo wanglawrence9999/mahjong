@@ -1,7 +1,6 @@
 package jp.sourceforge.andjong;
 
-import jp.sourceforge.andjong.Tehai.Combi;
-import jp.sourceforge.andjong.Tehai.CountFormat;
+import jp.sourceforge.andjong.CountFormat.Combi;
 
 /**
  * AIÇé¿ëïÇ∑ÇÈÉNÉâÉXÇ≈Ç∑ÅB
@@ -133,7 +132,7 @@ public class AI implements EventIF {
 		int score = 0;
 		int maxScore = 0;
 
-		tehai.getCountFormat(countFormat, null);
+		CountFormat.getCountFormat(tehai, countFormat, null);
 		maxScore = getCountFormatScore(countFormat);
 		// System.out.println("score:" + score + ",maxScore:" + maxScore +
 		// ",hai:" + UI.idToString(tsumoHai.getId()));
@@ -148,7 +147,7 @@ public class AI implements EventIF {
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			tehai.copyJyunTehaiIdx(hai, i);
 			tehai.rmJyunTehai(i);
-			tehai.getCountFormat(countFormat, addHai);
+			CountFormat.getCountFormat(tehai, countFormat, addHai);
 			score = getCountFormatScore(countFormat);
 			// System.out.println("score:" + score + ",maxScore:" + maxScore +
 			// ",hai:" + UI.idToString(hai.getId()));
@@ -184,8 +183,8 @@ public class AI implements EventIF {
 
 	private boolean thinkReach(Tehai tehai) {
 		for (Hai hai : haiTable) {
-			tehai.getCountFormat(countFormat, hai);
-			if (tehai.getCombi(combis, countFormat) > 0) {
+			CountFormat.getCountFormat(tehai, countFormat, hai);
+			if (countFormat.getCombi(combis) > 0) {
 				return true;
 			}
 		}

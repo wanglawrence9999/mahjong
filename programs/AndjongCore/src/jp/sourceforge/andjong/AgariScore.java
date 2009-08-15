@@ -1,26 +1,25 @@
 package jp.sourceforge.andjong;
 
 import static jp.sourceforge.andjong.Hai.*;
-import jp.sourceforge.andjong.Tehai.Combi;
-import jp.sourceforge.andjong.Tehai.CountFormat;
+import jp.sourceforge.andjong.CountFormat.Combi;
 
 public class AgariScore {
 	/** ƒJƒEƒ“ƒgƒtƒH[ƒ}ƒbƒg */
 	private CountFormat countFormat = new CountFormat();
-	
+
 	/**
 	 * •„‚ğŒvZ‚µ‚Ü‚·B
-	 * 
+	 *
 	 * @param tehai
 	 *            è”v addHai ˜a—¹‚Á‚½”v combi è”v‚Ì‘g‚İ‡‚í‚¹@
-	 * 
+	 *
 	 * @return int •„
-	 * 
+	 *
 	 */
 	int countHu(Tehai tehai, Hai addHai, Combi combi, Yaku yaku,AgariSetting setting) {
 		int countHu = 20;
 		Hai checkHais[][];
-		
+
 		//µ‘Îq‚Ìê‡‚Í‚Q‚T•„
 		if(yaku.checkTeetoitu() == true){
 			return 25;
@@ -43,14 +42,14 @@ public class AgariScore {
 		if (atamaHai.getId() == setting.getJikaze()){
 			countHu += 2;
 		}
-		
+
 		//•½˜a‚ª¬—§‚·‚éê‡‚ÍA‘Ò‚¿‚É‚æ‚é‚Q•„’Ç‰Á‚æ‚è‚à—Dæ‚³‚ê‚é
 		if(yaku.checkPinfu() == false){
 			// ’P‹R‘Ò‚¿‚Ìê‡‚Q•„’Ç‰Á
 			if(addHai.getId() == combi.atamaId){
 				countHu += 2;
 			}
-			
+
 			// ›Æ’£‘Ò‚¿‚Ìê‡‚Q•„’Ç‰Á
 			//””v‚Ì‚Q`‚W‚©‚Ç‚¤‚©”»’è
 			if(addHai.isYaotyuu() == false){
@@ -60,7 +59,7 @@ public class AgariScore {
 					}
 				}
 			}
-	
+
 			// •Ó’£‘Ò‚¿(3)‚Ìê‡‚Q•„’Ç‰Á
 			if((addHai.isYaotyuu() == false) && (addHai.getNo() == NO_3)){
 				for(int i = 0 ; i < combi.shunCount ; i++){
@@ -69,7 +68,7 @@ public class AgariScore {
 					}
 				}
 			}
-	
+
 			// •Ó’£‘Ò‚¿(7)‚Ìê‡‚Q•„’Ç‰Á
 			if((addHai.isYaotyuu() == false) && (addHai.getNo() == NO_7)){
 				for(int i = 0 ; i < combi.shunCount ; i++){
@@ -130,7 +129,7 @@ public class AgariScore {
 				countHu += 2;
 			}
 		}
-		
+
 		// –Ê‘Oƒƒ“ã‚ª‚è‚Ìê‡‚Í‚P‚O•„’Ç‰Á
 		if(setting.getYakuflg(AgariSetting.YakuflgName.TUMO.ordinal() )== false){
 			if (yaku.nakiflg == false) {
@@ -148,10 +147,10 @@ public class AgariScore {
 
 	/**
 	 * ã‚ª‚è“_”‚ğæ“¾‚µ‚Ü‚·B
-	 * 
+	 *
 	 * @param tehai
 	 *            è”v addHai ˜a—¹‚Á‚½”v combi è”v‚Ì‘g‚İ‡‚í‚¹@
-	 * 
+	 *
 	 * @return int ˜a—¹‚è“_
 	 */
 	public int getScore(int hanSuu, int huSuu) {
@@ -187,10 +186,10 @@ public class AgariScore {
 
 	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting) {
 		// ƒJƒEƒ“ƒgƒtƒH[ƒ}ƒbƒg‚ğæ“¾‚µ‚Ü‚·B
-		tehai.getCountFormat(countFormat, addHai);
+		CountFormat.getCountFormat(tehai, countFormat, addHai);
 
 		// ‚ ‚ª‚è‚Ì‘g‚İ‡‚í‚¹‚ğæ“¾‚µ‚Ü‚·B
-		int combisCount = tehai.getCombi(combis, countFormat);
+		int combisCount = countFormat.getCombi(combis);
 
 		// ‚ ‚ª‚è‚Ì‘g‚İ‡‚í‚¹‚ª‚È‚¢ê‡‚Í0“_
 		if (combisCount == 0)

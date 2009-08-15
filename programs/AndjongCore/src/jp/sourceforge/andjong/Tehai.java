@@ -375,6 +375,67 @@ public class Tehai {
 	}
 
 	/**
+	 * ポンの可否をチェックする。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return ポンの可否
+	 */
+	public boolean validPon(Hai suteHai) {
+		int suteHaiId = suteHai.getId();
+		for (int i = 0, count = 1; i < jyunTehaiLength; i++) {
+			if (suteHaiId == jyunTehai[i].getId()) {
+				count++;
+				if (count >= MENTSU_LENGTH_3) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * ポンを設定する。
+	 *
+	 * @param suteHai
+	 *            捨牌
+	 * @return 結果
+	 */
+	public boolean setPon(Hai suteHai) {
+		if (minKousLength >= FUURO_MAX) {
+			return false;
+		}
+
+		if (!validPon(suteHai)) {
+			return false;
+		}
+
+		int minKouIdx = 0;
+
+		Hai.copy(minKous[minKousLength][minKouIdx], suteHai);
+		minKouIdx++;
+
+		int suteHaiId = suteHai.getId();
+
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			if (suteHaiId == jyunTehai[i].getId()) {
+				Hai.copy(minKous[minKousLength][minKouIdx], jyunTehai[i]);
+				minKouIdx++;
+
+				rmJyunTehai(i--);
+
+				if (minKouIdx >= MENTSU_LENGTH_3) {
+					minKousLength++;
+					break;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * 明槓を追加する。
 	 *
 	 * @param minKan
@@ -500,51 +561,5 @@ public class Tehai {
 		}
 
 		return true;
-	}
-
-	/**
-	 * ポンの可否をチェックします。
-	 *
-	 * @param suteHai
-	 *            捨牌
-	 * @return ポンの可否
-	 */
-	public boolean validPon(Hai suteHai) {
-		int haiId = suteHai.getId();
-		int count = 0;
-		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getId()) {
-				count++;
-			}
-		}
-
-		if (count >= 2) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * ポンを設定します。
-	 *
-	 * @param suteHai
-	 *            捨牌
-	 */
-	public void setPon(Hai suteHai) {
-		int haiId = suteHai.getId();
-		Hai[] minkou = new Hai[3];
-		int minkouIdx = 0;
-
-		minkou[minkouIdx++] = suteHai;
-		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (haiId == jyunTehai[i].getId()) {
-				rmJyunTehai(i--);
-				minkou[minkouIdx++] = suteHai;
-				if (minkouIdx >= 3) {
-					break;
-				}
-			}
-		}
-		addMinKou(minkou);
 	}
 }

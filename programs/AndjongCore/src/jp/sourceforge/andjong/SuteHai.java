@@ -1,10 +1,10 @@
 package jp.sourceforge.andjong;
 
 /**
- * 捨牌を管理するクラス
- * 
+ * 捨牌を管理する。
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class SuteHai extends Hai {
 	/** 鳴きフラグ */
@@ -24,10 +24,10 @@ public class SuteHai extends Hai {
 	}
 
 	/**
-	 * 番号から捨牌を作成する。
-	 * 
+	 * IDから捨牌を作成する。
+	 *
 	 * @param id
-	 *            番号
+	 *            ID
 	 */
 	public SuteHai(int id) {
 		super(id);
@@ -35,7 +35,7 @@ public class SuteHai extends Hai {
 
 	/**
 	 * 牌から捨牌を作成する。
-	 * 
+	 *
 	 * @param hai
 	 *            牌
 	 */
@@ -45,7 +45,7 @@ public class SuteHai extends Hai {
 
 	/**
 	 * 鳴きフラグを設定する。
-	 * 
+	 *
 	 * @param naki
 	 *            鳴きフラグ
 	 */
@@ -55,7 +55,7 @@ public class SuteHai extends Hai {
 
 	/**
 	 * 鳴きフラグを取得する。
-	 * 
+	 *
 	 * @return 鳴きフラグ
 	 */
 	public boolean isNaki() {
@@ -64,7 +64,7 @@ public class SuteHai extends Hai {
 
 	/**
 	 * リーチフラグを設定する。
-	 * 
+	 *
 	 * @param reach
 	 *            リーチフラグ
 	 */
@@ -74,7 +74,7 @@ public class SuteHai extends Hai {
 
 	/**
 	 * リーチフラグを取得する。
-	 * 
+	 *
 	 * @return リーチフラグ
 	 */
 	public boolean isReach() {
@@ -83,7 +83,7 @@ public class SuteHai extends Hai {
 
 	/**
 	 * 手出しフラグを設定する。
-	 * 
+	 *
 	 * @param tedashi
 	 *            手出しフラグ
 	 */
@@ -93,7 +93,7 @@ public class SuteHai extends Hai {
 
 	/**
 	 * 手出しフラグを取得する。
-	 * 
+	 *
 	 * @return 手出しフラグ
 	 */
 	public boolean isTedashi() {

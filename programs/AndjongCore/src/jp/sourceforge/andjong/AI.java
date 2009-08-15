@@ -117,7 +117,7 @@ public class AI implements EventIF {
 
 		// Ì”v‚ğŒˆ‚ß‚½‚Ì‚Åè”v‚ğXV‚µ‚Ü‚·B
 		if (sutehaiIdx != 13) {
-			tehai.removeJyunTehai(sutehaiIdx);
+			tehai.rmJyunTehai(sutehaiIdx);
 			tehai.addJyunTehai(tsumoHai);
 		}
 
@@ -146,7 +146,7 @@ public class AI implements EventIF {
 
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			tehai.copyJyunTehaiIdx(hai, i);
-			tehai.removeJyunTehai(i);
+			tehai.rmJyunTehai(i);
 			tehai.getCountFormat(countFormat, addHai);
 			score = getCountFormatScore(countFormat);
 			// System.out.println("score:" + score + ",maxScore:" + maxScore +

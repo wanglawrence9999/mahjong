@@ -417,7 +417,7 @@ public class Game {
 				activePlayer.getKawa().add(suteHai);
 			} else {// 手出し
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
-				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
+				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
 				activePlayer.getKawa().add(suteHai);
 				activePlayer.getKawa().setTedashi(true);
@@ -435,7 +435,7 @@ public class Game {
 				activePlayer.getKawa().setReach(true);
 			} else {// 手出し
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
-				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
+				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
 				activePlayer.getKawa().add(suteHai);
 				activePlayer.getKawa().setTedashi(true);
@@ -507,7 +507,7 @@ public class Game {
 				// 捨牌のインデックスを取得します。
 				int sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
-				activePlayer.getTehai().removeJyunTehai(sutehaiIdx);
+				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getKawa().add(suteHai);
 				activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);

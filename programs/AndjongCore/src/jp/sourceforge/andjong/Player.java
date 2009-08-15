@@ -144,7 +144,7 @@ class Player {
 	 */
 	void init() {
 		// è”v‚ğ‰Šú‰»‚µ‚Ü‚·B
-		tehai.init();
+		tehai.initialize();
 
 		// ‰Í‚ğ‰Šú‰»‚µ‚Ü‚·B
 		kawa.initialize();

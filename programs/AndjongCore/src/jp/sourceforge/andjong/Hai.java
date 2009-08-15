@@ -7,10 +7,6 @@ package jp.sourceforge.andjong;
  *
  */
 public class Hai {
-	/*
-	 * ID
-	 */
-
 	/** ID */
 	private int id;
 
@@ -89,10 +85,6 @@ public class Hai {
 
 	/** IDの最大値 */
 	public final static int ID_MAX = ID_CHUN;
-
-	/*
-	 * 番号
-	 */
 
 	/** 一 */
 	public final static int NO_1 = 1;
@@ -186,10 +178,6 @@ public class Hai {
 	/** 中 */
 	public final static int NO_CHUN = 3;
 
-	/*
-	 * ID Format A
-	 */
-
 	/** 萬子 */
 	public final static int ID_A_WAN = 0x00000010;
 	/** 筒子 */
@@ -206,10 +194,6 @@ public class Hai {
 	/** 字牌 */
 	public final static int ID_A_TSUU = ID_A_FON | ID_A_SANGEN;
 
-	/*
-	 * 種類
-	 */
-
 	/** 萬子 */
 	public final static int KIND_WAN = 0;
 	/** 筒子 */
@@ -220,10 +204,6 @@ public class Hai {
 	public final static int KIND_FON = 3;
 	/** 三元牌 */
 	public final static int KIND_SANGEN = 4;
-
-	/*
-	 * 定数の配列
-	 */
 
 	/** 番号の配列 */
 	private final static int[] nos = {
@@ -290,10 +270,6 @@ public class Hai {
 	// 三元牌
 	true, true, true };
 
-	/*
-	 * コンストラクタ
-	 */
-
 	/**
 	 * 空の牌を作成する。
 	 */
@@ -320,10 +296,6 @@ public class Hai {
 	public Hai(Hai hai) {
 		copy(hai);
 	}
-
-	/*
-	 * メソッド
-	 */
 
 	/**
 	 * 牌をコピーする。

@@ -222,8 +222,8 @@ public class Console implements EventIF {
 		for (int i = 0; i < jyunTehaiLength; i++)
 			System.out.print(idToString(jyunTehai[i].getId()));
 
-		int minkousLength = tehai.getMinkousLength();
-		Hai[][] minkous = tehai.getMinkous();
+		int minkousLength = tehai.getMinKousLength();
+		Hai[][] minkous = tehai.getMinKous();
 		for (int i = 0; i < minkousLength; i++) {
 			System.out.print("[");
 			System.out.print(idToString(minkous[i][0].getId()));

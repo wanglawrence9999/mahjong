@@ -44,6 +44,21 @@ public class SuteHai extends Hai {
 	}
 
 	/**
+	 * 捨牌をコピーする。
+	 *
+	 * @param destSuteHai
+	 *            コピー先の捨牌
+	 * @param srcSuteHai
+	 *            コピー元の捨牌
+	 */
+	public static void copy(SuteHai destSuteHai, SuteHai srcSuteHai) {
+		Hai.copy(destSuteHai, srcSuteHai);
+		destSuteHai.naki = srcSuteHai.naki;
+		destSuteHai.reach = srcSuteHai.reach;
+		destSuteHai.tedashi = srcSuteHai.tedashi;
+	}
+
+	/**
 	 * 鳴きフラグを設定する。
 	 *
 	 * @param naki

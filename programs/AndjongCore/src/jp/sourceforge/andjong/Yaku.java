@@ -34,9 +34,9 @@ public class Yaku {
 		this.combi  = combi;
 		this.setting = setting;
 		//鳴きがある場合
-		if((tehai.getMinkansLength() != 0)
-		|| (tehai.getMinkousLength() != 0)
-		|| (tehai.getMinshunsLength() != 0)
+		if((tehai.getMinKansLength() != 0)
+		|| (tehai.getMinKousLength() != 0)
+		|| (tehai.getMinShunsLength() != 0)
 		){
 			nakiflg = true;
 		}
@@ -621,8 +621,8 @@ public class Yaku {
 		}
 		
 		//明順の牌をチェック
-		for(int i = 0; i < tehai.getMinshunsLength(); i++){
-			checkHai = tehai.getMinshuns();
+		for(int i = 0; i < tehai.getMinShunsLength(); i++){
+			checkHai = tehai.getMinShuns();
 			id = checkHai[i][0].getNo();
 			//123 と　789 の順子があれば不成立
 			if ((id == 1) || (id == 7)){
@@ -631,24 +631,24 @@ public class Yaku {
 		}
 		
 		//明刻の牌をチェック
-		for(int i = 0; i < tehai.getMinkousLength(); i++){
-			checkHai = tehai.getMinkous();
+		for(int i = 0; i < tehai.getMinKousLength(); i++){
+			checkHai = tehai.getMinKous();
 			if (checkHai[i][0].isYaotyuu() == true){
 				return false;
 			}
 		}
 		
 		//明槓の牌をチェック
-		for(int i = 0; i < tehai.getMinkansLength(); i++){
-			checkHai = tehai.getMinkans();
+		for(int i = 0; i < tehai.getMinKansLength(); i++){
+			checkHai = tehai.getMinKans();
 			if (checkHai[i][0].isYaotyuu() == true){
 				return false;
 			}
 		}
 		
 		//暗槓の牌をチェック
-		for(int i = 0; i < tehai.getAnkansLength(); i++){
-			checkHai = tehai.getAnkans();
+		for(int i = 0; i < tehai.getAnKansLength(); i++){
+			checkHai = tehai.getAnKans();
 			if (checkHai[i][0].isYaotyuu() == true){
 				return false;
 			}
@@ -786,8 +786,8 @@ public class Yaku {
 		}
 		
 		//明刻の牌をチェック
-		for(int i = 0; i < tehai.getMinkousLength(); i++){
-			checkHai = tehai.getMinkous();
+		for(int i = 0; i < tehai.getMinKousLength(); i++){
+			checkHai = tehai.getMinKous();
 			id = checkHai[i][0].getId();
 			//IDと役牌のIDをチェック
 			if( id == yakuHaiId ){
@@ -796,8 +796,8 @@ public class Yaku {
 		}
 		
 		//明槓の牌をチェック
-		for(int i = 0; i < tehai.getMinkansLength(); i++){
-			checkHai = tehai.getMinkans();
+		for(int i = 0; i < tehai.getMinKansLength(); i++){
+			checkHai = tehai.getMinKans();
 			id = checkHai[i][0].getId();
 			//IDと役牌のIDをチェック
 			if( id == yakuHaiId ){
@@ -805,8 +805,8 @@ public class Yaku {
 			}
 		}
 		//暗槓の牌をチェック
-		for(int i = 0; i < tehai.getAnkansLength(); i++){
-			checkHai = tehai.getAnkans();
+		for(int i = 0; i < tehai.getAnKansLength(); i++){
+			checkHai = tehai.getAnKans();
 			id = checkHai[i][0].getId();
 			//IDと役牌のIDをチェック
 			if( id == yakuHaiId ){
@@ -915,16 +915,16 @@ public class Yaku {
 		}
 		
 		//明順の牌をチェック
-		for(int i = 0; i < tehai.getMinshunsLength(); i++){
-			checkHais = tehai.getMinshuns();
+		for(int i = 0; i < tehai.getMinShunsLength(); i++){
+			checkHais = tehai.getMinShuns();
 			//123 と　789 以外の順子があれば不成立
 			if ((checkHais[i][0].getNo() > 1) && (checkHais[i][0].getNo() < 7))
 				return false;
 		}
 		
 		//明刻の牌をチェック
-		for(int i = 0; i < tehai.getMinkousLength(); i++){
-			checkHais = tehai.getMinkous();
+		for(int i = 0; i < tehai.getMinKousLength(); i++){
+			checkHais = tehai.getMinKous();
 			//数牌の場合は数字をチェック
 			if (checkHais[i][0].isYaotyuu() == false){
 				return false;
@@ -932,8 +932,8 @@ public class Yaku {
 		}
 		
 		//明槓の牌をチェック
-		for(int i = 0; i < tehai.getMinkansLength(); i++){
-			checkHais = tehai.getMinkans();
+		for(int i = 0; i < tehai.getMinKansLength(); i++){
+			checkHais = tehai.getMinKans();
 			//数牌の場合は数字をチェック
 			if (checkHais[i][0].isYaotyuu() == false){
 				return false;
@@ -941,8 +941,8 @@ public class Yaku {
 		}
 		
 		//暗槓の牌をチェック
-		for(int i = 0; i < tehai.getAnkansLength(); i++){
-			checkHais = tehai.getAnkans();
+		for(int i = 0; i < tehai.getAnKansLength(); i++){
+			checkHais = tehai.getAnKans();
 			//数牌の場合は数字をチェック
 			if (checkHais[i][0].isYaotyuu() == false){
 				return false;
@@ -970,8 +970,8 @@ public class Yaku {
 		}
 		
 		//鳴いた牌をチェック
-		for(int i = 0 ; i < tehai.getMinshunsLength() ; i++){
-			checkHai = tehai.getMinshuns();
+		for(int i = 0 ; i < tehai.getMinShunsLength() ; i++){
+			checkHai = tehai.getMinShuns();
 			id = checkHai[i][0].getId();
 			for(int j =0 ; j < checkId.length ; j++){
 				if(id == checkId[j]){
@@ -1022,8 +1022,8 @@ public class Yaku {
 		}
 		
 		//鳴いた牌をチェック
-		for(int i = 0 ; i < tehai.getMinshunsLength() ; i++){
-			checkHai = tehai.getMinshuns();
+		for(int i = 0 ; i < tehai.getMinShunsLength() ; i++){
+			checkHai = tehai.getMinShuns();
 			id = checkHai[i][0].getId();
 			checkSansyoku(id,sansyokuflg);
 		}
@@ -1058,22 +1058,22 @@ public class Yaku {
 		}
 		
 		//鳴いた牌の明刻をチェック
-		for(int i = 0 ; i < tehai.getMinkousLength() ; i++){
-			checkHai = tehai.getMinkous();
+		for(int i = 0 ; i < tehai.getMinKousLength() ; i++){
+			checkHai = tehai.getMinKous();
 			id = checkHai[i][0].getId();
 			checkSansyoku(id,sansyokuflg);
 		}
 		
 		//鳴いた牌の明槓をチェック
-		for(int i = 0 ; i < tehai.getMinkansLength() ; i++){
-			checkHai = tehai.getMinkans();
+		for(int i = 0 ; i < tehai.getMinKansLength() ; i++){
+			checkHai = tehai.getMinKans();
 			id = checkHai[i][0].getId();
 			checkSansyoku(id,sansyokuflg);
 		}
 
 		//鳴いた牌の暗槓をチェック
-		for(int i = 0 ; i < tehai.getAnkansLength() ; i++){
-			checkHai = tehai.getAnkans();
+		for(int i = 0 ; i < tehai.getAnKansLength() ; i++){
+			checkHai = tehai.getAnKans();
 			id = checkHai[i][0].getId();
 			checkSansyoku(id,sansyokuflg);
 		}
@@ -1091,7 +1091,7 @@ public class Yaku {
 	
 	boolean checkToitoi() {
 		//手牌に順子がある
-		if((combi.shunCount != 0) || (tehai.getMinshunsLength() != 0) ){
+		if((combi.shunCount != 0) || (tehai.getMinShunsLength() != 0) ){
 			return false;
 		}else{
 			return true;
@@ -1107,7 +1107,7 @@ public class Yaku {
 		}
 		
 		//暗刻と暗槓の合計が３つではない場合は不成立
-		if((combi.kouCount + tehai.getAnkansLength()) != 3){
+		if((combi.kouCount + tehai.getAnKansLength()) != 3){
 			return false;
 		}
 		
@@ -1196,8 +1196,8 @@ public class Yaku {
 	
 	boolean checkSankantu() {
 		int kansnumber = 0;
-		kansnumber += tehai.getAnkansLength();
-		kansnumber += tehai.getMinkansLength();
+		kansnumber += tehai.getAnKansLength();
+		kansnumber += tehai.getMinKansLength();
 		if(kansnumber == 3){
 			return true;
 		}else{
@@ -1244,8 +1244,8 @@ public class Yaku {
 			}
 			
 			//明順の牌をチェック
-			for(int j = 0; j < tehai.getMinshunsLength(); j++){
-				checkHai = tehai.getMinshuns();
+			for(int j = 0; j < tehai.getMinShunsLength(); j++){
+				checkHai = tehai.getMinShuns();
 				//牌が(萬子、筒子、索子)以外もしくは字牌以外
 				if ((checkHai[j][0].getKind() != checkId[i]) && (checkHai[j][0].isTsuu() == false)){
 					honituflg = false;
@@ -1253,8 +1253,8 @@ public class Yaku {
 			}
 			
 			//明刻の牌をチェック
-			for(int j = 0; j < tehai.getMinkousLength(); j++){
-				checkHai = tehai.getMinkous();
+			for(int j = 0; j < tehai.getMinKousLength(); j++){
+				checkHai = tehai.getMinKous();
 				//牌が(萬子、筒子、索子)以外もしくは字牌以外
 				if ((checkHai[j][0].getKind() != checkId[i]) && (checkHai[j][0].isTsuu() == false)){
 					honituflg = false;
@@ -1262,8 +1262,8 @@ public class Yaku {
 			}
 			
 			//明槓の牌をチェック
-			for(int j = 0; j < tehai.getMinkansLength(); j++){
-				checkHai = tehai.getMinkans();
+			for(int j = 0; j < tehai.getMinKansLength(); j++){
+				checkHai = tehai.getMinKans();
 				//牌が(萬子、筒子、索子)以外もしくは字牌以外
 				if ((checkHai[j][0].getKind() != checkId[i]) && (checkHai[j][0].isTsuu() == false)){
 					honituflg = false;
@@ -1271,8 +1271,8 @@ public class Yaku {
 			}
 			
 			//暗槓の牌をチェック
-			for(int j = 0; j < tehai.getAnkansLength(); j++){
-				checkHai = tehai.getAnkans();
+			for(int j = 0; j < tehai.getAnKansLength(); j++){
+				checkHai = tehai.getAnKans();
 				//牌が(萬子、筒子、索子)以外もしくは字牌以外
 				if ((checkHai[j][0].getKind() != checkId[i]) && (checkHai[j][0].isTsuu() == false)){
 					honituflg = false;
@@ -1334,8 +1334,8 @@ public class Yaku {
 		}
 		
 		//明順の牌をチェック
-		for(int i = 0; i < tehai.getMinshunsLength(); i++){
-			checkHais = tehai.getMinshuns();
+		for(int i = 0; i < tehai.getMinShunsLength(); i++){
+			checkHais = tehai.getMinShuns();
 			//123 と　789 以外の順子があれば不成立
 			if ((checkHais[i][0].getNo() > NO_1) && (checkHais[i][0].getNo()< NO_7)){
 				return false;
@@ -1343,8 +1343,8 @@ public class Yaku {
 		}
 		
 		//明刻の牌をチェック
-		for(int i = 0; i < tehai.getMinkousLength(); i++){
-			checkHais = tehai.getMinkous();
+		for(int i = 0; i < tehai.getMinKousLength(); i++){
+			checkHais = tehai.getMinKous();
 			//字牌があれば不成立
 			if( checkHais[i][0].isTsuu() == true){
 				return false;
@@ -1356,8 +1356,8 @@ public class Yaku {
 		}
 		
 		//明槓の牌をチェック
-		for(int i = 0; i < tehai.getMinkansLength(); i++){
-			checkHais = tehai.getMinkans();
+		for(int i = 0; i < tehai.getMinKansLength(); i++){
+			checkHais = tehai.getMinKans();
 			//字牌があれば不成立
 			if( checkHais[i][0].isTsuu() == true){
 				return false;
@@ -1369,8 +1369,8 @@ public class Yaku {
 		}
 		
 		//暗槓の牌をチェック
-		for(int i = 0; i < tehai.getAnkansLength(); i++){
-			checkHais = tehai.getAnkans();
+		for(int i = 0; i < tehai.getAnKansLength(); i++){
+			checkHais = tehai.getAnKans();
 			//字牌があれば不成立
 			if( checkHais[i][0].isTsuu() == true){
 				return false;
@@ -1449,8 +1449,8 @@ public class Yaku {
 			}
 			
 			//明順の牌をチェック
-			for(int j = 0; j < tehai.getMinshunsLength(); j++){
-				checkHai = tehai.getMinshuns();
+			for(int j = 0; j < tehai.getMinShunsLength(); j++){
+				checkHai = tehai.getMinShuns();
 				//牌が(萬子、筒子、索子)以外
 				if (checkHai[j][0].getKind() != checkId[i]){
 					Tinituflg = false;
@@ -1458,8 +1458,8 @@ public class Yaku {
 			}
 			
 			//明刻の牌をチェック
-			for(int j = 0; j < tehai.getMinkousLength(); j++){
-				checkHai = tehai.getMinkous();
+			for(int j = 0; j < tehai.getMinKousLength(); j++){
+				checkHai = tehai.getMinKous();
 				//牌が(萬子、筒子、索子)以外
 				if (checkHai[j][0].getKind() != checkId[i]){
 					Tinituflg = false;
@@ -1467,8 +1467,8 @@ public class Yaku {
 			}
 			
 			//明槓の牌をチェック
-			for(int j = 0; j < tehai.getMinkansLength(); j++){
-				checkHai = tehai.getMinkans();
+			for(int j = 0; j < tehai.getMinKansLength(); j++){
+				checkHai = tehai.getMinKans();
 				//牌が(萬子、筒子、索子)以外
 				if (checkHai[j][0].getKind() != checkId[i]){
 					Tinituflg = false;
@@ -1476,8 +1476,8 @@ public class Yaku {
 			}
 			
 			//暗槓の牌をチェック
-			for(int j = 0; j < tehai.getAnkansLength(); j++){
-				checkHai = tehai.getAnkans();
+			for(int j = 0; j < tehai.getAnKansLength(); j++){
+				checkHai = tehai.getAnKans();
 				//牌が(萬子、筒子、索子)以外
 				if (checkHai[j][0].getKind() != checkId[i]){
 					Tinituflg = false;
@@ -1497,7 +1497,7 @@ public class Yaku {
 
 	boolean checkSuuankou() {
 		//手牌の暗刻が4つ
-		if((combi.kouCount + tehai.getAnkansLength()) != 4){
+		if((combi.kouCount + tehai.getAnKansLength()) != 4){
 			return false;
 		}else{
 			//ツモ和了りの場合は成立
@@ -1518,8 +1518,8 @@ public class Yaku {
 
 	boolean checkSuukantu() {
 		int kansnumber = 0;
-		kansnumber += tehai.getAnkansLength();
-		kansnumber += tehai.getMinkansLength();
+		kansnumber += tehai.getAnKansLength();
+		kansnumber += tehai.getMinKansLength();
 		if(kansnumber == 4){
 			return true;
 		}else{
@@ -1633,8 +1633,8 @@ public class Yaku {
 		}
 		
 		//明刻の牌をチェック
-		for(int j = 0; j < tehai.getMinkousLength(); j++){
-			checkHai = tehai.getMinkous();
+		for(int j = 0; j < tehai.getMinKousLength(); j++){
+			checkHai = tehai.getMinKous();
 			//牌が字牌ではない
 			if (checkHai[j][0].isTsuu() == false){
 				return false;
@@ -1642,8 +1642,8 @@ public class Yaku {
 		}
 		
 		//明槓の牌をチェック
-		for(int j = 0; j < tehai.getMinkansLength(); j++){
-			checkHai = tehai.getMinkans();
+		for(int j = 0; j < tehai.getMinKansLength(); j++){
+			checkHai = tehai.getMinKans();
 			//牌が字牌ではない
 			if (checkHai[j][0].isTsuu() == false){
 				return false;
@@ -1651,8 +1651,8 @@ public class Yaku {
 		}
 		
 		//暗槓の牌をチェック
-		for(int j = 0; j < tehai.getAnkansLength(); j++){
-			checkHai = tehai.getAnkans();
+		for(int j = 0; j < tehai.getAnKansLength(); j++){
+			checkHai = tehai.getAnKans();
 			//牌が字牌ではない
 			if (checkHai[j][0].isTsuu() == false){
 				return false;
@@ -1702,8 +1702,8 @@ public class Yaku {
 		}
 		
 		//明順の牌をチェック
-		for(int i = 0; i < tehai.getMinshunsLength(); i++){
-			checkHai = tehai.getMinshuns();
+		for(int i = 0; i < tehai.getMinShunsLength(); i++){
+			checkHai = tehai.getMinShuns();
 			id = checkHai[i][0].getId();
 			//索子の2,3,4以外の順子があった場合不成立
 			if (id != ID_SOU_2){
@@ -1712,8 +1712,8 @@ public class Yaku {
 		}
 		
 		//明刻の牌をチェック
-		for(int i = 0; i < tehai.getMinkousLength(); i++){
-			checkHai = tehai.getMinkous();
+		for(int i = 0; i < tehai.getMinKousLength(); i++){
+			checkHai = tehai.getMinKous();
 			id = checkHai[i][0].getId();
 			ryuuisouflg = false;
 			for(int j = 0 ; j < checkId.length ; j++){
@@ -1729,8 +1729,8 @@ public class Yaku {
 		}
 		
 		//明槓の牌をチェック
-		for(int i = 0; i < tehai.getMinkansLength(); i++){
-			checkHai = tehai.getMinkans();
+		for(int i = 0; i < tehai.getMinKansLength(); i++){
+			checkHai = tehai.getMinKans();
 			id = checkHai[i][0].getId();
 			ryuuisouflg = false;
 			for(int j = 0 ; j < checkId.length ; j++){
@@ -1746,8 +1746,8 @@ public class Yaku {
 		}
 		
 		//暗槓の牌をチェック
-		for(int i = 0; i < tehai.getAnkansLength(); i++){
-			checkHai = tehai.getAnkans();
+		for(int i = 0; i < tehai.getAnKansLength(); i++){
+			checkHai = tehai.getAnKans();
 			id = checkHai[i][0].getId();
 			ryuuisouflg = false;
 			for(int j = 0 ; j < checkId.length ; j++){

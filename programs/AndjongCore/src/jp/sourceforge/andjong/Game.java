@@ -582,9 +582,9 @@ public class Game {
 	 */
 	void copyTehai(Tehai tehai, int kaze) {
 		if (activePlayer.getJikaze() == kaze) {
-			tehai.copy(activePlayer.getTehai(), true);
+			Tehai.copy(tehai, activePlayer.getTehai(), true);
 		} else {
-			tehai.copy(players[kazeToPlayerIdx[kaze]].getTehai(), false);
+			Tehai.copy(tehai, players[kazeToPlayerIdx[kaze]].getTehai(), false);
 		}
 	}
 

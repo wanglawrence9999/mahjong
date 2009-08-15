@@ -92,8 +92,8 @@ public class AgariScore {
 		}
 
 		// –¾‚É‚æ‚é‰Á“_
-		for (int i = 0; i < tehai.getMinkousLength(); i++) {
-			checkHais = tehai.getMinkous();
+		for (int i = 0; i < tehai.getMinKousLength(); i++) {
+			checkHais = tehai.getMinKous();
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (checkHais[i][0].isYaotyuu() == true) {
 				countHu += 4;
@@ -103,8 +103,8 @@ public class AgariScore {
 		}
 
 		// –¾È‚É‚æ‚é‰Á“_
-		for (int i = 0; i < tehai.getMinkansLength(); i++) {
-			checkHais = tehai.getMinkans();
+		for (int i = 0; i < tehai.getMinKansLength(); i++) {
+			checkHais = tehai.getMinKans();
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (checkHais[i][0].isYaotyuu() == true) {
 				countHu += 16;
@@ -114,8 +114,8 @@ public class AgariScore {
 		}
 
 		// ˆÃÈ‚É‚æ‚é‰Á“_
-		for (int i = 0; i < tehai.getAnkansLength(); i++) {
-			checkHais = tehai.getAnkans();
+		for (int i = 0; i < tehai.getAnKansLength(); i++) {
+			checkHais = tehai.getAnKans();
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (checkHais[i][0].isYaotyuu() == true) {
 				countHu += 32;

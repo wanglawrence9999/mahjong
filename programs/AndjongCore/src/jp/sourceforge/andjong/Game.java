@@ -608,7 +608,7 @@ public class Game {
 	 *            •—
 	 */
 	void copyKawa(Kawa kawa, int kaze) {
-		kawa.copy(players[kazeToPlayerIdx[kaze]].getKawa());
+		Kawa.copy(kawa, players[kazeToPlayerIdx[kaze]].getKawa());
 	}
 
 	/**

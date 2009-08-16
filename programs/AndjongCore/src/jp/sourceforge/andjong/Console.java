@@ -242,7 +242,7 @@ public class Console implements EventIF {
 	private void printKawa(Kawa kawa) {
 		infoUi.copyKawa(kawa, infoUi.getJikaze());
 		SuteHai[] SuteHai = kawa.getSuteHais();
-		int kawaLength = kawa.getSuteHaiLength();
+		int kawaLength = kawa.getSuteHaisLength();
 		for (int i = 0; i < kawaLength; i++)
 			System.out.print(idToString(SuteHai[i].getId()));
 	}

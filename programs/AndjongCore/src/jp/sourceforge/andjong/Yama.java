@@ -3,43 +3,43 @@ package jp.sourceforge.andjong;
 import java.util.Random;
 
 /**
- * 山を管理するクラス
- * 
+ * 山を管理する。
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class Yama {
-	/** 牌の数 */
-	private final static int HAIS_NUM = 136;
+	/** 山牌の最大数 */
+	private final static int YAMAHAIS_MAX = 136;
 
-	/** 牌 */
-	private Hai[] hais = new Hai[HAIS_NUM];
+	/** 山牌の配列 */
+	private Hai[] yamaHais = new Hai[YAMAHAIS_MAX];
 
-	/** ツモ牌の数 */
-	private final static int TSUMO_HAIS_NUM = 122;
+	/** ツモ牌の最大数 */
+	private final static int TSUMO_HAIS_MAX = 122;
 
-	/** ツモ牌 */
-	private Hai[] tsumoHais = new Hai[TSUMO_HAIS_NUM];
+	/** ツモ牌の配列 */
+	private Hai[] tsumoHais = new Hai[TSUMO_HAIS_MAX];
 
 	/** ツモ牌の位置 */
 	private int tsumoHaisIdx;
 
-	/** リンシャン牌の数 */
+	/** リンシャン牌の最大数 */
 	private final static int RINSHAN_HAIS_MAX = 4;
 
-	/** リンシャン牌 */
+	/** リンシャン牌の配列 */
 	private Hai[] rinshanHais = new Hai[RINSHAN_HAIS_MAX];
 
 	/** リンシャン牌の位置 */
 	private int rinshanHaisIdx;
 
-	/** ドラ牌の数 */
+	/** 各ドラ牌の最大数 */
 	private final static int DORA_HAIS_MAX = RINSHAN_HAIS_MAX + 1;
 
-	/** ドラ牌 */
-	private Hai[] doraHais = new Hai[DORA_HAIS_MAX];
+	/** 表ドラ牌の配列 */
+	private Hai[] omoteDoraHais = new Hai[DORA_HAIS_MAX];
 
-	/** 裏ドラ牌 */
+	/** 裏ドラ牌の配列 */
 	private Hai[] uraDoraHais = new Hai[DORA_HAIS_MAX];
 
 	/**
@@ -47,15 +47,16 @@ public class Yama {
 	 */
 	Yama() {
 		initialize();
+		setTsumoHaisStartIdx(0);
 	}
 
 	/**
-	 * 牌を初期化する。
+	 * 山牌を初期化する。
 	 */
 	private void initialize() {
 		for (int id = Hai.ID_WAN_1, idx = 0; id <= Hai.ID_CHUN; id++) {
 			for (int i = 0; i < 4; i++, idx++) {
-				hais[idx] = new Hai(id);
+				yamaHais[idx] = new Hai(id);
 			}
 		}
 	}
@@ -67,58 +68,66 @@ public class Yama {
 		Random random = new Random();
 		Hai temp;
 
-		for (int i = 0, j; i < HAIS_NUM; i++) {
-			j = random.nextInt(HAIS_NUM);
-			temp = hais[i];
-			hais[i] = hais[j];
-			hais[j] = temp;
+		for (int i = 0, j; i < YAMAHAIS_MAX; i++) {
+			j = random.nextInt(YAMAHAIS_MAX);
+			temp = yamaHais[i];
+			yamaHais[i] = yamaHais[j];
+			yamaHais[j] = temp;
 		}
 	}
 
 	/**
 	 * ツモ牌を取得する。
-	 * 
+	 *
 	 * @return ツモ牌
 	 */
 	Hai tsumo() {
-		if (tsumoHaisIdx >= TSUMO_HAIS_NUM) {
+		if (tsumoHaisIdx >= TSUMO_HAIS_MAX) {
 			return null;
 		}
-		return new Hai(tsumoHais[tsumoHaisIdx++]);
+
+		Hai tsumoHai = new Hai(tsumoHais[tsumoHaisIdx]);
+		tsumoHaisIdx++;
+
+		return tsumoHai;
 	}
 
 	/**
 	 * リンシャン牌を取得する。
-	 * 
+	 *
 	 * @return リンシャン牌
 	 */
 	Hai rinshanTsumo() {
 		if (rinshanHaisIdx >= RINSHAN_HAIS_MAX) {
 			return null;
 		}
-		return new Hai(rinshanHais[rinshanHaisIdx++]);
+
+		Hai rinshanHai = new Hai(rinshanHais[rinshanHaisIdx]);
+		rinshanHaisIdx++;
+
+		return rinshanHai;
 	}
 
 	/**
-	 * 表ドラ、槓ドラの配列を取得する。
-	 * 
-	 * @return 表ドラ、槓ドラの配列
+	 * 表ドラの配列を取得する。
+	 *
+	 * @return 表ドラの配列
 	 */
-	Hai[] getDoraHais() {
-		int doraHaisLength = rinshanHaisIdx + 1;
-		Hai[] doraHais = new Hai[doraHaisLength];
+	Hai[] getOmoteDoraHais() {
+		int omoteDoraHaisLength = rinshanHaisIdx + 1;
+		Hai[] omoteDoraHais = new Hai[omoteDoraHaisLength];
 
-		for (int i = 0; i < doraHaisLength; i++) {
-			doraHais[i] = new Hai(this.doraHais[i]);
+		for (int i = 0; i < omoteDoraHaisLength; i++) {
+			omoteDoraHais[i] = new Hai(this.omoteDoraHais[i]);
 		}
 
-		return doraHais;
+		return omoteDoraHais;
 	}
 
 	/**
-	 * 裏ドラ、槓ウラの配列を取得する。
-	 * 
-	 * @return 裏ドラ、槓ウラの配列
+	 * 裏ドラの配列を取得する。
+	 *
+	 * @return 裏ドラの配列
 	 */
 	Hai[] getUraDoraHais() {
 		int uraDoraHaisLength = rinshanHaisIdx + 1;
@@ -132,84 +141,64 @@ public class Yama {
 	}
 
 	/**
-	 * ツモ牌の開始位置を設定します。
-	 * 
-	 * @param startTsumoHaiIdx
+	 * ツモ牌の開始位置を設定する。
+	 *
+	 * @param tsumoHaiStartIdx
 	 *            ツモ牌の開始位置
 	 */
-	void setStartTsumoHaisIdx(int startTsumoHaiIdx) {
-		int haisIdx = startTsumoHaiIdx;
-
-		for (int tsumoIdx = 0; tsumoIdx < TSUMO_HAIS_NUM; tsumoIdx++) {
-			if (haisIdx >= HAIS_NUM) {
-				haisIdx = 0;
-			}
-			tsumoHais[tsumoIdx] = hais[haisIdx++];
+	boolean setTsumoHaisStartIdx(int tsumoHaiStartIdx) {
+		if (tsumoHaiStartIdx >= YAMAHAIS_MAX) {
+			return false;
 		}
 
-		for (int rinshanHaisIdx = 0; rinshanHaisIdx < RINSHAN_HAIS_MAX; rinshanHaisIdx++) {
-			if (haisIdx >= HAIS_NUM) {
-				haisIdx = 0;
+		int yamaHaisIdx = tsumoHaiStartIdx;
+
+		for (int i = 0; i < TSUMO_HAIS_MAX; i++) {
+			tsumoHais[i] = yamaHais[yamaHaisIdx];
+
+			yamaHaisIdx++;
+			if (yamaHaisIdx >= YAMAHAIS_MAX) {
+				yamaHaisIdx = 0;
 			}
-			rinshanHais[rinshanHaisIdx] = hais[haisIdx++];
 		}
 
-		for (int doraHaisIdx = 0; doraHaisIdx < DORA_HAIS_MAX; doraHaisIdx++) {
-			if (haisIdx >= HAIS_NUM) {
-				haisIdx = 0;
-			}
-			doraHais[doraHaisIdx] = hais[haisIdx++];
+		for (int i = 0; i < RINSHAN_HAIS_MAX; i++) {
+			rinshanHais[i] = yamaHais[yamaHaisIdx];
 
-			if (haisIdx >= HAIS_NUM) {
-				haisIdx = 0;
+			yamaHaisIdx++;
+			if (yamaHaisIdx >= YAMAHAIS_MAX) {
+				yamaHaisIdx = 0;
 			}
-			uraDoraHais[doraHaisIdx] = hais[haisIdx++];
 		}
-	}
 
-	/**
-	 * ツモの残り数を取得する。
-	 * 
-	 * @return ツモの残り数
-	 */
-	int getTsumoNokori() {
-		return TSUMO_HAIS_NUM - tsumoHaisIdx;
-	}
+		for (int i = 0; i < DORA_HAIS_MAX; i++) {
+			omoteDoraHais[i] = yamaHais[yamaHaisIdx];
 
-	/**
-	 * 山に割れ目を設定します。
-	 * 
-	 * @param sais
-	 *            サイコロの配列
-	 */
-	void setWareme(Sai[] sais) {
-		int sum = sais[0].getNo() + sais[1].getNo() - 1;
-		tsumoHaisIdx = ((sum % 4) * 36) + sum;
+			yamaHaisIdx++;
+			if (yamaHaisIdx >= YAMAHAIS_MAX) {
+				yamaHaisIdx = 0;
+			}
 
-		rinshanHaisIdx = tsumoHaisIdx + TSUMO_HAIS_NUM;
-		if (rinshanHaisIdx >= HAIS_NUM) {
-			rinshanHaisIdx -= HAIS_NUM;
+			uraDoraHais[i] = yamaHais[yamaHaisIdx];
+
+			yamaHaisIdx++;
+			if (yamaHaisIdx >= YAMAHAIS_MAX) {
+				yamaHaisIdx = 0;
+			}
 		}
 
 		tsumoHaisIdx = 0;
 		rinshanHaisIdx = 0;
 
-		{
-			int i;
-			for (i = 0; i < TSUMO_HAIS_NUM; i++) {
-				tsumoHais[i] = hais[i];
-			}
+		return true;
+	}
 
-			for (; i < TSUMO_HAIS_NUM + RINSHAN_HAIS_MAX; i++) {
-				rinshanHais[i - TSUMO_HAIS_NUM] = hais[i];
-			}
-
-			for (int j = 0; j < DORA_HAIS_MAX; j++) {
-				doraHais[j] = hais[i++];
-				uraDoraHais[j] = hais[i++];
-			}
-		}
-		setStartTsumoHaisIdx(0);
-		setStartTsumoHaisIdx(120);
+	/**
+	 * ツモ牌の残り数を取得する。
+	 *
+	 * @return ツモ牌の残り数
+	 */
+	int getTsumoNokori() {
+		return TSUMO_HAIS_MAX - tsumoHaisIdx;
 	}
 }

@@ -260,7 +260,7 @@ public class Game {
 		wareme = (sais[0].getNo() + sais[1].getNo() - 1) % 4;
 
 		// 山に割れ目を設定します。
-		yama.setWareme(sais);
+		setWareme(sais);
 
 		// プレイヤー配列を初期化します。
 		for (int i = 0; i < players.length; i++) {
@@ -356,6 +356,19 @@ public class Game {
 		}
 	}
 
+	/**
+	 * 山に割れ目を設定します。
+	 *
+	 * @param sais
+	 *            サイコロの配列
+	 */
+	void setWareme(Sai[] sais) {
+		int sum = sais[0].getNo() + sais[1].getNo() - 1;
+		int startHaisIdx = ((sum % 4) * 36) + sum;
+
+		yama.setTsumoHaisStartIdx(startHaisIdx);
+	}
+	
 	/**
 	 * プレイヤーの自風を設定します。
 	 */
@@ -532,7 +545,7 @@ public class Game {
 	 * @return 表ドラ、槓ドラの配列
 	 */
 	Hai[] getDoras() {
-		return getYama().getDoraHais();
+		return getYama().getOmoteDoraHais();
 	}
 
 	/**

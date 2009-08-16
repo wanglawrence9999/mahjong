@@ -1,10 +1,7 @@
 package jp.sourceforge.andjong;
 
-import static jp.sourceforge.andjong.Hai.*;
-
 import jp.sourceforge.andjong.CountFormat.Combi;
 import jp.sourceforge.andjong.EventIF.EID;
-import jp.sourceforge.andjong.Yaku;
 import jp.sourceforge.andjong.AgariScore;
 
 /**
@@ -257,7 +254,6 @@ public class Game {
 		// サイ振りをします。
 		sais[0].saifuri();
 		sais[1].saifuri();
-		wareme = (sais[0].getNo() + sais[1].getNo() - 1) % 4;
 
 		// 山に割れ目を設定します。
 		setWareme(sais);
@@ -364,11 +360,14 @@ public class Game {
 	 */
 	void setWareme(Sai[] sais) {
 		int sum = sais[0].getNo() + sais[1].getNo() - 1;
+
+		wareme = sum % 4;
+
 		int startHaisIdx = ((sum % 4) * 36) + sum;
 
 		yama.setTsumoHaisStartIdx(startHaisIdx);
 	}
-	
+
 	/**
 	 * プレイヤーの自風を設定します。
 	 */
@@ -629,15 +628,15 @@ public class Game {
 		return players[kazeToPlayerIdx[kaze]].getTenbou();
 	}
 
-	/** カウントフォーマット */
-	private CountFormat countFormat = new CountFormat();
+	int getWareme() {
+		return wareme;
+	}
 
 	private Combi[] combis = new Combi[10];
 	{
 		for (int i = 0; i < combis.length; i++)
 			combis[i] = new Combi();
 	}
-
 
 	public int getAgariScore(Tehai tehai, Hai addHai) {
 		AgariSetting setting = new AgariSetting(this);

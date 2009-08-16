@@ -371,4 +371,36 @@ public class Hai {
 	public boolean isYaotyuu() {
 		return ichikyuus[id] | tsuus[id];
 	}
+
+	/**
+	 * ネクスト牌のIDを取得する。
+	 *
+	 * @return ネクスト牌のID
+	 */
+	public int getNextId() {
+		int nextId;
+
+		switch (id) {
+		case ID_WAN_9:
+			nextId = ID_WAN_1;
+			break;
+		case ID_PIN_9:
+			nextId = ID_PIN_1;
+			break;
+		case ID_SOU_9:
+			nextId = ID_SOU_1;
+			break;
+		case ID_PE:
+			nextId = ID_TON;
+			break;
+		case ID_CHUN:
+			nextId = ID_HAKU;
+			break;
+		default:
+			nextId = id + 1;
+			break;
+		}
+
+		return nextId;
+	}
 }

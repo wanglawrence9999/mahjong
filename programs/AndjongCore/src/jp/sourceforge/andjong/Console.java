@@ -350,4 +350,18 @@ public class Console implements EventIF {
 
 		return null;
 	}
+	
+	/**
+	 * ¬—§‚µ‚Ä‚¢‚é–ğ‚ğ•\¦‚µ‚Ü‚·B
+	 * 
+	 * @param jikaze
+	 *            ©•—
+	 * @return@
+	 */
+	 public void jikazeToString(Hai addHai) {
+		String[] yakuNames = this.infoUi.game.getYakuName(tehai, addHai);
+		for(int i = 0 ; i < yakuNames.length ; i++){
+			System.out.println(yakuNames[i]);
+		}
+	}
 }

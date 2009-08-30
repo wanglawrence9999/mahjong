@@ -643,4 +643,12 @@ public class Game {
 		AgariScore score = new AgariScore();
 		return score.getAgariScore(tehai, addHai, combis, setting);
 	}
+	
+	public String[] getYakuName(Tehai tehai, Hai addHai){
+		AgariSetting setting = new AgariSetting(this);
+		AgariScore score = new AgariScore();
+		return score.getYakuName(tehai, addHai, combis, setting);	
+	}
+	
+	
 }

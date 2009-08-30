@@ -218,4 +218,43 @@ public class AgariScore {
 		}
 		return maxagariScore;
 	}
+	
+	public String[] getYakuName(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting) {
+		//和了り役の名前
+		String[] yakuNames = {""};
+		// カウントフォーマットを取得します。
+		CountFormat.getCountFormat(tehai, countFormat, addHai);
+
+		// あがりの組み合わせを取得します。
+		int combisCount = countFormat.getCombi(combis);
+
+		// あがりの組み合わせがない場合は0点
+		if (combisCount == 0){
+			return yakuNames;
+		}
+
+		// 役
+		int hanSuu[] = new int[combisCount];
+		// 符
+		int huSuu[] = new int[combisCount];
+		// 点数（子のロン上がり）
+		int agariScore[] = new int[combisCount];
+		// 最大の点数
+		int maxagariScore = 0;
+
+
+		for (int i = 0; i < combisCount; i++) {
+			Yaku yaku = new Yaku(tehai, addHai, combis[i], setting);
+			hanSuu[i] = yaku.getHanSuu();
+			huSuu[i] = countHu(tehai, addHai, combis[i],yaku,setting);
+			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
+			
+			if(maxagariScore < agariScore[i]){
+				maxagariScore = agariScore[i];
+				yakuNames = yaku.getYakuName();
+			}
+		}
+
+		return yakuNames;
+	}
 }

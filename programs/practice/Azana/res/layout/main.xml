@@ -4,9 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
+<TextView android:text="名前" android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<EditText android:text="" android:id="@+id/EditText01" android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+<TextView android:text="生まれ順" android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<Spinner android:entries="@array/order" android:id="@+id/Spinner01" android:layout_width="wrap_content" android:layout_height="wrap_content"></Spinner>
+<Button android:text="字" android:id="@+id/Button01" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+
+
 </LinearLayout>

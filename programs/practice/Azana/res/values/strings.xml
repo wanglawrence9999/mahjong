@@ -2,4 +2,11 @@
 <resources>
     <string name="hello">Hello World, Azana!</string>
     <string name="app_name">Azana</string>
+<string-array name="order">
+<item>未設定</item>
+<item>長男</item>
+<item>次男</item>
+<item>三男</item>
+<item>末子</item>
+</string-array>
 </resources>

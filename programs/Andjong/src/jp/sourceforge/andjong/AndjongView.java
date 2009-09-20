@@ -28,6 +28,7 @@ import android.graphics.Rect;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -141,13 +142,27 @@ public class AndjongView extends View implements EventIF {
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
+	private boolean isDraw = false;
+
 	@Override
 	protected void onDraw(Canvas canvas) {
+		isDraw = true;
+
 		// ”wŒi‚ð•`‰æ‚·‚é
 		Paint background = new Paint();
 		background.setColor(getResources().getColor(R.color.puzzle_background));
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
+		Paint tehaiPaint = new Paint();
+		Hai[] jyunTehai = printTehai.getJyunTehai();
+		int jyunTehaiLength = printTehai.getJyunTehaiLength();
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			canvas.drawBitmap(m_hai_bitmap[jyunTehai[i].getId()], 19 * i, 26,
+					tehaiPaint);
+		}
+
+		isDraw = false;
+/*
 		// ”Õ–Ê‚ð•`‰æ‚·‚é...
 
 		// ˜gü‚ÌF‚ð’è‹`‚·‚é
@@ -232,6 +247,7 @@ public class AndjongView extends View implements EventIF {
 		Paint selected = new Paint();
 		selected.setColor(getResources().getColor(R.color.puzzle_selected));
 		canvas.drawRect(selRect, selected);
+*/
 	}
 
 	@Override
@@ -433,6 +449,17 @@ public class AndjongView extends View implements EventIF {
 			// Žè”v‚ð•\Ž¦‚µ‚Ü‚·B
 			printJyunTehai(tehai);
 
+			if (isDraw == false) {
+				infoUi.copyTehai(printTehai, infoUi.getJikaze());
+				isPrintTehai = true;
+				this.post(new Runnable() {
+					public void run() {
+						selRect.set(0, 0, getWidth(), getHeight());
+						invalidate(selRect);
+					}
+				});
+			}
+
 			// ƒcƒ‚”v‚ð•\Ž¦‚µ‚Ü‚·B
 			System.out
 					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
@@ -521,6 +548,9 @@ public class AndjongView extends View implements EventIF {
 	public int getSutehaiIdx() {
 		return sutehaiIdx;
 	}
+
+	private boolean isPrintTehai = false;
+	private Tehai printTehai = new Tehai();
 
 	/**
 	 * Žè”v‚ð•\Ž¦‚µ‚Ü‚·B

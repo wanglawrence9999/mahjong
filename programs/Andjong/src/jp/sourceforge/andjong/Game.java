@@ -14,6 +14,7 @@ import jp.sourceforge.andjong.mahjong.Mahjong;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;

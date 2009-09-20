@@ -53,7 +53,7 @@ public class AgariSetting {
 	}
 	
 	/** コンストラクタ */
-	AgariSetting(Game game){
+	AgariSetting(Mahjong game){
 		for(int i = 0 ; i < yakuflg.length ; i++){
 			yakuflg[i] = false;
 		}

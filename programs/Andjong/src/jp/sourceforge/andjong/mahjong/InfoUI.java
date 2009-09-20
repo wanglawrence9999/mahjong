@@ -1,7 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 
 public class InfoUI extends Info {
-	public InfoUI(Game game) {
+	public InfoUI(Mahjong game) {
 		super(game);
 	}
 

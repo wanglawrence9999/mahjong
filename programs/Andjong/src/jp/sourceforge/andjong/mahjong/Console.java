@@ -42,16 +42,16 @@ public class Console implements EventIF {
 		System.out.println("-------- INFO --------");
 		int kyoku = infoUi.getkyoku();
 		switch (kyoku) {
-		case Game.KYOKU_TON_1:
+		case Mahjong.KYOKU_TON_1:
 			System.out.print("[“Œˆê‹Ç]");
 			break;
-		case Game.KYOKU_TON_2:
+		case Mahjong.KYOKU_TON_2:
 			System.out.print("[“Œ“ñ‹Ç]");
 			break;
-		case Game.KYOKU_TON_3:
+		case Mahjong.KYOKU_TON_3:
 			System.out.print("[“ŒŽO‹Ç]");
 			break;
-		case Game.KYOKU_TON_4:
+		case Mahjong.KYOKU_TON_4:
 			System.out.print("[“ŒŽl‹Ç]");
 			break;
 		}

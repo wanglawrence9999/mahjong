@@ -8,7 +8,7 @@ package jp.sourceforge.andjong.mahjong;
  */
 public class Info {
 	/** Game */
-	protected Game game;
+	protected Mahjong game;
 
 	/**
 	 * インスタンスを初期化します。
@@ -16,7 +16,7 @@ public class Info {
 	 * @param game
 	 *            Game
 	 */
-	public Info(Game game) {
+	public Info(Mahjong game) {
 		this.game = game;
 	}
 

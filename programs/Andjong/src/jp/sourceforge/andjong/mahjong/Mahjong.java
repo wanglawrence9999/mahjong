@@ -10,7 +10,7 @@ import jp.sourceforge.andjong.mahjong.EventIF.EID;
  * @author Yuji Urushibara
  *
  */
-public class Game {
+public class Mahjong {
 	/** 山 */
 	private Yama yama;
 
@@ -138,7 +138,7 @@ public class Game {
 	 */
 	public static void main(String[] args) {
 		// Gameインスタンスを作成します。
-		Game game = new Game();
+		Mahjong game = new Mahjong();
 
 		// ゲームを開始します。
 		game.play();

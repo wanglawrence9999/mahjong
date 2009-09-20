@@ -6,7 +6,7 @@
  * We make no guarantees that this code is fit for any purpose.
  * Visit http://www.pragmaticprogrammer.com/titles/eband for more book information.
  ***/
-package org.example.sudoku;
+package jp.sourceforge.andjong;
 
 import android.content.Context;
 import android.content.SharedPreferences;

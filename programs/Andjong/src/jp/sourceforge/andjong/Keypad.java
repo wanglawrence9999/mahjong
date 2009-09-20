@@ -24,9 +24,9 @@ public class Keypad extends Dialog {
 	private View keypad;
 
 	private final int useds[];
-	private final PuzzleView puzzleView;
+	private final AndjongView puzzleView;
 
-	public Keypad(Context context, int useds[], PuzzleView puzzleView) {
+	public Keypad(Context context, int useds[], AndjongView puzzleView) {
 		super(context);
 		this.useds = useds;
 		this.puzzleView = puzzleView;

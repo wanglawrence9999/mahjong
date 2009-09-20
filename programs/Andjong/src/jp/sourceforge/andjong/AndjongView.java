@@ -12,6 +12,9 @@ package jp.sourceforge.andjong;
 import jp.sourceforge.andjong.R;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -25,7 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
-public class PuzzleView extends View {
+public class AndjongView extends View {
 	private static final String TAG = "Sudoku";
 
 	private static final String SELX = "selX";
@@ -41,7 +44,10 @@ public class PuzzleView extends View {
 
 	private final Game game;
 
-	public PuzzleView(Context context) {
+	private Bitmap[] m_hai_bitmap;
+	private Bitmap m_ura_bitmap;
+
+	public AndjongView(Context context) {
 
 		super(context);
 		this.game = (Game) context;
@@ -50,6 +56,52 @@ public class PuzzleView extends View {
 
 		// ...
 		setId(ID);
+
+		initBitmap();
+	}
+
+	private void initBitmap() {
+		Resources res = this.getContext().getResources();
+		m_hai_bitmap[0] = BitmapFactory.decodeResource(res, R.drawable.m_hai_00_wan_1);
+		m_hai_bitmap[1] = BitmapFactory.decodeResource(res, R.drawable.m_hai_01_wan_2);
+		m_hai_bitmap[2] = BitmapFactory.decodeResource(res, R.drawable.m_hai_02_wan_3);
+		m_hai_bitmap[3] = BitmapFactory.decodeResource(res, R.drawable.m_hai_03_wan_4);
+		m_hai_bitmap[4] = BitmapFactory.decodeResource(res, R.drawable.m_hai_04_wan_5);
+		m_hai_bitmap[5] = BitmapFactory.decodeResource(res, R.drawable.m_hai_05_wan_6);
+		m_hai_bitmap[6] = BitmapFactory.decodeResource(res, R.drawable.m_hai_06_wan_7);
+		m_hai_bitmap[7] = BitmapFactory.decodeResource(res, R.drawable.m_hai_07_wan_8);
+		m_hai_bitmap[8] = BitmapFactory.decodeResource(res, R.drawable.m_hai_08_wan_9);
+
+		m_hai_bitmap[9] = BitmapFactory.decodeResource(res, R.drawable.m_hai_09_pin_1);
+		m_hai_bitmap[10] = BitmapFactory.decodeResource(res, R.drawable.m_hai_10_pin_2);
+		m_hai_bitmap[11] = BitmapFactory.decodeResource(res, R.drawable.m_hai_11_pin_3);
+		m_hai_bitmap[12] = BitmapFactory.decodeResource(res, R.drawable.m_hai_12_pin_4);
+		m_hai_bitmap[13] = BitmapFactory.decodeResource(res, R.drawable.m_hai_13_pin_5);
+		m_hai_bitmap[14] = BitmapFactory.decodeResource(res, R.drawable.m_hai_14_pin_6);
+		m_hai_bitmap[15] = BitmapFactory.decodeResource(res, R.drawable.m_hai_15_pin_7);
+		m_hai_bitmap[16] = BitmapFactory.decodeResource(res, R.drawable.m_hai_16_pin_8);
+		m_hai_bitmap[17] = BitmapFactory.decodeResource(res, R.drawable.m_hai_17_pin_9);
+
+		m_hai_bitmap[18] = BitmapFactory.decodeResource(res, R.drawable.m_hai_18_sou_1);
+		m_hai_bitmap[19] = BitmapFactory.decodeResource(res, R.drawable.m_hai_19_sou_2);
+		m_hai_bitmap[20] = BitmapFactory.decodeResource(res, R.drawable.m_hai_20_sou_3);
+		m_hai_bitmap[21] = BitmapFactory.decodeResource(res, R.drawable.m_hai_21_sou_4);
+		m_hai_bitmap[22] = BitmapFactory.decodeResource(res, R.drawable.m_hai_22_sou_5);
+		m_hai_bitmap[23] = BitmapFactory.decodeResource(res, R.drawable.m_hai_23_sou_6);
+		m_hai_bitmap[24] = BitmapFactory.decodeResource(res, R.drawable.m_hai_24_sou_7);
+		m_hai_bitmap[25] = BitmapFactory.decodeResource(res, R.drawable.m_hai_25_sou_8);
+		m_hai_bitmap[26] = BitmapFactory.decodeResource(res, R.drawable.m_hai_26_sou_9);
+
+		m_hai_bitmap[27] = BitmapFactory.decodeResource(res, R.drawable.m_hai_27_ton);
+		m_hai_bitmap[28] = BitmapFactory.decodeResource(res, R.drawable.m_hai_28_nan);
+		m_hai_bitmap[29] = BitmapFactory.decodeResource(res, R.drawable.m_hai_29_sha);
+		m_hai_bitmap[30] = BitmapFactory.decodeResource(res, R.drawable.m_hai_30_pe);
+
+		m_hai_bitmap[31] = BitmapFactory.decodeResource(res, R.drawable.m_hai_31_haku);
+		m_hai_bitmap[32] = BitmapFactory.decodeResource(res, R.drawable.m_hai_32_hatsu);
+		m_hai_bitmap[33] = BitmapFactory.decodeResource(res, R.drawable.m_hai_33_chun);
+
+		m_ura_bitmap = BitmapFactory.decodeResource(res, R.drawable.m_hai_ura);
 	}
 
 	@Override

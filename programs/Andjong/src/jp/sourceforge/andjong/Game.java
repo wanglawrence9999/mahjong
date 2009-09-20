@@ -9,6 +9,7 @@
 package jp.sourceforge.andjong;
 
 import jp.sourceforge.andjong.R;
+import jp.sourceforge.andjong.mahjong.Mahjong;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -39,7 +40,7 @@ public class Game extends Activity {
 	private final String hardPuzzle = "009000000080605020501078000"
 			+ "000000700706040102004000000" + "000720903090301080000000600";
 
-	private PuzzleView puzzleView;
+	private AndjongView puzzleView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +52,17 @@ public class Game extends Activity {
 		puzzle = getPuzzle(diff);
 		calculateUsedTiles();
 
-		puzzleView = new PuzzleView(this);
+		puzzleView = new AndjongView(this);
 		setContentView(puzzleView);
 		puzzleView.requestFocus();
 
 		// ...
 		// アクティビティが再起動されたときには、ゲームを続行する
 		getIntent().putExtra(KEY_DIFFICULTY, DIFFICULTY_CONTINUE);
+
+		Mahjong mahjong = new Mahjong();
+		Thread mahjongThread = new Thread(mahjong);
+		mahjongThread.run();
 	}
 
 	@Override

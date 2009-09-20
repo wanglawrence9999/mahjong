@@ -10,7 +10,7 @@ import jp.sourceforge.andjong.mahjong.EventIF.EID;
  * @author Yuji Urushibara
  *
  */
-public class Mahjong {
+public class Mahjong implements Runnable {
 	/** 山 */
 	private Yama yama;
 
@@ -129,20 +129,6 @@ public class Mahjong {
 
 	/** アクティブプレイヤー */
 	private Player activePlayer;
-
-	/**
-	 * メイン処理を開始します。
-	 *
-	 * @param args
-	 *            コマンドライン引数
-	 */
-	public static void main(String[] args) {
-		// Gameインスタンスを作成します。
-		Mahjong game = new Mahjong();
-
-		// ゲームを開始します。
-		game.play();
-	}
 
 	/**
 	 * ゲームを開始します。
@@ -643,12 +629,16 @@ public class Mahjong {
 		AgariScore score = new AgariScore();
 		return score.getAgariScore(tehai, addHai, combis, setting);
 	}
-	
+
 	public String[] getYakuName(Tehai tehai, Hai addHai){
 		AgariSetting setting = new AgariSetting(this);
 		AgariScore score = new AgariScore();
-		return score.getYakuName(tehai, addHai, combis, setting);	
+		return score.getYakuName(tehai, addHai, combis, setting);
 	}
-	
-	
+
+	@Override
+	public void run() {
+		// ゲームを開始します。
+		play();
+	}
 }

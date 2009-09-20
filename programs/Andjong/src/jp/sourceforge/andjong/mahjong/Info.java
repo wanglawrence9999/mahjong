@@ -2,9 +2,9 @@ package jp.sourceforge.andjong.mahjong;
 
 /**
  * プレイヤーに提供する情報を管理するクラスです。
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class Info {
 	/** Game */
@@ -12,7 +12,7 @@ public class Info {
 
 	/**
 	 * インスタンスを初期化します。
-	 * 
+	 *
 	 * @param game
 	 *            Game
 	 */
@@ -22,7 +22,7 @@ public class Info {
 
 	/**
 	 * サイコロの配列を取得します。
-	 * 
+	 *
 	 * @return サイコロの配列
 	 */
 	public Sai[] getSais() {
@@ -31,7 +31,7 @@ public class Info {
 
 	/**
 	 * 表ドラ、槓ドラの配列を取得します。
-	 * 
+	 *
 	 * @return 表ドラ、槓ドラの配列
 	 */
 	public Hai[] getDoras() {
@@ -40,7 +40,7 @@ public class Info {
 
 	/**
 	 * 自風を取得します。
-	 * 
+	 *
 	 * @return 自風
 	 */
 	public int getJikaze() {
@@ -49,7 +49,7 @@ public class Info {
 
 	/**
 	 * 手牌をコピーします。
-	 * 
+	 *
 	 * @param tehai
 	 *            手牌
 	 * @param kaze
@@ -61,7 +61,7 @@ public class Info {
 
 	/**
 	 * 河をコピーします。
-	 * 
+	 *
 	 * @param kawa
 	 *            河
 	 * @param kaze
@@ -73,7 +73,7 @@ public class Info {
 
 	/**
 	 * ツモ牌を取得します。
-	 * 
+	 *
 	 * @return ツモ牌
 	 */
 	public Hai getTsumoHai() {
@@ -82,7 +82,7 @@ public class Info {
 
 	/**
 	 * 捨牌を取得します。
-	 * 
+	 *
 	 * @return 捨牌
 	 */
 	public Hai getSuteHai() {
@@ -91,7 +91,7 @@ public class Info {
 
 	/**
 	 * あがり点を取得します。
-	 * 
+	 *
 	 * @param tehai
 	 *            手牌
 	 * @param addHai
@@ -104,7 +104,7 @@ public class Info {
 
 	/**
 	 * リーチを取得します。
-	 * 
+	 *
 	 * @param kaze
 	 *            風
 	 * @return リーチ
@@ -115,7 +115,7 @@ public class Info {
 
 	/**
 	 * ツモの残り数を取得します。
-	 * 
+	 *
 	 * @return ツモの残り数
 	 */
 	public int getTsumoRemain() {
@@ -124,7 +124,7 @@ public class Info {
 
 	/**
 	 * 局を取得します。
-	 * 
+	 *
 	 * @return 局
 	 */
 	public int getkyoku() {
@@ -133,7 +133,7 @@ public class Info {
 
 	/**
 	 * 名前を取得します。
-	 * 
+	 *
 	 * @param kaze
 	 *            風
 	 * @return 名前
@@ -144,7 +144,7 @@ public class Info {
 
 	/**
 	 * 本場を取得します。
-	 * 
+	 *
 	 * @return 本場
 	 */
 	public int getHonba() {
@@ -153,12 +153,16 @@ public class Info {
 
 	/**
 	 * 点棒を取得します。
-	 * 
+	 *
 	 * @param kaze
 	 *            風
 	 * @return 点棒
 	 */
-	int getTenbou(int kaze) {
+	public int getTenbou(int kaze) {
 		return game.getTenbou(kaze);
+	}
+
+	public String[] getYakuName(Tehai tehai, Hai addHai){
+		return game.getYakuName(tehai, addHai);
 	}
 }

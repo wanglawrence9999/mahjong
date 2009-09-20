@@ -1,5 +1,6 @@
 package jp.sourceforge.andjong.mahjong;
 
+import jp.sourceforge.andjong.AndjongView;
 import jp.sourceforge.andjong.mahjong.AgariScore;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 import jp.sourceforge.andjong.mahjong.EventIF.EID;
@@ -11,6 +12,13 @@ import jp.sourceforge.andjong.mahjong.EventIF.EID;
  *
  */
 public class Mahjong implements Runnable {
+	/** AndjongView */
+	private AndjongView ui;
+
+	public void setAndjongView(AndjongView andjongView) {
+		this.ui = andjongView;
+	}
+
 	/** 山 */
 	private Yama yama;
 
@@ -87,7 +95,7 @@ public class Mahjong implements Runnable {
 	private InfoUI infoUi;
 
 	/** UI */
-	private Console ui;
+	//private Console ui;
 
 	/** リーチ棒の数 */
 	private int reachbou;
@@ -209,7 +217,10 @@ public class Mahjong implements Runnable {
 		infoUi = new InfoUI(this);
 
 		// UIを初期化します。
-		ui = new Console(infoUi, "コンソール");
+		//ui = new Console(infoUi, "コンソール");
+
+		// UIを初期化します。
+		ui.Console(infoUi, "AndjongView");
 	}
 
 	/**

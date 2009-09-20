@@ -61,8 +61,9 @@ public class Game extends Activity {
 		getIntent().putExtra(KEY_DIFFICULTY, DIFFICULTY_CONTINUE);
 
 		Mahjong mahjong = new Mahjong();
+		mahjong.setAndjongView(puzzleView);
 		Thread mahjongThread = new Thread(mahjong);
-		mahjongThread.run();
+		mahjongThread.start();
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package jp.sourceforge.andjong;
+package jp.sourceforge.andjong.mahjong;
 
 /**
  * プレイヤーに提供する情報を管理するクラスです。

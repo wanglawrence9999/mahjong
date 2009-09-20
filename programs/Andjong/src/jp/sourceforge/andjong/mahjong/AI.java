@@ -1,6 +1,6 @@
-package jp.sourceforge.andjong;
+package jp.sourceforge.andjong.mahjong;
 
-import jp.sourceforge.andjong.CountFormat.Combi;
+import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 /**
  * AI‚ğÀ‘•‚·‚éƒNƒ‰ƒX‚Å‚·B

@@ -29,7 +29,7 @@ public class Andjong extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		// ã™ã¹ã¦ã®ãƒœã‚¿ãƒ³ã«ã¤ã„ã¦ã‚¯ãƒªãƒƒã‚¯ãƒªã‚¹ãƒŠãƒ¼ã‚’ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã™ã‚‹
+		// ‚·‚×‚Ä‚Ìƒ{ƒ^ƒ“‚É‚Â‚¢‚ÄƒNƒŠƒbƒNƒŠƒXƒi[‚ğƒZƒbƒgƒAƒbƒv‚·‚é
 		View continueButton = this.findViewById(R.id.continue_button);
 		continueButton.setOnClickListener(this);
 		View newButton = this.findViewById(R.id.new_button);
@@ -63,7 +63,7 @@ public class Andjong extends Activity implements OnClickListener {
 			Intent i = new Intent(this, About.class);
 			startActivity(i);
 			break;
-		// ã“ã“ã«åˆ¥ã®ãƒœã‚¿ãƒ³ã®å‡¦ç†ã‚³ãƒ¼ãƒ‰ï¼ˆã‚‚ã—ã‚ã‚Œã°ï¼‰
+		// ‚±‚±‚É•Ê‚Ìƒ{ƒ^ƒ“‚Ìˆ—ƒR[ƒhi‚à‚µ‚ ‚ê‚Îj
 		case R.id.new_button:
 			openNewGameDialog();
 			break;
@@ -88,12 +88,12 @@ public class Andjong extends Activity implements OnClickListener {
 		case R.id.settings:
 			startActivity(new Intent(this, Settings.class));
 			return true;
-			// ä»–ã®é …ç›®ã¯ã“ã“ã¸ï¼ˆã‚‚ã—ã‚ã‚Œã°ï¼‰
+			// ‘¼‚Ì€–Ú‚Í‚±‚±‚Öi‚à‚µ‚ ‚ê‚Îj
 		}
 		return false;
 	}
 
-	/** ãƒ¦ãƒ¼ã‚¶ã«ã©ã®é›£æ˜“åº¦ãƒ¬ãƒ™ãƒ«ã‚’ä½¿ã†ã‹ã‚’å°‹ã­ã‚‹ */
+	/** ƒ†[ƒU‚É‚Ç‚Ì“ïˆÕ“xƒŒƒxƒ‹‚ğg‚¤‚©‚ğq‚Ë‚é */
 	private void openNewGameDialog() {
 		new AlertDialog.Builder(this).setTitle(R.string.new_game_title)
 				.setItems(R.array.difficulty,
@@ -105,7 +105,7 @@ public class Andjong extends Activity implements OnClickListener {
 						}).show();
 	}
 
-	/** æŒ‡å®šã•ã‚ŒãŸé›£æ˜“åº¦ãƒ¬ãƒ™ãƒ«ã§æ–°ã—ã„ã‚²ãƒ¼ãƒ ã‚’é–‹å§‹ã™ã‚‹ */
+	/** w’è‚³‚ê‚½“ïˆÕ“xƒŒƒxƒ‹‚ÅV‚µ‚¢ƒQ[ƒ€‚ğŠJn‚·‚é */
 	private void startGame(int i) {
 		Log.d(TAG, "clicked on " + i);
 		Intent intent = new Intent(Andjong.this, Game.class);

@@ -1,4 +1,4 @@
-package jp.sourceforge.andjong;
+package jp.sourceforge.andjong.mahjong;
 
 /**
  * ‰Í‚ğŠÇ—‚·‚éB

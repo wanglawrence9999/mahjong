@@ -1,7 +1,7 @@
-package jp.sourceforge.andjong;
+package jp.sourceforge.andjong.mahjong;
 
-import static jp.sourceforge.andjong.Hai.*;
-import jp.sourceforge.andjong.CountFormat.Combi;
+import static jp.sourceforge.andjong.mahjong.Hai.*;
+import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 public class AgariScore {
 	/** カウントフォーマット */

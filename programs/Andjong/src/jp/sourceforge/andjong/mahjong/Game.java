@@ -1,8 +1,8 @@
-package jp.sourceforge.andjong;
+package jp.sourceforge.andjong.mahjong;
 
-import jp.sourceforge.andjong.CountFormat.Combi;
-import jp.sourceforge.andjong.EventIF.EID;
-import jp.sourceforge.andjong.AgariScore;
+import jp.sourceforge.andjong.mahjong.AgariScore;
+import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
+import jp.sourceforge.andjong.mahjong.EventIF.EID;
 
 /**
  * ゲームを管理するクラスです。

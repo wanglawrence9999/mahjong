@@ -1,6 +1,6 @@
-package jp.sourceforge.andjong;
+package jp.sourceforge.andjong.mahjong;
 
-import static jp.sourceforge.andjong.Hai.*;
+import static jp.sourceforge.andjong.mahjong.Hai.*;
 
 /**
  * Console‚ğÀ‘•‚·‚éƒNƒ‰ƒX‚Å‚·B

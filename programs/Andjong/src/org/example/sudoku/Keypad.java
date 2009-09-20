@@ -88,7 +88,7 @@ public class Keypad extends Dialog {
 
 	}
 
-	/** 驕ｸ縺ｰ繧後◆繝槭せ繧貞他縺ｳ蜃ｺ縺怜��縺ｫ霑斐☆ */
+	/** 選ばれたマスを呼び出し元に返す */
 	private void returnResult(int tile) {
 		puzzleView.setSelectedTile(tile);
 		dismiss();

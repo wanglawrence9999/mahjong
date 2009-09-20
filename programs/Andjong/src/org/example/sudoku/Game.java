@@ -54,7 +54,7 @@ public class Game extends Activity {
 		puzzleView.requestFocus();
 
 		// ...
-		// ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ãŒå†èµ·å‹•ã•ã‚ŒãŸã¨ãã«ã¯ã€ã‚²ãƒ¼ãƒ ã‚’ç¶šè¡Œã™ã‚‹
+		// ƒAƒNƒeƒBƒrƒeƒB‚ªÄ‹N“®‚³‚ê‚½‚Æ‚«‚É‚ÍAƒQ[ƒ€‚ğ‘±s‚·‚é
 		getIntent().putExtra(KEY_DIFFICULTY, DIFFICULTY_CONTINUE);
 	}
 
@@ -70,12 +70,12 @@ public class Game extends Activity {
 		Log.d(TAG, "onPause");
 		Music.stop(this);
 
-		// ç¾åœ¨ã®ãƒ‘ã‚ºãƒ«ã‚’ä¿å­˜ã™ã‚‹
+		// Œ»İ‚ÌƒpƒYƒ‹‚ğ•Û‘¶‚·‚é
 		getPreferences(MODE_PRIVATE).edit().putString(PREF_PUZZLE,
 				toPuzzleString(puzzle)).commit();
 	}
 
-	/** ä¸ãˆã‚‰ã‚ŒãŸé›£æ˜“åº¦ãƒ¬ãƒ™ãƒ«ã«åˆã£ãŸæ–°ã—ã„ãƒ‘ã‚ºãƒ«ã‚’è¿”ã™ */
+	/** —^‚¦‚ç‚ê‚½“ïˆÕ“xƒŒƒxƒ‹‚É‡‚Á‚½V‚µ‚¢ƒpƒYƒ‹‚ğ•Ô‚· */
 	private int[] getPuzzle(int diff) {
 		String puz;
 		switch (diff) {
@@ -100,7 +100,7 @@ public class Game extends Activity {
 		return fromPuzzleString(puz);
 	}
 
-	/** æ•´æ•°é…åˆ—ã‚’ãƒ‘ã‚ºãƒ«ã®æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹ */
+	/** ®””z—ñ‚ğƒpƒYƒ‹‚Ì•¶š—ñ‚É•ÏŠ·‚·‚é */
 	static private String toPuzzleString(int[] puz) {
 		StringBuilder buf = new StringBuilder();
 		for (int element : puz) {
@@ -109,7 +109,7 @@ public class Game extends Activity {
 		return buf.toString();
 	}
 
-	/** ãƒ‘ã‚ºãƒ«ã®æ–‡å­—åˆ—ã‚’æ•´æ•°é…åˆ—ã«å¤‰æ›ã™ã‚‹ */
+	/** ƒpƒYƒ‹‚Ì•¶š—ñ‚ğ®””z—ñ‚É•ÏŠ·‚·‚é */
 	static protected int[] fromPuzzleString(String string) {
 		int[] puz = new int[string.length()];
 		for (int i = 0; i < puz.length; i++) {
@@ -118,17 +118,17 @@ public class Game extends Activity {
 		return puz;
 	}
 
-	/** æŒ‡å®šã•ã‚ŒãŸåº§æ¨™ã®ãƒã‚¹ã«æ›¸ã‹ã‚Œã¦ã„ã‚‹æ•°ã‚’è¿”ã™ */
+	/** w’è‚³‚ê‚½À•W‚Ìƒ}ƒX‚É‘‚©‚ê‚Ä‚¢‚é”‚ğ•Ô‚· */
 	private int getTile(int x, int y) {
 		return puzzle[y * 9 + x];
 	}
 
-	/** æŒ‡å®šã•ã‚ŒãŸåº§æ¨™ã®ãƒã‚¹ã®æ•°ã‚’æ›¸ãæ›ãˆã‚‹ */
+	/** w’è‚³‚ê‚½À•W‚Ìƒ}ƒX‚Ì”‚ğ‘‚«Š·‚¦‚é */
 	private void setTile(int x, int y, int value) {
 		puzzle[y * 9 + x] = value;
 	}
 
-	/** æŒ‡å®šã•ã‚ŒãŸåº§æ¨™ã®ãƒã‚¹ã«æ›¸ã‹ã‚Œã¦ã„ã‚‹æ•°ã‚’æ–‡å­—åˆ—ã«ã—ã¦è¿”ã™ */
+	/** w’è‚³‚ê‚½À•W‚Ìƒ}ƒX‚É‘‚©‚ê‚Ä‚¢‚é”‚ğ•¶š—ñ‚É‚µ‚Ä•Ô‚· */
 	protected String getTileString(int x, int y) {
 		int v = getTile(x, y);
 		if (v == 0)
@@ -137,7 +137,7 @@ public class Game extends Activity {
 			return String.valueOf(v);
 	}
 
-	/** æœ‰åŠ¹ãªæ‰‹ã«ãªã£ã¦ã„ã‚‹ã¨ãã«é™ã‚Šãƒã‚¹ã‚’å¤‰æ›´ã™ã‚‹ */
+	/** —LŒø‚Èè‚É‚È‚Á‚Ä‚¢‚é‚Æ‚«‚ÉŒÀ‚èƒ}ƒX‚ğ•ÏX‚·‚é */
 	protected boolean setTileIfValid(int x, int y, int value) {
 		int tiles[] = getUsedTiles(x, y);
 		if (value != 0) {
@@ -151,7 +151,7 @@ public class Game extends Activity {
 		return true;
 	}
 
-	/** æœ‰åŠ¹ãªæ‰‹ãŒã‚ã‚Œã°ã‚­ãƒ¼ãƒ‘ãƒƒãƒ‰ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹ */
+	/** —LŒø‚Èè‚ª‚ ‚ê‚ÎƒL[ƒpƒbƒh‚ğƒI[ƒvƒ“‚·‚é */
 	protected void showKeypadOrError(int x, int y) {
 		int tiles[] = getUsedTiles(x, y);
 		if (tiles.length == 9) {
@@ -166,15 +166,15 @@ public class Game extends Activity {
 		}
 	}
 
-	/** ä½¿ç”¨æ¸ˆã¿ã®æ•°ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ */
+	/** g—pÏ‚İ‚Ì”‚ÌƒLƒƒƒbƒVƒ… */
 	private final int used[][][] = new int[9][9][];
 
-	/** ç¾åœ¨ã®ãƒã‚¹ãŒå±ã™ã‚‹è¡Œã€åˆ—ã€ãƒ–ãƒ­ãƒƒã‚¯ã®ä½¿ç”¨æ¸ˆã¿ã®æ•°ã®ãƒªã‚¹ãƒˆã‚’è¿”ã™ */
+	/** Œ»İ‚Ìƒ}ƒX‚ª‘®‚·‚ésA—ñAƒuƒƒbƒN‚Ìg—pÏ‚İ‚Ì”‚ÌƒŠƒXƒg‚ğ•Ô‚· */
 	protected int[] getUsedTiles(int x, int y) {
 		return used[x][y];
 	}
 
-	/** ãã‚Œãã‚Œã®ãƒã‚¹ã«ã¤ã„ã¦ã€ä½¿ãˆãªã„æ•°ã®ãƒªã‚¹ãƒˆã‚’è¨ˆç®—ã™ã‚‹ */
+	/** ‚»‚ê‚¼‚ê‚Ìƒ}ƒX‚É‚Â‚¢‚ÄAg‚¦‚È‚¢”‚ÌƒŠƒXƒg‚ğŒvZ‚·‚é */
 	private void calculateUsedTiles() {
 		for (int x = 0; x < 9; x++) {
 			for (int y = 0; y < 9; y++) {
@@ -185,10 +185,10 @@ public class Game extends Activity {
 		}
 	}
 
-	/** æŒ‡å®šã•ã‚ŒãŸãƒã‚¹ãŒå±ã™ã‚‹è¡Œã€åˆ—ã€ãƒ–ãƒ­ãƒƒã‚¯ã§ã™ã§ã«ä½¿ã‚ã‚Œã¦ã„ã‚‹æ•°ã‚’è¨ˆç®— */
+	/** w’è‚³‚ê‚½ƒ}ƒX‚ª‘®‚·‚ésA—ñAƒuƒƒbƒN‚Å‚·‚Å‚Ég‚í‚ê‚Ä‚¢‚é”‚ğŒvZ */
 	private int[] calculateUsedTiles(int x, int y) {
 		int c[] = new int[9];
-		// æ¨ª
+		// ‰¡
 		for (int i = 0; i < 9; i++) {
 			if (i == y)
 				continue;
@@ -196,7 +196,7 @@ public class Game extends Activity {
 			if (t != 0)
 				c[t - 1] = t;
 		}
-		// ç¸¦
+		// c
 		for (int i = 0; i < 9; i++) {
 			if (i == x)
 				continue;
@@ -204,7 +204,7 @@ public class Game extends Activity {
 			if (t != 0)
 				c[t - 1] = t;
 		}
-		// ãƒ–ãƒ­ãƒƒã‚¯
+		// ƒuƒƒbƒN
 		int startx = (x / 3) * 3;
 		int starty = (y / 3) * 3;
 		for (int i = startx; i < startx + 3; i++) {
@@ -216,7 +216,7 @@ public class Game extends Activity {
 					c[t - 1] = t;
 			}
 		}
-		// åœ§ç¸®
+		// ˆ³k
 		int nused = 0;
 		for (int t : c) {
 			if (t != 0)

@@ -1,8 +1,8 @@
-package jp.sourceforge.andjong;
-import static jp.sourceforge.andjong.Hai.*;
-import static jp.sourceforge.andjong.Tehai.JYUNTEHAI_MAX;
-import static jp.sourceforge.andjong.AgariSetting.YakuflgName.*;
-import jp.sourceforge.andjong.CountFormat.Combi;
+package jp.sourceforge.andjong.mahjong;
+import static jp.sourceforge.andjong.mahjong.AgariSetting.YakuflgName.*;
+import static jp.sourceforge.andjong.mahjong.Hai.*;
+import static jp.sourceforge.andjong.mahjong.Tehai.JYUNTEHAI_MAX;
+import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 /**
  * 手牌全体の役を判定するクラスです。

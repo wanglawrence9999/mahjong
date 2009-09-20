@@ -31,10 +31,10 @@ public class PuzzleView extends View {
 	private static final String VIEW_STATE = "viewState";
 	private static final int ID = 42;
 
-	private float width; // ãƒã‚¹ã®æ¨ªã®é•·ã•
-	private float height; // ãƒã‚¹ã®ç¸¦ã®é•·ã•
-	private int selX; // é¸æŠã•ã‚ŒãŸãƒã‚¹ã®Xè»¸ã®æ·»å­—
-	private int selY; // é¸æŠã•ã‚ŒãŸãƒã‚¹ã®Yè»¸ã®æ·»å­—
+	private float width; // ƒ}ƒX‚Ì‰¡‚Ì’·‚³
+	private float height; // ƒ}ƒX‚Ìc‚Ì’·‚³
+	private int selX; // ‘I‘ğ‚³‚ê‚½ƒ}ƒX‚ÌX²‚Ì“Yš
+	private int selY; // ‘I‘ğ‚³‚ê‚½ƒ}ƒX‚ÌY²‚Ì“Yš
 	private final Rect selRect = new Rect();
 
 	private final Game game;
@@ -81,14 +81,14 @@ public class PuzzleView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// èƒŒæ™¯ã‚’æç”»ã™ã‚‹
+		// ”wŒi‚ğ•`‰æ‚·‚é
 		Paint background = new Paint();
 		background.setColor(getResources().getColor(R.color.puzzle_background));
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
-		// ç›¤é¢ã‚’æç”»ã™ã‚‹...
+		// ”Õ–Ê‚ğ•`‰æ‚·‚é...
 
-		// æ ç·šã®è‰²ã‚’å®šç¾©ã™ã‚‹
+		// ˜gü‚ÌF‚ğ’è‹`‚·‚é
 		Paint dark = new Paint();
 		dark.setColor(getResources().getColor(R.color.puzzle_dark));
 
@@ -98,7 +98,7 @@ public class PuzzleView extends View {
 		Paint light = new Paint();
 		light.setColor(getResources().getColor(R.color.puzzle_light));
 
-		// ãƒã‚¹ç›®ã‚’åŒºåˆ‡ã‚‹ç·š
+		// ƒ}ƒX–Ú‚ğ‹æØ‚éü
 		for (int i = 0; i < 9; i++) {
 			canvas.drawLine(0, i * height, getWidth(), i * height, light);
 			canvas.drawLine(0, i * height + 1, getWidth(), i * height + 1,
@@ -108,7 +108,7 @@ public class PuzzleView extends View {
 					hilite);
 		}
 
-		// 3 x 3 ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’åŒºåˆ‡ã‚‹ç·š
+		// 3 x 3 ‚ÌƒuƒƒbƒN‚ğ‹æØ‚éü
 		for (int i = 0; i < 9; i++) {
 			if (i % 3 != 0)
 				continue;
@@ -120,8 +120,8 @@ public class PuzzleView extends View {
 					hilite);
 		}
 
-		// æ•°å€¤ã‚’æç”»ã™ã‚‹...
-		// æ•°å€¤ã®è‰²ã¨ã‚¹ã‚¿ã‚¤ãƒ«ã‚’å®šç¾©ã™ã‚‹
+		// ”’l‚ğ•`‰æ‚·‚é...
+		// ”’l‚ÌF‚ÆƒXƒ^ƒCƒ‹‚ğ’è‹`‚·‚é
 		Paint foreground = new Paint(Paint.ANTI_ALIAS_FLAG);
 		foreground.setColor(getResources().getColor(R.color.puzzle_foreground));
 		foreground.setStyle(Style.FILL);
@@ -129,12 +129,12 @@ public class PuzzleView extends View {
 		foreground.setTextScaleX(width / height);
 		foreground.setTextAlign(Paint.Align.CENTER);
 
-		// ãƒã‚¹ç›®ã®ä¸­å¤®ã«æ•°å­—ã‚’æã
+		// ƒ}ƒX–Ú‚Ì’†‰›‚É”š‚ğ•`‚­
 		FontMetrics fm = foreground.getFontMetrics();
-		// Xè»¸æ–¹å‘ã§ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ã€‚ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆã‚’ä½¿ã†
+		// X²•ûŒü‚ÅƒZƒ“ƒ^ƒŠƒ“ƒO‚·‚éBƒAƒ‰ƒCƒ“ƒƒ“ƒg‚ğg‚¤
 		float x = width / 2;
-		// Yè»¸æ–¹å‘ã§ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ã€‚
-		// ã¾ãšã‚¢ã‚»ãƒ³ãƒˆ/ãƒ‡ã‚£ã‚»ãƒ³ãƒˆï¼ˆä¸ŠåŠåˆ†ã¨ä¸‹åŠåˆ†ï¼‰ã‚’èª¿ã¹ã‚‹ã€‚
+		// Y²•ûŒü‚ÅƒZƒ“ƒ^ƒŠƒ“ƒO‚·‚éB
+		// ‚Ü‚¸ƒAƒZƒ“ƒg/ƒfƒBƒZƒ“ƒgiã”¼•ª‚Æ‰º”¼•ªj‚ğ’²‚×‚éB
 		float y = height / 2 - (fm.ascent + fm.descent) / 2;
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -144,9 +144,9 @@ public class PuzzleView extends View {
 		}
 
 		if (Settings.getHints(getContext())) {
-			// ãƒ’ãƒ³ãƒˆã‚’æç”»ã™ã‚‹...
+			// ƒqƒ“ƒg‚ğ•`‰æ‚·‚é...
 
-			// æ®‹ã•ã‚ŒãŸæ‰‹ã®æ•°ã«åŸºã¥ã„ã¦ãƒ’ãƒ³ãƒˆã®è‰²ã‚’å¡—ã‚‹
+			// c‚³‚ê‚½è‚Ì”‚ÉŠî‚Ã‚¢‚Äƒqƒ“ƒg‚ÌF‚ğ“h‚é
 			Paint hint = new Paint();
 			int c[] = { getResources().getColor(R.color.puzzle_hint_0),
 					getResources().getColor(R.color.puzzle_hint_1),
@@ -165,7 +165,7 @@ public class PuzzleView extends View {
 
 		}
 
-		// é¸æŠã•ã‚ŒãŸãƒã‚¹ã‚’æç”»ã™ã‚‹...
+		// ‘I‘ğ‚³‚ê‚½ƒ}ƒX‚ğ•`‰æ‚·‚é...
 		Log.d(TAG, "selRect=" + selRect);
 		Paint selected = new Paint();
 		selected.setColor(getResources().getColor(R.color.puzzle_selected));
@@ -242,9 +242,9 @@ public class PuzzleView extends View {
 
 	public void setSelectedTile(int tile) {
 		if (game.setTileIfValid(selX, selY, tile)) {
-			invalidate();// ãƒ’ãƒ³ãƒˆã¯å¤‰ã‚ã‚‹å¯èƒ½æ€§ã‚ã‚Š
+			invalidate();// ƒqƒ“ƒg‚Í•Ï‚í‚é‰Â”\«‚ ‚è
 		} else {
-			// ã“ã®ãƒã‚¹ã®æ•°å€¤ã¯é¸ã¹ãªã„å€¤
+			// ‚±‚Ìƒ}ƒX‚Ì”’l‚Í‘I‚×‚È‚¢’l
 			Log.d(TAG, "setSelectedTile: invalid: " + tile);
 			startAnimation(AnimationUtils.loadAnimation(game, R.anim.shake));
 		}

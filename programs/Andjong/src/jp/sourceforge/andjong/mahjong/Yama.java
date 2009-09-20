@@ -1,4 +1,4 @@
-package jp.sourceforge.andjong;
+package jp.sourceforge.andjong.mahjong;
 
 import java.util.Random;
 

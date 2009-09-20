@@ -14,11 +14,11 @@ import android.media.MediaPlayer;
 public class Music {
 	private static MediaPlayer mp = null;
 
-	/** å…ƒã®æ›²ã‚’æ­¢ã‚ã€æ–°ã—ã„æ›²ã‚’é–‹å§‹ã™ã‚‹ */
+	/** Œ³‚Ì‹È‚ğ~‚ßAV‚µ‚¢‹È‚ğŠJn‚·‚é */
 	public static void play(Context context, int resource) {
 		stop(context);
 
-		// ãƒ—ãƒ¬ãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ã§ç„¡åŠ¹ã«ã•ã‚Œã¦ã„ãªã„ã¨ãã«é™ã‚Šã€æ›²ã‚’é–‹å§‹ã™ã‚‹
+		// ƒvƒŒƒtƒ@ƒŒƒ“ƒX‚Å–³Œø‚É‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚ÉŒÀ‚èA‹È‚ğŠJn‚·‚é
 		if (Settings.getMusic(context)) {
 			mp = MediaPlayer.create(context, resource);
 			mp.setLooping(true);
@@ -26,7 +26,7 @@ public class Music {
 		}
 	}
 
-	/** éŸ³æ¥½ã‚’åœæ­¢ã™ã‚‹ */
+	/** ‰¹Šy‚ğ’â~‚·‚é */
 	public static void stop(Context context) {
 		if (mp != null) {
 			mp.stop();

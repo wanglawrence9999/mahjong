@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Paint.FontMetrics;
@@ -83,6 +84,9 @@ public class AndjongView extends View implements EventIF {
 
 		/** 河 */
 		Kawa kawa = new Kawa();
+		Kawa kawa2 = new Kawa();
+		Kawa kawa3 = new Kawa();
+		Kawa kawa4 = new Kawa();
 	}
 
 	private DrawItem drawItem = new DrawItem();
@@ -90,44 +94,78 @@ public class AndjongView extends View implements EventIF {
 	private void initBitmap() {
 		Resources res = this.getContext().getResources();
 		m_hai_bitmap = new Bitmap[Hai.ID_MAX + 1];
-		m_hai_bitmap[0] = BitmapFactory.decodeResource(res, R.drawable.m_hai_00_wan_1);
-		m_hai_bitmap[1] = BitmapFactory.decodeResource(res, R.drawable.m_hai_01_wan_2);
-		m_hai_bitmap[2] = BitmapFactory.decodeResource(res, R.drawable.m_hai_02_wan_3);
-		m_hai_bitmap[3] = BitmapFactory.decodeResource(res, R.drawable.m_hai_03_wan_4);
-		m_hai_bitmap[4] = BitmapFactory.decodeResource(res, R.drawable.m_hai_04_wan_5);
-		m_hai_bitmap[5] = BitmapFactory.decodeResource(res, R.drawable.m_hai_05_wan_6);
-		m_hai_bitmap[6] = BitmapFactory.decodeResource(res, R.drawable.m_hai_06_wan_7);
-		m_hai_bitmap[7] = BitmapFactory.decodeResource(res, R.drawable.m_hai_07_wan_8);
-		m_hai_bitmap[8] = BitmapFactory.decodeResource(res, R.drawable.m_hai_08_wan_9);
+		m_hai_bitmap[0] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_00_wan_1);
+		m_hai_bitmap[1] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_01_wan_2);
+		m_hai_bitmap[2] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_02_wan_3);
+		m_hai_bitmap[3] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_03_wan_4);
+		m_hai_bitmap[4] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_04_wan_5);
+		m_hai_bitmap[5] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_05_wan_6);
+		m_hai_bitmap[6] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_06_wan_7);
+		m_hai_bitmap[7] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_07_wan_8);
+		m_hai_bitmap[8] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_08_wan_9);
 
-		m_hai_bitmap[9] = BitmapFactory.decodeResource(res, R.drawable.m_hai_09_pin_1);
-		m_hai_bitmap[10] = BitmapFactory.decodeResource(res, R.drawable.m_hai_10_pin_2);
-		m_hai_bitmap[11] = BitmapFactory.decodeResource(res, R.drawable.m_hai_11_pin_3);
-		m_hai_bitmap[12] = BitmapFactory.decodeResource(res, R.drawable.m_hai_12_pin_4);
-		m_hai_bitmap[13] = BitmapFactory.decodeResource(res, R.drawable.m_hai_13_pin_5);
-		m_hai_bitmap[14] = BitmapFactory.decodeResource(res, R.drawable.m_hai_14_pin_6);
-		m_hai_bitmap[15] = BitmapFactory.decodeResource(res, R.drawable.m_hai_15_pin_7);
-		m_hai_bitmap[16] = BitmapFactory.decodeResource(res, R.drawable.m_hai_16_pin_8);
-		m_hai_bitmap[17] = BitmapFactory.decodeResource(res, R.drawable.m_hai_17_pin_9);
+		m_hai_bitmap[9] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_09_pin_1);
+		m_hai_bitmap[10] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_10_pin_2);
+		m_hai_bitmap[11] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_11_pin_3);
+		m_hai_bitmap[12] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_12_pin_4);
+		m_hai_bitmap[13] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_13_pin_5);
+		m_hai_bitmap[14] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_14_pin_6);
+		m_hai_bitmap[15] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_15_pin_7);
+		m_hai_bitmap[16] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_16_pin_8);
+		m_hai_bitmap[17] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_17_pin_9);
 
-		m_hai_bitmap[18] = BitmapFactory.decodeResource(res, R.drawable.m_hai_18_sou_1);
-		m_hai_bitmap[19] = BitmapFactory.decodeResource(res, R.drawable.m_hai_19_sou_2);
-		m_hai_bitmap[20] = BitmapFactory.decodeResource(res, R.drawable.m_hai_20_sou_3);
-		m_hai_bitmap[21] = BitmapFactory.decodeResource(res, R.drawable.m_hai_21_sou_4);
-		m_hai_bitmap[22] = BitmapFactory.decodeResource(res, R.drawable.m_hai_22_sou_5);
-		m_hai_bitmap[23] = BitmapFactory.decodeResource(res, R.drawable.m_hai_23_sou_6);
-		m_hai_bitmap[24] = BitmapFactory.decodeResource(res, R.drawable.m_hai_24_sou_7);
-		m_hai_bitmap[25] = BitmapFactory.decodeResource(res, R.drawable.m_hai_25_sou_8);
-		m_hai_bitmap[26] = BitmapFactory.decodeResource(res, R.drawable.m_hai_26_sou_9);
+		m_hai_bitmap[18] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_18_sou_1);
+		m_hai_bitmap[19] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_19_sou_2);
+		m_hai_bitmap[20] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_20_sou_3);
+		m_hai_bitmap[21] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_21_sou_4);
+		m_hai_bitmap[22] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_22_sou_5);
+		m_hai_bitmap[23] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_23_sou_6);
+		m_hai_bitmap[24] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_24_sou_7);
+		m_hai_bitmap[25] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_25_sou_8);
+		m_hai_bitmap[26] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_26_sou_9);
 
-		m_hai_bitmap[27] = BitmapFactory.decodeResource(res, R.drawable.m_hai_27_ton);
-		m_hai_bitmap[28] = BitmapFactory.decodeResource(res, R.drawable.m_hai_28_nan);
-		m_hai_bitmap[29] = BitmapFactory.decodeResource(res, R.drawable.m_hai_29_sha);
-		m_hai_bitmap[30] = BitmapFactory.decodeResource(res, R.drawable.m_hai_30_pe);
+		m_hai_bitmap[27] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_27_ton);
+		m_hai_bitmap[28] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_28_nan);
+		m_hai_bitmap[29] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_29_sha);
+		m_hai_bitmap[30] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_30_pe);
 
-		m_hai_bitmap[31] = BitmapFactory.decodeResource(res, R.drawable.m_hai_31_haku);
-		m_hai_bitmap[32] = BitmapFactory.decodeResource(res, R.drawable.m_hai_32_hatsu);
-		m_hai_bitmap[33] = BitmapFactory.decodeResource(res, R.drawable.m_hai_33_chun);
+		m_hai_bitmap[31] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_31_haku);
+		m_hai_bitmap[32] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_32_hatsu);
+		m_hai_bitmap[33] = BitmapFactory.decodeResource(res,
+				R.drawable.m_hai_33_chun);
 
 		m_ura_bitmap = BitmapFactory.decodeResource(res, R.drawable.m_hai_ura);
 	}
@@ -161,16 +199,104 @@ public class AndjongView extends View implements EventIF {
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
-	private void printTehai(float left, float top, float right, float bottom, Paint paint, Canvas canvas) {
+	private static final int M_HAI_HEIGHT = 26;
+	private static final int M_HAI_WIDTH = 19;
+
+	private static final int KAWA_HEIGHT = M_HAI_HEIGHT * 3;
+	private static final int KAWA_WIDTH = M_HAI_WIDTH * 12;
+
+	private static final int DEGREES_0 = 0;
+	private static final int DEGREES_90 = 90;
+	private static final int DEGREES_180 = 180;
+	private static final int DEGREES_270 = 270;
+
+	private Bitmap getKawaBitmap(Kawa kawa, int degrees) {
+		int width;
+		int height;
+
+		if ((degrees == DEGREES_0) || (degrees == DEGREES_180)) {
+			width = KAWA_WIDTH;
+			height = KAWA_HEIGHT;
+		} else {
+			width = KAWA_HEIGHT;
+			height = KAWA_WIDTH;
+		}
+
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+		Canvas canvas = new Canvas(bitmap);
+		canvas.rotate(-degrees, width / 2, height / 2);
+
+		if ((degrees == DEGREES_0) || (degrees == DEGREES_180)) {
+		} else {
+			canvas.translate((width - height) / 2, -(width - height) / 2);
+			//canvas.translate((width - height) / 2, (width - height) / 2);
+		}
+
+		SuteHai[] suteHai = kawa.getSuteHais();
+		int kawaLength = kawa.getSuteHaisLength();
+		int j = 0;
+		int k = 0;
+		for (int i = 0; i < kawaLength; i++, k++) {
+			if ((i == 6) || (i == 12)) {
+				j++;
+				k = 0;
+			}
+
+			canvas.drawBitmap(m_hai_bitmap[suteHai[i].getId()], M_HAI_WIDTH * k, M_HAI_HEIGHT * j, null);
+		}
+
+		return bitmap;
+	}
+
+	public static Bitmap rotateBitmap(Bitmap bmp, int degree) {
+		int w = bmp.getWidth();
+		int h = bmp.getHeight();
+		Bitmap result = Bitmap.createBitmap(h, w, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(result);
+		Paint paint = new Paint();
+		paint.setColor(Color.argb(255, 255, 0, 0));
+		paint.setStyle(Paint.Style.FILL);
+		canvas.drawRect(new Rect(0, 0, h, w), paint);
+		canvas.rotate(degree, w / 2, h / 2);
+		canvas.drawBitmap(bmp, (w - h) / 2, (w - h) / 2, null);
+		return result;
+	}
+
+	private void printTehai(float left, float top, float right, float bottom,
+			Paint paint, Canvas canvas) {
 		Hai[] jyunTehai = drawItem.tehai.getJyunTehai();
 		int jyunTehaiLength = drawItem.tehai.getJyunTehaiLength();
 		int width = m_hai_bitmap[0].getWidth();
 		int height = m_hai_bitmap[0].getHeight();
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			canvas.drawBitmap(m_hai_bitmap[jyunTehai[i].getId()], left + (width * i), top + height, paint);
+			canvas.drawBitmap(m_hai_bitmap[jyunTehai[i].getId()], left
+					+ (width * i), top + height, paint);
 		}
 		if (drawItem.tsumoHai != null) {
-			canvas.drawBitmap(m_hai_bitmap[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top + height, paint);
+			canvas.drawBitmap(m_hai_bitmap[drawItem.tsumoHai.getId()], left
+					+ ((width * jyunTehaiLength) + 5), top + height, paint);
+		}
+	}
+
+	private void printKawa(float left, float top, Kawa kawa, Paint paint,
+			Canvas canvas) {
+		SuteHai[] suteHai = kawa.getSuteHais();
+		int kawaLength = kawa.getSuteHaisLength();
+		int j = 0;
+		int k = 0;
+		for (int i = 0; i < kawaLength; i++, k++) {
+			if ((i == 6) || (i == 12)) {
+				j++;
+				k = 0;
+			}
+
+			canvas.drawBitmap(rotateBitmap(m_hai_bitmap[suteHai[i].getId()],
+					180), left + (19 * k), top + (26 * j), paint);
+			// canvas.drawBitmap(m_hai_bitmap[suteHai[i].getId()], left + (19 *
+			// k), top + (26 * j), paint);
+			// canvas.drawBitmap(m_hai_bitmap[suteHai[i].getId()], left + (19 *
+			// k), top + (26 * j), null);
 		}
 	}
 
@@ -184,101 +310,81 @@ public class AndjongView extends View implements EventIF {
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
 		Paint tehaiPaint = new Paint();
-		printTehai(0, 100, getWidth(), getHeight(), tehaiPaint, canvas);
+		printTehai(0, 0, getWidth(), getHeight(), tehaiPaint, canvas);
 
-		SuteHai[] suteHai = kawa.getSuteHais();
-		int kawaLength = kawa.getSuteHaisLength();
-		for (int i = 0; i < kawaLength; i++) {
-			canvas.drawBitmap(m_hai_bitmap[suteHai[i].getId()], 19 * i, 26, tehaiPaint);
-		}
+		//printKawa(0, 0, kawa, tehaiPaint, canvas);
+
+		Bitmap test = getKawaBitmap(drawItem.kawa3, 180);
+		canvas.drawBitmap(test, -11, 44, tehaiPaint);
+
+		Bitmap test2 = getKawaBitmap(drawItem.kawa, 0);
+		canvas.drawBitmap(test2, 103, 240, null);
+
+		Bitmap test3 = getKawaBitmap(drawItem.kawa2, 90);
+		canvas.drawBitmap(test3, 219 - 2, 10, null);
+
+		Bitmap test4 = getKawaBitmap(drawItem.kawa4, 270);
+		canvas.drawBitmap(test4, 25, 124, tehaiPaint);
 
 		drawItem.isOnDraw = false;
-/*
-		// 盤面を描画する...
-
-		// 枠線の色を定義する
-		Paint dark = new Paint();
-		dark.setColor(getResources().getColor(R.color.puzzle_dark));
-
-		Paint hilite = new Paint();
-		hilite.setColor(getResources().getColor(R.color.puzzle_hilite));
-
-		Paint light = new Paint();
-		light.setColor(getResources().getColor(R.color.puzzle_light));
-
-		// マス目を区切る線
-		for (int i = 0; i < 9; i++) {
-			canvas.drawLine(0, i * height, getWidth(), i * height, light);
-			canvas.drawLine(0, i * height + 1, getWidth(), i * height + 1,
-					hilite);
-			canvas.drawLine(i * width, 0, i * width, getHeight(), light);
-			canvas.drawLine(i * width + 1, 0, i * width + 1, getHeight(),
-					hilite);
-		}
-
-		// 3 x 3 のブロックを区切る線
-		for (int i = 0; i < 9; i++) {
-			if (i % 3 != 0)
-				continue;
-			canvas.drawLine(0, i * height, getWidth(), i * height, dark);
-			canvas.drawLine(0, i * height + 1, getWidth(), i * height + 1,
-					hilite);
-			canvas.drawLine(i * width, 0, i * width, getHeight(), dark);
-			canvas.drawLine(i * width + 1, 0, i * width + 1, getHeight(),
-					hilite);
-		}
-
-		// 数値を描画する...
-		// 数値の色とスタイルを定義する
-		Paint foreground = new Paint(Paint.ANTI_ALIAS_FLAG);
-		foreground.setColor(getResources().getColor(R.color.puzzle_foreground));
-		foreground.setStyle(Style.FILL);
-		foreground.setTextSize(height * 0.75f);
-		foreground.setTextScaleX(width / height);
-		foreground.setTextAlign(Paint.Align.CENTER);
-
-		// マス目の中央に数字を描く
-		FontMetrics fm = foreground.getFontMetrics();
-		// X軸方向でセンタリングする。アラインメントを使う
-		float x = width / 2;
-		// Y軸方向でセンタリングする。
-		// まずアセント/ディセント（上半分と下半分）を調べる。
-		float y = height / 2 - (fm.ascent + fm.descent) / 2;
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				canvas.drawText(this.game.getTileString(i, j), i * width + x, j
-						* height + y, foreground);
-			}
-		}
-
-		if (Settings.getHints(getContext())) {
-			// ヒントを描画する...
-
-			// 残された手の数に基づいてヒントの色を塗る
-			Paint hint = new Paint();
-			int c[] = { getResources().getColor(R.color.puzzle_hint_0),
-					getResources().getColor(R.color.puzzle_hint_1),
-					getResources().getColor(R.color.puzzle_hint_2), };
-			Rect r = new Rect();
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					int movesleft = 9 - game.getUsedTiles(i, j).length;
-					if (movesleft < c.length) {
-						getRect(i, j, r);
-						hint.setColor(c[movesleft]);
-						canvas.drawRect(r, hint);
-					}
-				}
-			}
-
-		}
-
-		// 選択されたマスを描画する...
-		Log.d(TAG, "selRect=" + selRect);
-		Paint selected = new Paint();
-		selected.setColor(getResources().getColor(R.color.puzzle_selected));
-		canvas.drawRect(selRect, selected);
-*/
+		/*
+		 * // 盤面を描画する...
+		 *
+		 * // 枠線の色を定義する Paint dark = new Paint();
+		 * dark.setColor(getResources().getColor(R.color.puzzle_dark));
+		 *
+		 * Paint hilite = new Paint();
+		 * hilite.setColor(getResources().getColor(R.color.puzzle_hilite));
+		 *
+		 * Paint light = new Paint();
+		 * light.setColor(getResources().getColor(R.color.puzzle_light));
+		 *
+		 * // マス目を区切る線 for (int i = 0; i < 9; i++) { canvas.drawLine(0, i *
+		 * height, getWidth(), i * height, light); canvas.drawLine(0, i * height
+		 * + 1, getWidth(), i * height + 1, hilite); canvas.drawLine(i * width,
+		 * 0, i * width, getHeight(), light); canvas.drawLine(i * width + 1, 0,
+		 * i * width + 1, getHeight(), hilite); }
+		 *
+		 * // 3 x 3 のブロックを区切る線 for (int i = 0; i < 9; i++) { if (i % 3 != 0)
+		 * continue; canvas.drawLine(0, i * height, getWidth(), i * height,
+		 * dark); canvas.drawLine(0, i * height + 1, getWidth(), i * height + 1,
+		 * hilite); canvas.drawLine(i * width, 0, i * width, getHeight(), dark);
+		 * canvas.drawLine(i * width + 1, 0, i * width + 1, getHeight(),
+		 * hilite); }
+		 *
+		 * // 数値を描画する... // 数値の色とスタイルを定義する Paint foreground = new
+		 * Paint(Paint.ANTI_ALIAS_FLAG);
+		 * foreground.setColor(getResources().getColor
+		 * (R.color.puzzle_foreground)); foreground.setStyle(Style.FILL);
+		 * foreground.setTextSize(height * 0.75f);
+		 * foreground.setTextScaleX(width / height);
+		 * foreground.setTextAlign(Paint.Align.CENTER);
+		 *
+		 * // マス目の中央に数字を描く FontMetrics fm = foreground.getFontMetrics(); //
+		 * X軸方向でセンタリングする。アラインメントを使う float x = width / 2; // Y軸方向でセンタリングする。 //
+		 * まずアセント/ディセント（上半分と下半分）を調べる。 float y = height / 2 - (fm.ascent +
+		 * fm.descent) / 2; for (int i = 0; i < 9; i++) { for (int j = 0; j < 9;
+		 * j++) { canvas.drawText(this.game.getTileString(i, j), i * width + x,
+		 * j height + y, foreground); } }
+		 *
+		 * if (Settings.getHints(getContext())) { // ヒントを描画する...
+		 *
+		 * // 残された手の数に基づいてヒントの色を塗る Paint hint = new Paint(); int c[] = {
+		 * getResources().getColor(R.color.puzzle_hint_0),
+		 * getResources().getColor(R.color.puzzle_hint_1),
+		 * getResources().getColor(R.color.puzzle_hint_2), }; Rect r = new
+		 * Rect(); for (int i = 0; i < 9; i++) { for (int j = 0; j < 9; j++) {
+		 * int movesleft = 9 - game.getUsedTiles(i, j).length; if (movesleft <
+		 * c.length) { getRect(i, j, r); hint.setColor(c[movesleft]);
+		 * canvas.drawRect(r, hint); } } }
+		 *
+		 * }
+		 *
+		 * // 選択されたマスを描画する... Log.d(TAG, "selRect=" + selRect); Paint selected =
+		 * new Paint();
+		 * selected.setColor(getResources().getColor(R.color.puzzle_selected));
+		 * canvas.drawRect(selRect, selected);
+		 */
 	}
 
 	@Override
@@ -486,26 +592,16 @@ public class AndjongView extends View implements EventIF {
 				isPrintTehai = true;
 				this.postInvalidate(0, 0, getWidth(), getHeight());
 				/*
-				this.post(new Runnable() {
-					public void run() {
-						selRect.set(0, 0, getWidth(), getHeight());
-						invalidate(selRect);
-					}
-				});
-				*/
+				 * this.post(new Runnable() { public void run() { selRect.set(0,
+				 * 0, getWidth(), getHeight()); invalidate(selRect); } });
+				 */
 			}
 			/*
-			if (isDraw == false) {
-				infoUi.copyTehai(printTehai, infoUi.getJikaze());
-				isPrintTehai = true;
-				this.post(new Runnable() {
-					public void run() {
-						selRect.set(0, 0, getWidth(), getHeight());
-						invalidate(selRect);
-					}
-				});
-			}
-			*/
+			 * if (isDraw == false) { infoUi.copyTehai(printTehai,
+			 * infoUi.getJikaze()); isPrintTehai = true; this.post(new
+			 * Runnable() { public void run() { selRect.set(0, 0, getWidth(),
+			 * getHeight()); invalidate(selRect); } }); }
+			 */
 
 			// ツモ牌を表示します。
 			System.out
@@ -531,8 +627,13 @@ public class AndjongView extends View implements EventIF {
 				// 河を表示します。
 				printKawa(kawa);
 
-				infoUi.copyKawa(drawItem.kawa, infoUi.getJikaze());
-				this.postInvalidate(0, 0, getWidth(), getHeight());
+				{
+					infoUi.copyKawa(drawItem.kawa, 0);
+					infoUi.copyKawa(drawItem.kawa2, 1);
+					infoUi.copyKawa(drawItem.kawa3, 2);
+					infoUi.copyKawa(drawItem.kawa4, 3);
+					this.postInvalidate(0, 0, getWidth(), getHeight());
+				}
 				// 捨牌を表示します。
 				// System.out.println(":"
 				// + idToString((infoUi.getSuteHai()).getId()));
@@ -599,7 +700,8 @@ public class AndjongView extends View implements EventIF {
 	}
 
 	private boolean isPrintTehai = false;
-	//private Tehai printTehai = new Tehai();
+
+	// private Tehai printTehai = new Tehai();
 
 	/**
 	 * 手牌を表示します。
@@ -753,9 +855,9 @@ public class AndjongView extends View implements EventIF {
 	 *            自風
 	 * @return　
 	 */
-	 public void jikazeToString(Hai addHai) {
+	public void jikazeToString(Hai addHai) {
 		String[] yakuNames = this.infoUi.getYakuName(tehai, addHai);
-		for(int i = 0 ; i < yakuNames.length ; i++){
+		for (int i = 0; i < yakuNames.length; i++) {
 			System.out.println(yakuNames[i]);
 		}
 	}

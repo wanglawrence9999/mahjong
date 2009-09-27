@@ -269,6 +269,12 @@ public class Mahjong implements Runnable {
 		// 局のメインループ
 		EID retEid;
 		MAINLOOP: while (true) {
+			try {
+				Thread.sleep(300, 0);
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
 			// ツモします。
 			tsumoHai = yama.tsumo();
 

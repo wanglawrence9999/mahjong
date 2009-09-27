@@ -37,7 +37,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 
 public class AndjongView extends View implements EventIF {
-	private static final String TAG = "Sudoku";
+	private static final String TAG = "Andjong";
 
 	private static final String SELX = "selX";
 	private static final String SELY = "selY";
@@ -67,6 +67,25 @@ public class AndjongView extends View implements EventIF {
 
 		initBitmap();
 	}
+
+	private class DrawItem {
+		/** onDrawƒtƒ‰ƒO */
+		boolean isOnDraw = false;
+
+		/** ƒCƒxƒ“ƒgID */
+		EID eid;
+
+		/** Žè”v */
+		Tehai tehai = new Tehai();
+
+		/** ƒcƒ‚”v */
+		Hai tsumoHai = new Hai();
+
+		/** ‰Í */
+		Kawa kawa = new Kawa();
+	}
+
+	private DrawItem drawItem = new DrawItem();
 
 	private void initBitmap() {
 		Resources res = this.getContext().getResources();
@@ -142,11 +161,22 @@ public class AndjongView extends View implements EventIF {
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
-	private boolean isDraw = false;
+	private void printTehai(float left, float top, float right, float bottom, Paint paint, Canvas canvas) {
+		Hai[] jyunTehai = drawItem.tehai.getJyunTehai();
+		int jyunTehaiLength = drawItem.tehai.getJyunTehaiLength();
+		int width = m_hai_bitmap[0].getWidth();
+		int height = m_hai_bitmap[0].getHeight();
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			canvas.drawBitmap(m_hai_bitmap[jyunTehai[i].getId()], left + (width * i), top + height, paint);
+		}
+		if (drawItem.tsumoHai != null) {
+			canvas.drawBitmap(m_hai_bitmap[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top + height, paint);
+		}
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		isDraw = true;
+		drawItem.isOnDraw = true;
 
 		// ”wŒi‚ð•`‰æ‚·‚é
 		Paint background = new Paint();
@@ -154,14 +184,15 @@ public class AndjongView extends View implements EventIF {
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
 		Paint tehaiPaint = new Paint();
-		Hai[] jyunTehai = printTehai.getJyunTehai();
-		int jyunTehaiLength = printTehai.getJyunTehaiLength();
-		for (int i = 0; i < jyunTehaiLength; i++) {
-			canvas.drawBitmap(m_hai_bitmap[jyunTehai[i].getId()], 19 * i, 26,
-					tehaiPaint);
+		printTehai(0, 100, getWidth(), getHeight(), tehaiPaint, canvas);
+
+		SuteHai[] suteHai = kawa.getSuteHais();
+		int kawaLength = kawa.getSuteHaisLength();
+		for (int i = 0; i < kawaLength; i++) {
+			canvas.drawBitmap(m_hai_bitmap[suteHai[i].getId()], 19 * i, 26, tehaiPaint);
 		}
 
-		isDraw = false;
+		drawItem.isOnDraw = false;
 /*
 		// ”Õ–Ê‚ð•`‰æ‚·‚é...
 
@@ -449,6 +480,21 @@ public class AndjongView extends View implements EventIF {
 			// Žè”v‚ð•\Ž¦‚µ‚Ü‚·B
 			printJyunTehai(tehai);
 
+			if (drawItem.isOnDraw == false) {
+				infoUi.copyTehai(drawItem.tehai, infoUi.getJikaze());
+				drawItem.tsumoHai = infoUi.getTsumoHai();
+				isPrintTehai = true;
+				this.postInvalidate(0, 0, getWidth(), getHeight());
+				/*
+				this.post(new Runnable() {
+					public void run() {
+						selRect.set(0, 0, getWidth(), getHeight());
+						invalidate(selRect);
+					}
+				});
+				*/
+			}
+			/*
 			if (isDraw == false) {
 				infoUi.copyTehai(printTehai, infoUi.getJikaze());
 				isPrintTehai = true;
@@ -459,6 +505,7 @@ public class AndjongView extends View implements EventIF {
 					}
 				});
 			}
+			*/
 
 			// ƒcƒ‚”v‚ð•\Ž¦‚µ‚Ü‚·B
 			System.out
@@ -484,6 +531,8 @@ public class AndjongView extends View implements EventIF {
 				// ‰Í‚ð•\Ž¦‚µ‚Ü‚·B
 				printKawa(kawa);
 
+				infoUi.copyKawa(drawItem.kawa, infoUi.getJikaze());
+				this.postInvalidate(0, 0, getWidth(), getHeight());
 				// ŽÌ”v‚ð•\Ž¦‚µ‚Ü‚·B
 				// System.out.println(":"
 				// + idToString((infoUi.getSuteHai()).getId()));
@@ -550,7 +599,7 @@ public class AndjongView extends View implements EventIF {
 	}
 
 	private boolean isPrintTehai = false;
-	private Tehai printTehai = new Tehai();
+	//private Tehai printTehai = new Tehai();
 
 	/**
 	 * Žè”v‚ð•\Ž¦‚µ‚Ü‚·B

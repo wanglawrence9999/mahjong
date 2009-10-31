@@ -95,79 +95,79 @@ public class AndjongView extends View implements EventIF {
 		Resources res = this.getContext().getResources();
 		m_hai_bitmap = new Bitmap[Hai.ID_MAX + 1];
 		m_hai_bitmap[0] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_00_wan_1);
+				R.drawable.hai_00_wan_1_top);
 		m_hai_bitmap[1] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_01_wan_2);
+				R.drawable.hai_01_wan_2_top);
 		m_hai_bitmap[2] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_02_wan_3);
+				R.drawable.hai_02_wan_3_top);
 		m_hai_bitmap[3] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_03_wan_4);
+				R.drawable.hai_03_wan_4_top);
 		m_hai_bitmap[4] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_04_wan_5);
+				R.drawable.hai_04_wan_5_top);
 		m_hai_bitmap[5] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_05_wan_6);
+				R.drawable.hai_05_wan_6_top);
 		m_hai_bitmap[6] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_06_wan_7);
+				R.drawable.hai_06_wan_7_top);
 		m_hai_bitmap[7] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_07_wan_8);
+				R.drawable.hai_07_wan_8_top);
 		m_hai_bitmap[8] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_08_wan_9);
+				R.drawable.hai_08_wan_9_top);
 
 		m_hai_bitmap[9] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_09_pin_1);
+				R.drawable.hai_09_pin_1_top);
 		m_hai_bitmap[10] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_10_pin_2);
+				R.drawable.hai_10_pin_2_top);
 		m_hai_bitmap[11] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_11_pin_3);
+				R.drawable.hai_11_pin_3_top);
 		m_hai_bitmap[12] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_12_pin_4);
+				R.drawable.hai_12_pin_4_top);
 		m_hai_bitmap[13] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_13_pin_5);
+				R.drawable.hai_13_pin_5_top);
 		m_hai_bitmap[14] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_14_pin_6);
+				R.drawable.hai_14_pin_6_top);
 		m_hai_bitmap[15] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_15_pin_7);
+				R.drawable.hai_15_pin_7_top);
 		m_hai_bitmap[16] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_16_pin_8);
+				R.drawable.hai_16_pin_8_top);
 		m_hai_bitmap[17] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_17_pin_9);
+				R.drawable.hai_17_pin_9_top);
 
 		m_hai_bitmap[18] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_18_sou_1);
+				R.drawable.hai_18_sou_1_top);
 		m_hai_bitmap[19] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_19_sou_2);
+				R.drawable.hai_19_sou_2_top);
 		m_hai_bitmap[20] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_20_sou_3);
+				R.drawable.hai_20_sou_3_top);
 		m_hai_bitmap[21] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_21_sou_4);
+				R.drawable.hai_21_sou_4_top);
 		m_hai_bitmap[22] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_22_sou_5);
+				R.drawable.hai_22_sou_5_top);
 		m_hai_bitmap[23] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_23_sou_6);
+				R.drawable.hai_23_sou_6_top);
 		m_hai_bitmap[24] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_24_sou_7);
+				R.drawable.hai_24_sou_7_top);
 		m_hai_bitmap[25] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_25_sou_8);
+				R.drawable.hai_25_sou_8_top);
 		m_hai_bitmap[26] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_26_sou_9);
+				R.drawable.hai_26_sou_9_top);
 
 		m_hai_bitmap[27] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_27_ton);
+				R.drawable.hai_27_ton_top);
 		m_hai_bitmap[28] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_28_nan);
+				R.drawable.hai_28_nan_top);
 		m_hai_bitmap[29] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_29_sha);
+				R.drawable.hai_29_sha_top);
 		m_hai_bitmap[30] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_30_pe);
+				R.drawable.hai_30_pei_top);
 
 		m_hai_bitmap[31] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_31_haku);
+				R.drawable.hai_31_haku_top);
 		m_hai_bitmap[32] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_32_hatsu);
+				R.drawable.hai_32_hatsu_top);
 		m_hai_bitmap[33] = BitmapFactory.decodeResource(res,
-				R.drawable.m_hai_33_chun);
+				R.drawable.hai_33_chun_top);
 
-		m_ura_bitmap = BitmapFactory.decodeResource(res, R.drawable.m_hai_ura);
+		m_ura_bitmap = BitmapFactory.decodeResource(res, R.drawable.hai_ura_top);
 	}
 
 	@Override

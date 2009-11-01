@@ -229,7 +229,7 @@ public class AndjongView extends View implements EventIF {
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
-	private static final int TITLE_OFFSET = -25;
+	//private static final int TITLE_OFFSET = -25;
 
 	/** プレイヤー情報領域の高さ */
 	private static final int PLAYER_INFO_AREA_HEIGHT = 105;
@@ -237,7 +237,8 @@ public class AndjongView extends View implements EventIF {
 	private static final int PLAYER_INFO_AREA_WIDTH = 316;
 
 	private static final int PLAYER_INFO_AREA_LEFT = 4;
-	private static final int PLAYER_INFO_AREA_TOP = TITLE_OFFSET + 319;
+	private static final int PLAYER_INFO_AREA_TOP = 319;
+	//private static final int PLAYER_INFO_AREA_TOP = TITLE_OFFSET + 319;
 
 	/** 河の表示位置のオフセット(X座標) */
 	private static final int KAWA_OFFSET_X = 12;
@@ -298,22 +299,23 @@ public class AndjongView extends View implements EventIF {
 			}
 		}
 
+		printTehai(0, 79, canvas);
+
 		return bitmap;
 	}
 
-	private void printTehai(float left, float top, float right, float bottom,
-			Paint paint, Canvas canvas) {
+	private void printTehai(float left, float top, Canvas canvas) {
 		Hai[] jyunTehai = drawItem.tehai.getJyunTehai();
 		int jyunTehaiLength = drawItem.tehai.getJyunTehaiLength();
 		int width = haiBitmap.top[0].getWidth();
 		int height = haiBitmap.top[0].getHeight();
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left
-					+ (width * i), top + height, paint);
+					+ (width * i), top, null);
 		}
 		if (drawItem.tsumoHai != null) {
 			canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left
-					+ ((width * jyunTehaiLength) + 5), top + height, paint);
+					+ ((width * jyunTehaiLength) + 5), top, null);
 		}
 	}
 
@@ -327,22 +329,19 @@ public class AndjongView extends View implements EventIF {
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
 		Paint tehaiPaint = new Paint();
-		printTehai(0, 0, getWidth(), getHeight(), tehaiPaint, canvas);
-
-		//printKawa(0, 0, kawa, tehaiPaint, canvas);
-
-		Bitmap test = getKawaBitmap(drawItem.kawa3, 180);
-		canvas.drawBitmap(test, -11, 44, tehaiPaint);
+		//printTehai(0, 0, canvas);
 
 		Bitmap test2 = getKawaBitmap(drawItem.kawa, 0);
 		canvas.drawBitmap(test2, PLAYER_INFO_AREA_LEFT, PLAYER_INFO_AREA_TOP, null);
-		//canvas.drawBitmap(test2, 103, 240, null);
 
-		Bitmap test3 = getKawaBitmap(drawItem.kawa2, 90);
-		canvas.drawBitmap(test3, 219 - 2, 10, null);
+		Bitmap test3 = getKawaBitmap(drawItem.kawa2, 270);
+		canvas.drawBitmap(test3, 0, 53, null);
 
-		Bitmap test4 = getKawaBitmap(drawItem.kawa4, 270);
-		canvas.drawBitmap(test4, 25, 124, tehaiPaint);
+		Bitmap test = getKawaBitmap(drawItem.kawa3, 180);
+		canvas.drawBitmap(test, 0, 1, tehaiPaint);
+
+		Bitmap test4 = getKawaBitmap(drawItem.kawa4, 90);
+		canvas.drawBitmap(test4, 215, 56, tehaiPaint);
 
 		drawItem.isOnDraw = false;
 		/*

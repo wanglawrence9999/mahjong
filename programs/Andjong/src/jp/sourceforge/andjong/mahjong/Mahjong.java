@@ -132,6 +132,24 @@ public class Mahjong implements Runnable {
 	public final static int KAZE_SHA = 3;
 	public final static int KAZE_PE = 4;
 
+	/*
+	 * ‹¤’Ê’è‹`
+	 */
+
+	/** –Êq‚Ì\¬”v‚Ì”(3ŒÂ) */
+	public static int MENTSU_HAI_MEMBERS_3 = 3;
+	/** –Êq‚Ì\¬”v‚Ì”(4ŒÂ) */
+	public static int MENTSU_HAI_MEMBERS_4 = 4;
+
+	/** ‘¼‰Æ‚Æ‚ÌŠÖŒW ©•ª */
+	public static int RELATION_JIBUN = 0;
+	/** ‘¼‰Æ‚Æ‚ÌŠÖŒW ã‰Æ */
+	public static int RELATION_KAMICHA = 1;
+	/** ‘¼‰Æ‚Æ‚ÌŠÖŒW ‘Î–Ê */
+	public static int RELATION_TOIMEN = 2;
+	/** ‘¼‰Æ‚Æ‚ÌŠÖŒW ‰º‰Æ */
+	public static int RELATION_SHIMOCHA = 3;
+
 	/** Š„‚ê–Ú */
 	private int wareme;
 

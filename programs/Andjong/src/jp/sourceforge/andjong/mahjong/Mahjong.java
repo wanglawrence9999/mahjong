@@ -434,6 +434,12 @@ public class Mahjong implements Runnable {
 		// イベント（ツモ）を発行します。
 		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, fromKaze,
 				fromKaze);
+		try {
+			Thread.sleep(300, 0);
+		} catch (InterruptedException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 
 		int sutehaiIdx;
 

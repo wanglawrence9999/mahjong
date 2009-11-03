@@ -187,9 +187,13 @@ public class AndjongView extends View implements EventIF {
 
 		/** Žè”v */
 		Tehai tehai = new Tehai();
+		Tehai tehai2 = new Tehai();
+		Tehai tehai3 = new Tehai();
+		Tehai tehai4 = new Tehai();
 
 		/** ƒcƒ‚”v */
 		Hai tsumoHai = new Hai();
+		int tsumoKaze = 5;
 
 		/** ‰Í */
 		Kawa kawa = new Kawa();
@@ -256,7 +260,7 @@ public class AndjongView extends View implements EventIF {
 	private static final int DEGREES_180 = 180;
 	private static final int DEGREES_270 = 270;
 
-	private Bitmap getKawaBitmap(Kawa kawa, int degrees) {
+	private Bitmap getKawaBitmap(Tehai tehai, Kawa kawa, int degrees, int kaze) {
 		int width;
 		int height;
 
@@ -271,7 +275,8 @@ public class AndjongView extends View implements EventIF {
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
 		Canvas canvas = new Canvas(bitmap);
-		canvas.rotate(-degrees, width / 2, height / 2);
+		//canvas.rotate(-degrees, width / 2, height / 2);
+		canvas.rotate(degrees, width / 2, height / 2);
 
 		if ((degrees == DEGREES_0) || (degrees == DEGREES_180)) {
 		} else {
@@ -299,21 +304,21 @@ public class AndjongView extends View implements EventIF {
 			}
 		}
 
-		printTehai(0, 79, canvas);
+		printTehai(0, 79, canvas, tehai, kaze);
 
 		return bitmap;
 	}
 
-	private void printTehai(float left, float top, Canvas canvas) {
-		Hai[] jyunTehai = drawItem.tehai.getJyunTehai();
-		int jyunTehaiLength = drawItem.tehai.getJyunTehaiLength();
+	private void printTehai(float left, float top, Canvas canvas, Tehai tehai, int kaze) {
+		Hai[] jyunTehai = tehai.getJyunTehai();
+		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		int width = haiBitmap.top[0].getWidth();
 		int height = haiBitmap.top[0].getHeight();
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left
 					+ (width * i), top, null);
 		}
-		if (drawItem.tsumoHai != null) {
+		if ((drawItem.tsumoHai != null) && (drawItem.tsumoKaze == kaze)) {
 			canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left
 					+ ((width * jyunTehaiLength) + 5), top, null);
 		}
@@ -328,20 +333,17 @@ public class AndjongView extends View implements EventIF {
 		background.setColor(getResources().getColor(R.color.puzzle_background));
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
-		Paint tehaiPaint = new Paint();
-		//printTehai(0, 0, canvas);
-
-		Bitmap test2 = getKawaBitmap(drawItem.kawa, 0);
+		Bitmap test2 = getKawaBitmap(drawItem.tehai, drawItem.kawa, 0, 0);
 		canvas.drawBitmap(test2, PLAYER_INFO_AREA_LEFT, PLAYER_INFO_AREA_TOP, null);
 
-		Bitmap test3 = getKawaBitmap(drawItem.kawa2, 270);
-		canvas.drawBitmap(test3, 0, 53, null);
+		Bitmap test3 = getKawaBitmap(drawItem.tehai2, drawItem.kawa2, 270, 1);
+		canvas.drawBitmap(test3, 215, 56, null);
 
-		Bitmap test = getKawaBitmap(drawItem.kawa3, 180);
-		canvas.drawBitmap(test, 0, 1, tehaiPaint);
+		Bitmap test = getKawaBitmap(drawItem.tehai3, drawItem.kawa3, 180, 2);
+		canvas.drawBitmap(test, 0, 1, null);
 
-		Bitmap test4 = getKawaBitmap(drawItem.kawa4, 90);
-		canvas.drawBitmap(test4, 215, 56, tehaiPaint);
+		Bitmap test4 = getKawaBitmap(drawItem.tehai4, drawItem.kawa4, 90, 3);
+		canvas.drawBitmap(test4, 0, 53, null);
 
 		drawItem.isOnDraw = false;
 		/*
@@ -604,7 +606,12 @@ public class AndjongView extends View implements EventIF {
 			printJyunTehai(tehai);
 
 			if (drawItem.isOnDraw == false) {
-				infoUi.copyTehai(drawItem.tehai, infoUi.getJikaze());
+				infoUi.copyTehai(drawItem.tehai, 0);
+				infoUi.copyTehai(drawItem.tehai2, 1);
+				infoUi.copyTehai(drawItem.tehai3, 2);
+				infoUi.copyTehai(drawItem.tehai4, 3);
+				drawItem.tsumoKaze = infoUi.getJikaze();
+				Log.d(TAG, "tsumoKaze = " + drawItem.tsumoKaze);
 				drawItem.tsumoHai = infoUi.getTsumoHai();
 				isPrintTehai = true;
 				this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -645,11 +652,17 @@ public class AndjongView extends View implements EventIF {
 				printKawa(kawa);
 
 				{
+					infoUi.copyTehai(drawItem.tehai, 0);
+					infoUi.copyTehai(drawItem.tehai2, 1);
+					infoUi.copyTehai(drawItem.tehai3, 2);
+					infoUi.copyTehai(drawItem.tehai4, 3);
 					infoUi.copyKawa(drawItem.kawa, 0);
 					infoUi.copyKawa(drawItem.kawa2, 1);
 					infoUi.copyKawa(drawItem.kawa3, 2);
 					infoUi.copyKawa(drawItem.kawa4, 3);
 					this.postInvalidate(0, 0, getWidth(), getHeight());
+					drawItem.tsumoKaze = 5;
+					drawItem.tsumoHai = null;
 				}
 				// ŽÌ”v‚ð•\Ž¦‚µ‚Ü‚·B
 				// System.out.println(":"

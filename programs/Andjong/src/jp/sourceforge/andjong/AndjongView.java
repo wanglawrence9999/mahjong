@@ -12,6 +12,7 @@ package jp.sourceforge.andjong;
 import static jp.sourceforge.andjong.mahjong.Hai.*;
 import jp.sourceforge.andjong.R;
 import jp.sourceforge.andjong.mahjong.EventIF;
+import jp.sourceforge.andjong.mahjong.Fuuro;
 import jp.sourceforge.andjong.mahjong.Hai;
 import jp.sourceforge.andjong.mahjong.InfoUI;
 import jp.sourceforge.andjong.mahjong.Kawa;
@@ -321,6 +322,29 @@ public class AndjongView extends View implements EventIF {
 		if ((drawItem.tsumoHai != null) && (drawItem.tsumoKaze == kaze)) {
 			canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left
 					+ ((width * jyunTehaiLength) + 5), top, null);
+		}
+		int fuuroNums = tehai.getFuuroNums();
+		if (fuuroNums > 0) {
+			Fuuro[] fuuros = tehai.getFuuros();
+			for (int i = 0; i < fuuroNums; i++) {
+				Hai hais[] = fuuros[i].getHai();
+				int type = fuuros[i].getType();
+				int relation = fuuros[i].getRelation();
+
+				if (relation == Mahjong.RELATION_KAMICHA) {
+					canvas.drawBitmap(haiBitmap.top[hais[0].getId()], 236, 79, null);
+					canvas.drawBitmap(haiBitmap.top[hais[1].getId()], 255, 79, null);
+					canvas.drawBitmap(haiBitmap.topSide[hais[2].getId()], 274, 86, null);
+				} else if (relation == Mahjong.RELATION_TOIMEN) {
+					canvas.drawBitmap(haiBitmap.top[hais[0].getId()], 236, 79, null);
+					canvas.drawBitmap(haiBitmap.topSide[hais[1].getId()], 255, 86, null);
+					canvas.drawBitmap(haiBitmap.top[hais[2].getId()], 281, 79, null);
+				} else {
+					canvas.drawBitmap(haiBitmap.topSide[hais[0].getId()], 236, 86, null);
+					canvas.drawBitmap(haiBitmap.top[hais[1].getId()], 262, 79, null);
+					canvas.drawBitmap(haiBitmap.top[hais[2].getId()], 281, 79, null);
+				}
+			}
 		}
 	}
 

@@ -127,10 +127,26 @@ public class Mahjong implements Runnable {
 		return sais;
 	}
 
-	public final static int KAZE_TON = 1;
-	public final static int KAZE_NAN = 2;
-	public final static int KAZE_SHA = 3;
-	public final static int KAZE_PE = 4;
+	public final static int KAZE_TON = 0;
+	public final static int KAZE_NAN = 1;
+	public final static int KAZE_SHA = 2;
+	public final static int KAZE_PE = 3;
+
+	public int getRelation(
+			int fromKaze,
+			int toKaze) {
+		int relation;
+		if (fromKaze == toKaze) {
+			relation = RELATION_JIBUN;
+		} else if ((fromKaze + 1) % 4 == toKaze) {
+			relation = RELATION_SHIMOCHA;
+		} else if ((fromKaze + 2) % 4 == toKaze) {
+			relation = RELATION_TOIMEN;
+		} else {
+			relation = RELATION_KAMICHA;
+		}
+		return relation;
+	}
 
 	/*
 	 * ‹¤’Ê’è‹`
@@ -538,7 +554,7 @@ public class Mahjong implements Runnable {
 				this.fromKaze = j;
 				this.toKaze = fromKaze;
 				activePlayer = players[kazeToPlayerIdx[this.fromKaze]];
-				activePlayer.getTehai().setPon(suteHai);
+				activePlayer.getTehai().setPon(suteHai, getRelation(this.fromKaze, this.toKaze));
 
 				notifyEvent(EID.SUTEHAISELECT, this.fromKaze, this.toKaze);
 

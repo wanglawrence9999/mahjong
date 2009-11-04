@@ -6,7 +6,7 @@ package jp.sourceforge.andjong.mahjong;
  * @author Yuji Urushibara
  *
  */
-public class Furro {
+public class Fuuro {
 	/** 種別 明順 */
 	public static int TYPE_MINSHUN = 0;
 	/** 種別 明刻 */
@@ -41,17 +41,23 @@ public class Furro {
 	}
 
 	/** 構成牌 */
-	private Hai hai[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
+	private Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
+
+	{
+		for (int i = 0; i < hais.length; i++) {
+			hais[i] = new Hai();
+		}
+	}
 
 	/**
 	 * 構成牌を設定する。
 	 *
-	 * @param hai
+	 * @param hais
 	 *            構成牌
 	 */
 	public void setHai(
-			Hai hai[]) {
-		this.hai = hai;
+			Hai hais[]) {
+		this.hais = hais;
 	}
 
 	/**
@@ -60,7 +66,7 @@ public class Furro {
 	 * @return 構成牌
 	 */
 	public Hai[] getHai() {
-		return hai;
+		return hais;
 	}
 
 	/** 他家との関係 */
@@ -84,5 +90,25 @@ public class Furro {
 	 */
 	public int getRelation() {
 		return relation;
+	}
+
+	/**
+	 * 副露をコピーする。
+	 *
+	 * @param destFuuro
+	 *            コピー先の副露
+	 * @param srcFuuro
+	 *            コピー元の副露
+	 */
+	public static void copy(
+			Fuuro destFuuro,
+			Fuuro srcFuuro) {
+		destFuuro.type = srcFuuro.type;
+
+		for (int i = 0; i < Mahjong.MENTSU_HAI_MEMBERS_4; i++) {
+			Hai.copy(destFuuro.hais[i], srcFuuro.hais[i]);
+		}
+
+		destFuuro.relation = destFuuro.relation;
 	}
 }

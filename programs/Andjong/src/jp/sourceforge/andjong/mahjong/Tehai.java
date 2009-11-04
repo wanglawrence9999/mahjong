@@ -49,6 +49,12 @@ public class Tehai {
 	/** ˆÃžÈ‚Ì”z—ñ‚Ì’·‚³ */
 	private int anKansLength;
 
+	/** •›˜I‚Ì”z—ñ */
+	private Fuuro[] fuuros = new Fuuro[FUURO_MAX];
+
+	/** •›˜I‚ÌŒÂ” */
+	private int fuuroNums;
+
 	/**
 	 * Žè”v‚ðì¬‚·‚éB
 	 */
@@ -69,6 +75,7 @@ public class Tehai {
 				minKans[i][j] = new Hai();
 				anKans[i][j] = new Hai();
 			}
+			fuuros[i] = new Fuuro();
 		}
 	}
 
@@ -81,6 +88,7 @@ public class Tehai {
 		minKousLength = 0;
 		minKansLength = 0;
 		anKansLength = 0;
+		fuuroNums = 0;
 	}
 
 	/**
@@ -116,6 +124,9 @@ public class Tehai {
 		destTehai.anKansLength = srcTehai.anKansLength;
 		Tehai.copyMinKans(destTehai.anKans, srcTehai.anKans,
 				destTehai.anKansLength);
+
+		destTehai.fuuroNums = srcTehai.fuuroNums;
+		copyFuuros(destTehai.fuuros, srcTehai.fuuros, destTehai.fuuroNums);
 	}
 
 	/**
@@ -619,7 +630,7 @@ public class Tehai {
 	 * @return ƒ|ƒ“‚Ì‰Â”Û
 	 */
 	public boolean validPon(Hai suteHai) {
-		if (minKousLength >= FUURO_MAX) {
+		if (fuuroNums >= FUURO_MAX) {
 			return false;
 		}
 
@@ -643,13 +654,18 @@ public class Tehai {
 	 *            ŽÌ”v
 	 * @return Œ‹‰Ê
 	 */
-	public boolean setPon(Hai suteHai) {
+	public boolean setPon(Hai suteHai, int relation) {
 		if (!validPon(suteHai)) {
 			return false;
 		}
 
+		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
+		for (int i = 0; i < hais.length; i++) {
+			hais[i] = new Hai();
+		}
 		int minKouIdx = 0;
 
+		Hai.copy(hais[minKouIdx], suteHai);
 		Hai.copy(minKous[minKousLength][minKouIdx], suteHai);
 		minKouIdx++;
 
@@ -657,6 +673,7 @@ public class Tehai {
 
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			if (suteHaiId == jyunTehai[i].getId()) {
+				Hai.copy(hais[minKouIdx], jyunTehai[i]);
 				Hai.copy(minKous[minKousLength][minKouIdx], jyunTehai[i]);
 				minKouIdx++;
 
@@ -670,7 +687,20 @@ public class Tehai {
 
 		minKousLength++;
 
+		fuuros[fuuroNums].setHai(hais);
+		fuuros[fuuroNums].setRelation(relation);
+		fuuros[fuuroNums].setType(Fuuro.TYPE_MINKOU);
+		fuuroNums++;
+
 		return true;
+	}
+
+	public Fuuro[] getFuuros() {
+		return fuuros;
+	}
+
+	public int getFuuroNums() {
+		return fuuroNums;
 	}
 
 	/**
@@ -929,6 +959,21 @@ public class Tehai {
 		}
 
 		anKansLength++;
+
+		return true;
+	}
+
+	public static boolean copyFuuros(
+			Fuuro[] destFuuros,
+			Fuuro[] srcFuuros,
+			int length) {
+		if (length >= FUURO_MAX) {
+			return false;
+		}
+
+		for (int i = 0; i < length; i++) {
+			Fuuro.copy(destFuuros[i], srcFuuros[i]);
+		}
 
 		return true;
 	}

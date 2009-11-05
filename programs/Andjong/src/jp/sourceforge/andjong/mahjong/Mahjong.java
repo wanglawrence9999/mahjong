@@ -153,18 +153,18 @@ public class Mahjong implements Runnable {
 	 */
 
 	/** 面子の構成牌の数(3個) */
-	public static int MENTSU_HAI_MEMBERS_3 = 3;
+	public static final int MENTSU_HAI_MEMBERS_3 = 3;
 	/** 面子の構成牌の数(4個) */
-	public static int MENTSU_HAI_MEMBERS_4 = 4;
+	public static final int MENTSU_HAI_MEMBERS_4 = 4;
 
 	/** 他家との関係 自分 */
-	public static int RELATION_JIBUN = 0;
+	public static final int RELATION_JIBUN = 0;
 	/** 他家との関係 上家 */
-	public static int RELATION_KAMICHA = 1;
+	public static final int RELATION_KAMICHA = 1;
 	/** 他家との関係 対面 */
-	public static int RELATION_TOIMEN = 2;
+	public static final int RELATION_TOIMEN = 2;
 	/** 他家との関係 下家 */
-	public static int RELATION_SHIMOCHA = 3;
+	public static final int RELATION_SHIMOCHA = 3;
 
 	/** 割れ目 */
 	private int wareme;
@@ -304,7 +304,7 @@ public class Mahjong implements Runnable {
 		EID retEid;
 		MAINLOOP: while (true) {
 			try {
-				Thread.sleep(300, 0);
+				Thread.sleep(50, 0);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -451,7 +451,7 @@ public class Mahjong implements Runnable {
 		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, fromKaze,
 				fromKaze);
 		try {
-			Thread.sleep(300, 0);
+			Thread.sleep(50, 0);
 		} catch (InterruptedException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();

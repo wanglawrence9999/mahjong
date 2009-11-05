@@ -8,15 +8,15 @@ package jp.sourceforge.andjong.mahjong;
  */
 public class Fuuro {
 	/** í•Ê –¾‡ */
-	public static int TYPE_MINSHUN = 0;
+	public static final int TYPE_MINSHUN = 0;
 	/** í•Ê –¾ */
-	public static int TYPE_MINKOU = 1;
+	public static final int TYPE_MINKOU = 1;
 	/** í•Ê ‘å–¾È */
-	public static int TYPE_DAIMINKAN = 2;
+	public static final int TYPE_DAIMINKAN = 2;
 	/** í•Ê ‰ÁÈ */
-	public static int TYPE_KAKAN = 3;
+	public static final int TYPE_KAKAN = 3;
 	/** í•Ê ˆÃÈ */
-	public static int TYPE_ANKAN = 4;
+	public static final int TYPE_ANKAN = 4;
 	/** í•Ê */
 	private int type;
 

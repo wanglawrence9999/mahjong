@@ -310,6 +310,8 @@ public class AndjongView extends View implements EventIF {
 		return bitmap;
 	}
 
+	private static final int FUURO_LEFT = 296;
+
 	private void printTehai(float left, float top, Canvas canvas, Tehai tehai, int kaze) {
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
@@ -323,6 +325,8 @@ public class AndjongView extends View implements EventIF {
 			canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left
 					+ ((width * jyunTehaiLength) + 5), top, null);
 		}
+
+		int fuuroLeft = FUURO_LEFT;
 		int fuuroNums = tehai.getFuuroNums();
 		if (fuuroNums > 0) {
 			Fuuro[] fuuros = tehai.getFuuros();
@@ -332,17 +336,26 @@ public class AndjongView extends View implements EventIF {
 				int relation = fuuros[i].getRelation();
 
 				if (relation == Mahjong.RELATION_KAMICHA) {
-					canvas.drawBitmap(haiBitmap.top[hais[0].getId()], 236, 79, null);
-					canvas.drawBitmap(haiBitmap.top[hais[1].getId()], 255, 79, null);
-					canvas.drawBitmap(haiBitmap.topSide[hais[2].getId()], 274, 86, null);
+					fuuroLeft -= M_HAI_HEIGHT;
+					canvas.drawBitmap(haiBitmap.topSide[hais[2].getId()], fuuroLeft, 86, null);
+					fuuroLeft -= M_HAI_WIDTH;
+					canvas.drawBitmap(haiBitmap.top[hais[1].getId()], fuuroLeft, 79, null);
+					fuuroLeft -= M_HAI_WIDTH;
+					canvas.drawBitmap(haiBitmap.top[hais[0].getId()], fuuroLeft, 79, null);
 				} else if (relation == Mahjong.RELATION_TOIMEN) {
-					canvas.drawBitmap(haiBitmap.top[hais[0].getId()], 236, 79, null);
-					canvas.drawBitmap(haiBitmap.topSide[hais[1].getId()], 255, 86, null);
-					canvas.drawBitmap(haiBitmap.top[hais[2].getId()], 281, 79, null);
+					fuuroLeft -= M_HAI_WIDTH;
+					canvas.drawBitmap(haiBitmap.top[hais[2].getId()], fuuroLeft, 79, null);
+					fuuroLeft -= M_HAI_HEIGHT;
+					canvas.drawBitmap(haiBitmap.topSide[hais[1].getId()], fuuroLeft, 86, null);
+					fuuroLeft -= M_HAI_WIDTH;
+					canvas.drawBitmap(haiBitmap.top[hais[0].getId()], fuuroLeft, 79, null);
 				} else {
-					canvas.drawBitmap(haiBitmap.topSide[hais[0].getId()], 236, 86, null);
-					canvas.drawBitmap(haiBitmap.top[hais[1].getId()], 262, 79, null);
-					canvas.drawBitmap(haiBitmap.top[hais[2].getId()], 281, 79, null);
+					fuuroLeft -= M_HAI_WIDTH;
+					canvas.drawBitmap(haiBitmap.top[hais[2].getId()], fuuroLeft, 79, null);
+					fuuroLeft -= M_HAI_WIDTH;
+					canvas.drawBitmap(haiBitmap.top[hais[1].getId()], fuuroLeft, 79, null);
+					fuuroLeft -= M_HAI_HEIGHT;
+					canvas.drawBitmap(haiBitmap.topSide[hais[0].getId()], fuuroLeft, 86, null);
 				}
 			}
 		}

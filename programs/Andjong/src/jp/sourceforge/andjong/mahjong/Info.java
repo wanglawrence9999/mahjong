@@ -1,5 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 
+import android.R.integer;
+
 /**
  * プレイヤーに提供する情報を管理するクラスです。
  *
@@ -164,5 +166,20 @@ public class Info {
 
 	public String[] getYakuName(Tehai tehai, Hai addHai){
 		return game.getYakuName(tehai, addHai);
+	}
+
+	public void setSutehaiIdx(
+			int mSutehaiIdx) {
+		this.mSutehaiIdx = mSutehaiIdx;
+	}
+
+	public int getSutehaiIdx() {
+		return mSutehaiIdx;
+	}
+
+	private int mSutehaiIdx;
+
+	{
+		setSutehaiIdx(Integer.MAX_VALUE);
 	}
 }

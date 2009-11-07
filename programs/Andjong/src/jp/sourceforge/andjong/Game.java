@@ -45,6 +45,7 @@ public class Game extends Activity {
 
 	private AndjongView puzzleView;
 
+	Mahjong mahjong;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -66,7 +67,7 @@ public class Game extends Activity {
 		// アクティビティが再起動されたときには、ゲームを続行する
 		getIntent().putExtra(KEY_DIFFICULTY, DIFFICULTY_CONTINUE);
 
-		Mahjong mahjong = new Mahjong();
+		mahjong = new Mahjong();
 		mahjong.setAndjongView(puzzleView);
 		Thread mahjongThread = new Thread(mahjong);
 		mahjongThread.start();
@@ -244,5 +245,4 @@ public class Game extends Activity {
 		}
 		return c1;
 	}
-
 }

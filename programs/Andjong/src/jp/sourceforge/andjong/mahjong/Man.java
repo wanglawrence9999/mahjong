@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import jp.sourceforge.andjong.mahjong.EventIF.EID;
+
 public class Man implements EventIF {
 	private Info info;
 
@@ -28,6 +30,20 @@ public class Man implements EventIF {
 		int sutehaiIdx = 0;
 		switch (eid) {
 		case TSUMO:
+			while (true) {
+				try {
+					// “ü—Í‘Ò‚¿
+					Thread.sleep(10, 0);
+					sutehaiIdx = info.getSutehaiIdx();
+					if (sutehaiIdx != Integer.MAX_VALUE) {
+						info.setSutehaiIdx(Integer.MAX_VALUE);
+						break;
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			/*
 			cmd = null;
 			br = new BufferedReader(new InputStreamReader(System.in));
 			System.out.print(":");
@@ -37,15 +53,17 @@ public class Man implements EventIF {
 				e.printStackTrace();
 			}
 			sutehaiIdx = Integer.parseInt(cmd);
-			if (sutehaiIdx == 0)
-				return EID.TSUMOAGARI;
-			sutehaiIdx--;
+			*/
+//			if (sutehaiIdx == 0)
+//				return EID.TSUMOAGARI;
+//			sutehaiIdx--;
 			this.sutehaiIdx = sutehaiIdx;
 			return EID.SUTEHAI;
 		case SUTEHAI:
 			if (fromKaze == 0) {
 				return EID.NAGASHI;
 			}
+			/*
 			cmd = null;
 			br = new BufferedReader(new InputStreamReader(System.in));
 			System.out.print(":");
@@ -59,6 +77,7 @@ public class Man implements EventIF {
 			if (sutehaiIdx == 1) {
 				return EID.RON;
 			}
+			*/
 			break;
 		default:
 			break;

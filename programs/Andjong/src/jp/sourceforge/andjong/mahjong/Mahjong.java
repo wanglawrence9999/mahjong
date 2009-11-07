@@ -238,11 +238,11 @@ public class Mahjong implements Runnable {
 		// for (int i = 0; i < players.length; i++) {
 		// players[i] = new Player((EventIF) new AI(info));
 		// }
-		players[0] = new Player((EventIF) new AI(info, "一郎"));
+		//players[0] = new Player((EventIF) new AI(info, "一郎"));
 		players[1] = new Player((EventIF) new AI(info, "二郎"));
 		players[2] = new Player((EventIF) new AI(info, "三郎"));
 		players[3] = new Player((EventIF) new AI(info, "四郎"));
-		// players[0] = new Player((EventIF) new Man(info));
+		players[0] = new Player((EventIF) new Man(info, "プレイヤー"));
 
 		// 風をプレイヤーインデックスに変換する配列を初期化します。
 		kazeToPlayerIdx = new int[players.length];
@@ -697,5 +697,9 @@ public class Mahjong implements Runnable {
 	public void run() {
 		// ゲームを開始します。
 		play();
+	}
+
+	public void setSutehaiIdx(int sutehaiIdx) {
+		info.setSutehaiIdx(sutehaiIdx);
 	}
 }

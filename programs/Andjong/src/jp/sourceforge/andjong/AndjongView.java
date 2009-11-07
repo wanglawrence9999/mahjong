@@ -305,25 +305,32 @@ public class AndjongView extends View implements EventIF {
 			}
 		}
 
-		printTehai(0, 79, canvas, tehai, kaze);
+		printTehai(0, 79, canvas, tehai, kaze, selectSutehaiIdx);
 
 		return bitmap;
 	}
 
 	private static final int FUURO_LEFT = 296;
 
-	private void printTehai(float left, float top, Canvas canvas, Tehai tehai, int kaze) {
+	private void printTehai(float left, float top, Canvas canvas, Tehai tehai, int kaze, int select) {
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		int width = haiBitmap.top[0].getWidth();
 		int height = haiBitmap.top[0].getHeight();
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left
-					+ (width * i), top, null);
+			if (i == select) {
+				canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+			} else {
+				canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top, null);
+			}
 		}
+		Log.d(this.getClass().getName(), "print, tsumoKaze = " + drawItem.tsumoKaze + ", id = " + drawItem.tsumoHai);
 		if ((drawItem.tsumoHai != null) && (drawItem.tsumoKaze == kaze)) {
-			canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left
-					+ ((width * jyunTehaiLength) + 5), top, null);
+			if (select >= jyunTehaiLength) {
+				canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
+			} else {
+				canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+			}
 		}
 
 		int fuuroLeft = FUURO_LEFT;
@@ -454,6 +461,7 @@ public class AndjongView extends View implements EventIF {
 		return true;
 	}
 
+	private int selectSutehaiIdx = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
@@ -465,49 +473,72 @@ public class AndjongView extends View implements EventIF {
 			select(selX, selY + 1);
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
-			select(selX - 1, selY);
+			selectSutehaiIdx--;
 			break;
 		case KeyEvent.KEYCODE_DPAD_RIGHT:
-			select(selX + 1, selY);
+			selectSutehaiIdx++;
 			break;
 		case KeyEvent.KEYCODE_0:
 		case KeyEvent.KEYCODE_SPACE:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 0;
 			setSelectedTile(0);
 			break;
 		case KeyEvent.KEYCODE_1:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 1;
 			setSelectedTile(1);
 			break;
 		case KeyEvent.KEYCODE_2:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 2;
 			setSelectedTile(2);
 			break;
 		case KeyEvent.KEYCODE_3:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 3;
 			setSelectedTile(3);
 			break;
 		case KeyEvent.KEYCODE_4:
 			setSelectedTile(4);
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 4;
 			break;
 		case KeyEvent.KEYCODE_5:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 5;
 			setSelectedTile(5);
 			break;
 		case KeyEvent.KEYCODE_6:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 6;
 			setSelectedTile(6);
 			break;
 		case KeyEvent.KEYCODE_7:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 7;
 			setSelectedTile(7);
 			break;
 		case KeyEvent.KEYCODE_8:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 8;
 			setSelectedTile(8);
 			break;
 		case KeyEvent.KEYCODE_9:
+			selectSutehaiIdx *= 10;
+			selectSutehaiIdx += 9;
 			setSelectedTile(9);
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
-			game.showKeypadOrError(selX, selY);
+			game.mahjong.setSutehaiIdx(selectSutehaiIdx);
+			selectSutehaiIdx = 0;
+			//game.showKeypadOrError(selX, selY);
 			break;
 		default:
 			return super.onKeyDown(keyCode, event);
 		}
+		invalidate();
 		return true;
 	}
 
@@ -636,13 +667,10 @@ public class AndjongView extends View implements EventIF {
 			// 表示することはない。
 			break;
 		case TSUMO:// ツモ
-			System.out
-					.print("[" + jikazeToString(infoUi.getJikaze()) + "][ツモ]");
-
 			// 手牌を表示します。
 			printJyunTehai(tehai);
 
-			if (drawItem.isOnDraw == false) {
+//			if (drawItem.isOnDraw == false) {
 				infoUi.copyTehai(drawItem.tehai, 0);
 				infoUi.copyTehai(drawItem.tehai2, 1);
 				infoUi.copyTehai(drawItem.tehai3, 2);
@@ -656,7 +684,8 @@ public class AndjongView extends View implements EventIF {
 				 * this.post(new Runnable() { public void run() { selRect.set(0,
 				 * 0, getWidth(), getHeight()); invalidate(selRect); } });
 				 */
-			}
+//			}
+			Log.d(this.getClass().getName(), "tsumo, tsumoKaze = " + drawItem.tsumoKaze + ", id = " + drawItem.tsumoHai.getId());
 			/*
 			 * if (isDraw == false) { infoUi.copyTehai(printTehai,
 			 * infoUi.getJikaze()); isPrintTehai = true; this.post(new
@@ -688,6 +717,7 @@ public class AndjongView extends View implements EventIF {
 				// 河を表示します。
 				printKawa(kawa);
 
+				Log.d(this.getClass().getName(), "sutehai");
 				{
 					infoUi.copyTehai(drawItem.tehai, 0);
 					infoUi.copyTehai(drawItem.tehai2, 1);

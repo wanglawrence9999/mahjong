@@ -8,4 +8,8 @@ public class InfoUI extends Info {
 	public Hai[] getDoraAll() {
 		return game.getYama().getUraDoraHais();
 	}
+
+	public int getManKaze() {
+		return game.getManKaze();
+	}
 }

@@ -257,6 +257,10 @@ public class Mahjong implements Runnable {
 		ui.Console(infoUi, "AndjongView");
 	}
 
+	public int getManKaze() {
+		return players[0].getJikaze();
+	}
+
 	/**
 	 * ‹Ç‚ğŠJn‚µ‚Ü‚·B
 	 */

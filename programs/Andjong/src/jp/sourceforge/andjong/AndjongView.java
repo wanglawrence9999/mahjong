@@ -187,20 +187,21 @@ public class AndjongView extends View implements EventIF {
 		EID eid;
 
 		/** è”v */
-		Tehai tehai = new Tehai();
-		Tehai tehai2 = new Tehai();
-		Tehai tehai3 = new Tehai();
-		Tehai tehai4 = new Tehai();
+		Tehai tehais[] = new Tehai[4];
+
+		/** ‰Í */
+		Kawa kawas[] = new Kawa[4];
+
+		{
+			for (int i = 0; i < 4; i++) {
+				tehais[i] = new Tehai();
+				kawas[i] = new Kawa();
+			}
+		}
 
 		/** ƒcƒ‚”v */
 		Hai tsumoHai = new Hai();
 		int tsumoKaze = 5;
-
-		/** ‰Í */
-		Kawa kawa = new Kawa();
-		Kawa kawa2 = new Kawa();
-		Kawa kawa3 = new Kawa();
-		Kawa kawa4 = new Kawa();
 	}
 
 	private DrawItem drawItem = new DrawItem();
@@ -305,7 +306,11 @@ public class AndjongView extends View implements EventIF {
 			}
 		}
 
-		printTehai(0, 79, canvas, tehai, kaze, selectSutehaiIdx);
+		if ((infoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
+			printTehai(0, 79, canvas, tehai, kaze, selectSutehaiIdx);
+		} else {
+			printTehai(0, 79, canvas, tehai, kaze, 15);
+		}
 
 		return bitmap;
 	}
@@ -377,16 +382,24 @@ public class AndjongView extends View implements EventIF {
 		background.setColor(getResources().getColor(R.color.puzzle_background));
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
-		Bitmap test2 = getKawaBitmap(drawItem.tehai, drawItem.kawa, 0, 0);
+		int manKaze = infoUi.getManKaze();
+		int dispKaze[] = {0, 1, 2, 3};
+		for (int i = 0; i < 4; i++) {
+			dispKaze[i] = manKaze;
+			manKaze++;
+			manKaze %= 4;
+		}
+
+		Bitmap test2 = getKawaBitmap(drawItem.tehais[dispKaze[0]], drawItem.kawas[dispKaze[0]], 0, dispKaze[0]);
 		canvas.drawBitmap(test2, PLAYER_INFO_AREA_LEFT, PLAYER_INFO_AREA_TOP, null);
 
-		Bitmap test3 = getKawaBitmap(drawItem.tehai2, drawItem.kawa2, 270, 1);
+		Bitmap test3 = getKawaBitmap(drawItem.tehais[dispKaze[1]], drawItem.kawas[dispKaze[1]], 270, dispKaze[1]);
 		canvas.drawBitmap(test3, 215, 56, null);
 
-		Bitmap test = getKawaBitmap(drawItem.tehai3, drawItem.kawa3, 180, 2);
+		Bitmap test = getKawaBitmap(drawItem.tehais[dispKaze[2]], drawItem.kawas[dispKaze[2]], 180, dispKaze[2]);
 		canvas.drawBitmap(test, 0, 1, null);
 
-		Bitmap test4 = getKawaBitmap(drawItem.tehai4, drawItem.kawa4, 90, 3);
+		Bitmap test4 = getKawaBitmap(drawItem.tehais[dispKaze[3]], drawItem.kawas[dispKaze[3]], 90, dispKaze[3]);
 		canvas.drawBitmap(test4, 0, 53, null);
 
 		drawItem.isOnDraw = false;
@@ -467,10 +480,10 @@ public class AndjongView extends View implements EventIF {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_UP:
-			select(selX, selY - 1);
+			//select(selX, selY - 1);
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
-			select(selX, selY + 1);
+			//select(selX, selY + 1);
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 			selectSutehaiIdx--;
@@ -482,52 +495,52 @@ public class AndjongView extends View implements EventIF {
 		case KeyEvent.KEYCODE_SPACE:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 0;
-			setSelectedTile(0);
+			//setSelectedTile(0);
 			break;
 		case KeyEvent.KEYCODE_1:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 1;
-			setSelectedTile(1);
+			//setSelectedTile(1);
 			break;
 		case KeyEvent.KEYCODE_2:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 2;
-			setSelectedTile(2);
+			//setSelectedTile(2);
 			break;
 		case KeyEvent.KEYCODE_3:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 3;
-			setSelectedTile(3);
+			//setSelectedTile(3);
 			break;
 		case KeyEvent.KEYCODE_4:
-			setSelectedTile(4);
+			//setSelectedTile(4);
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 4;
 			break;
 		case KeyEvent.KEYCODE_5:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 5;
-			setSelectedTile(5);
+			//setSelectedTile(5);
 			break;
 		case KeyEvent.KEYCODE_6:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 6;
-			setSelectedTile(6);
+			//setSelectedTile(6);
 			break;
 		case KeyEvent.KEYCODE_7:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 7;
-			setSelectedTile(7);
+			//setSelectedTile(7);
 			break;
 		case KeyEvent.KEYCODE_8:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 8;
-			setSelectedTile(8);
+			//setSelectedTile(8);
 			break;
 		case KeyEvent.KEYCODE_9:
 			selectSutehaiIdx *= 10;
 			selectSutehaiIdx += 9;
-			setSelectedTile(9);
+			//setSelectedTile(9);
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -671,10 +684,10 @@ public class AndjongView extends View implements EventIF {
 			printJyunTehai(tehai);
 
 //			if (drawItem.isOnDraw == false) {
-				infoUi.copyTehai(drawItem.tehai, 0);
-				infoUi.copyTehai(drawItem.tehai2, 1);
-				infoUi.copyTehai(drawItem.tehai3, 2);
-				infoUi.copyTehai(drawItem.tehai4, 3);
+				infoUi.copyTehai(drawItem.tehais[0], 0);
+				infoUi.copyTehai(drawItem.tehais[1], 1);
+				infoUi.copyTehai(drawItem.tehais[2], 2);
+				infoUi.copyTehai(drawItem.tehais[3], 3);
 				drawItem.tsumoKaze = infoUi.getJikaze();
 				Log.d(TAG, "tsumoKaze = " + drawItem.tsumoKaze);
 				drawItem.tsumoHai = infoUi.getTsumoHai();
@@ -719,14 +732,14 @@ public class AndjongView extends View implements EventIF {
 
 				Log.d(this.getClass().getName(), "sutehai");
 				{
-					infoUi.copyTehai(drawItem.tehai, 0);
-					infoUi.copyTehai(drawItem.tehai2, 1);
-					infoUi.copyTehai(drawItem.tehai3, 2);
-					infoUi.copyTehai(drawItem.tehai4, 3);
-					infoUi.copyKawa(drawItem.kawa, 0);
-					infoUi.copyKawa(drawItem.kawa2, 1);
-					infoUi.copyKawa(drawItem.kawa3, 2);
-					infoUi.copyKawa(drawItem.kawa4, 3);
+					infoUi.copyTehai(drawItem.tehais[0], 0);
+					infoUi.copyTehai(drawItem.tehais[1], 1);
+					infoUi.copyTehai(drawItem.tehais[2], 2);
+					infoUi.copyTehai(drawItem.tehais[3], 3);
+					infoUi.copyKawa(drawItem.kawas[0], 0);
+					infoUi.copyKawa(drawItem.kawas[1], 1);
+					infoUi.copyKawa(drawItem.kawas[2], 2);
+					infoUi.copyKawa(drawItem.kawas[3], 3);
 					this.postInvalidate(0, 0, getWidth(), getHeight());
 					drawItem.tsumoKaze = 5;
 					drawItem.tsumoHai = null;

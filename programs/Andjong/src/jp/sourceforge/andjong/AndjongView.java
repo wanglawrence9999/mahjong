@@ -487,9 +487,15 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 			selectSutehaiIdx--;
+			if (selectSutehaiIdx < 0) {
+				selectSutehaiIdx = 13;
+			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_RIGHT:
 			selectSutehaiIdx++;
+			if (selectSutehaiIdx > 13) {
+				selectSutehaiIdx = 0;
+			}
 			break;
 		case KeyEvent.KEYCODE_0:
 		case KeyEvent.KEYCODE_SPACE:
@@ -545,7 +551,7 @@ public class AndjongView extends View implements EventIF {
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
 			game.mahjong.setSutehaiIdx(selectSutehaiIdx);
-			selectSutehaiIdx = 0;
+			selectSutehaiIdx = 13;
 			//game.showKeypadOrError(selX, selY);
 			break;
 		default:

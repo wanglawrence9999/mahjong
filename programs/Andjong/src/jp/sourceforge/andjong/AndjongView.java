@@ -17,6 +17,7 @@ import jp.sourceforge.andjong.mahjong.Hai;
 import jp.sourceforge.andjong.mahjong.InfoUI;
 import jp.sourceforge.andjong.mahjong.Kawa;
 import jp.sourceforge.andjong.mahjong.Mahjong;
+import jp.sourceforge.andjong.mahjong.Sai;
 import jp.sourceforge.andjong.mahjong.SuteHai;
 import jp.sourceforge.andjong.mahjong.Tehai;
 import android.content.Context;
@@ -177,6 +178,9 @@ public class AndjongView extends View implements EventIF {
 		setId(ID);
 
 		haiBitmap = new HaiBitmap(getResources());
+		initSaiImage(getResources());
+
+		initBaImage();
 	}
 
 	private class DrawItem {
@@ -235,7 +239,53 @@ public class AndjongView extends View implements EventIF {
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
-	//private static final int TITLE_OFFSET = -25;
+	private static final int SAI_IMAGE_LEFT = 1;
+	private static final int SAI_IMAGE_TOP = 1;
+
+	private int mSaiImageLeft[];
+	private int mSaiImageTop[];
+
+	private Bitmap mSaiImage[] = new Bitmap[6];
+
+	private void initSaiImage(
+			Resources res) {
+		mSaiImage[0] = BitmapFactory.decodeResource(res, R.drawable.sai_1);
+		mSaiImage[1] = BitmapFactory.decodeResource(res, R.drawable.sai_2);
+		mSaiImage[2] = BitmapFactory.decodeResource(res, R.drawable.sai_3);
+		mSaiImage[3] = BitmapFactory.decodeResource(res, R.drawable.sai_4);
+		mSaiImage[4] = BitmapFactory.decodeResource(res, R.drawable.sai_5);
+		mSaiImage[5] = BitmapFactory.decodeResource(res, R.drawable.sai_6);
+
+		mSaiImageLeft = new int[2];
+		mSaiImageTop = new int[2];
+
+		mSaiImageLeft[0] = SAI_IMAGE_LEFT;
+		mSaiImageTop[0] = SAI_IMAGE_TOP;
+
+		mSaiImageLeft[1] = SAI_IMAGE_LEFT + mSaiImage[0].getWidth();
+		mSaiImageTop[1] = SAI_IMAGE_TOP;
+	}
+
+	private static final int BA_IMAGE_WIDTH = 110;
+	private static final int BA_IMAGE_HEIGHT = 213;
+	private static final int BA_IMAGE_LEFT = 105;
+	private static final int BA_IMAGE_TOP = 107;
+
+	private Bitmap mBaImage;
+
+	private Canvas mBaCanvas;
+
+	private void initBaImage() {
+		mBaImage = Bitmap.createBitmap(BA_IMAGE_WIDTH, BA_IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
+		mBaCanvas = new Canvas(mBaImage);
+	}
+
+	private void setBaImage() {
+		Sai sais[] = mInfoUi.getSais();
+		for (int i = 0; i < 2; i++) {
+			mBaCanvas.drawBitmap(mSaiImage[sais[i].getNo() - 1], mSaiImageLeft[i], mSaiImageTop[i], null);
+		}
+	}
 
 	/** プレイヤー情報領域の高さ */
 	private static final int PLAYER_INFO_AREA_HEIGHT = 105;
@@ -306,7 +356,7 @@ public class AndjongView extends View implements EventIF {
 			}
 		}
 
-		if ((infoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
+		if ((mInfoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
 			printTehai(0, 79, canvas, tehai, kaze, selectSutehaiIdx);
 		} else {
 			printTehai(0, 79, canvas, tehai, kaze, 15);
@@ -382,7 +432,7 @@ public class AndjongView extends View implements EventIF {
 		background.setColor(getResources().getColor(R.color.puzzle_background));
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
-		int manKaze = infoUi.getManKaze();
+		int manKaze = mInfoUi.getManKaze();
 		int dispKaze[] = {0, 1, 2, 3};
 		for (int i = 0; i < 4; i++) {
 			dispKaze[i] = manKaze;
@@ -401,6 +451,9 @@ public class AndjongView extends View implements EventIF {
 
 		Bitmap test4 = getKawaBitmap(drawItem.tehais[dispKaze[3]], drawItem.kawas[dispKaze[3]], 90, dispKaze[3]);
 		canvas.drawBitmap(test4, 0, 53, null);
+
+		setBaImage();
+		canvas.drawBitmap(mBaImage, BA_IMAGE_LEFT, BA_IMAGE_TOP, null);
 
 		drawItem.isOnDraw = false;
 		/*
@@ -585,7 +638,7 @@ public class AndjongView extends View implements EventIF {
 	}
 
 	/** InfoUIオブジェクト */
-	private InfoUI infoUi;
+	private InfoUI mInfoUi;
 
 	/** 手牌 */
 	private Tehai tehai = new Tehai();
@@ -609,13 +662,13 @@ public class AndjongView extends View implements EventIF {
 	 *            InfoUIオブジェクト
 	 */
 	public void Console(InfoUI infoUi, String name) {
-		this.infoUi = infoUi;
+		this.mInfoUi = infoUi;
 		this.name = name;
 	}
 
 	private void dispInfo() {
 		System.out.println("-------- INFO --------");
-		int kyoku = infoUi.getkyoku();
+		int kyoku = mInfoUi.getkyoku();
 		switch (kyoku) {
 		case Mahjong.KYOKU_TON_1:
 			System.out.print("[東一局]");
@@ -630,10 +683,10 @@ public class AndjongView extends View implements EventIF {
 			System.out.print("[東四局]");
 			break;
 		}
-		System.out.print("[" + infoUi.getHonba() + "本場]");
-		System.out.println("[残り:" + infoUi.getTsumoRemain() + "]");
+		System.out.print("[" + mInfoUi.getHonba() + "本場]");
+		System.out.println("[残り:" + mInfoUi.getTsumoRemain() + "]");
 		// ドラ表示牌を表示します。
-		Hai[] doras = infoUi.getDoras();
+		Hai[] doras = mInfoUi.getDoras();
 		System.out.print("[ドラ表示牌]");
 		for (Hai hai : doras) {
 			System.out.print("[" + idToString(hai.getId()) + "]");
@@ -641,14 +694,14 @@ public class AndjongView extends View implements EventIF {
 		System.out.println();
 
 		// 名前などを表示してみる。
-		System.out.println("[" + jikazeToString(0) + "][" + infoUi.getName(0)
-				+ "][" + infoUi.getTenbou(0) + "]");
-		System.out.println("[" + jikazeToString(1) + "][" + infoUi.getName(1)
-				+ "][" + infoUi.getTenbou(1) + "]");
-		System.out.println("[" + jikazeToString(2) + "][" + infoUi.getName(2)
-				+ "][" + infoUi.getTenbou(2) + "]");
-		System.out.println("[" + jikazeToString(3) + "][" + infoUi.getName(3)
-				+ "][" + infoUi.getTenbou(3) + "]");
+		System.out.println("[" + jikazeToString(0) + "][" + mInfoUi.getName(0)
+				+ "][" + mInfoUi.getTenbou(0) + "]");
+		System.out.println("[" + jikazeToString(1) + "][" + mInfoUi.getName(1)
+				+ "][" + mInfoUi.getTenbou(1) + "]");
+		System.out.println("[" + jikazeToString(2) + "][" + mInfoUi.getName(2)
+				+ "][" + mInfoUi.getTenbou(2) + "]");
+		System.out.println("[" + jikazeToString(3) + "][" + mInfoUi.getName(3)
+				+ "][" + mInfoUi.getTenbou(3) + "]");
 
 		System.out.println("----------------------");
 	}
@@ -690,13 +743,13 @@ public class AndjongView extends View implements EventIF {
 			printJyunTehai(tehai);
 
 //			if (drawItem.isOnDraw == false) {
-				infoUi.copyTehai(drawItem.tehais[0], 0);
-				infoUi.copyTehai(drawItem.tehais[1], 1);
-				infoUi.copyTehai(drawItem.tehais[2], 2);
-				infoUi.copyTehai(drawItem.tehais[3], 3);
-				drawItem.tsumoKaze = infoUi.getJikaze();
+				mInfoUi.copyTehai(drawItem.tehais[0], 0);
+				mInfoUi.copyTehai(drawItem.tehais[1], 1);
+				mInfoUi.copyTehai(drawItem.tehais[2], 2);
+				mInfoUi.copyTehai(drawItem.tehais[3], 3);
+				drawItem.tsumoKaze = mInfoUi.getJikaze();
 				Log.d(TAG, "tsumoKaze = " + drawItem.tsumoKaze);
-				drawItem.tsumoHai = infoUi.getTsumoHai();
+				drawItem.tsumoHai = mInfoUi.getTsumoHai();
 				isPrintTehai = true;
 				this.postInvalidate(0, 0, getWidth(), getHeight());
 				/*
@@ -714,10 +767,10 @@ public class AndjongView extends View implements EventIF {
 
 			// ツモ牌を表示します。
 			System.out
-					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
+					.println(":" + idToString((mInfoUi.getTsumoHai()).getId()));
 			break;
 		case TSUMOAGARI:// ツモあがり
-			System.out.print("[" + jikazeToString(infoUi.getJikaze())
+			System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
 					+ "][ツモあがり]");
 
 			// 手牌を表示します。
@@ -725,12 +778,12 @@ public class AndjongView extends View implements EventIF {
 
 			// ツモ牌を表示します。
 			System.out
-					.println(":" + idToString((infoUi.getTsumoHai()).getId()));
+					.println(":" + idToString((mInfoUi.getTsumoHai()).getId()));
 			break;
 		case SUTEHAI:// 捨牌
 			// 自分の捨牌のみを表示します。
-			if (fromKaze == infoUi.getJikaze()) {
-				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+			if (fromKaze == mInfoUi.getJikaze()) {
+				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
 						+ "][捨牌]");
 
 				// 河を表示します。
@@ -738,14 +791,14 @@ public class AndjongView extends View implements EventIF {
 
 				Log.d(this.getClass().getName(), "sutehai");
 				{
-					infoUi.copyTehai(drawItem.tehais[0], 0);
-					infoUi.copyTehai(drawItem.tehais[1], 1);
-					infoUi.copyTehai(drawItem.tehais[2], 2);
-					infoUi.copyTehai(drawItem.tehais[3], 3);
-					infoUi.copyKawa(drawItem.kawas[0], 0);
-					infoUi.copyKawa(drawItem.kawas[1], 1);
-					infoUi.copyKawa(drawItem.kawas[2], 2);
-					infoUi.copyKawa(drawItem.kawas[3], 3);
+					mInfoUi.copyTehai(drawItem.tehais[0], 0);
+					mInfoUi.copyTehai(drawItem.tehais[1], 1);
+					mInfoUi.copyTehai(drawItem.tehais[2], 2);
+					mInfoUi.copyTehai(drawItem.tehais[3], 3);
+					mInfoUi.copyKawa(drawItem.kawas[0], 0);
+					mInfoUi.copyKawa(drawItem.kawas[1], 1);
+					mInfoUi.copyKawa(drawItem.kawas[2], 2);
+					mInfoUi.copyKawa(drawItem.kawas[3], 3);
 					this.postInvalidate(0, 0, getWidth(), getHeight());
 					drawItem.tsumoKaze = 5;
 					drawItem.tsumoHai = null;
@@ -758,8 +811,8 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case PON:// ポン
 			// 自分の捨牌のみを表示します。
-			if (fromKaze == infoUi.getJikaze()) {
-				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+			if (fromKaze == mInfoUi.getJikaze()) {
+				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
 						+ "][ポン]");
 
 				// 手牌を表示します。
@@ -767,7 +820,7 @@ public class AndjongView extends View implements EventIF {
 
 				System.out.println();
 
-				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
 						+ "][捨牌]");
 
 				// 河を表示します。
@@ -781,8 +834,8 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case REACH:
 			// 自分の捨牌のみを表示します。
-			if (fromKaze == infoUi.getJikaze()) {
-				System.out.print("[" + jikazeToString(infoUi.getJikaze())
+			if (fromKaze == mInfoUi.getJikaze()) {
+				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
 						+ "][リーチ]");
 
 				// 河を表示します。
@@ -796,13 +849,13 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case RON:// ロン
 			System.out
-					.print("[" + jikazeToString(infoUi.getJikaze()) + "][ロン]");
+					.print("[" + jikazeToString(mInfoUi.getJikaze()) + "][ロン]");
 
 			// 手牌を表示します。
 			printJyunTehai(tehai);
 
 			// 当たり牌を表示します。
-			System.out.println(":" + idToString((infoUi.getSuteHai()).getId()));
+			System.out.println(":" + idToString((mInfoUi.getSuteHai()).getId()));
 			break;
 		default:
 			break;
@@ -829,7 +882,7 @@ public class AndjongView extends View implements EventIF {
 	 *            手牌
 	 */
 	private void printJyunTehai(Tehai tehai) {
-		infoUi.copyTehai(tehai, infoUi.getJikaze());
+		mInfoUi.copyTehai(tehai, mInfoUi.getJikaze());
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		for (int i = 0; i < jyunTehaiLength; i++)
@@ -853,7 +906,7 @@ public class AndjongView extends View implements EventIF {
 	 *            河
 	 */
 	private void printKawa(Kawa kawa) {
-		infoUi.copyKawa(kawa, infoUi.getJikaze());
+		mInfoUi.copyKawa(kawa, mInfoUi.getJikaze());
 		SuteHai[] SuteHai = kawa.getSuteHais();
 		int kawaLength = kawa.getSuteHaisLength();
 		for (int i = 0; i < kawaLength; i++)
@@ -972,7 +1025,7 @@ public class AndjongView extends View implements EventIF {
 	 * @return　
 	 */
 	public void jikazeToString(Hai addHai) {
-		String[] yakuNames = this.infoUi.getYakuName(tehai, addHai);
+		String[] yakuNames = this.mInfoUi.getYakuName(tehai, addHai);
 		for (int i = 0; i < yakuNames.length; i++) {
 			System.out.println(yakuNames[i]);
 		}

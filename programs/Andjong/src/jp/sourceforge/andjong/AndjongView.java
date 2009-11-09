@@ -143,6 +143,49 @@ public class AndjongView extends View implements EventIF {
 			topSide[31] = makeRotateBitmap(BitmapFactory.decodeResource(res, R.drawable.hai_31_haku_top));
 			topSide[32] = makeRotateBitmap(BitmapFactory.decodeResource(res, R.drawable.hai_32_hatsu_top));
 			topSide[33] = makeRotateBitmap(BitmapFactory.decodeResource(res, R.drawable.hai_33_chun_top));
+
+			bottom = new Bitmap[Hai.ID_MAX + 1];
+
+			bottom[0] = BitmapFactory.decodeResource(res, R.drawable.hai_00_wan_1_bottom);
+			bottom[1] = BitmapFactory.decodeResource(res, R.drawable.hai_01_wan_2_bottom);
+			bottom[2] = BitmapFactory.decodeResource(res, R.drawable.hai_02_wan_3_bottom);
+			bottom[3] = BitmapFactory.decodeResource(res, R.drawable.hai_03_wan_4_bottom);
+			bottom[4] = BitmapFactory.decodeResource(res, R.drawable.hai_04_wan_5_bottom);
+			bottom[5] = BitmapFactory.decodeResource(res, R.drawable.hai_05_wan_6_bottom);
+			bottom[6] = BitmapFactory.decodeResource(res, R.drawable.hai_06_wan_7_bottom);
+			bottom[7] = BitmapFactory.decodeResource(res, R.drawable.hai_07_wan_8_bottom);
+			bottom[8] = BitmapFactory.decodeResource(res, R.drawable.hai_08_wan_9_bottom);
+
+			bottom[9] = BitmapFactory.decodeResource(res, R.drawable.hai_09_pin_1_bottom);
+			bottom[10] = BitmapFactory.decodeResource(res, R.drawable.hai_10_pin_2_bottom);
+			bottom[11] = BitmapFactory.decodeResource(res, R.drawable.hai_11_pin_3_bottom);
+			bottom[12] = BitmapFactory.decodeResource(res, R.drawable.hai_12_pin_4_bottom);
+			bottom[13] = BitmapFactory.decodeResource(res, R.drawable.hai_13_pin_5_bottom);
+			bottom[14] = BitmapFactory.decodeResource(res, R.drawable.hai_14_pin_6_bottom);
+			bottom[15] = BitmapFactory.decodeResource(res, R.drawable.hai_15_pin_7_bottom);
+			bottom[16] = BitmapFactory.decodeResource(res, R.drawable.hai_16_pin_8_bottom);
+			bottom[17] = BitmapFactory.decodeResource(res, R.drawable.hai_17_pin_9_bottom);
+
+			bottom[18] = BitmapFactory.decodeResource(res, R.drawable.hai_18_sou_1_bottom);
+			bottom[19] = BitmapFactory.decodeResource(res, R.drawable.hai_19_sou_2_bottom);
+			bottom[20] = BitmapFactory.decodeResource(res, R.drawable.hai_20_sou_3_bottom);
+			bottom[21] = BitmapFactory.decodeResource(res, R.drawable.hai_21_sou_4_bottom);
+			bottom[22] = BitmapFactory.decodeResource(res, R.drawable.hai_22_sou_5_bottom);
+			bottom[23] = BitmapFactory.decodeResource(res, R.drawable.hai_23_sou_6_bottom);
+			bottom[24] = BitmapFactory.decodeResource(res, R.drawable.hai_24_sou_7_bottom);
+			bottom[25] = BitmapFactory.decodeResource(res, R.drawable.hai_25_sou_8_bottom);
+			bottom[26] = BitmapFactory.decodeResource(res, R.drawable.hai_26_sou_9_bottom);
+
+			bottom[27] = BitmapFactory.decodeResource(res, R.drawable.hai_27_ton_bottom);
+			bottom[28] = BitmapFactory.decodeResource(res, R.drawable.hai_28_nan_bottom);
+			bottom[29] = BitmapFactory.decodeResource(res, R.drawable.hai_29_sha_bottom);
+			bottom[30] = BitmapFactory.decodeResource(res, R.drawable.hai_30_pei_bottom);
+
+			bottom[31] = BitmapFactory.decodeResource(res, R.drawable.hai_31_haku_bottom);
+			bottom[32] = BitmapFactory.decodeResource(res, R.drawable.hai_32_hatsu_bottom);
+			bottom[33] = BitmapFactory.decodeResource(res, R.drawable.hai_33_chun_bottom);
+
+			bottomUra = BitmapFactory.decodeResource(res, R.drawable.hai_ura_bottom);
 		}
 
 		public Bitmap[] top;
@@ -255,16 +298,15 @@ public class AndjongView extends View implements EventIF {
 		mSaiImage[3] = BitmapFactory.decodeResource(res, R.drawable.sai_4);
 		mSaiImage[4] = BitmapFactory.decodeResource(res, R.drawable.sai_5);
 		mSaiImage[5] = BitmapFactory.decodeResource(res, R.drawable.sai_6);
-
-		mSaiImageLeft = new int[2];
-		mSaiImageTop = new int[2];
-
-		mSaiImageLeft[0] = SAI_IMAGE_LEFT;
-		mSaiImageTop[0] = SAI_IMAGE_TOP;
-
-		mSaiImageLeft[1] = SAI_IMAGE_LEFT + mSaiImage[0].getWidth();
-		mSaiImageTop[1] = SAI_IMAGE_TOP;
 	}
+
+	private static final int DORA_IMAGE_LEFT = 1;
+	private static final int DORA_IMAGE_TOP = 39;
+
+	private int mDoraImageLeft;
+	private int mDoraImageTop;
+	private int mUraDoraImageLeft;
+	private int mUraDoraImageTop;
 
 	private static final int BA_IMAGE_WIDTH = 110;
 	private static final int BA_IMAGE_HEIGHT = 213;
@@ -278,12 +320,36 @@ public class AndjongView extends View implements EventIF {
 	private void initBaImage() {
 		mBaImage = Bitmap.createBitmap(BA_IMAGE_WIDTH, BA_IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
 		mBaCanvas = new Canvas(mBaImage);
+
+		mSaiImageLeft = new int[2];
+		mSaiImageTop = new int[2];
+
+		mSaiImageLeft[0] = SAI_IMAGE_LEFT;
+		mSaiImageTop[0] = SAI_IMAGE_TOP;
+
+		mSaiImageLeft[1] = SAI_IMAGE_LEFT + mSaiImage[0].getWidth();
+		mSaiImageTop[1] = SAI_IMAGE_TOP;
+
+		mDoraImageLeft = DORA_IMAGE_LEFT;
+		mDoraImageTop = DORA_IMAGE_TOP;
+		mUraDoraImageLeft = DORA_IMAGE_LEFT;
+		mUraDoraImageTop = DORA_IMAGE_TOP + haiBitmap.bottom[0].getHeight();
 	}
 
 	private void setBaImage() {
 		Sai sais[] = mInfoUi.getSais();
 		for (int i = 0; i < 2; i++) {
 			mBaCanvas.drawBitmap(mSaiImage[sais[i].getNo() - 1], mSaiImageLeft[i], mSaiImageTop[i], null);
+		}
+
+		Hai doras[] = mInfoUi.getDoras();
+		for (int i = 0; i < 5; i++) {
+			if (i < doras.length) {
+				mBaCanvas.drawBitmap(haiBitmap.bottom[doras[i].getId()], mDoraImageLeft + (i * haiBitmap.bottom[0].getWidth()), mDoraImageTop, null);
+			} else {
+				mBaCanvas.drawBitmap(haiBitmap.bottomUra, mDoraImageLeft + (i * haiBitmap.bottomUra.getWidth()), mDoraImageTop, null);
+			}
+			mBaCanvas.drawBitmap(haiBitmap.bottomUra, mUraDoraImageLeft + (i * haiBitmap.bottomUra.getWidth()), mUraDoraImageTop, null);
 		}
 	}
 

@@ -28,6 +28,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.os.Bundle;
@@ -224,6 +225,8 @@ public class AndjongView extends View implements EventIF {
 		initSaiImage(getResources());
 
 		initBaImage();
+
+		initTenbouImage(getResources());
 	}
 
 	private class DrawItem {
@@ -308,6 +311,21 @@ public class AndjongView extends View implements EventIF {
 	private int mUraDoraImageLeft;
 	private int mUraDoraImageTop;
 
+	private Bitmap tenbou01000MinImage;
+	private Bitmap tenbou00100MinImage;
+
+	private static final int TENBOU_01000_MIN_IMAGE_LEFT = 1;
+	private static final int TENBOU_01000_MIN_IMAGE_TOP = 27;
+
+	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 51;
+	private static final int TENBOU_00100_MIN_IMAGE_TOP = 27;
+
+	private void initTenbouImage(
+			Resources res) {
+		tenbou00100MinImage = BitmapFactory.decodeResource(res, R.drawable.tenbou_00100_min);
+		tenbou01000MinImage = BitmapFactory.decodeResource(res, R.drawable.tenbou_01000_min);
+	}
+
 	private static final int BA_IMAGE_WIDTH = 110;
 	private static final int BA_IMAGE_HEIGHT = 213;
 	private static final int BA_IMAGE_LEFT = 105;
@@ -351,6 +369,23 @@ public class AndjongView extends View implements EventIF {
 			}
 			mBaCanvas.drawBitmap(haiBitmap.bottomUra, mUraDoraImageLeft + (i * haiBitmap.bottomUra.getWidth()), mUraDoraImageTop, null);
 		}
+
+		mBaCanvas.drawBitmap(tenbou01000MinImage, TENBOU_01000_MIN_IMAGE_LEFT, TENBOU_01000_MIN_IMAGE_TOP, null);
+		mBaCanvas.drawBitmap(tenbou00100MinImage, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
+
+		/*
+		Paint kazuPaint = new Paint();
+		//Paint kazuPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		kazuPaint.setColor(getResources().getColor(R.color.puzzle_foreground));
+		kazuPaint.setStyle(Style.FILL);
+		kazuPaint.setTextSize(16);
+		kazuPaint.setTypeface(Typeface.MONOSPACE);
+		//kazuPaint.setTextSize(height * 0.75f);
+		//kazuPaint.setTextScaleX(width / height);
+		kazuPaint.setTextAlign(Paint.Align.CENTER);
+
+		mBaCanvas.drawText("0", TENBOU_01000_MIN_IMAGE_LEFT + 40, TENBOU_01000_MIN_IMAGE_TOP + 10, kazuPaint);
+		*/
 	}
 
 	/** ÉvÉåÉCÉÑÅ[èÓïÒóÃàÊÇÃçÇÇ≥ */

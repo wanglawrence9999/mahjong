@@ -188,6 +188,8 @@ public class AndjongView extends View implements EventIF {
 			bottom[33] = BitmapFactory.decodeResource(res, R.drawable.hai_33_chun_bottom);
 
 			bottomUra = BitmapFactory.decodeResource(res, R.drawable.hai_ura_bottom);
+
+			hide = BitmapFactory.decodeResource(res, R.drawable.hai_hide);
 		}
 
 		public Bitmap[] top;
@@ -467,6 +469,8 @@ public class AndjongView extends View implements EventIF {
 		return bitmap;
 	}
 
+	private boolean tehaiDebug = false;
+
 	private static final int FUURO_LEFT = 296;
 
 	private void printTehai(float left, float top, Canvas canvas, Tehai tehai, int kaze, int select) {
@@ -478,15 +482,27 @@ public class AndjongView extends View implements EventIF {
 			if (i == select) {
 				canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top - 10, null);
 			} else {
-				canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top, null);
+				if (mInfoUi.getManKaze() == kaze && !tehaiDebug) {
+					canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top, null);
+				} else {
+					canvas.drawBitmap(haiBitmap.hide, left + (width * i), top, null);
+				}
 			}
 		}
 		Log.d(this.getClass().getName(), "print, tsumoKaze = " + drawItem.tsumoKaze + ", id = " + drawItem.tsumoHai);
 		if ((drawItem.tsumoHai != null) && (drawItem.tsumoKaze == kaze)) {
 			if (select >= jyunTehaiLength) {
-				canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
+				if (mInfoUi.getManKaze() == kaze && !tehaiDebug) {
+					canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
+				} else {
+					canvas.drawBitmap(haiBitmap.hide, left + ((width * jyunTehaiLength) + 5), top, null);
+				}
 			} else {
-				canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+				if (mInfoUi.getManKaze() == kaze && !tehaiDebug) {
+					canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+				} else {
+					canvas.drawBitmap(haiBitmap.hide, left + ((width * jyunTehaiLength) + 5), top, null);
+				}
 			}
 		}
 
@@ -644,6 +660,11 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 			selectSutehaiIdx = 100;
+			if(tehaiDebug){
+				tehaiDebug = false;
+			}else{
+				tehaiDebug = true;
+			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 			selectSutehaiIdx--;

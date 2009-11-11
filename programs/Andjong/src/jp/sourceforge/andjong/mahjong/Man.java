@@ -23,6 +23,7 @@ public class Man implements EventIF {
 		this.name = name;
 	}
 
+	private Tehai tehai = new Tehai();
 	@Override
 	public EID event(EID eid, int fromKaze, int toKaze) {
 		String cmd;
@@ -30,6 +31,7 @@ public class Man implements EventIF {
 		int sutehaiIdx = 0;
 		switch (eid) {
 		case TSUMO:
+			info.copyTehai(tehai, info.getJikaze());
 			while (true) {
 				try {
 					// “ü—Í‘Ò‚¿
@@ -37,7 +39,16 @@ public class Man implements EventIF {
 					sutehaiIdx = info.getSutehaiIdx();
 					if (sutehaiIdx != Integer.MAX_VALUE) {
 						info.setSutehaiIdx(Integer.MAX_VALUE);
-						break;
+						if (sutehaiIdx == 100) {
+							int agariScore = info.getAgariScore(tehai, info.getTsumoHai());
+							if (agariScore > 0) {
+								return EID.RON;
+							}
+							continue;
+						}
+						if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
+							break;
+						}
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -62,6 +73,45 @@ public class Man implements EventIF {
 		case SUTEHAI:
 			if (fromKaze == 0) {
 				return EID.NAGASHI;
+			}
+			info.copyTehai(tehai, info.getJikaze());
+			int score = info.getAgariScore(tehai, info.getSuteHai());
+			if (score > 0) {
+				while (true) {
+					try {
+						// “ü—Í‘Ò‚¿
+						Thread.sleep(10, 0);
+						sutehaiIdx = info.getSutehaiIdx();
+						if (sutehaiIdx != Integer.MAX_VALUE) {
+							info.setSutehaiIdx(Integer.MAX_VALUE);
+							if (sutehaiIdx == 100) {
+								return EID.RON;
+							}
+							break;
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			if (tehai.validPon(info.getSuteHai())) {
+				while (true) {
+					try {
+						// “ü—Í‘Ò‚¿
+						Thread.sleep(10, 0);
+						sutehaiIdx = info.getSutehaiIdx();
+						if (sutehaiIdx != Integer.MAX_VALUE) {
+							info.setSutehaiIdx(Integer.MAX_VALUE);
+							if (sutehaiIdx == 100) {
+								return EID.PON;
+							}
+							break;
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 			/*
 			cmd = null;

@@ -20,6 +20,7 @@ import jp.sourceforge.andjong.mahjong.Mahjong;
 import jp.sourceforge.andjong.mahjong.Sai;
 import jp.sourceforge.andjong.mahjong.SuteHai;
 import jp.sourceforge.andjong.mahjong.Tehai;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -634,10 +635,15 @@ public class AndjongView extends View implements EventIF {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_UP:
-			//select(selX, selY - 1);
+			this.post(new Runnable() {
+				public void run() {
+					Dialog a = new Dialog(game);
+					a.show();
+				}
+			});
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
-			//select(selX, selY + 1);
+			selectSutehaiIdx = 100;
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 			selectSutehaiIdx--;
@@ -913,6 +919,12 @@ public class AndjongView extends View implements EventIF {
 		case PON:// ポン
 			// 自分の捨牌のみを表示します。
 			if (fromKaze == mInfoUi.getJikaze()) {
+				this.post(new Runnable() {
+					public void run() {
+						Dialog a = new Dialog(game);
+						a.show();
+					}
+				});
 				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
 						+ "][ポン]");
 
@@ -949,6 +961,12 @@ public class AndjongView extends View implements EventIF {
 			}
 			break;
 		case RON:// ロン
+			this.post(new Runnable() {
+				public void run() {
+					Dialog a = new Dialog(game);
+					a.show();
+				}
+			});
 			System.out
 					.print("[" + jikazeToString(mInfoUi.getJikaze()) + "][ロン]");
 

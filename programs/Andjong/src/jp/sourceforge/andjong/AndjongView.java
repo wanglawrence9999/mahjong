@@ -460,7 +460,8 @@ public class AndjongView extends View implements EventIF {
 			}
 		}
 
-		if ((mInfoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
+		if ((mInfoUi.getManKaze() == kaze)) {
+	//	if ((mInfoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
 			printTehai(0, 79, canvas, tehai, kaze, selectSutehaiIdx);
 		} else {
 			printTehai(0, 79, canvas, tehai, kaze, 15);
@@ -482,7 +483,7 @@ public class AndjongView extends View implements EventIF {
 			if (i == select) {
 				canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top - 10, null);
 			} else {
-				if (mInfoUi.getManKaze() == kaze && !tehaiDebug) {
+				if (mInfoUi.getManKaze() == kaze || tehaiDebug) {
 					canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top, null);
 				} else {
 					canvas.drawBitmap(haiBitmap.hide, left + (width * i), top, null);
@@ -492,13 +493,13 @@ public class AndjongView extends View implements EventIF {
 		Log.d(this.getClass().getName(), "print, tsumoKaze = " + drawItem.tsumoKaze + ", id = " + drawItem.tsumoHai);
 		if ((drawItem.tsumoHai != null) && (drawItem.tsumoKaze == kaze)) {
 			if (select >= jyunTehaiLength) {
-				if (mInfoUi.getManKaze() == kaze && !tehaiDebug) {
+				if (mInfoUi.getManKaze() == kaze || tehaiDebug) {
 					canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
 				} else {
 					canvas.drawBitmap(haiBitmap.hide, left + ((width * jyunTehaiLength) + 5), top, null);
 				}
 			} else {
-				if (mInfoUi.getManKaze() == kaze && !tehaiDebug) {
+				if (mInfoUi.getManKaze() == kaze || tehaiDebug) {
 					canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
 				} else {
 					canvas.drawBitmap(haiBitmap.hide, left + ((width * jyunTehaiLength) + 5), top, null);
@@ -651,20 +652,15 @@ public class AndjongView extends View implements EventIF {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_UP:
-			this.post(new Runnable() {
-				public void run() {
-					Dialog a = new Dialog(game);
-					a.show();
-				}
-			});
-			break;
-		case KeyEvent.KEYCODE_DPAD_DOWN:
-			selectSutehaiIdx = 100;
+			selectSutehaiIdx = 0;
 			if(tehaiDebug){
 				tehaiDebug = false;
 			}else{
 				tehaiDebug = true;
 			}
+			break;
+		case KeyEvent.KEYCODE_DPAD_DOWN:
+			selectSutehaiIdx = 100;
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 			selectSutehaiIdx--;
@@ -856,6 +852,9 @@ public class AndjongView extends View implements EventIF {
 			// + sai[1].getNo() + "]");
 			break;
 		case SENPAI:// êÙîv
+			for (int i = 0; i < drawItem.kawas.length; i++) {
+				drawItem.kawas[i] = new Kawa();
+			}
 			break;
 		case SAIFURI:// ÉTÉCêUÇË
 			dispInfo();
@@ -937,15 +936,41 @@ public class AndjongView extends View implements EventIF {
 				System.out.println();
 			}
 			break;
+		case SUTEHAISELECT:
+			if (fromKaze == mInfoUi.getJikaze()) {
+					mInfoUi.copyTehai(drawItem.tehais[0], 0);
+					mInfoUi.copyTehai(drawItem.tehais[1], 1);
+					mInfoUi.copyTehai(drawItem.tehais[2], 2);
+					mInfoUi.copyTehai(drawItem.tehais[3], 3);
+					drawItem.tsumoKaze = 5;
+					drawItem.tsumoHai = null;
+					this.postInvalidate(0, 0, getWidth(), getHeight());
+			}
+			break;
 		case PON:// É|Éì
 			// é©ï™ÇÃéÃîvÇÃÇ›Çï\é¶ÇµÇ‹Ç∑ÅB
 			if (fromKaze == mInfoUi.getJikaze()) {
+				{
+					mInfoUi.copyTehai(drawItem.tehais[0], 0);
+					mInfoUi.copyTehai(drawItem.tehais[1], 1);
+					mInfoUi.copyTehai(drawItem.tehais[2], 2);
+					mInfoUi.copyTehai(drawItem.tehais[3], 3);
+					mInfoUi.copyKawa(drawItem.kawas[0], 0);
+					mInfoUi.copyKawa(drawItem.kawas[1], 1);
+					mInfoUi.copyKawa(drawItem.kawas[2], 2);
+					mInfoUi.copyKawa(drawItem.kawas[3], 3);
+					drawItem.tsumoKaze = 5;
+					drawItem.tsumoHai = null;
+					this.postInvalidate(0, 0, getWidth(), getHeight());
+				}
+				/*
 				this.post(new Runnable() {
 					public void run() {
 						Dialog a = new Dialog(game);
 						a.show();
 					}
 				});
+				*/
 				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
 						+ "][É|Éì]");
 

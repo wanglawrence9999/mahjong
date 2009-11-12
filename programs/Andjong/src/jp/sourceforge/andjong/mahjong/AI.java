@@ -53,6 +53,9 @@ public class AI implements EventIF {
 			returnEid = eidSutehai(fromKaze, toKaze);
 			break;
 		case SUTEHAISELECT:
+			if (fromKaze != info.getJikaze()) {
+				return EID.NAGASHI;
+			}
 			// 自分の手牌をコピーします。
 			info.copyTehai(tehai, fromKaze);
 			thinkSutehai(null);

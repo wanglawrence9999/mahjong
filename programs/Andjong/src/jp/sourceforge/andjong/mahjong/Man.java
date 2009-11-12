@@ -70,6 +70,24 @@ public class Man implements EventIF {
 //			sutehaiIdx--;
 			this.sutehaiIdx = sutehaiIdx;
 			return EID.SUTEHAI;
+		case SUTEHAISELECT:
+			while (true) {
+				try {
+					// “ü—Í‘Ò‚¿
+					Thread.sleep(10, 0);
+					sutehaiIdx = info.getSutehaiIdx();
+					if (sutehaiIdx != Integer.MAX_VALUE) {
+						info.setSutehaiIdx(Integer.MAX_VALUE);
+						if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
+							break;
+						}
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			this.sutehaiIdx = sutehaiIdx;
+			return EID.SUTEHAI;
 		case SUTEHAI:
 			if (fromKaze == 0) {
 				return EID.NAGASHI;

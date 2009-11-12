@@ -576,6 +576,10 @@ public class Mahjong implements Runnable {
 			default:
 				break;
 			}
+
+			if (eid == EID.SUTEHAISELECT) {
+				return retEid;
+			}
 		}
 
 		return retEid;

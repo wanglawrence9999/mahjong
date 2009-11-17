@@ -32,8 +32,6 @@ public class Andjong extends Activity implements OnClickListener {
 		setContentView(R.layout.main);
 
 		// すべてのボタンについてクリックリスナーをセットアップする
-		View continueButton = this.findViewById(R.id.continue_button);
-		continueButton.setOnClickListener(this);
 		View newButton = this.findViewById(R.id.new_button);
 		newButton.setOnClickListener(this);
 		View aboutButton = this.findViewById(R.id.about_button);
@@ -56,18 +54,15 @@ public class Andjong extends Activity implements OnClickListener {
 
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.continue_button:
-			startGame(Game.DIFFICULTY_CONTINUE);
-			break;
-		// ...
-
 		case R.id.about_button:
 			Intent i = new Intent(this, About.class);
 			startActivity(i);
 			break;
 		// ここに別のボタンの処理コード（もしあれば）
 		case R.id.new_button:
-			openNewGameDialog();
+			Intent intent = new Intent(Andjong.this, Game.class);
+			startActivity(intent);
+			//openNewGameDialog();
 			break;
 		case R.id.exit_button:
 			finish();
@@ -93,25 +88,5 @@ public class Andjong extends Activity implements OnClickListener {
 			// 他の項目はここへ（もしあれば）
 		}
 		return false;
-	}
-
-	/** ユーザにどの難易度レベルを使うかを尋ねる */
-	private void openNewGameDialog() {
-		new AlertDialog.Builder(this).setTitle(R.string.new_game_title)
-				.setItems(R.array.difficulty,
-						new DialogInterface.OnClickListener() {
-							public void onClick(
-									DialogInterface dialoginterface, int i) {
-								startGame(i);
-							}
-						}).show();
-	}
-
-	/** 指定された難易度レベルで新しいゲームを開始する */
-	private void startGame(int i) {
-		Log.d(TAG, "clicked on " + i);
-		Intent intent = new Intent(Andjong.this, Game.class);
-		intent.putExtra(Game.KEY_DIFFICULTY, i);
-		startActivity(intent);
 	}
 }

@@ -20,8 +20,10 @@ import jp.sourceforge.andjong.mahjong.Mahjong;
 import jp.sourceforge.andjong.mahjong.Sai;
 import jp.sourceforge.andjong.mahjong.SuteHai;
 import jp.sourceforge.andjong.mahjong.Tehai;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -575,64 +577,6 @@ public class AndjongView extends View implements EventIF {
 		canvas.drawBitmap(mBaImage, BA_IMAGE_LEFT, BA_IMAGE_TOP, null);
 
 		drawItem.isOnDraw = false;
-		/*
-		 * // 盤面を描画する...
-		 *
-		 * // 枠線の色を定義する Paint dark = new Paint();
-		 * dark.setColor(getResources().getColor(R.color.puzzle_dark));
-		 *
-		 * Paint hilite = new Paint();
-		 * hilite.setColor(getResources().getColor(R.color.puzzle_hilite));
-		 *
-		 * Paint light = new Paint();
-		 * light.setColor(getResources().getColor(R.color.puzzle_light));
-		 *
-		 * // マス目を区切る線 for (int i = 0; i < 9; i++) { canvas.drawLine(0, i *
-		 * height, getWidth(), i * height, light); canvas.drawLine(0, i * height
-		 * + 1, getWidth(), i * height + 1, hilite); canvas.drawLine(i * width,
-		 * 0, i * width, getHeight(), light); canvas.drawLine(i * width + 1, 0,
-		 * i * width + 1, getHeight(), hilite); }
-		 *
-		 * // 3 x 3 のブロックを区切る線 for (int i = 0; i < 9; i++) { if (i % 3 != 0)
-		 * continue; canvas.drawLine(0, i * height, getWidth(), i * height,
-		 * dark); canvas.drawLine(0, i * height + 1, getWidth(), i * height + 1,
-		 * hilite); canvas.drawLine(i * width, 0, i * width, getHeight(), dark);
-		 * canvas.drawLine(i * width + 1, 0, i * width + 1, getHeight(),
-		 * hilite); }
-		 *
-		 * // 数値を描画する... // 数値の色とスタイルを定義する Paint foreground = new
-		 * Paint(Paint.ANTI_ALIAS_FLAG);
-		 * foreground.setColor(getResources().getColor
-		 * (R.color.puzzle_foreground)); foreground.setStyle(Style.FILL);
-		 * foreground.setTextSize(height * 0.75f);
-		 * foreground.setTextScaleX(width / height);
-		 * foreground.setTextAlign(Paint.Align.CENTER);
-		 *
-		 * // マス目の中央に数字を描く FontMetrics fm = foreground.getFontMetrics(); //
-		 * X軸方向でセンタリングする。アラインメントを使う float x = width / 2; // Y軸方向でセンタリングする。 //
-		 * まずアセント/ディセント（上半分と下半分）を調べる。 float y = height / 2 - (fm.ascent +
-		 * fm.descent) / 2; for (int i = 0; i < 9; i++) { for (int j = 0; j < 9;
-		 * j++) { canvas.drawText(this.game.getTileString(i, j), i * width + x,
-		 * j height + y, foreground); } }
-		 *
-		 * if (Settings.getHints(getContext())) { // ヒントを描画する...
-		 *
-		 * // 残された手の数に基づいてヒントの色を塗る Paint hint = new Paint(); int c[] = {
-		 * getResources().getColor(R.color.puzzle_hint_0),
-		 * getResources().getColor(R.color.puzzle_hint_1),
-		 * getResources().getColor(R.color.puzzle_hint_2), }; Rect r = new
-		 * Rect(); for (int i = 0; i < 9; i++) { for (int j = 0; j < 9; j++) {
-		 * int movesleft = 9 - game.getUsedTiles(i, j).length; if (movesleft <
-		 * c.length) { getRect(i, j, r); hint.setColor(c[movesleft]);
-		 * canvas.drawRect(r, hint); } } }
-		 *
-		 * }
-		 *
-		 * // 選択されたマスを描画する... Log.d(TAG, "selRect=" + selRect); Paint selected =
-		 * new Paint();
-		 * selected.setColor(getResources().getColor(R.color.puzzle_selected));
-		 * canvas.drawRect(selRect, selected);
-		 */
 	}
 
 	@Override
@@ -641,7 +585,6 @@ public class AndjongView extends View implements EventIF {
 			return super.onTouchEvent(event);
 
 		select((int) (event.getX() / width), (int) (event.getY() / height));
-		game.showKeypadOrError(selX, selY);
 		Log.d(TAG, "onTouchEvent: x " + selX + ", y " + selY);
 		return true;
 	}
@@ -739,6 +682,7 @@ public class AndjongView extends View implements EventIF {
 	}
 
 	public void setSelectedTile(int tile) {
+		/*
 		if (game.setTileIfValid(selX, selY, tile)) {
 			invalidate();// ヒントは変わる可能性あり
 		} else {
@@ -746,6 +690,7 @@ public class AndjongView extends View implements EventIF {
 			Log.d(TAG, "setSelectedTile: invalid: " + tile);
 			startAnimation(AnimationUtils.loadAnimation(game, R.anim.shake));
 		}
+		*/
 	}
 
 	private void select(int x, int y) {
@@ -830,6 +775,18 @@ public class AndjongView extends View implements EventIF {
 		System.out.println("----------------------");
 	}
 
+
+    private void showAlertDialog(String message) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(game);
+      builder.setMessage(message)
+             .setCancelable(false)
+             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int id) {
+                                 }
+             });
+      AlertDialog alert = builder.create();
+      alert.show();
+    }
 	/**
 	 * イベントを処理します。
 	 *
@@ -866,6 +823,30 @@ public class AndjongView extends View implements EventIF {
 			// 表示することはない。
 			break;
 		case TSUMO:// ツモ
+			/*
+			this.post(new Runnable() {
+				public void run() {
+					String[] yaku;
+					Tehai tehai = new Tehai();
+					tehai.addJyunTehai(new Hai(1));
+					tehai.addJyunTehai(new Hai(1));
+					tehai.addJyunTehai(new Hai(1));
+					tehai.addJyunTehai(new Hai(2));
+					tehai.addJyunTehai(new Hai(2));
+					tehai.addJyunTehai(new Hai(2));
+					tehai.addJyunTehai(new Hai(3));
+					tehai.addJyunTehai(new Hai(3));
+					tehai.addJyunTehai(new Hai(3));
+					tehai.addJyunTehai(new Hai(4));
+					tehai.addJyunTehai(new Hai(4));
+					tehai.addJyunTehai(new Hai(4));
+					tehai.addJyunTehai(new Hai(5));
+					Hai addHai = new Hai(5);
+					yaku = mInfoUi.getYakuName(tehai, mInfoUi.getSuteHai());
+					showAlertDialog("テスト" + yaku[0]);
+				}
+			});
+			*/
 			// 手牌を表示します。
 			printJyunTehai(tehai);
 
@@ -906,6 +887,12 @@ public class AndjongView extends View implements EventIF {
 			// ツモ牌を表示します。
 			System.out
 					.println(":" + idToString((mInfoUi.getTsumoHai()).getId()));
+
+			this.post(new Runnable() {
+				public void run() {
+					showAlertDialog("ツモ");
+				}
+			});
 			break;
 		case SUTEHAI:// 捨牌
 			// 自分の捨牌のみを表示します。
@@ -1009,10 +996,12 @@ public class AndjongView extends View implements EventIF {
 		case RON:// ロン
 			this.post(new Runnable() {
 				public void run() {
-					Dialog a = new Dialog(game);
-					a.show();
+					String[] yaku;
+					yaku = mInfoUi.getYakuName(tehai, mInfoUi.getSuteHai());
+					showAlertDialog("ロン" + yaku[0]);
 				}
 			});
+
 			System.out
 					.print("[" + jikazeToString(mInfoUi.getJikaze()) + "][ロン]");
 

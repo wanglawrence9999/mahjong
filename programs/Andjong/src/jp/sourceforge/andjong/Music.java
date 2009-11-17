@@ -22,7 +22,7 @@ public class Music {
 		if (Settings.getMusic(context)) {
 			mp = MediaPlayer.create(context, resource);
 			mp.setLooping(true);
-			mp.start();
+			//mp.start();
 		}
 	}
 

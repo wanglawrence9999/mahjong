@@ -261,6 +261,8 @@ public class Mahjong implements Runnable {
 		return players[0].getJikaze();
 	}
 
+	private static int SLEEP_TIME = 300;
+
 	/**
 	 * 局を開始します。
 	 */
@@ -308,7 +310,7 @@ public class Mahjong implements Runnable {
 		EID retEid;
 		MAINLOOP: while (true) {
 			try {
-				Thread.sleep(50, 0);
+				Thread.sleep(SLEEP_TIME, 0);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -455,7 +457,7 @@ public class Mahjong implements Runnable {
 		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, fromKaze,
 				fromKaze);
 		try {
-			Thread.sleep(50, 0);
+			Thread.sleep(SLEEP_TIME, 0);
 		} catch (InterruptedException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();

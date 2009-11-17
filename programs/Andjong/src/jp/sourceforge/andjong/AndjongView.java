@@ -553,6 +553,43 @@ public class AndjongView extends View implements EventIF {
 		background.setColor(getResources().getColor(R.color.puzzle_background));
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
+		if (mState == STATE_INIT) {
+			return;
+		}
+
+		if (mState == STATE_KYOKU_START) {
+			int kyoku = mInfoUi.getkyoku();
+			String kyokuString = null;
+			switch (kyoku) {
+			case Mahjong.KYOKU_TON_1:
+				kyokuString = "東一局";
+				break;
+			case Mahjong.KYOKU_TON_2:
+				kyokuString = "東二局";
+				break;
+			case Mahjong.KYOKU_TON_3:
+				kyokuString = "東三局";
+				break;
+			case Mahjong.KYOKU_TON_4:
+				kyokuString = "東四局";
+				break;
+			}
+			/*
+			Paint kazuPaint = new Paint();
+			//Paint kazuPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+			kazuPaint.setColor(getResources().getColor(R.color.puzzle_foreground));
+			kazuPaint.setStyle(Style.FILL);
+			kazuPaint.setTextSize(16);
+			kazuPaint.setTypeface(Typeface.MONOSPACE);
+			//kazuPaint.setTextSize(height * 0.75f);
+			//kazuPaint.setTextScaleX(width / height);
+			kazuPaint.setTextAlign(Paint.Align.CENTER);
+
+			mBaCanvas.drawText(kyokuString, TENBOU_01000_MIN_IMAGE_LEFT + 40, TENBOU_01000_MIN_IMAGE_TOP + 10, kazuPaint);
+			*/
+			return;
+		}
+
 		int manKaze = mInfoUi.getManKaze();
 		int dispKaze[] = {0, 1, 2, 3};
 		for (int i = 0; i < 4; i++) {
@@ -775,6 +812,10 @@ public class AndjongView extends View implements EventIF {
 		System.out.println("----------------------");
 	}
 
+	private static final int STATE_INIT = 0;
+	private static final int STATE_KYOKU_START = 1;
+	private static final int STATE_PLAY = 2;
+	int mState = STATE_INIT;
 
     private void showAlertDialog(String message) {
       AlertDialog.Builder builder = new AlertDialog.Builder(game);
@@ -814,7 +855,16 @@ public class AndjongView extends View implements EventIF {
 			}
 			break;
 		case SAIFURI:// サイ振り
+			mState = STATE_KYOKU_START;
 			dispInfo();
+			this.postInvalidate(0, 0, getWidth(), getHeight());
+			try {
+				Thread.sleep(2000, 0);
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+			mState = STATE_PLAY;
 			break;
 		case RYUUKYOKU:// 流局
 			System.out.println("[流局]");

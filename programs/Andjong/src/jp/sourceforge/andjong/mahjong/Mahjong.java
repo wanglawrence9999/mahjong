@@ -306,6 +306,9 @@ public class Mahjong implements Runnable {
 		// 配牌をします。
 		haipai();
 
+		// UIイベント（配牌）を発行します。
+		ui.event(EID.HAIPAI, fromKaze, toKaze);
+
 		// 局のメインループ
 		EID retEid;
 		MAINLOOP: while (true) {
@@ -472,15 +475,18 @@ public class Mahjong implements Runnable {
 		case SUTEHAI:// 捨牌
 			// 捨牌のインデックスを取得します。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+			infoUi.setSutehaiIdx(sutehaiIdx);
 			if (sutehaiIdx == 13) {// ツモ切り
 				Hai.copy(suteHai, tsumoHai);
 				activePlayer.getKawa().add(suteHai);
+				ui.event(EID.RIHAI_WAIT, fromKaze, fromKaze);
 			} else {// 手出し
+				activePlayer.getKawa().add(suteHai);
+				activePlayer.getKawa().setTedashi(true);
+				ui.event(EID.RIHAI_WAIT, fromKaze, fromKaze);
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
-				activePlayer.getKawa().add(suteHai);
-				activePlayer.getKawa().setTedashi(true);
 			}
 
 			// イベントを通知します。
@@ -650,6 +656,18 @@ public class Mahjong implements Runnable {
 		} else {
 			Tehai.copy(tehai, players[kazeToPlayerIdx[kaze]].getTehai(), false);
 		}
+	}
+
+	/**
+	 * 手牌をコピーします。
+	 *
+	 * @param tehai
+	 *            手牌
+	 * @param kaze
+	 *            風
+	 */
+	void copyTehaiUi(Tehai tehai, int kaze) {
+		Tehai.copy(tehai, players[kazeToPlayerIdx[kaze]].getTehai(), true);
 	}
 
 	/**

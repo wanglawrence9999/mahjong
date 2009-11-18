@@ -9,8 +9,12 @@ public interface EventIF {
 		OYAGIME,
 		/** 洗牌 */
 		SENPAI,
+		/** 理牌待ち */
+		RIHAI_WAIT,
 		/** サイ振り */
 		SAIFURI,
+		/** 配牌 */
+		HAIPAI,
 		/** 流局 */
 		RYUUKYOKU,
 		/** 流し */
@@ -39,7 +43,7 @@ public interface EventIF {
 
 	/**
 	 * イベントを処理します。
-	 * 
+	 *
 	 * @param eid
 	 *            イベントID
 	 * @param fromKaze
@@ -52,10 +56,10 @@ public interface EventIF {
 
 	/**
 	 * 捨牌のインデックスを取得します。
-	 * 
+	 *
 	 * @return 捨牌のインデックス
 	 */
 	int getSutehaiIdx();
-	
+
 	String getName();
 }

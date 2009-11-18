@@ -482,6 +482,11 @@ public class AndjongView extends View implements EventIF {
 		int width = haiBitmap.top[0].getWidth();
 		int height = haiBitmap.top[0].getHeight();
 		for (int i = 0; i < jyunTehaiLength; i++) {
+			if ((drawItem.tsumoHai != null) && (drawItem.tsumoKaze == kaze) && mState == STATE_SUTEHAI_MACHI) {
+				if (i == skipIdx) {
+					continue;
+				}
+			}
 			if (i == select) {
 				canvas.drawBitmap(haiBitmap.top[jyunTehai[i].getId()], left + (width * i), top - 10, null);
 			} else {
@@ -494,7 +499,7 @@ public class AndjongView extends View implements EventIF {
 		}
 		Log.d(this.getClass().getName(), "print, tsumoKaze = " + drawItem.tsumoKaze + ", id = " + drawItem.tsumoHai);
 		if ((drawItem.tsumoHai != null) && (drawItem.tsumoKaze == kaze)) {
-			if (select >= jyunTehaiLength) {
+			if ((select >= jyunTehaiLength) && (mState != STATE_SUTEHAI_MACHI)) {
 				if (mInfoUi.getManKaze() == kaze || tehaiDebug) {
 					canvas.drawBitmap(haiBitmap.top[drawItem.tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
 				} else {
@@ -574,19 +579,19 @@ public class AndjongView extends View implements EventIF {
 				kyokuString = "東四局";
 				break;
 			}
-			/*
-			Paint kazuPaint = new Paint();
-			//Paint kazuPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+			//Paint kazuPaint = new Paint();
+			Paint kazuPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			kazuPaint.setColor(getResources().getColor(R.color.puzzle_foreground));
 			kazuPaint.setStyle(Style.FILL);
-			kazuPaint.setTextSize(16);
+			kazuPaint.setTextSize(30);
 			kazuPaint.setTypeface(Typeface.MONOSPACE);
 			//kazuPaint.setTextSize(height * 0.75f);
 			//kazuPaint.setTextScaleX(width / height);
 			kazuPaint.setTextAlign(Paint.Align.CENTER);
 
-			mBaCanvas.drawText(kyokuString, TENBOU_01000_MIN_IMAGE_LEFT + 40, TENBOU_01000_MIN_IMAGE_TOP + 10, kazuPaint);
-			*/
+			canvas.drawText(kyokuString, 150, 150, kazuPaint);
+
 			return;
 		}
 
@@ -708,7 +713,7 @@ public class AndjongView extends View implements EventIF {
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
 			game.mahjong.setSutehaiIdx(selectSutehaiIdx);
-			selectSutehaiIdx = 13;
+			//selectSutehaiIdx = 13;
 			//game.showKeypadOrError(selX, selY);
 			break;
 		default:
@@ -815,6 +820,7 @@ public class AndjongView extends View implements EventIF {
 	private static final int STATE_INIT = 0;
 	private static final int STATE_KYOKU_START = 1;
 	private static final int STATE_PLAY = 2;
+	private static final int STATE_SUTEHAI_MACHI = 3;
 	int mState = STATE_INIT;
 
     private void showAlertDialog(String message) {
@@ -828,6 +834,9 @@ public class AndjongView extends View implements EventIF {
       AlertDialog alert = builder.create();
       alert.show();
     }
+
+    private int skipIdx = 0;
+
 	/**
 	 * イベントを処理します。
 	 *
@@ -865,6 +874,13 @@ public class AndjongView extends View implements EventIF {
 				e.printStackTrace();
 			}
 			mState = STATE_PLAY;
+			break;
+		case HAIPAI:
+			mInfoUi.copyTehai(drawItem.tehais[0], 0);
+			mInfoUi.copyTehai(drawItem.tehais[1], 1);
+			mInfoUi.copyTehai(drawItem.tehais[2], 2);
+			mInfoUi.copyTehai(drawItem.tehais[3], 3);
+			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RYUUKYOKU:// 流局
 			System.out.println("[流局]");
@@ -944,6 +960,19 @@ public class AndjongView extends View implements EventIF {
 				}
 			});
 			break;
+		case RIHAI_WAIT:
+			skipIdx = mInfoUi.getSutehaiIdx();
+			mState = STATE_SUTEHAI_MACHI;
+			this.postInvalidate(0, 0, getWidth(), getHeight());
+			try {
+				Thread.sleep(100, 0);
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+			selectSutehaiIdx = 13;
+			mState = STATE_PLAY;
+			break;
 		case SUTEHAI:// 捨牌
 			// 自分の捨牌のみを表示します。
 			if (fromKaze == mInfoUi.getJikaze()) {
@@ -963,9 +992,9 @@ public class AndjongView extends View implements EventIF {
 					mInfoUi.copyKawa(drawItem.kawas[1], 1);
 					mInfoUi.copyKawa(drawItem.kawas[2], 2);
 					mInfoUi.copyKawa(drawItem.kawas[3], 3);
-					this.postInvalidate(0, 0, getWidth(), getHeight());
 					drawItem.tsumoKaze = 5;
 					drawItem.tsumoHai = null;
+					this.postInvalidate(0, 0, getWidth(), getHeight());
 				}
 				// 捨牌を表示します。
 				// System.out.println(":"

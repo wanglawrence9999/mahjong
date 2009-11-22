@@ -61,6 +61,8 @@ public class AndjongView extends View implements EventIF {
 
 	private HaiBitmap haiBitmap;
 
+	private boolean HaiSelectStatus;
+
 	class HaiBitmap {
 		public HaiBitmap(
 				Resources res) {
@@ -623,13 +625,174 @@ public class AndjongView extends View implements EventIF {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction() != MotionEvent.ACTION_DOWN)
+/*
+ 		if (event.getAction() != MotionEvent.ACTION_DOWN)
 			return super.onTouchEvent(event);
 
 		select((int) (event.getX() / width), (int) (event.getY() / height));
 		Log.d(TAG, "onTouchEvent: x " + selX + ", y " + selY);
+*/
+		/* X,YÀ•W‚Ìæ“¾ */
+		int tx = (int)event.getX();
+		int ty = (int)event.getY();
+		int act_evt = event.getAction();
+
+		/* YÀ•W‚Ì”»’è(”v‚Ì‚‚³‚ÌŠÔ) */
+		if ((397 <= ty) && (ty <= 426) )
+		{
+			/* XÀ•W‚Ì”»’è(”v1‚Ì‰¡‚Ì”ÍˆÍ) */
+			if ((3 <= tx) && (tx <= 21) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 0;
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v2‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((22 <= tx) && (tx <= 40) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 1;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v3‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((41 <= tx) && (tx <= 59) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 2;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v4‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((60 <= tx) && (tx <= 78) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 3;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v5‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((79 <= tx) && (tx <= 97) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 4;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v6‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((98 <= tx) && (tx <= 116) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 5;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v7‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((117 <= tx) && (tx <= 136) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 6;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v8‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((137 <= tx) && (tx <= 155) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 7;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v9‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((156 <= tx) && (tx <= 174) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 8;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v10‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((175 <= tx) && (tx <= 191) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 9;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v11‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((192 <= tx) && (tx <= 211) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 10;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v12‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((212 <= tx) && (tx <= 230) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 11;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v13‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((231 <= tx) && (tx <= 249) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 12;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			/* XÀ•W‚Ì”»’è(”v14‚Ì‰¡‚Ì”ÍˆÍ) */
+			else if ((256 <= tx) && (tx <= 274) )
+			{
+				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
+				selectSutehaiIdx = 13;
+
+				/* ”v‚ğ‘I‘ğó‘Ô */
+				HaiSelectStatus = true;
+			}
+			else
+			{
+				// do nothing
+			}
+		}
+		else
+		{
+			/* ”v‚ª‘I‘ğó‘ÔEƒCƒxƒ“ƒgACTION_UPEYÀ•W‚ª385ˆÈ‰º‚ÌA”v‚ªÌ‚Ä‚ç‚ê‚½‚Æ‚·‚é */
+			if ((HaiSelectStatus == true) && (act_evt == MotionEvent.ACTION_UP) && (ty <= 385))
+			{
+				game.mahjong.setSutehaiIdx(selectSutehaiIdx);
+				/* ”v‚ğ”ñ‘I‘ğó‘Ô‚É‚·‚é */
+				HaiSelectStatus = false;
+			}
+			else if (act_evt == MotionEvent.ACTION_MOVE)
+			{
+				// ACTION_MOVEƒCƒxƒ“ƒg‚Ìê‡‚ÍA”v‚Ìó‘Ô‚ğ•ÏX‚µ‚È‚¢B(ˆ—‚ğ‰½‚à‚µ‚È‚¢)
+			}
+			else
+			{
+				/* ”v‚ğ”ñ‘I‘ğó‘Ô‚É‚·‚é */
+				HaiSelectStatus = false;
+			}
+		}
+		/* Ä•`‰æ‚Ìw¦ */
+		invalidate();
 		return true;
 	}
+
 
 	private int selectSutehaiIdx = 0;
 	@Override

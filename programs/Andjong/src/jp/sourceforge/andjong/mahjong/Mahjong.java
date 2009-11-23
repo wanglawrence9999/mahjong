@@ -481,12 +481,12 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().add(suteHai);
 				ui.event(EID.RIHAI_WAIT, fromKaze, fromKaze);
 			} else {// 手出し
-				activePlayer.getKawa().add(suteHai);
-				activePlayer.getKawa().setTedashi(true);
 				ui.event(EID.RIHAI_WAIT, fromKaze, fromKaze);
 				activePlayer.getTehai().copyJyunTehaiIdx(suteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(tsumoHai);
+				activePlayer.getKawa().add(suteHai);
+				activePlayer.getKawa().setTedashi(true);
 			}
 
 			// イベントを通知します。

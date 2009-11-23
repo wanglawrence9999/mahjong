@@ -254,6 +254,11 @@ public class AndjongView extends View implements EventIF {
 		*/
 	}
 
+	private static final int PLACE_PLAYER = 0;
+	private static final int PLACE_KAMICHA = 1;
+	private static final int PLACE_TOIMEN = 2;
+	private static final int PLACE_SHIMOCHA = 3;
+
 	private static final int KAWA_TEHAI_AREA_WIDTH = 320;
 	private static final int KAWA_TEHAI_AREA_HEIGHT = 85;
 
@@ -275,33 +280,45 @@ public class AndjongView extends View implements EventIF {
 	private static final int KAWA_TEHAI_AREA_SHIMOCHA_LEFT = 0;
 	private static final int KAWA_TEHAI_AREA_SHIMOCHA_TOP = 38;
 
-	private static final int DEGREES_0 = 0;
-	private static final int DEGREES_90 = 90;
-	private static final int DEGREES_180 = 180;
-	private static final int DEGREES_270 = 270;
-
-	private Bitmap getKawaBitmap(Tehai tehai, Kawa kawa, int degrees, int kaze, boolean isPlayer, Hai tsumoHai) {
+	private Bitmap getKawaTehaiAreaImage(Tehai tehai, Kawa kawa, int place, int kaze, boolean isPlayer, Hai tsumoHai) {
 		int width;
 		int height;
+		Bitmap image;
+		Canvas canvas;
 
-		if ((degrees == DEGREES_0) || (degrees == DEGREES_180)) {
+		switch (place) {
+		case PLACE_PLAYER:
 			width = KAWA_TEHAI_AREA_WIDTH;
 			height = KAWA_TEHAI_AREA_HEIGHT;
-		} else {
+			image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			canvas = new Canvas(image);
+			break;
+		case PLACE_KAMICHA:
 			width = KAWA_TEHAI_AREA_HEIGHT;
 			height = KAWA_TEHAI_AREA_WIDTH;
-		}
-
-		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-		Canvas canvas = new Canvas(bitmap);
-		//canvas.rotate(-degrees, width / 2, height / 2);
-		canvas.rotate(degrees, width / 2, height / 2);
-
-		if ((degrees == DEGREES_0) || (degrees == DEGREES_180)) {
-		} else {
-			canvas.translate((width - height) / 2, -(width - height) / 2);
-			//canvas.translate((width - height) / 2, (width - height) / 2);
+			image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			canvas = new Canvas(image);
+			canvas.rotate(270, 0, 0);
+			canvas.translate(-height, 0);
+			break;
+		case PLACE_TOIMEN:
+			width = KAWA_TEHAI_AREA_WIDTH;
+			height = KAWA_TEHAI_AREA_HEIGHT;
+			image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			canvas = new Canvas(image);
+			canvas.rotate(180, 0, 0);
+			canvas.translate(-width, -height);
+			break;
+		case PLACE_SHIMOCHA:
+			width = KAWA_TEHAI_AREA_HEIGHT;
+			height = KAWA_TEHAI_AREA_WIDTH;
+			image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			canvas = new Canvas(image);
+			canvas.rotate(90, 0, 0);
+			canvas.translate(0, -width);
+			break;
+		default:
+			return null;
 		}
 
 		drawKawa(KAWA_LEFT, KAWA_TOP, canvas, kawa, null);
@@ -313,7 +330,7 @@ public class AndjongView extends View implements EventIF {
 			drawTehai(TEHAI_LEFT, TEHAI_TOP, canvas, tehai, tsumoHai, kaze, 15, isPlayer);
 		}
 
-		return bitmap;
+		return image;
 	}
 
 	private void drawKawa(int left, int top, Canvas canvas, Kawa kawa,
@@ -482,16 +499,16 @@ public class AndjongView extends View implements EventIF {
 				manKaze %= 4;
 			}
 
-			Bitmap test2 = getKawaBitmap(drawItem.tehais[dispKaze[0]], drawItem.kawas[dispKaze[0]], 0, dispKaze[0], true, drawItem.tsumoHais[dispKaze[0]]);
+			Bitmap test2 = getKawaTehaiAreaImage(drawItem.tehais[dispKaze[0]], drawItem.kawas[dispKaze[0]], PLACE_PLAYER, dispKaze[0], true, drawItem.tsumoHais[dispKaze[0]]);
 			canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
 
-			Bitmap test3 = getKawaBitmap(drawItem.tehais[dispKaze[1]], drawItem.kawas[dispKaze[1]], 270, dispKaze[1], false, drawItem.tsumoHais[dispKaze[1]]);
+			Bitmap test3 = getKawaTehaiAreaImage(drawItem.tehais[dispKaze[1]], drawItem.kawas[dispKaze[1]], PLACE_KAMICHA, dispKaze[1], false, drawItem.tsumoHais[dispKaze[1]]);
 			canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
 
-			Bitmap test = getKawaBitmap(drawItem.tehais[dispKaze[2]], drawItem.kawas[dispKaze[2]], 180, dispKaze[2], false, drawItem.tsumoHais[dispKaze[2]]);
+			Bitmap test = getKawaTehaiAreaImage(drawItem.tehais[dispKaze[2]], drawItem.kawas[dispKaze[2]], PLACE_TOIMEN, dispKaze[2], false, drawItem.tsumoHais[dispKaze[2]]);
 			canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
 
-			Bitmap test4 = getKawaBitmap(drawItem.tehais[dispKaze[3]], drawItem.kawas[dispKaze[3]], 90, dispKaze[3], false, drawItem.tsumoHais[dispKaze[3]]);
+			Bitmap test4 = getKawaTehaiAreaImage(drawItem.tehais[dispKaze[3]], drawItem.kawas[dispKaze[3]], PLACE_SHIMOCHA, dispKaze[3], false, drawItem.tsumoHais[dispKaze[3]]);
 			canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
 
 			setBaImage();

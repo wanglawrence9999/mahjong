@@ -244,6 +244,10 @@ public class Mahjong implements Runnable {
 		players[3] = new Player((EventIF) new AI(info, "四郎"));
 		players[0] = new Player((EventIF) new Man(info, "プレイヤー"));
 
+		for (int i = 0; i < playerLength; i++) {
+			players[i].setTenbou(25000);
+		}
+
 		// 風をプレイヤーインデックスに変換する配列を初期化します。
 		kazeToPlayerIdx = new int[players.length];
 

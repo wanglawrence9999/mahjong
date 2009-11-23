@@ -2,9 +2,9 @@ package jp.sourceforge.andjong.mahjong;
 
 /**
  * プレイヤーを管理するクラスです。
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 class Player {
 	/** EventIF */
@@ -12,7 +12,7 @@ class Player {
 
 	/**
 	 * EventIFを取得します。。
-	 * 
+	 *
 	 * @return EventIF
 	 */
 	EventIF getEventIf() {
@@ -24,7 +24,7 @@ class Player {
 
 	/**
 	 * 手牌を取得します。
-	 * 
+	 *
 	 * @return 手牌
 	 */
 	Tehai getTehai() {
@@ -36,7 +36,7 @@ class Player {
 
 	/**
 	 * 河を取得します。
-	 * 
+	 *
 	 * @return 河
 	 */
 	Kawa getKawa() {
@@ -48,7 +48,7 @@ class Player {
 
 	/**
 	 * 自風を取得します。
-	 * 
+	 *
 	 * @return 自風
 	 */
 	int getJikaze() {
@@ -57,7 +57,7 @@ class Player {
 
 	/**
 	 * 自風を設定します。
-	 * 
+	 *
 	 * @param jikaze
 	 *            自風
 	 */
@@ -70,7 +70,7 @@ class Player {
 
 	/**
 	 * 点棒を取得します。
-	 * 
+	 *
 	 * @return
 	 */
 	int getTenbou() {
@@ -79,7 +79,7 @@ class Player {
 
 	/**
 	 * 点棒を設定します。
-	 * 
+	 *
 	 * @param tenbou
 	 *            点棒
 	 */
@@ -89,7 +89,7 @@ class Player {
 
 	/**
 	 * 点棒を増やします。
-	 * 
+	 *
 	 * @param ten
 	 *            点
 	 */
@@ -99,7 +99,7 @@ class Player {
 
 	/**
 	 * 点棒を減らします。
-	 * 
+	 *
 	 * @param ten
 	 *            点
 	 */
@@ -112,7 +112,7 @@ class Player {
 
 	/**
 	 * リーチを取得します。
-	 * 
+	 *
 	 * @return リーチ
 	 */
 	boolean isReach() {
@@ -121,7 +121,7 @@ class Player {
 
 	/**
 	 * リーチを設定します。
-	 * 
+	 *
 	 * @param reach
 	 *            リーチ
 	 */
@@ -131,7 +131,7 @@ class Player {
 
 	/**
 	 * プレイヤーを初期化する。
-	 * 
+	 *
 	 * @param eventIf
 	 *            EventIF
 	 */
@@ -150,7 +150,7 @@ class Player {
 		kawa.initialize();
 
 		// 点棒を初期化します。
-		tenbou = 25000;
+		//tenbou = 25000;
 
 		// リーチを初期化します。
 		reach = false;

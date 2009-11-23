@@ -280,6 +280,9 @@ public class AndjongView extends View implements EventIF {
 	private static final int KAWA_TEHAI_AREA_SHIMOCHA_LEFT = 0;
 	private static final int KAWA_TEHAI_AREA_SHIMOCHA_TOP = 38;
 
+	private static final int KYOKU_LEFT = 160;
+	private static final int KYOKU_TOP = 85;
+
 	private Bitmap getKawaTehaiAreaImage(Tehai tehai, Kawa kawa, int place, int kaze, boolean isPlayer, Hai tsumoHai) {
 		int width;
 		int height;
@@ -433,6 +436,31 @@ public class AndjongView extends View implements EventIF {
 		}
 	}
 
+	private void drawKyoku(int left, int top, Canvas canvas, int textSize) {
+		int kyoku = mInfoUi.getkyoku();
+		String kyokuString = null;
+		switch (kyoku) {
+		case Mahjong.KYOKU_TON_1:
+			kyokuString = "東一局";
+			break;
+		case Mahjong.KYOKU_TON_2:
+			kyokuString = "東二局";
+			break;
+		case Mahjong.KYOKU_TON_3:
+			kyokuString = "東三局";
+			break;
+		case Mahjong.KYOKU_TON_4:
+			kyokuString = "東四局";
+			break;
+		}
+
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		paint.setColor(Color.WHITE);
+		paint.setTextSize(textSize);
+		paint.setTextAlign(Paint.Align.CENTER);
+		canvas.drawText(kyokuString, left, top - paint.getFontMetrics().top, paint);
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		synchronized (drawItem) {
@@ -446,50 +474,11 @@ public class AndjongView extends View implements EventIF {
 			}
 
 			if (mState == STATE_KYOKU_START) {
-				int kyoku = mInfoUi.getkyoku();
-				String kyokuString = null;
-				switch (kyoku) {
-				case Mahjong.KYOKU_TON_1:
-					kyokuString = "東一局";
-					break;
-				case Mahjong.KYOKU_TON_2:
-					kyokuString = "東二局";
-					break;
-				case Mahjong.KYOKU_TON_3:
-					kyokuString = "東三局";
-					break;
-				case Mahjong.KYOKU_TON_4:
-					kyokuString = "東四局";
-					break;
-				}
-
-
-				Paint kazuPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-				kazuPaint.setColor(getResources().getColor(R.color.puzzle_foreground));
-				kazuPaint.setStyle(Style.FILL);
-				kazuPaint.setTextSize(30);
-				kazuPaint.setTypeface(Typeface.MONOSPACE);
-				// kazuPaint.setTextSize(height * 0.75f);
-				// kazuPaint.setTextScaleX(width / height);
-				kazuPaint.setTextAlign(Paint.Align.CENTER);
-
-
-				/*
-				kyokuString = "東一局 25000";
-				Paint kazuPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-				kazuPaint.setColor(getResources().getColor(R.color.puzzle_foreground));
-				kazuPaint.setStyle(Style.FILL);
-				kazuPaint.setTextSize(20);
-				kazuPaint.setTypeface(Typeface.MONOSPACE);
-				// kazuPaint.setTextSize(height * 0.75f);
-				// kazuPaint.setTextScaleX(width / height);
-				kazuPaint.setTextAlign(Paint.Align.CENTER);
-				*/
-
-				canvas.drawText(kyokuString, 150, 150, kazuPaint);
-
+				drawKyoku(150, 150, canvas, 30);
 				return;
 			}
+
+			drawKyoku(KYOKU_LEFT, KYOKU_TOP, canvas, 18);
 
 			int manKaze = mInfoUi.getManKaze();
 			int dispKaze[] = { 0, 1, 2, 3 };

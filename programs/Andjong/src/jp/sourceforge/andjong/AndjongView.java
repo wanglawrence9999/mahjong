@@ -230,15 +230,19 @@ public class AndjongView extends View implements EventIF {
 	private static final int TENBO_SHIMOCHA_LEFT = 123;
 	private static final int TENBO_SHIMOCHA_TOP = 115;
 
-	//private static final int DORAS_LEFT = 95;
 	private static final int DORAS_LEFT = 112;
-	private static final int DORAS_TOP = 164;
+	private static final int DORAS_TOP = 153;
 
 	private static final int TENBOU_01000_MIN_IMAGE_LEFT = 123 - 16;
-	private static final int TENBOU_01000_MIN_IMAGE_TOP = 145;
+	private static final int TENBOU_01000_MIN_IMAGE_TOP = 140;
 
 	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 197 - 16;
-	private static final int TENBOU_00100_MIN_IMAGE_TOP = 145;
+	private static final int TENBOU_00100_MIN_IMAGE_TOP = 140;
+
+	private static final int MESSAGE_AREA_LEFT = 87;
+	private static final int MESSAGE_AREA_TOP = 178;
+	private static final int MESSAGE_AREA_RIGHT = MESSAGE_AREA_LEFT + 146;
+	private static final int MESSAGE_AREA_BOTTOM = MESSAGE_AREA_TOP + 141;
 
 	private Bitmap getKawaTehaiAreaImage(Tehai tehai, Kawa kawa, int place, int kaze, boolean isPlayer, Hai tsumoHai) {
 		int width;
@@ -456,7 +460,7 @@ public class AndjongView extends View implements EventIF {
 			if (mState == STATE_KYOKU_START) {
 				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 				paint.setColor(Color.DKGRAY);
-				RectF rect = new RectF(87, 189, 87 + 146, 189 + 130);
+				RectF rect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
 				canvas.drawRoundRect(rect, 5, 5, paint);
 				//drawKyoku(150, 150, canvas, 30);
 				drawKyoku(160, 254 - 20, canvas, 30);
@@ -466,7 +470,7 @@ public class AndjongView extends View implements EventIF {
 			if (true) {
 				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 				paint.setColor(Color.DKGRAY);
-				RectF rect = new RectF(87, 189, 87 + 146, 189 + 130);
+				RectF rect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
 				canvas.drawRoundRect(rect, 5, 5, paint);
 			}
 
@@ -515,6 +519,24 @@ public class AndjongView extends View implements EventIF {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		PlayerAction mPlayerAction = mInfoUi.getPlayerAction();
+		int state;
+		synchronized (mPlayerAction) {
+			state = mPlayerAction.getState();
+		}
+		if (state == PlayerAction.STATE_ACTION_WAIT) {
+			int tx = (int)event.getX();
+			int ty = (int)event.getY();
+			int act_evt = event.getAction();
+			if (act_evt == MotionEvent.ACTION_DOWN) {
+				if (tx >= MESSAGE_AREA_LEFT && tx <= MESSAGE_AREA_RIGHT) {
+					if (ty >= MESSAGE_AREA_TOP && ty <= MESSAGE_AREA_BOTTOM) {
+						showAlertDialog("MENU");
+					}
+				}
+			}
+			return true;
+		}
 /*
  		if (event.getAction() != MotionEvent.ACTION_DOWN)
 			return super.onTouchEvent(event);

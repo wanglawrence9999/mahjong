@@ -172,6 +172,8 @@ public class Mahjong implements Runnable {
 	/** アクティブプレイヤー */
 	private Player activePlayer;
 
+	private PlayerAction mPlayerAction = new PlayerAction();
+
 	/**
 	 * ゲームを開始します。
 	 */
@@ -242,7 +244,7 @@ public class Mahjong implements Runnable {
 		players[1] = new Player((EventIF) new AI(info, "二郎"));
 		players[2] = new Player((EventIF) new AI(info, "三郎"));
 		players[3] = new Player((EventIF) new AI(info, "四郎"));
-		players[0] = new Player((EventIF) new Man(info, "プレイヤー"));
+		players[0] = new Player((EventIF) new Man(info, "プレイヤー", mPlayerAction));
 
 		for (int i = 0; i < playerLength; i++) {
 			players[i].setTenbou(25000);
@@ -252,7 +254,7 @@ public class Mahjong implements Runnable {
 		kazeToPlayerIdx = new int[players.length];
 
 		// UIに提供する情報を初期化します。
-		infoUi = new InfoUI(this);
+		infoUi = new InfoUI(this, mPlayerAction);
 
 		// UIを初期化します。
 		//ui = new Console(infoUi, "コンソール");

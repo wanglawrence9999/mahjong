@@ -18,9 +18,12 @@ public class Man implements EventIF {
 		return name;
 	}
 
-	public Man(Info info, String name) {
+	private PlayerAction mPlayerAction;
+
+	public Man(Info info, String name, PlayerAction playerAction) {
 		this.info = info;
 		this.name = name;
+		this.mPlayerAction = playerAction;
 	}
 
 	private Tehai tehai = new Tehai();
@@ -114,12 +117,18 @@ public class Man implements EventIF {
 			}
 
 			if (tehai.validPon(info.getSuteHai())) {
+				synchronized (mPlayerAction) {
+					mPlayerAction.setState(PlayerAction.STATE_ACTION_WAIT);
+				}
 				while (true) {
 					try {
 						// “ü—Í‘Ò‚¿
 						Thread.sleep(10, 0);
 						sutehaiIdx = info.getSutehaiIdx();
 						if (sutehaiIdx != Integer.MAX_VALUE) {
+							synchronized (mPlayerAction) {
+								mPlayerAction.setState(PlayerAction.STATE_NONE);
+							}
 							info.setSutehaiIdx(Integer.MAX_VALUE);
 							if (sutehaiIdx == 100) {
 								return EID.PON;

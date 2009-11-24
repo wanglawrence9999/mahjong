@@ -1,8 +1,11 @@
 package jp.sourceforge.andjong.mahjong;
 
 public class InfoUI extends Info {
-	public InfoUI(Mahjong game) {
+	private PlayerAction mPlayerAction;
+
+	public InfoUI(Mahjong game, PlayerAction playerAction) {
 		super(game);
+		this.setPlayerAction(playerAction);
 	}
 
 	public Hai[] getDoraAll() {
@@ -23,5 +26,13 @@ public class InfoUI extends Info {
 	 */
 	public void copyTehai(Tehai tehai, int kaze) {
 		game.copyTehaiUi(tehai, kaze);
+	}
+
+	public void setPlayerAction(PlayerAction playerAction) {
+		this.mPlayerAction = playerAction;
+	}
+
+	public PlayerAction getPlayerAction() {
+		return mPlayerAction;
 	}
 }

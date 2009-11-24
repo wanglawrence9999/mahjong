@@ -17,6 +17,7 @@ import jp.sourceforge.andjong.mahjong.Hai;
 import jp.sourceforge.andjong.mahjong.InfoUI;
 import jp.sourceforge.andjong.mahjong.Kawa;
 import jp.sourceforge.andjong.mahjong.Mahjong;
+import jp.sourceforge.andjong.mahjong.PlayerAction;
 import jp.sourceforge.andjong.mahjong.Sai;
 import jp.sourceforge.andjong.mahjong.SuteHai;
 import jp.sourceforge.andjong.mahjong.Tehai;
@@ -31,6 +32,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
@@ -296,17 +298,25 @@ public class AndjongView extends View implements EventIF {
 		int leftTemp = left;
 		SuteHai[] suteHais = kawa.getSuteHais();
 		int kawaLength = kawa.getSuteHaisLength();
+		boolean reachFlag = false;
 		for (int i = 0; i < kawaLength; i++) {
 			if (i == 12) {
 				left = leftTemp;
 				top += mHaiImageHeight;
 			}
 
-			if (suteHais[i].isReach()) {
-				canvas.drawBitmap(mHaiHorizontalImage[suteHais[i].getId()], left, top + ((mHaiImageHeight - mHaiImageWidth) / 2), paint);
-				left += mHaiImageHeight - mHaiImageWidth;
+			if (suteHais[i].isReach() || reachFlag) {
+				if (suteHais[i].isNaki()) {
+					reachFlag = true;
+				} else {
+					canvas.drawBitmap(mHaiHorizontalImage[suteHais[i].getId()], left, top + ((mHaiImageHeight - mHaiImageWidth) / 2), paint);
+					left += mHaiImageHeight - mHaiImageWidth;
+					reachFlag = false;
+				}
 			} else {
-				canvas.drawBitmap(mHaiImage[suteHais[i].getId()], left, top, paint);
+				if (!suteHais[i].isNaki()) {
+					canvas.drawBitmap(mHaiImage[suteHais[i].getId()], left, top, paint);
+				}
 			}
 
 			left += mHaiImageWidth;
@@ -444,8 +454,29 @@ public class AndjongView extends View implements EventIF {
 			}
 
 			if (mState == STATE_KYOKU_START) {
-				drawKyoku(150, 150, canvas, 30);
+				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+				paint.setColor(Color.DKGRAY);
+				RectF rect = new RectF(87, 189, 87 + 146, 189 + 130);
+				canvas.drawRoundRect(rect, 5, 5, paint);
+				//drawKyoku(150, 150, canvas, 30);
+				drawKyoku(160, 254 - 20, canvas, 30);
 				return;
+			}
+
+			if (true) {
+				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+				paint.setColor(Color.DKGRAY);
+				RectF rect = new RectF(87, 189, 87 + 146, 189 + 130);
+				canvas.drawRoundRect(rect, 5, 5, paint);
+			}
+
+			PlayerAction mPlayerAction = mInfoUi.getPlayerAction();
+			int state;
+			synchronized (mPlayerAction) {
+				state = mPlayerAction.getState();
+			}
+			if (state == PlayerAction.STATE_ACTION_WAIT) {
+				drawString(160, 254 - 20, canvas, 30, Color.WHITE, "MENU");
 			}
 
 			drawKyoku(KYOKU_LEFT, KYOKU_TOP, canvas, 18);

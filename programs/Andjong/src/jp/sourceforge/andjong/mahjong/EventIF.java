@@ -38,7 +38,11 @@ public interface EventIF {
 		/** –¾È */
 		MINKAN,
 		/** ˆÃÈ */
-		ANKAN
+		ANKAN,
+		/** ˜A‘‘ */
+		RENCHAN,
+		/** ƒQ[ƒ€‚ÌI—¹ */
+		END
 	}
 
 	/**

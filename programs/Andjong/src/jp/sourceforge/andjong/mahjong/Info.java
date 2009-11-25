@@ -154,6 +154,15 @@ public class Info {
 	}
 
 	/**
+	 * リーチ棒の数を取得する。
+	 *
+	 * @return リーチ棒の数
+	 */
+	public int getReachbou() {
+		return game.getReachbou();
+	}
+
+	/**
 	 * 点棒を取得します。
 	 *
 	 * @param kaze

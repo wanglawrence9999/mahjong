@@ -149,9 +149,6 @@ class Player {
 		// 河を初期化します。
 		kawa.initialize();
 
-		// 点棒を初期化します。
-		//tenbou = 25000;
-
 		// リーチを初期化します。
 		reach = false;
 	}

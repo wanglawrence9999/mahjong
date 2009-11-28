@@ -48,13 +48,11 @@ public class Game extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Music.play(this, R.raw.game);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		Log.d(TAG, "onPause");
-		Music.stop(this);
 	}
 }

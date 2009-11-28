@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class Andjong extends Activity implements OnClickListener {
-	private static final String TAG = "Sudoku";
+	private static final String TAG = "Andjong";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -38,18 +38,6 @@ public class Andjong extends Activity implements OnClickListener {
 		aboutButton.setOnClickListener(this);
 		View exitButton = this.findViewById(R.id.exit_button);
 		exitButton.setOnClickListener(this);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Music.play(this, R.raw.main);
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		Music.stop(this);
 	}
 
 	public void onClick(View v) {

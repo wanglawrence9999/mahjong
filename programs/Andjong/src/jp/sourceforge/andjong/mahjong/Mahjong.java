@@ -112,6 +112,18 @@ public class Mahjong implements Runnable {
 	/** 親のプレイヤーインデックス */
 	private int mOyaIdx;
 
+	/** 起家のプレイヤーインデックス */
+	private int mChiichaIdx;
+
+	/**
+	 * 起家のプレイヤーインデックスを取得する。
+	 *
+	 * @return 起家のプレイヤーインデックス
+	 */
+	public int getChiichaIdx() {
+		return mChiichaIdx;
+	}
+
 	/** 連荘 */
 	private boolean mRenchan;
 
@@ -210,6 +222,7 @@ public class Mahjong implements Runnable {
 		mSais[0].saifuri();
 		mSais[1].saifuri();
 		mOyaIdx = (mSais[0].getNo() + mSais[1].getNo() - 1) % 4;
+		mChiichaIdx = mOyaIdx;
 
 		// イベント（親決め）を発行する。
 		mView.event(EID.OYAGIME, KAZE_NONE, KAZE_NONE);

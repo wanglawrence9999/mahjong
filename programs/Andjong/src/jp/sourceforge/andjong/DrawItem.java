@@ -38,6 +38,9 @@ public class DrawItem {
 	/** 本場 */
 	private int mHonba = 0;
 
+	/** 起家 */
+	private int mChiicha = 0;
+
 	/**
 	 * 局の文字列を設定する。
 	 *
@@ -99,6 +102,25 @@ public class DrawItem {
 	 */
 	public synchronized int getHonba() {
 		return mHonba;
+	}
+
+	/**
+	 * 起家を設定する。
+	 *
+	 * @param chiicha
+	 *            起家
+	 */
+	public synchronized void setChiicha(int chiicha) {
+		this.mChiicha = chiicha;
+	}
+
+	/**
+	 * 起家を取得する。
+	 *
+	 * @return 起家
+	 */
+	public synchronized int getChiicha() {
+		return mChiicha;
 	}
 
 	/**

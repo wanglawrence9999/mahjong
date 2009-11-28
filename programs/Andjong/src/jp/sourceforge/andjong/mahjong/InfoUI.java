@@ -35,4 +35,13 @@ public class InfoUI extends Info {
 	public PlayerAction getPlayerAction() {
 		return mPlayerAction;
 	}
+
+	/**
+	 * 起家のプレイヤーインデックスを取得する。
+	 *
+	 * @return 起家のプレイヤーインデックス
+	 */
+	public int getChiichaIdx() {
+		return game.getChiichaIdx();
+	}
 }

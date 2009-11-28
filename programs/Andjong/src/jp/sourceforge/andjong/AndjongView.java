@@ -50,6 +50,9 @@ public class AndjongView extends View implements EventIF {
 	/** 100点棒のイメージ */
 	private Bitmap mTenbou100Image;
 
+	/** 起家マークのイメージ */
+	private Bitmap mChiichaImage;
+
 	/** 背景のペイント */
 	private Paint mBackgroundPaint;
 
@@ -219,6 +222,8 @@ public class AndjongView extends View implements EventIF {
 
 		mTenbou1000Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_1000);
 		mTenbou100Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_100);
+
+		mChiichaImage = BitmapFactory.decodeResource(res, R.drawable.chiicha);
 	}
 
 	/**
@@ -329,6 +334,9 @@ public class AndjongView extends View implements EventIF {
 				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[0]].mTenbo).toString());
 			}
 
+			// 起家マークを表示する。
+			drawChiicha(canvas, mDrawItem.getChiicha());
+
 			Bitmap test2 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[0]].mTehai, mDrawItem.mPlayerInfos[dispKaze[0]].mKawa, PLACE_PLAYER, dispKaze[0], true, mDrawItem.tsumoHais[dispKaze[0]]);
 			canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
 
@@ -423,6 +431,18 @@ public class AndjongView extends View implements EventIF {
 	private void drawHonba(Canvas canvas, int honba) {
 		canvas.drawBitmap(mTenbou100Image, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
 		drawString(HONBA_LEFT, HONBA_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(honba).toString());
+	}
+
+	/**
+	 * 起家マークを表示する。
+	 *
+	 * @param canvas
+	 *            キャンバス
+	 * @param chiicha
+	 *            起家
+	 */
+	private void drawChiicha(Canvas canvas, int chiicha) {
+		canvas.drawBitmap(mChiichaImage, TENBO_LEFT[chiicha] - 26, TENBO_TOP[chiicha] - 5, null);
 	}
 
 	private static final int PLACE_PLAYER = 0;
@@ -560,7 +580,7 @@ public class AndjongView extends View implements EventIF {
 			}
 		}
 
-		Log.d(this.getClass().getName(), "print, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai);
+		//Log.d(this.getClass().getName(), "print, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai);
 		if (tsumoHai != null) {
 			if ((select >= jyunTehaiLength) && (mDrawItem.mState != DrawItem.STATE_SUTEHAI_MACHI)) {
 				if (isDisp) {
@@ -905,6 +925,9 @@ public class AndjongView extends View implements EventIF {
 
 				// 本場を設定する。
 				mDrawItem.setHonba(mInfoUi.getHonba());
+
+				// 起家を設定する。
+				mDrawItem.setChiicha(mInfoUi.getChiichaIdx());
 			}
 			break;
 		case SENPAI:// 洗牌
@@ -979,7 +1002,7 @@ public class AndjongView extends View implements EventIF {
 
 				this.postInvalidate(0, 0, getWidth(), getHeight());
 //			}
-			Log.d(this.getClass().getName(), "tsumo, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai.getId());
+			//Log.d(this.getClass().getName(), "tsumo, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai.getId());
 
 
 			// ツモ牌を表示します。

@@ -56,12 +56,12 @@ public class AndjongView extends View implements EventIF {
 	/** メッセージエリアの幅 */
 	private static final int MESSAGE_AREA_WIDTH = 146;
 	/** メッセージエリアの高さ */
-	private static final int MESSAGE_AREA_HEIGHT = 141;
+	private static final int MESSAGE_AREA_HEIGHT = 143;
 
 	/** メッセージエリアのLeft */
 	private static final int MESSAGE_AREA_LEFT = 87;
 	/** メッセージエリアのTop */
-	private static final int MESSAGE_AREA_TOP = 178;
+	private static final int MESSAGE_AREA_TOP = 176;
 	/** メッセージエリアのRight */
 	private static final int MESSAGE_AREA_RIGHT = MESSAGE_AREA_LEFT + MESSAGE_AREA_WIDTH;
 	/** メッセージエリアのBottom */
@@ -102,17 +102,17 @@ public class AndjongView extends View implements EventIF {
 	/** ドラのLeft */
 	private static final int DORAS_LEFT = 112;
 	/** ドラのTop */
-	private static final int DORAS_TOP = 153;
+	private static final int DORAS_TOP = 150;
 
 	/** リーチ棒のイメージのLeft */
-	private static final int TENBOU_01000_MIN_IMAGE_LEFT = 107;
+	private static final int TENBOU_01000_MIN_IMAGE_LEFT = 100;
 	/** リーチ棒のイメージのTop */
-	private static final int TENBOU_01000_MIN_IMAGE_TOP = 140;
+	private static final int TENBOU_01000_MIN_IMAGE_TOP = 137;
 
 	/** リーチ棒の数のLeft */
-	private static final int REACHBOU_LEFT = 107 + 50;
+	private static final int REACHBOU_LEFT = TENBOU_01000_MIN_IMAGE_LEFT + 43;
 	/** リーチ棒の数Top */
-	private static final int REACHBOU_TOP = 140 + 5;
+	private static final int REACHBOU_TOP = TENBOU_01000_MIN_IMAGE_TOP + 5;
 
 	/** 小さいのテキストサイズ */
 	private static final int MINI_TEXT_SIZE = 12;
@@ -121,6 +121,16 @@ public class AndjongView extends View implements EventIF {
 	private static final int[] TENBO_LEFT = { 160, 197, 160, 123 };
 	/** 点棒のTop */
 	private static final int[] TENBO_TOP = { 131, 121, 111, 121 };
+
+	/** 本場のイメージのLeft */
+	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 170;
+	/** 本場のイメージのTop */
+	private static final int TENBOU_00100_MIN_IMAGE_TOP = TENBOU_01000_MIN_IMAGE_TOP;
+
+	/** 本場の数のLeft */
+	private static final int HONBA_LEFT = TENBOU_00100_MIN_IMAGE_LEFT + 43;
+	/** 本場の数Top */
+	private static final int HONBA_TOP = TENBOU_00100_MIN_IMAGE_TOP + 5;
 
 	private boolean mHaiSelectStatus;
 
@@ -297,13 +307,14 @@ public class AndjongView extends View implements EventIF {
 			// 局を表示する。
 			drawString(KYOKU_LEFT, KYOKU_TOP, canvas, KYOKU_TEXT_SIZE, Color.WHITE, mDrawItem.getKyokuString());
 
-			// ドラを表示する。
-			drawDoras(DORAS_LEFT, DORAS_TOP, canvas);
-
 			// リーチ棒の数を表示する。
 			drawReachbou(canvas, mDrawItem.getReachbou());
 
-			canvas.drawBitmap(mTenbou100Image, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
+			// 本場を表示する。
+			drawHonba(canvas, mDrawItem.getHonba());
+
+			// ドラを表示する。
+			drawDoras(canvas);
 
 			int manKaze = mInfoUi.getManKaze();
 			int dispKaze[] = { 0, 1, 2, 3 };
@@ -372,6 +383,23 @@ public class AndjongView extends View implements EventIF {
 	}
 
 	/**
+	 * ドラを表示する。
+	 *
+	 * @param canvas
+	 *            キャンバス
+	 */
+	private void drawDoras(Canvas canvas) {
+		Hai doras[] = mInfoUi.getDoras();
+		for (int i = 0; i < 5; i++) {
+			if (i < doras.length) {
+				canvas.drawBitmap(mHaiImage[doras[i].getId()], DORAS_LEFT + (i * mHaiImageWidth), DORAS_TOP, null);
+			} else {
+				canvas.drawBitmap(mHaiUraImage, DORAS_LEFT + (i * mHaiImageWidth), DORAS_TOP, null);
+			}
+		}
+	}
+
+	/**
 	 * リーチ棒の数を表示する。
 	 *
 	 * @param canvas
@@ -382,6 +410,19 @@ public class AndjongView extends View implements EventIF {
 	private void drawReachbou(Canvas canvas, int reachbou) {
 		canvas.drawBitmap(mTenbou1000Image, TENBOU_01000_MIN_IMAGE_LEFT, TENBOU_01000_MIN_IMAGE_TOP, null);
 		drawString(REACHBOU_LEFT, REACHBOU_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(reachbou).toString());
+	}
+
+	/**
+	 * 本場を表示する。
+	 *
+	 * @param canvas
+	 *            キャンバス
+	 * @param honba
+	 *            本場
+	 */
+	private void drawHonba(Canvas canvas, int honba) {
+		canvas.drawBitmap(mTenbou100Image, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
+		drawString(HONBA_LEFT, HONBA_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(honba).toString());
 	}
 
 	private static final int PLACE_PLAYER = 0;
@@ -409,9 +450,6 @@ public class AndjongView extends View implements EventIF {
 
 	private static final int KAWA_TEHAI_AREA_SHIMOCHA_LEFT = 0;
 	private static final int KAWA_TEHAI_AREA_SHIMOCHA_TOP = 38;
-
-	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 197 - 16;
-	private static final int TENBOU_00100_MIN_IMAGE_TOP = 140;
 
 	private Bitmap getKawaTehaiAreaImage(Tehai tehai, Kawa kawa, int place, int kaze, boolean isPlayer, Hai tsumoHai) {
 		int width;
@@ -570,17 +608,6 @@ public class AndjongView extends View implements EventIF {
 					fuuroLeft -= mHaiImageHeight;
 					canvas.drawBitmap(mHaiHorizontalImage[hais[0].getId()], fuuroLeft, top + 4, null);
 				}
-			}
-		}
-	}
-
-	private void drawDoras(int left, int top, Canvas canvas) {
-		Hai doras[] = mInfoUi.getDoras();
-		for (int i = 0; i < 5; i++) {
-			if (i < doras.length) {
-				canvas.drawBitmap(mHaiImage[doras[i].getId()], left + (i * mHaiImageWidth), top, null);
-			} else {
-				canvas.drawBitmap(mHaiUraImage, left + (i * mHaiImageWidth), top, null);
 			}
 		}
 	}

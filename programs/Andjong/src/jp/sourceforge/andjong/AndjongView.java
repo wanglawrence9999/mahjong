@@ -47,40 +47,55 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 
 public class AndjongView extends View implements EventIF {
-	private static final String TAG = "Andjong";
-
-	private static final int ID = 42;
-
-	private Game game;
-
-	private boolean HaiSelectStatus;
-
-	public AndjongView(Context context) {
-
-		super(context);
-		this.game = (Game) context;
-		setFocusable(true);
-		setFocusableInTouchMode(true);
-
-		// ...
-		setId(ID);
-
-		initImage(getResources());
-	}
-
+	/**
+	 * 描画アイテムを管理する。
+	 *
+	 * @author Yuji Urushibara
+	 *
+	 */
 	private class DrawItem {
+		/** 初期化待ち */
+		public static final int STATE_INIT_WAIT = 0;
 		/** 状態なし */
-		private static final int STATE_NONE = 0;
+		public static final int STATE_NONE = 1;
 		/** 局の開始 */
-		private static final int STATE_KYOKU_START = 1;
+		public static final int STATE_KYOKU_START = 2;
 		/** プレイ */
-		private static final int STATE_PLAY = 2;
-		private static final int STATE_SUTEHAI_MACHI = 3;
+		public static final int STATE_PLAY = 3;
+		public static final int STATE_SUTEHAI_MACHI = 4;
 		/** 流局 */
-		private static final int STATE_RYUUKYOKU = 4;
+		public static final int STATE_RYUUKYOKU = 5;
 
 		/** 状態 */
-		int mState = STATE_NONE;
+		int mState = STATE_INIT_WAIT;
+
+		/** 局の文字列 */
+		private String mKyokuString = null;
+
+		/**
+		 * 局の文字列を設定する。
+		 *
+		 * @param kyoku
+		 *            局
+		 */
+		public void setKyokuString(int kyoku) {
+			if (kyoku > Mahjong.KYOKU_TON_4) {
+				mKyokuString = null;
+				return;
+			}
+
+			String[] kyokuStrings = getResources().getStringArray(R.array.kyoku);
+			mKyokuString = kyokuStrings[kyoku];
+		}
+
+		/**
+		 * 局の文字列を取得する。
+		 *
+		 * @return 局の文字列
+		 */
+		public String getKyokuString() {
+			return mKyokuString;
+		}
 
 		/**
 		 * 状態を設定する。
@@ -124,16 +139,16 @@ public class AndjongView extends View implements EventIF {
 		EID eid;
 
 		/** 手牌 */
-		//Tehai tehais[] = new Tehai[4];
+		// Tehai tehais[] = new Tehai[4];
 
 		/** 河 */
-		//Kawa kawas[] = new Kawa[4];
+		// Kawa kawas[] = new Kawa[4];
 
 		{
 			for (int i = 0; i < 4; i++) {
 				mPlayerInfos[i] = new PlayerInfo();
-				//tehais[i] = new Tehai();
-				//kawas[i] = new Kawa();
+				// tehais[i] = new Tehai();
+				// kawas[i] = new Kawa();
 			}
 		}
 
@@ -144,21 +159,100 @@ public class AndjongView extends View implements EventIF {
 		Hai tsumoHais[] = new Hai[4];
 	}
 
-	private DrawItem mDrawItem = new DrawItem();
+	private static final String TAG = "AndjongView";
 
+	/** アクティビティ */
+	private Game mGame;
+
+	/** 牌のイメージ */
 	private Bitmap[] mHaiImage;
-	private int mHaiImageHeight;
+	/** 牌のイメージの幅 */
 	private int mHaiImageWidth;
+	/** 牌のイメージの高さ */
+	private int mHaiImageHeight;
 
+	/** 牌の裏のイメージ */
 	private Bitmap mHaiUraImage;
 
+	/** 横になった牌のイメージ */
 	private Bitmap[] mHaiHorizontalImage;
 
+	/** 隠している牌のイメージ */
 	private Bitmap mHaiHideImage;
 
+	/** 1000点棒のイメージ */
 	private Bitmap mTenbou1000Image;
+	/** 100点棒のイメージ */
 	private Bitmap mTenbou100Image;
 
+	/** 背景のペイント */
+	private Paint mBackgroundPaint;
+
+	/** メッセージエリアの幅 */
+	private static final int MESSAGE_AREA_WIDTH = 146;
+	/** メッセージエリアの高さ */
+	private static final int MESSAGE_AREA_HEIGHT = 141;
+
+	/** メッセージエリアのLeft */
+	private static final int MESSAGE_AREA_LEFT = 87;
+	/** メッセージエリアのTop */
+	private static final int MESSAGE_AREA_TOP = 178;
+	/** メッセージエリアのRight */
+	private static final int MESSAGE_AREA_RIGHT = MESSAGE_AREA_LEFT + MESSAGE_AREA_WIDTH;
+	/** メッセージエリアのBottom */
+	private static final int MESSAGE_AREA_BOTTOM = MESSAGE_AREA_TOP + MESSAGE_AREA_HEIGHT;
+
+	/** メッセージのテキストサイズ */
+	private static final int MESSAGE_TEXT_SIZE = 30;
+
+	/** メッセージの枠の丸み */
+	private static final int MESSAGE_ROUND = 5;
+
+	/** メッセージのペイント */
+	private Paint mMessagePaint;
+
+	/** メッセージの枠 */
+	private RectF mMessageRect;
+
+	/** 描画アイテム */
+	private DrawItem mDrawItem = new DrawItem();
+
+	/** InfoUI */
+	private InfoUI mInfoUi;
+
+	/** UIの名前 */
+	private String mName;
+
+	private boolean HaiSelectStatus;
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param context
+	 *            アクティビティ
+	 */
+	public AndjongView(Context context) {
+		super(context);
+
+		// アクティビティを保存する。
+		this.mGame = (Game) context;
+
+		// イメージを初期化する。
+		initImage(getResources());
+
+		// ペイントを初期化する。
+		initPaint(getResources());
+
+		// UIが初期化されるまで待つ。
+		mDrawItem.setState(DrawItem.STATE_INIT_WAIT);
+	}
+
+	/**
+	 * イメージを初期化する。
+	 *
+	 * @param res
+	 *            リソース
+	 */
 	private void initImage(Resources res) {
 		mHaiImage = new Bitmap[Hai.ID_MAX + 1];
 
@@ -201,8 +295,8 @@ public class AndjongView extends View implements EventIF {
 		mHaiImage[32] = BitmapFactory.decodeResource(res, R.drawable.hai_32_hatsu);
 		mHaiImage[33] = BitmapFactory.decodeResource(res, R.drawable.hai_33_chun);
 
-		mHaiImageHeight = mHaiImage[0].getHeight();
 		mHaiImageWidth = mHaiImage[0].getWidth();
+		mHaiImageHeight = mHaiImage[0].getHeight();
 
 		mHaiUraImage = BitmapFactory.decodeResource(res, R.drawable.hai_ura);
 
@@ -214,10 +308,33 @@ public class AndjongView extends View implements EventIF {
 
 		mHaiHideImage = BitmapFactory.decodeResource(res, R.drawable.hai_hide);
 
-		mTenbou100Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_100);
 		mTenbou1000Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_1000);
+		mTenbou100Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_100);
 	}
 
+	/**
+	 * ペイントを初期化する。
+	 *
+	 * @param res
+	 *            リソース
+	 */
+	private void initPaint(Resources res) {
+		mBackgroundPaint = new Paint();
+		mBackgroundPaint.setColor(res.getColor(R.color.andjong_background));
+
+		mMessagePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mMessagePaint.setColor(Color.DKGRAY);
+
+		mMessageRect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
+	}
+
+	/**
+	 * 横になったイメージを作成する。
+	 *
+	 * @param verticalImage
+	 *            縦のイメージ
+	 * @return 横になったイメージ
+	 */
 	private Bitmap createHorizontalBitmap(Bitmap verticalImage) {
 		int height = verticalImage.getWidth();
 		int width = verticalImage.getHeight();
@@ -226,6 +343,129 @@ public class AndjongView extends View implements EventIF {
 		canvas.rotate(270, 0, 0);
 		canvas.drawBitmap(verticalImage, -height, 0, null);
 		return horizontalImage;
+	}
+
+	/**
+	 * UIを初期化する。
+	 *
+	 * @param infoUi
+	 *            InfoUi
+	 * @param name
+	 *            UIの名前
+	 */
+	public void initUi(InfoUI infoUi, String name) {
+		this.mInfoUi = infoUi;
+		this.mName = name;
+
+		// フォーカスを有効にする。
+		setFocusable(true);
+		setFocusableInTouchMode(true);
+
+		// 状態なしにしておく。
+		mDrawItem.setState(DrawItem.STATE_NONE);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		// 背景を描画する。
+		canvas.drawRect(0, 0, getWidth(), getHeight(), mBackgroundPaint);
+
+		synchronized (mDrawItem) {
+			switch (mDrawItem.mState) {
+			case DrawItem.STATE_INIT_WAIT:
+			case DrawItem.STATE_NONE:
+				// 何も描画しない。
+				return;
+			case DrawItem.STATE_KYOKU_START:
+				// 局を表示する。
+				drawMessage(canvas, mDrawItem.getKyokuString());
+				return;
+			case DrawItem.STATE_RYUUKYOKU:
+				// 流局のメッセージを表示する。
+				drawMessage(canvas, getResources().getString(R.string.ryuukyoku));
+				return;
+			}
+
+			PlayerAction mPlayerAction = mInfoUi.getPlayerAction();
+			int state;
+			synchronized (mPlayerAction) {
+				state = mPlayerAction.getState();
+			}
+			if (state == PlayerAction.STATE_ACTION_WAIT) {
+				drawMessage(canvas, "MENU");
+			}
+
+			drawString(KYOKU_LEFT, KYOKU_TOP, canvas, 18, Color.WHITE, mDrawItem.getKyokuString());
+
+			drawDoras(DORAS_LEFT, DORAS_TOP, canvas);
+
+			canvas.drawBitmap(mTenbou1000Image, TENBOU_01000_MIN_IMAGE_LEFT, TENBOU_01000_MIN_IMAGE_TOP, null);
+			canvas.drawBitmap(mTenbou100Image, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
+
+			int manKaze = mInfoUi.getManKaze();
+			int dispKaze[] = { 0, 1, 2, 3 };
+			for (int i = 0; i < 4; i++) {
+				dispKaze[i] = manKaze;
+				manKaze++;
+				manKaze %= 4;
+			}
+
+			drawString(TENBO_PLAYER_LEFT, TENBO_PLAYER_TOP, canvas, 12, Color.RED, new Integer(mDrawItem.mPlayerInfos[dispKaze[0]].mTenbo).toString());
+			drawString(TENBO_KAMICHA_LEFT, TENBO_KAMICHA_TOP, canvas, 12, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[1]].mTenbo).toString());
+			drawString(TENBO_TOIMEN_LEFT, TENBO_TOIMEN_TOP, canvas, 12, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[2]].mTenbo).toString());
+			drawString(TENBO_SHIMOCHA_LEFT, TENBO_SHIMOCHA_TOP, canvas, 12, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[3]].mTenbo).toString());
+
+			Bitmap test2 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[0]].mTehai, mDrawItem.mPlayerInfos[dispKaze[0]].mKawa, PLACE_PLAYER, dispKaze[0], true, mDrawItem.tsumoHais[dispKaze[0]]);
+			canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
+
+			Bitmap test3 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[1]].mTehai, mDrawItem.mPlayerInfos[dispKaze[1]].mKawa, PLACE_KAMICHA, dispKaze[1], false, mDrawItem.tsumoHais[dispKaze[1]]);
+			canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
+
+			Bitmap test = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[2]].mTehai, mDrawItem.mPlayerInfos[dispKaze[2]].mKawa, PLACE_TOIMEN, dispKaze[2], false, mDrawItem.tsumoHais[dispKaze[2]]);
+			canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
+
+			Bitmap test4 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[3]].mTehai, mDrawItem.mPlayerInfos[dispKaze[3]].mKawa, PLACE_SHIMOCHA, dispKaze[3], false, mDrawItem.tsumoHais[dispKaze[3]]);
+			canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
+		}
+	}
+
+	/**
+	 * メッセージを表示する。
+	 *
+	 * @param canvas
+	 *            キャンバス
+	 * @param string
+	 *            文字列
+	 */
+	private void drawMessage(Canvas canvas, String string) {
+		canvas.drawRoundRect(mMessageRect, MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
+		drawString((MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2, (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2, canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
+	}
+
+	/**
+	 * 文字列を表示する。
+	 *
+	 * @param left
+	 *            Left
+	 * @param top
+	 *            Top
+	 * @param canvas
+	 *            キャンバス
+	 * @param textSize
+	 *            テキストサイズ
+	 * @param color
+	 *            色
+	 * @param string
+	 *            文字列
+	 */
+	private void drawString(int left, int top, Canvas canvas, int textSize,
+			int color, String string) {
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		paint.setColor(color);
+		paint.setTextSize(textSize);
+		paint.setTextAlign(Paint.Align.CENTER);
+
+		canvas.drawText(string, left, top - ((paint.ascent() + paint.descent()) / 2), paint);
 	}
 
 	private static final int PLACE_PLAYER = 0;
@@ -277,11 +517,6 @@ public class AndjongView extends View implements EventIF {
 
 	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 197 - 16;
 	private static final int TENBOU_00100_MIN_IMAGE_TOP = 140;
-
-	private static final int MESSAGE_AREA_LEFT = 87;
-	private static final int MESSAGE_AREA_TOP = 178;
-	private static final int MESSAGE_AREA_RIGHT = MESSAGE_AREA_LEFT + 146;
-	private static final int MESSAGE_AREA_BOTTOM = MESSAGE_AREA_TOP + 141;
 
 	private Bitmap getKawaTehaiAreaImage(Tehai tehai, Kawa kawa, int place, int kaze, boolean isPlayer, Hai tsumoHai) {
 		int width;
@@ -444,35 +679,6 @@ public class AndjongView extends View implements EventIF {
 		}
 	}
 
-	private void drawKyoku(int left, int top, Canvas canvas, int textSize) {
-		int kyoku = mInfoUi.getkyoku();
-		String kyokuString = null;
-		switch (kyoku) {
-		case Mahjong.KYOKU_TON_1:
-			kyokuString = "東一局";
-			break;
-		case Mahjong.KYOKU_TON_2:
-			kyokuString = "東二局";
-			break;
-		case Mahjong.KYOKU_TON_3:
-			kyokuString = "東三局";
-			break;
-		case Mahjong.KYOKU_TON_4:
-			kyokuString = "東四局";
-			break;
-		}
-
-		drawString(left, top, canvas, textSize, Color.WHITE, kyokuString);
-	}
-
-	private void drawString(int left, int top, Canvas canvas, int textSize, int color, String string) {
-		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		paint.setColor(color);
-		paint.setTextSize(textSize);
-		paint.setTextAlign(Paint.Align.CENTER);
-		canvas.drawText(string, left, top - paint.getFontMetrics().top, paint);
-	}
-
 	private void drawDoras(int left, int top, Canvas canvas) {
 		Hai doras[] = mInfoUi.getDoras();
 		for (int i = 0; i < 5; i++) {
@@ -481,82 +687,6 @@ public class AndjongView extends View implements EventIF {
 			} else {
 				canvas.drawBitmap(mHaiUraImage, left + (i * mHaiImageWidth), top, null);
 			}
-		}
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		synchronized (mDrawItem) {
-			// 背景を描画する
-			Paint background = new Paint();
-			background.setColor(getResources().getColor(R.color.puzzle_background));
-			canvas.drawRect(0, 0, getWidth(), getHeight(), background);
-
-			if (mDrawItem.mState == DrawItem.STATE_NONE) {
-				return;
-			} else if (mDrawItem.mState == DrawItem.STATE_KYOKU_START) {
-				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-				paint.setColor(Color.DKGRAY);
-				RectF rect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
-				canvas.drawRoundRect(rect, 5, 5, paint);
-				drawKyoku(160, 254 - 20, canvas, 30);
-				return;
-			} else if (mDrawItem.mState == DrawItem.STATE_RYUUKYOKU) {
-				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-				paint.setColor(Color.DKGRAY);
-				RectF rect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
-				canvas.drawRoundRect(rect, 5, 5, paint);
-				drawString(160, 254 - 20, canvas, 30, Color.WHITE, "流局");
-				return;
-			}
-
-			if (true) {
-				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-				paint.setColor(Color.DKGRAY);
-				RectF rect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
-				canvas.drawRoundRect(rect, 5, 5, paint);
-			}
-
-			PlayerAction mPlayerAction = mInfoUi.getPlayerAction();
-			int state;
-			synchronized (mPlayerAction) {
-				state = mPlayerAction.getState();
-			}
-			if (state == PlayerAction.STATE_ACTION_WAIT) {
-				drawString(160, 254 - 20, canvas, 30, Color.WHITE, "MENU");
-			}
-
-			drawKyoku(KYOKU_LEFT, KYOKU_TOP, canvas, 18);
-
-			drawDoras(DORAS_LEFT, DORAS_TOP, canvas);
-
-			canvas.drawBitmap(mTenbou1000Image, TENBOU_01000_MIN_IMAGE_LEFT, TENBOU_01000_MIN_IMAGE_TOP, null);
-			canvas.drawBitmap(mTenbou100Image, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
-
-			int manKaze = mInfoUi.getManKaze();
-			int dispKaze[] = { 0, 1, 2, 3 };
-			for (int i = 0; i < 4; i++) {
-				dispKaze[i] = manKaze;
-				manKaze++;
-				manKaze %= 4;
-			}
-
-			drawString(TENBO_PLAYER_LEFT, TENBO_PLAYER_TOP, canvas, 12, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[0]].mTenbo).toString());
-			drawString(TENBO_KAMICHA_LEFT, TENBO_KAMICHA_TOP, canvas, 12, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[1]].mTenbo).toString());
-			drawString(TENBO_TOIMEN_LEFT, TENBO_TOIMEN_TOP, canvas, 12, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[2]].mTenbo).toString());
-			drawString(TENBO_SHIMOCHA_LEFT, TENBO_SHIMOCHA_TOP, canvas, 12, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[3]].mTenbo).toString());
-
-			Bitmap test2 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[0]].mTehai, mDrawItem.mPlayerInfos[dispKaze[0]].mKawa, PLACE_PLAYER, dispKaze[0], true, mDrawItem.tsumoHais[dispKaze[0]]);
-			canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
-
-			Bitmap test3 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[1]].mTehai, mDrawItem.mPlayerInfos[dispKaze[1]].mKawa, PLACE_KAMICHA, dispKaze[1], false, mDrawItem.tsumoHais[dispKaze[1]]);
-			canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
-
-			Bitmap test = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[2]].mTehai, mDrawItem.mPlayerInfos[dispKaze[2]].mKawa, PLACE_TOIMEN, dispKaze[2], false, mDrawItem.tsumoHais[dispKaze[2]]);
-			canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
-
-			Bitmap test4 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[3]].mTehai, mDrawItem.mPlayerInfos[dispKaze[3]].mKawa, PLACE_SHIMOCHA, dispKaze[3], false, mDrawItem.tsumoHais[dispKaze[3]]);
-			canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
 		}
 	}
 
@@ -789,9 +919,6 @@ public class AndjongView extends View implements EventIF {
 		return true;
 	}
 
-	/** InfoUIオブジェクト */
-	private InfoUI mInfoUi;
-
 	/** 手牌 */
 	private Tehai tehai = new Tehai();
 
@@ -801,25 +928,12 @@ public class AndjongView extends View implements EventIF {
 	/** 捨牌のインデックス */
 	private int sutehaiIdx = 0;
 
-	private String name;
-
 	public String getName() {
-		return name;
-	}
-
-	/**
-	 * UIを初期化する。
-	 *
-	 * @param infoUi
-	 *            InfoUI
-	 */
-	public void init(InfoUI infoUi, String name) {
-		this.mInfoUi = infoUi;
-		this.name = name;
+		return mName;
 	}
 
     private void showAlertDialog(String message) {
-      AlertDialog.Builder builder = new AlertDialog.Builder(game);
+      AlertDialog.Builder builder = new AlertDialog.Builder(mGame);
       builder.setMessage(message)
              .setCancelable(false)
              .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -880,6 +994,7 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case SAIFURI:// サイ振り
 			// サイ振りを局の開始と考える。
+			mDrawItem.setKyokuString(mInfoUi.getkyoku());
 			mDrawItem.setState(DrawItem.STATE_KYOKU_START);
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			try {

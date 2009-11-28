@@ -28,16 +28,18 @@
 
 
 
-   <string name="new_game_title">Difficulty</string>
-   <string name="easy_label">Easy</string>
-   <string name="medium_label">Medium</string>
-   <string name="hard_label">Hard</string>
-
-
-
    <string name="game_title">Game</string>
    <string name="no_moves_label">No moves</string>
    <string name="keypad_title">Keypad</string>
+
+
+
+	<string name="kyoku_ton_1">東一局</string>
+	<string name="kyoku_ton_2">東二局</string>
+	<string name="kyoku_ton_3">東三局</string>
+	<string name="kyoku_ton_4">東四局</string>
+
+	<string name="ryuukyoku">流局</string>
 
 
 

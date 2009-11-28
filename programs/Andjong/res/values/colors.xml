@@ -10,7 +10,7 @@
 <resources>
    <color name="background">#3500ffff</color>
 
-   <color name="puzzle_background">#ffa0c142</color>
+   <color name="andjong_background">#ffa0c142</color>
    <color name="puzzle_hilite">#ffffffff</color>
    <color name="puzzle_light">#64c6d4ef</color>
    <color name="puzzle_dark">#6456648f</color>

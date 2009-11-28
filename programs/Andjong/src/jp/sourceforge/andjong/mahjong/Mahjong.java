@@ -33,13 +33,13 @@ public class Mahjong implements Runnable {
 	}
 
 	/** “Œˆê‹Ç */
-	public final static int KYOKU_TON_1 = 1;
+	public final static int KYOKU_TON_1 = 0;
 	/** “Œ“ñ‹Ç */
-	public final static int KYOKU_TON_2 = 2;
+	public final static int KYOKU_TON_2 = 1;
 	/** “ŒO‹Ç */
-	public final static int KYOKU_TON_3 = 3;
+	public final static int KYOKU_TON_3 = 2;
 	/** “Œl‹Ç */
-	public final static int KYOKU_TON_4 = 4;
+	public final static int KYOKU_TON_4 = 3;
 
 	/** ‹Ç */
 	private int mKyoku;
@@ -287,7 +287,7 @@ public class Mahjong implements Runnable {
 		mInfoUi = new InfoUI(this, mPlayerAction);
 
 		// UI‚ğ‰Šú‰»‚·‚éB
-		mView.init(mInfoUi, "AndjongView");
+		mView.initUi(mInfoUi, "AndjongView");
 	}
 
 	/**

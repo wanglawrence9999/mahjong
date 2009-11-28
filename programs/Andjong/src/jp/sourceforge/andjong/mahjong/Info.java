@@ -1,7 +1,5 @@
 package jp.sourceforge.andjong.mahjong;
 
-import android.R.integer;
-
 /**
  * プレイヤーに提供する情報を管理するクラスです。
  *
@@ -13,7 +11,7 @@ public class Info {
 	protected Mahjong game;
 
 	/**
-	 * インスタンスを初期化します。
+	 * インスタンスを初期化する。
 	 *
 	 * @param game
 	 *            Game
@@ -23,7 +21,7 @@ public class Info {
 	}
 
 	/**
-	 * サイコロの配列を取得します。
+	 * サイコロの配列を取得する。
 	 *
 	 * @return サイコロの配列
 	 */
@@ -32,7 +30,7 @@ public class Info {
 	}
 
 	/**
-	 * 表ドラ、槓ドラの配列を取得します。
+	 * 表ドラ、槓ドラの配列を取得する。
 	 *
 	 * @return 表ドラ、槓ドラの配列
 	 */
@@ -41,7 +39,7 @@ public class Info {
 	}
 
 	/**
-	 * 自風を取得します。
+	 * 自風を取得する。
 	 *
 	 * @return 自風
 	 */
@@ -50,7 +48,7 @@ public class Info {
 	}
 
 	/**
-	 * 手牌をコピーします。
+	 * 手牌をコピーする。
 	 *
 	 * @param tehai
 	 *            手牌
@@ -62,7 +60,7 @@ public class Info {
 	}
 
 	/**
-	 * 河をコピーします。
+	 * 河をコピーする。
 	 *
 	 * @param kawa
 	 *            河
@@ -74,7 +72,7 @@ public class Info {
 	}
 
 	/**
-	 * ツモ牌を取得します。
+	 * ツモ牌を取得する。
 	 *
 	 * @return ツモ牌
 	 */
@@ -83,7 +81,7 @@ public class Info {
 	}
 
 	/**
-	 * 捨牌を取得します。
+	 * 捨牌を取得する。
 	 *
 	 * @return 捨牌
 	 */
@@ -92,7 +90,7 @@ public class Info {
 	}
 
 	/**
-	 * あがり点を取得します。
+	 * あがり点を取得する。
 	 *
 	 * @param tehai
 	 *            手牌
@@ -105,7 +103,7 @@ public class Info {
 	}
 
 	/**
-	 * リーチを取得します。
+	 * リーチを取得する。
 	 *
 	 * @param kaze
 	 *            風
@@ -116,7 +114,7 @@ public class Info {
 	}
 
 	/**
-	 * ツモの残り数を取得します。
+	 * ツモの残り数を取得する。
 	 *
 	 * @return ツモの残り数
 	 */
@@ -125,7 +123,7 @@ public class Info {
 	}
 
 	/**
-	 * 局を取得します。
+	 * 局を取得する。
 	 *
 	 * @return 局
 	 */
@@ -134,7 +132,7 @@ public class Info {
 	}
 
 	/**
-	 * 名前を取得します。
+	 * 名前を取得する。
 	 *
 	 * @param kaze
 	 *            風
@@ -145,7 +143,7 @@ public class Info {
 	}
 
 	/**
-	 * 本場を取得します。
+	 * 本場を取得する。
 	 *
 	 * @return 本場
 	 */
@@ -163,7 +161,7 @@ public class Info {
 	}
 
 	/**
-	 * 点棒を取得します。
+	 * 点棒を取得する。
 	 *
 	 * @param kaze
 	 *            風

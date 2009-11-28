@@ -41,6 +41,8 @@ public interface EventIF {
 		ANKAN,
 		/** 連荘 */
 		RENCHAN,
+		/** 進行待ち */
+		PROGRESS_WAIT,
 		/** ゲームの終了 */
 		END
 	}

@@ -23,7 +23,7 @@ public class Mahjong implements Runnable {
 	private Yama mYama;
 
 	/**
-	 * 山を取得します。
+	 * 山を取得する。
 	 *
 	 * @return 山
 	 */
@@ -44,7 +44,7 @@ public class Mahjong implements Runnable {
 	private int mKyoku;
 
 	/**
-	 * 局を取得します。
+	 * 局を取得する。
 	 *
 	 * @return 局
 	 */
@@ -59,7 +59,7 @@ public class Mahjong implements Runnable {
 	private Hai mTsumoHai;
 
 	/**
-	 * ツモ牌を取得します。
+	 * ツモ牌を取得する。
 	 *
 	 * @return ツモ牌
 	 */
@@ -71,7 +71,7 @@ public class Mahjong implements Runnable {
 	private Hai mSuteHai;
 
 	/**
-	 * 捨牌を取得します。
+	 * 捨牌を取得する。
 	 *
 	 * @return 捨牌
 	 */
@@ -127,7 +127,7 @@ public class Mahjong implements Runnable {
 	private Sai[] mSais = new Sai[] { new Sai(), new Sai() };
 
 	/**
-	 * サイコロの配列を取得します。
+	 * サイコロの配列を取得する。
 	 *
 	 * @return サイコロの配列
 	 */
@@ -189,8 +189,6 @@ public class Mahjong implements Runnable {
 	public int getManKaze() {
 		return mPlayers[0].getJikaze();
 	}
-
-	private static int SLEEP_TIME = 300;
 
 	/**
 	 * ゲームを開始する。
@@ -338,45 +336,46 @@ public class Mahjong implements Runnable {
 		// UIイベント（配牌）を発行する。
 		mView.event(EID.HAIPAI, mFromKaze, mToKaze);
 
-		// 局のメインループ
 		EID retEid;
-		MAINLOOP: while (true) {
-			try {
-				Thread.sleep(SLEEP_TIME, 0);
-			} catch (InterruptedException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-			}
-			// ツモします。
+
+		// 局を進行する。
+		KYOKU_MAIN: while (true) {
+			// UIイベント（進行待ち）を発行する。
+			mView.event(EID.PROGRESS_WAIT, KAZE_NONE, KAZE_NONE);
+
+			// ツモ牌を取得する。
 			mTsumoHai = mYama.tsumo();
 
-			// ツモ牌がない場合、流局します。
+			// ツモ牌がない場合、流局する。
 			if (mTsumoHai == null) {
-				// UIイベント（流局）を発行します。
-				mView.event(EID.RYUUKYOKU, 0, 0);
+				// UIイベント（流局）を発行する。
+				mView.event(EID.RYUUKYOKU, KAZE_NONE, KAZE_NONE);
 
-				// 親を更新します。
+				// 親を更新する。上がり連荘とする。
 				mOyaIdx++;
 				if (mOyaIdx >= mPlayers.length) {
 					mOyaIdx = 0;
 				}
 
-				break MAINLOOP;
+				// 本場を増やす。
+				mHonba++;
+
+				break KYOKU_MAIN;
 			}
 
-			// イベント（ツモ）を発行します。
+			// イベント（ツモ）を発行する。
 			retEid = tsumoEvent();
 
-			// イベントを処理します。
+			// イベントを処理する。
 			switch (retEid) {
 			case TSUMOAGARI:// ツモあがり
-				// UIイベント（ツモあがり）を発行します。
+				// UIイベント（ツモあがり）を発行する。
 				mView.event(retEid, mFromKaze, mToKaze);
 
-				// TODO 点数を清算します。
+				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(mReachbou * 1000);
 
-				// 親を更新します。
+				// 親を更新する。
 				if (mOyaIdx != mKazeToPlayerIdx[mFromKaze]) {
 					mOyaIdx++;
 					if (mOyaIdx >= mPlayers.length) {
@@ -387,15 +386,15 @@ public class Mahjong implements Runnable {
 					mHonba++;
 				}
 
-				break MAINLOOP;
+				break KYOKU_MAIN;
 			case RON:// ロン
-				// UIイベント（ロン）を発行します。
+				// UIイベント（ロン）を発行する。
 				mView.event(retEid, mFromKaze, mToKaze);
 
-				// TODO 点数を清算します。
+				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(mReachbou * 1000);
 
-				// 親を更新します。
+				// 親を更新する。
 				if (mOyaIdx != mKazeToPlayerIdx[mFromKaze]) {
 					mOyaIdx++;
 					if (mOyaIdx >= mPlayers.length) {
@@ -406,7 +405,7 @@ public class Mahjong implements Runnable {
 					mHonba++;
 				}
 
-				break MAINLOOP;
+				break KYOKU_MAIN;
 			case REACH:// リーチ
 				int tenbou = activePlayer.getTenbou();
 				if (tenbou >= 1000) {
@@ -419,7 +418,7 @@ public class Mahjong implements Runnable {
 				break;
 			}
 
-			// イベントを発行した風を更新します。
+			// イベントを発行した風を更新する。
 			mFromKaze++;
 			if (mFromKaze >= mPlayers.length) {
 				mFromKaze = 0;
@@ -474,35 +473,31 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * イベント（ツモ）を発行します。
+	 * イベント（ツモ）を発行する。
 	 *
 	 * @return イベントID
 	 */
 	private EID tsumoEvent() {
-		// アクティブプレイヤーを設定します。
+		// アクティブプレイヤーを設定する。
 		activePlayer = mPlayers[mKazeToPlayerIdx[mFromKaze]];
 
-		// UIイベント（ツモ）を発行します。
+		// UIイベント（ツモ）を発行する。
 		mView.event(EID.TSUMO, mFromKaze, mFromKaze);
 
-		// イベント（ツモ）を発行します。
-		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, mFromKaze,
-				mFromKaze);
-		try {
-			Thread.sleep(SLEEP_TIME, 0);
-		} catch (InterruptedException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+		// イベント（ツモ）を発行する。
+		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, mFromKaze, mFromKaze);
+
+		// UIイベント（進行待ち）を発行する。
+		mView.event(EID.PROGRESS_WAIT, mFromKaze, mToKaze);
 
 		int sutehaiIdx;
 
-		// イベントを処理します。
+		// イベントを処理する。
 		switch (retEid) {
 		case TSUMOAGARI:// ツモあがり
 			break;
 		case SUTEHAI:// 捨牌
-			// 捨牌のインデックスを取得します。
+			// 捨牌のインデックスを取得する。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 			mInfoUi.setSutehaiIdx(sutehaiIdx);
 			if (sutehaiIdx == 13) {// ツモ切り
@@ -518,11 +513,11 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setTedashi(true);
 			}
 
-			// イベントを通知します。
+			// イベントを通知する。
 			retEid = notifyEvent(EID.SUTEHAI, mFromKaze, mFromKaze);
 			break;
 		case REACH:
-			// 捨牌のインデックスを取得します。
+			// 捨牌のインデックスを取得する。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 			if (sutehaiIdx == 13) {// ツモ切り
 				Hai.copy(mSuteHai, mTsumoHai);
@@ -537,7 +532,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setReach(true);
 			}
 
-			// イベントを通知します。
+			// イベントを通知する。
 			retEid = notifyEvent(EID.REACH, mFromKaze, mFromKaze);
 			break;
 		default:
@@ -548,7 +543,7 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * イベントを通知します。
+	 * イベントを通知する。
 	 *
 	 * @param eid
 	 *            イベントID
@@ -567,31 +562,31 @@ public class Mahjong implements Runnable {
 				j = 0;
 			}
 
-			// アクティブプレイヤーを設定します。
+			// アクティブプレイヤーを設定する。
 			activePlayer = mPlayers[mKazeToPlayerIdx[j]];
 
-			// UIイベントを発行します。
+			// UIイベントを発行する。
 			mView.event(eid, fromKaze, toKaze);
 
-			// イベントを発行します。
+			// イベントを発行する。
 			retEid = activePlayer.getEventIf().event(eid, fromKaze, toKaze);
 
-			// イベントを処理します。
+			// イベントを処理する。
 			switch (retEid) {
 			case TSUMOAGARI:// ツモあがり
-				// アクティブプレイヤーを設定します。
+				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = toKaze;
 				activePlayer = mPlayers[mKazeToPlayerIdx[this.mFromKaze]];
 				break NOTIFYLOOP;
 			case RON:// ロン
-				// アクティブプレイヤーを設定します。
+				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = toKaze;
 				activePlayer = mPlayers[mKazeToPlayerIdx[this.mFromKaze]];
 				break NOTIFYLOOP;
 			case PON:
-				// アクティブプレイヤーを設定します。
+				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = fromKaze;
 				activePlayer = mPlayers[mKazeToPlayerIdx[this.mFromKaze]];
@@ -599,7 +594,7 @@ public class Mahjong implements Runnable {
 
 				notifyEvent(EID.SUTEHAISELECT, this.mFromKaze, this.mToKaze);
 
-				// 捨牌のインデックスを取得します。
+				// 捨牌のインデックスを取得する。
 				int sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 				activePlayer.getTehai().copyJyunTehaiIdx(mSuteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
@@ -607,7 +602,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
 
-				// イベントを通知します。
+				// イベントを通知する。
 				retEid = notifyEvent(EID.PON, this.mFromKaze, this.mToKaze);
 				break NOTIFYLOOP;
 			default:
@@ -623,11 +618,11 @@ public class Mahjong implements Runnable {
 	}
 
 	/*
-	 * Info, InfoUIに提供するAPIを定義します。
+	 * Info, InfoUIに提供するAPIを定義する。
 	 */
 
 	/**
-	 * 表ドラ、槓ドラの配列を取得します。
+	 * 表ドラ、槓ドラの配列を取得する。
 	 *
 	 * @return 表ドラ、槓ドラの配列
 	 */
@@ -636,7 +631,7 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * 表ドラ、槓ドラの配列を取得します。
+	 * 表ドラ、槓ドラの配列を取得する。
 	 *
 	 * @return 表ドラ、槓ドラの配列
 	 */
@@ -645,14 +640,14 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * 自風を取得します。
+	 * 自風を取得する。
 	 */
 	int getJikaze() {
 		return activePlayer.getJikaze();
 	}
 
 	/**
-	 * 本場を取得します。
+	 * 本場を取得する。
 	 *
 	 * @return 本場
 	 */
@@ -661,7 +656,7 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * リーチを取得します。
+	 * リーチを取得する。
 	 *
 	 * @param kaze
 	 *            風
@@ -672,7 +667,7 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * 手牌をコピーします。
+	 * 手牌をコピーする。
 	 *
 	 * @param tehai
 	 *            手牌
@@ -688,7 +683,7 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * 手牌をコピーします。
+	 * 手牌をコピーする。
 	 *
 	 * @param tehai
 	 *            手牌
@@ -700,7 +695,7 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * 河をコピーします。
+	 * 河をコピーする。
 	 *
 	 * @param kawa
 	 *            河
@@ -712,7 +707,7 @@ public class Mahjong implements Runnable {
 	}
 
 	/**
-	 * ツモの残り数を取得します。
+	 * ツモの残り数を取得する。
 	 *
 	 * @return ツモの残り数
 	 */

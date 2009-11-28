@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import android.util.Log;
+
 import jp.sourceforge.andjong.mahjong.EventIF.EID;
 
 public class Man implements EventIF {
-	private Info info;
+	/** プレイヤーに提供する情報 */
+	private Info mInfo;
 
 	/** 捨牌のインデックス */
 	private int sutehaiIdx = 0;
@@ -21,29 +24,48 @@ public class Man implements EventIF {
 	private PlayerAction mPlayerAction;
 
 	public Man(Info info, String name, PlayerAction playerAction) {
-		this.info = info;
+		this.mInfo = info;
 		this.name = name;
 		this.mPlayerAction = playerAction;
 	}
 
-	private Tehai tehai = new Tehai();
+	/** 手牌 */
+	private Tehai mTehai = new Tehai();
+
 	@Override
 	public EID event(EID eid, int fromKaze, int toKaze) {
-		String cmd;
-		BufferedReader br;
 		int sutehaiIdx = 0;
 		switch (eid) {
 		case TSUMO:
-			info.copyTehai(tehai, info.getJikaze());
+			// 手牌をコピーする。
+			mInfo.copyTehai(mTehai, mInfo.getJikaze());
 			while (true) {
+				Log.d(this.getClass().getName(), "mPlayerAction.actionWait()");
+				mPlayerAction.actionWait();
+				Log.d(this.getClass().getName(), "wakeup");
+				sutehaiIdx = mInfo.getSutehaiIdx();
+				if (sutehaiIdx != Integer.MAX_VALUE) {
+					mInfo.setSutehaiIdx(Integer.MAX_VALUE);
+					if (sutehaiIdx == 100) {
+						int agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
+						if (agariScore > 0) {
+							return EID.RON;
+						}
+						continue;
+					}
+					if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
+						break;
+					}
+				}
+				/*
 				try {
 					// 入力待ち
 					Thread.sleep(10, 0);
-					sutehaiIdx = info.getSutehaiIdx();
+					sutehaiIdx = mInfo.getSutehaiIdx();
 					if (sutehaiIdx != Integer.MAX_VALUE) {
-						info.setSutehaiIdx(Integer.MAX_VALUE);
+						mInfo.setSutehaiIdx(Integer.MAX_VALUE);
 						if (sutehaiIdx == 100) {
-							int agariScore = info.getAgariScore(tehai, info.getTsumoHai());
+							int agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
 							if (agariScore > 0) {
 								return EID.RON;
 							}
@@ -56,6 +78,7 @@ public class Man implements EventIF {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				*/
 			}
 			/*
 			cmd = null;
@@ -78,9 +101,9 @@ public class Man implements EventIF {
 				try {
 					// 入力待ち
 					Thread.sleep(10, 0);
-					sutehaiIdx = info.getSutehaiIdx();
+					sutehaiIdx = mInfo.getSutehaiIdx();
 					if (sutehaiIdx != Integer.MAX_VALUE) {
-						info.setSutehaiIdx(Integer.MAX_VALUE);
+						mInfo.setSutehaiIdx(Integer.MAX_VALUE);
 						if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
 							break;
 						}
@@ -95,16 +118,16 @@ public class Man implements EventIF {
 			if (fromKaze == 0) {
 				return EID.NAGASHI;
 			}
-			info.copyTehai(tehai, info.getJikaze());
-			int score = info.getAgariScore(tehai, info.getSuteHai());
+			mInfo.copyTehai(mTehai, mInfo.getJikaze());
+			int score = mInfo.getAgariScore(mTehai, mInfo.getSuteHai());
 			if (score > 0) {
 				while (true) {
 					try {
 						// 入力待ち
 						Thread.sleep(10, 0);
-						sutehaiIdx = info.getSutehaiIdx();
+						sutehaiIdx = mInfo.getSutehaiIdx();
 						if (sutehaiIdx != Integer.MAX_VALUE) {
-							info.setSutehaiIdx(Integer.MAX_VALUE);
+							mInfo.setSutehaiIdx(Integer.MAX_VALUE);
 							if (sutehaiIdx == 100) {
 								return EID.RON;
 							}
@@ -116,7 +139,7 @@ public class Man implements EventIF {
 				}
 			}
 
-			if (tehai.validPon(info.getSuteHai())) {
+			if (mTehai.validPon(mInfo.getSuteHai())) {
 				synchronized (mPlayerAction) {
 					mPlayerAction.setState(PlayerAction.STATE_ACTION_WAIT);
 				}
@@ -124,12 +147,12 @@ public class Man implements EventIF {
 					try {
 						// 入力待ち
 						Thread.sleep(10, 0);
-						sutehaiIdx = info.getSutehaiIdx();
+						sutehaiIdx = mInfo.getSutehaiIdx();
 						if (sutehaiIdx != Integer.MAX_VALUE) {
 							synchronized (mPlayerAction) {
 								mPlayerAction.setState(PlayerAction.STATE_NONE);
 							}
-							info.setSutehaiIdx(Integer.MAX_VALUE);
+							mInfo.setSutehaiIdx(Integer.MAX_VALUE);
 							if (sutehaiIdx == 100) {
 								return EID.PON;
 							}

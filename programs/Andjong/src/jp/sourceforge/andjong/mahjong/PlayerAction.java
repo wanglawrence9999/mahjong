@@ -13,4 +13,17 @@ public class PlayerAction {
 	public int getState() {
 		return mState;
 	}
+
+	public synchronized void actionWait() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			// TODO é©ìÆê∂ê¨Ç≥ÇÍÇΩ catch ÉuÉçÉbÉN
+			e.printStackTrace();
+		}
+	}
+
+	public synchronized void actionNotifyAll() {
+		notifyAll();
+	}
 }

@@ -75,6 +75,8 @@ public class AndjongView extends View implements EventIF {
 		/** プレイ */
 		private static final int STATE_PLAY = 2;
 		private static final int STATE_SUTEHAI_MACHI = 3;
+		/** 流局 */
+		private static final int STATE_RYUUKYOKU = 4;
 
 		/** 状態 */
 		int mState = STATE_NONE;
@@ -491,15 +493,19 @@ public class AndjongView extends View implements EventIF {
 
 			if (mDrawItem.mState == DrawItem.STATE_NONE) {
 				return;
-			}
-
-			if (mDrawItem.mState == DrawItem.STATE_KYOKU_START) {
+			} else if (mDrawItem.mState == DrawItem.STATE_KYOKU_START) {
 				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 				paint.setColor(Color.DKGRAY);
 				RectF rect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
 				canvas.drawRoundRect(rect, 5, 5, paint);
-				//drawKyoku(150, 150, canvas, 30);
 				drawKyoku(160, 254 - 20, canvas, 30);
+				return;
+			} else if (mDrawItem.mState == DrawItem.STATE_RYUUKYOKU) {
+				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+				paint.setColor(Color.DKGRAY);
+				RectF rect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
+				canvas.drawRoundRect(rect, 5, 5, paint);
+				drawString(160, 254 - 20, canvas, 30, Color.WHITE, "流局");
 				return;
 			}
 
@@ -771,6 +777,9 @@ public class AndjongView extends View implements EventIF {
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
 			game.mahjong.setSutehaiIdx(selectSutehaiIdx);
+			PlayerAction playerAction = mInfoUi.getPlayerAction();
+			Log.d(this.getClass().getName(), "mPlayerAction.actionNotifyAll()");
+			playerAction.actionNotifyAll();
 			break;
 		default:
 			return super.onKeyDown(keyCode, event);
@@ -823,9 +832,15 @@ public class AndjongView extends View implements EventIF {
     private int skipIdx = 0;
 
     /** 局の開始の待ち時間 */
-    private static final int KYOKU_START_WAIT = 2000;
+    private static final int KYOKU_START_WAIT_TIME = 2000;
 
-    /**
+    /** 進行の待ち時間 */
+	private static int PROGRESS_WAIT_TIME = 300;
+
+    /** 流局の待ち時間 */
+    private static final int RYUUKYOKU_WAIT_TIME = 2000;
+
+	/**
 	 * イベントを処理する。
 	 *
 	 * @param fromKaze
@@ -837,6 +852,14 @@ public class AndjongView extends View implements EventIF {
 	 */
 	public EID event(EID eid, int fromKaze, int toKaze) {
 		switch (eid) {
+		case PROGRESS_WAIT:// 進行待ち
+			try {
+				Thread.sleep(PROGRESS_WAIT_TIME, 0);
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+			break;
 		case BASHOGIME:// 場所決め
 			// 何も表示しない。
 			break;
@@ -859,7 +882,7 @@ public class AndjongView extends View implements EventIF {
 			mDrawItem.setState(DrawItem.STATE_KYOKU_START);
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			try {
-				Thread.sleep(KYOKU_START_WAIT, 0);
+				Thread.sleep(KYOKU_START_WAIT_TIME, 0);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -876,7 +899,15 @@ public class AndjongView extends View implements EventIF {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RYUUKYOKU:// 流局
-			System.out.println("[流局]");
+			// サイ振りを局の開始と考える。
+			mDrawItem.setState(DrawItem.STATE_RYUUKYOKU);
+			this.postInvalidate(0, 0, getWidth(), getHeight());
+			try {
+				Thread.sleep(RYUUKYOKU_WAIT_TIME, 0);
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
 			break;
 		case NAGASHI:// 流し
 			// 表示することはない。

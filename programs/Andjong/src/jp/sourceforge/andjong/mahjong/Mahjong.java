@@ -140,6 +140,7 @@ public class Mahjong implements Runnable {
 	public final static int KAZE_NAN = 1;
 	public final static int KAZE_SHA = 2;
 	public final static int KAZE_PE = 3;
+	public final static int KAZE_COUNT_MAX = KAZE_PE + 1;
 	public final static int KAZE_NONE = 4;
 
 	public int getRelation(

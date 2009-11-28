@@ -138,28 +138,23 @@ public class Man implements EventIF {
 			}
 
 			if (mTehai.validPon(mInfo.getSuteHai())) {
-				synchronized (mPlayerAction) {
-					mPlayerAction.setState(PlayerAction.STATE_ACTION_WAIT);
-				}
+				mPlayerAction.setActionRequest(true);
 				while (true) {
-					try {
-						// “ü—Í‘Ò‚¿
-						Thread.sleep(10, 0);
-						sutehaiIdx = mPlayerAction.getSutehaiIdx();
-						if (sutehaiIdx != Integer.MAX_VALUE) {
-							synchronized (mPlayerAction) {
-								mPlayerAction.setState(PlayerAction.STATE_NONE);
-							}
-							mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
-							if (sutehaiIdx == 100) {
-								return EID.PON;
-							}
-							break;
+					mPlayerAction.actionWait();
+					sutehaiIdx = mPlayerAction.getSutehaiIdx();
+					if (sutehaiIdx != Integer.MAX_VALUE) {
+						synchronized (mPlayerAction) {
+							mPlayerAction.setState(PlayerAction.STATE_NONE);
 						}
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+						mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
+						if (sutehaiIdx == 100) {
+							mPlayerAction.setActionRequest(false);
+							return EID.PON;
+						}
+						break;
 					}
 				}
+				mPlayerAction.setActionRequest(false);
 			}
 			/*
 			cmd = null;

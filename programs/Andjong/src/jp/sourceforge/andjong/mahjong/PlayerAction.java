@@ -9,6 +9,9 @@ public class PlayerAction {
 	/** 捨牌のインデックス */
 	private int mSutehaiIdx;
 
+	/** アクション要求 */
+	private boolean mActionRequest;
+
 	/**
 	 * コンストラクター
 	 */
@@ -16,6 +19,7 @@ public class PlayerAction {
 		super();
 
 		initSutehaiIdx();
+		mActionRequest = false;
 	}
 
 	public void setState(int state) {
@@ -68,5 +72,24 @@ public class PlayerAction {
 	 */
 	public synchronized void initSutehaiIdx() {
 		mSutehaiIdx = Integer.MAX_VALUE;
+	}
+
+	/**
+	 * アクション要求を設定する。
+	 *
+	 * @param actionRequest
+	 *            アクション要求
+	 */
+	public synchronized void setActionRequest(boolean actionRequest) {
+		this.mActionRequest = actionRequest;
+	}
+
+	/**
+	 * アクション要求を取得する。
+	 *
+	 * @return
+	 */
+	public synchronized boolean isActionRequest() {
+		return mActionRequest;
 	}
 }

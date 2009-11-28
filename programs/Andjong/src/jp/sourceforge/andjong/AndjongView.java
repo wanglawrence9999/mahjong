@@ -995,7 +995,7 @@ public class AndjongView extends View implements EventIF {
 					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
 				}
 				mDrawItem.tsumoKaze = mInfoUi.getJikaze();
-				Log.d(TAG, "tsumoKaze = " + mDrawItem.tsumoKaze);
+//				Log.d(TAG, "tsumoKaze = " + mDrawItem.tsumoKaze + " manKaze = " + mInfoUi.getManKaze() + " ChiiCha = " + mInfoUi.getChiichaIdx());
 				mDrawItem.tsumoHai = mInfoUi.getTsumoHai();
 
 				mDrawItem.tsumoHais[mInfoUi.getJikaze()] = mInfoUi.getTsumoHai();

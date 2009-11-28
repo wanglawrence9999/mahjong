@@ -41,6 +41,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -50,7 +51,7 @@ public class AndjongView extends View implements EventIF {
 
 	private static final int ID = 42;
 
-	private final Game game;
+	private Game game;
 
 	private boolean HaiSelectStatus;
 
@@ -726,7 +727,7 @@ public class AndjongView extends View implements EventIF {
 			/* 牌が選択状態・イベントACTION_UP・Y座標が385以下の時、牌が捨てられたとする */
 			if ((HaiSelectStatus == true) && (act_evt == MotionEvent.ACTION_UP) && (ty <= 385))
 			{
-				game.mahjong.setSutehaiIdx(selectSutehaiIdx);
+				game.mMahjong.setSutehaiIdx(selectSutehaiIdx);
 				/* 牌を非選択状態にする */
 				HaiSelectStatus = false;
 			}
@@ -776,7 +777,7 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
-			game.mahjong.setSutehaiIdx(selectSutehaiIdx);
+			game.mMahjong.setSutehaiIdx(selectSutehaiIdx);
 			PlayerAction playerAction = mInfoUi.getPlayerAction();
 			Log.d(this.getClass().getName(), "mPlayerAction.actionNotifyAll()");
 			playerAction.actionNotifyAll();

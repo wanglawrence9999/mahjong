@@ -43,9 +43,9 @@ public class Man implements EventIF {
 				Log.d(this.getClass().getName(), "mPlayerAction.actionWait()");
 				mPlayerAction.actionWait();
 				Log.d(this.getClass().getName(), "wakeup");
-				sutehaiIdx = mInfo.getSutehaiIdx();
+				sutehaiIdx = mPlayerAction.getSutehaiIdx();
 				if (sutehaiIdx != Integer.MAX_VALUE) {
-					mInfo.setSutehaiIdx(Integer.MAX_VALUE);
+					mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
 					if (sutehaiIdx == 100) {
 						int agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
 						if (agariScore > 0) {
@@ -101,9 +101,9 @@ public class Man implements EventIF {
 				try {
 					// “ü—Í‘Ò‚¿
 					Thread.sleep(10, 0);
-					sutehaiIdx = mInfo.getSutehaiIdx();
+					sutehaiIdx = mPlayerAction.getSutehaiIdx();
 					if (sutehaiIdx != Integer.MAX_VALUE) {
-						mInfo.setSutehaiIdx(Integer.MAX_VALUE);
+						mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
 						if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
 							break;
 						}
@@ -125,9 +125,9 @@ public class Man implements EventIF {
 					try {
 						// “ü—Í‘Ò‚¿
 						Thread.sleep(10, 0);
-						sutehaiIdx = mInfo.getSutehaiIdx();
+						sutehaiIdx = mPlayerAction.getSutehaiIdx();
 						if (sutehaiIdx != Integer.MAX_VALUE) {
-							mInfo.setSutehaiIdx(Integer.MAX_VALUE);
+							mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
 							if (sutehaiIdx == 100) {
 								return EID.RON;
 							}
@@ -147,12 +147,12 @@ public class Man implements EventIF {
 					try {
 						// “ü—Í‘Ò‚¿
 						Thread.sleep(10, 0);
-						sutehaiIdx = mInfo.getSutehaiIdx();
+						sutehaiIdx = mPlayerAction.getSutehaiIdx();
 						if (sutehaiIdx != Integer.MAX_VALUE) {
 							synchronized (mPlayerAction) {
 								mPlayerAction.setState(PlayerAction.STATE_NONE);
 							}
-							mInfo.setSutehaiIdx(Integer.MAX_VALUE);
+							mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
 							if (sutehaiIdx == 100) {
 								return EID.PON;
 							}

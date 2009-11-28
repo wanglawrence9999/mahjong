@@ -727,7 +727,7 @@ public class AndjongView extends View implements EventIF {
 			/* 牌が選択状態・イベントACTION_UP・Y座標が385以下の時、牌が捨てられたとする */
 			if ((HaiSelectStatus == true) && (act_evt == MotionEvent.ACTION_UP) && (ty <= 385))
 			{
-				game.mMahjong.setSutehaiIdx(selectSutehaiIdx);
+				mInfoUi.getPlayerAction().setSutehaiIdx(selectSutehaiIdx);
 				/* 牌を非選択状態にする */
 				HaiSelectStatus = false;
 			}
@@ -777,8 +777,8 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
-			game.mMahjong.setSutehaiIdx(selectSutehaiIdx);
 			PlayerAction playerAction = mInfoUi.getPlayerAction();
+			playerAction.setSutehaiIdx(selectSutehaiIdx);
 			Log.d(this.getClass().getName(), "mPlayerAction.actionNotifyAll()");
 			playerAction.actionNotifyAll();
 			break;

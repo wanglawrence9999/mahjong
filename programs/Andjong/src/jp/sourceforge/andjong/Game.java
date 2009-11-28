@@ -13,7 +13,7 @@ public class Game extends Activity {
 
 	private AndjongView mAndjongView;
 
-	Mahjong mMahjong;
+	private Mahjong mMahjong;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +26,13 @@ public class Game extends Activity {
 		// フルスクリーンにする。
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+		// Viewを作成する。
 		mAndjongView = new AndjongView(this);
 		setContentView(mAndjongView);
 		mAndjongView.requestFocus();
 
-		mMahjong = new Mahjong();
-		mMahjong.setAndjongView(mAndjongView);
+		// ゲームを開始する。
+		mMahjong = new Mahjong(mAndjongView);
 		new Thread(mMahjong).start();
 	}
 }

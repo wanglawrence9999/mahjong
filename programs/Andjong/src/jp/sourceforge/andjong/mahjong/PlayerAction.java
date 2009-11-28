@@ -26,4 +26,14 @@ public class PlayerAction {
 	public synchronized void actionNotifyAll() {
 		notifyAll();
 	}
+
+	public void setSutehaiIdx(int sutehaiIdx) {
+		this.mSutehaiIdx = sutehaiIdx;
+	}
+
+	public int getSutehaiIdx() {
+		return mSutehaiIdx;
+	}
+
+	private int mSutehaiIdx = Integer.MAX_VALUE;
 }

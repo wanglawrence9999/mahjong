@@ -15,8 +15,9 @@ public class Mahjong implements Runnable {
 	/** AndjongView */
 	private AndjongView mView;
 
-	public void setAndjongView(AndjongView andjongView) {
-		this.mView = andjongView;
+	public Mahjong(AndjongView view) {
+		super();
+		this.mView = view;
 	}
 
 	/** ŽR */

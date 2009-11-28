@@ -223,6 +223,9 @@ public class AndjongView extends View implements EventIF {
 	/** UIの名前 */
 	private String mName;
 
+	/** プレイヤーアクション */
+	private PlayerAction mPlayerAction;
+
 	private boolean HaiSelectStatus;
 
 	/**
@@ -356,6 +359,9 @@ public class AndjongView extends View implements EventIF {
 	public void initUi(InfoUI infoUi, String name) {
 		this.mInfoUi = infoUi;
 		this.mName = name;
+
+		// プレイヤーアクションを取得する。
+		mPlayerAction = mInfoUi.getPlayerAction();
 
 		// フォーカスを有効にする。
 		setFocusable(true);
@@ -692,6 +698,14 @@ public class AndjongView extends View implements EventIF {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		synchronized (mDrawItem) {
+			switch (mDrawItem.mState) {
+			case DrawItem.STATE_KYOKU_START:
+				mPlayerAction.actionNotifyAll();
+				return true;
+			}
+		}
+
 		PlayerAction mPlayerAction = mInfoUi.getPlayerAction();
 		int state;
 		synchronized (mPlayerAction) {
@@ -907,10 +921,17 @@ public class AndjongView extends View implements EventIF {
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
-			PlayerAction playerAction = mInfoUi.getPlayerAction();
-			playerAction.setSutehaiIdx(selectSutehaiIdx);
-			Log.d(this.getClass().getName(), "mPlayerAction.actionNotifyAll()");
-			playerAction.actionNotifyAll();
+			synchronized (mDrawItem) {
+				switch (mDrawItem.mState) {
+				case DrawItem.STATE_KYOKU_START:
+					mPlayerAction.actionNotifyAll();
+					invalidate();
+					return true;
+				}
+			}
+
+			mPlayerAction.setSutehaiIdx(selectSutehaiIdx);
+			mPlayerAction.actionNotifyAll();
 			break;
 		default:
 			return super.onKeyDown(keyCode, event);
@@ -997,12 +1018,15 @@ public class AndjongView extends View implements EventIF {
 			mDrawItem.setKyokuString(mInfoUi.getkyoku());
 			mDrawItem.setState(DrawItem.STATE_KYOKU_START);
 			this.postInvalidate(0, 0, getWidth(), getHeight());
+			mPlayerAction.actionWait();
+			/*
 			try {
 				Thread.sleep(KYOKU_START_WAIT_TIME, 0);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
+			*/
 			break;
 		case HAIPAI:
 			// 手牌を設定して、プレイ状態にする。

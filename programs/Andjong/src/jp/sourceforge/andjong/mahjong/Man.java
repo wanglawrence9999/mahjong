@@ -40,9 +40,7 @@ public class Man implements EventIF {
 			// 手牌をコピーする。
 			mInfo.copyTehai(mTehai, mInfo.getJikaze());
 			while (true) {
-				Log.d(this.getClass().getName(), "mPlayerAction.actionWait()");
 				mPlayerAction.actionWait();
-				Log.d(this.getClass().getName(), "wakeup");
 				sutehaiIdx = mPlayerAction.getSutehaiIdx();
 				if (sutehaiIdx != Integer.MAX_VALUE) {
 					mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);

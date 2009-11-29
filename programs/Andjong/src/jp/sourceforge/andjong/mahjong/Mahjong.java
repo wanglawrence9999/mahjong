@@ -516,13 +516,15 @@ public class Mahjong implements Runnable {
 		case SUTEHAI:// 捨牌
 			// 捨牌のインデックスを取得する。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+
+			// 理牌の間をとる。
 			mInfoUi.setSutehaiIdx(sutehaiIdx);
+			mView.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
+
 			if (sutehaiIdx == 13) {// ツモ切り
 				Hai.copy(mSuteHai, mTsumoHai);
 				activePlayer.getKawa().add(mSuteHai);
-				mView.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
 			} else {// 手出し
-				mView.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
 				activePlayer.getTehai().copyJyunTehaiIdx(mSuteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(mTsumoHai);
@@ -573,6 +575,9 @@ public class Mahjong implements Runnable {
 	private EID notifyEvent(EID eid, int fromKaze, int toKaze) {
 		EID retEid = EID.NAGASHI;
 
+		// UIイベントを発行する。
+		mView.event(eid, fromKaze, toKaze);
+
 		// 各プレイヤーにイベントを通知する。
 		NOTIFYLOOP: for (int i = 0, j = fromKaze; i < mPlayers.length; i++, j++) {
 			if (j >= mPlayers.length) {
@@ -583,7 +588,7 @@ public class Mahjong implements Runnable {
 			activePlayer = mPlayers[mKazeToPlayerIdx[j]];
 
 			// UIイベントを発行する。
-			mView.event(eid, fromKaze, toKaze);
+			//mView.event(eid, fromKaze, toKaze);
 
 			// イベントを発行する。
 			retEid = activePlayer.getEventIf().event(eid, fromKaze, toKaze);

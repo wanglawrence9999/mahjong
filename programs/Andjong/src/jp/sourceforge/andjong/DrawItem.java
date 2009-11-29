@@ -22,7 +22,8 @@ public class DrawItem {
 	public static final int STATE_KYOKU_START = 2;
 	/** プレイ */
 	public static final int STATE_PLAY = 3;
-	public static final int STATE_SUTEHAI_MACHI = 4;
+	/** 理牌待ち */
+	public static final int STATE_RIHAI_WAIT = 4;
 	/** 流局 */
 	public static final int STATE_RYUUKYOKU = 5;
 
@@ -40,6 +41,9 @@ public class DrawItem {
 
 	/** 起家 */
 	private int mChiicha = 0;
+
+	/** 手牌から捨てた牌のインデックス */
+	private int mSkipIdx = 0;
 
 	/**
 	 * 局の文字列を設定する。
@@ -124,6 +128,25 @@ public class DrawItem {
 	}
 
 	/**
+	 * 手牌から捨てた牌のインデックスを設定する。
+	 *
+	 * @param skipIdx
+	 *            手牌から捨てた牌のインデックス
+	 */
+	public synchronized void setSkipIdx(int skipIdx) {
+		this.mSkipIdx = skipIdx;
+	}
+
+	/**
+	 * 手牌から捨てた牌のインデックスを取得する。
+	 *
+	 * @return 手牌から捨てた牌のインデックス
+	 */
+	public synchronized int getSkipIdx() {
+		return mSkipIdx;
+	}
+
+	/**
 	 * 状態を設定する。
 	 *
 	 * @param state
@@ -142,7 +165,7 @@ public class DrawItem {
 		return mState;
 	}
 
-	class PlayerInfo {
+	public class PlayerInfo {
 		/** 手牌 */
 		Tehai mTehai = new Tehai();
 		Kawa mKawa = new Kawa();
@@ -163,10 +186,4 @@ public class DrawItem {
 			mPlayerInfos[i] = new PlayerInfo();
 		}
 	}
-
-	/** ツモ牌 */
-	Hai tsumoHai = new Hai();
-	int tsumoKaze = 5;
-
-	Hai tsumoHais[] = new Hai[4];
 }

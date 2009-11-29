@@ -1,6 +1,7 @@
 package jp.sourceforge.andjong;
 
 import jp.sourceforge.andjong.R;
+import jp.sourceforge.andjong.DrawItem.PlayerInfo;
 import jp.sourceforge.andjong.mahjong.EventIF;
 import jp.sourceforge.andjong.mahjong.Fuuro;
 import jp.sourceforge.andjong.mahjong.Hai;
@@ -157,6 +158,10 @@ public class AndjongView extends View implements EventIF {
 
 		// UIが初期化されるまで待つ。
 		mDrawItem.setState(DrawItem.STATE_INIT_WAIT);
+
+		// フォーカスを有効にする。
+		setFocusable(true);
+		setFocusableInTouchMode(true);
 	}
 
 	/**
@@ -274,10 +279,6 @@ public class AndjongView extends View implements EventIF {
 		// プレイヤーアクションを取得する。
 		mPlayerAction = mInfoUi.getPlayerAction();
 
-		// フォーカスを有効にする。
-		setFocusable(true);
-		setFocusableInTouchMode(true);
-
 		// 状態なしにしておく。
 		mDrawItem.setState(DrawItem.STATE_NONE);
 	}
@@ -337,16 +338,16 @@ public class AndjongView extends View implements EventIF {
 			// 起家マークを表示する。
 			drawChiicha(canvas, mDrawItem.getChiicha());
 
-			Bitmap test2 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[0]].mTehai, mDrawItem.mPlayerInfos[dispKaze[0]].mKawa, PLACE_PLAYER, dispKaze[0], true, mDrawItem.tsumoHais[dispKaze[0]]);
+			Bitmap test2 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[0]].mTehai, mDrawItem.mPlayerInfos[dispKaze[0]].mKawa, PLACE_PLAYER, dispKaze[0], true, mDrawItem.mPlayerInfos[dispKaze[0]].mTsumoHai);
 			canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
 
-			Bitmap test3 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[1]].mTehai, mDrawItem.mPlayerInfos[dispKaze[1]].mKawa, PLACE_KAMICHA, dispKaze[1], false, mDrawItem.tsumoHais[dispKaze[1]]);
+			Bitmap test3 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[1]].mTehai, mDrawItem.mPlayerInfos[dispKaze[1]].mKawa, PLACE_KAMICHA, dispKaze[1], false, mDrawItem.mPlayerInfos[dispKaze[1]].mTsumoHai);
 			canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
 
-			Bitmap test = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[2]].mTehai, mDrawItem.mPlayerInfos[dispKaze[2]].mKawa, PLACE_TOIMEN, dispKaze[2], false, mDrawItem.tsumoHais[dispKaze[2]]);
+			Bitmap test = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[2]].mTehai, mDrawItem.mPlayerInfos[dispKaze[2]].mKawa, PLACE_TOIMEN, dispKaze[2], false, mDrawItem.mPlayerInfos[dispKaze[2]].mTsumoHai);
 			canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
 
-			Bitmap test4 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[3]].mTehai, mDrawItem.mPlayerInfos[dispKaze[3]].mKawa, PLACE_SHIMOCHA, dispKaze[3], false, mDrawItem.tsumoHais[dispKaze[3]]);
+			Bitmap test4 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[3]].mTehai, mDrawItem.mPlayerInfos[dispKaze[3]].mKawa, PLACE_SHIMOCHA, dispKaze[3], false, mDrawItem.mPlayerInfos[dispKaze[3]].mTsumoHai);
 			canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
 		}
 	}
@@ -564,8 +565,8 @@ public class AndjongView extends View implements EventIF {
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		int width = mHaiImage[0].getWidth();
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (tsumoHai != null && mDrawItem.mState == DrawItem.STATE_SUTEHAI_MACHI) {
-				if (i == mSkipIdx) {
+			if (tsumoHai != null && mDrawItem.mState == DrawItem.STATE_RIHAI_WAIT) {
+				if (i == mDrawItem.getSkipIdx()) {
 					continue;
 				}
 			}
@@ -582,7 +583,7 @@ public class AndjongView extends View implements EventIF {
 
 		//Log.d(this.getClass().getName(), "print, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai);
 		if (tsumoHai != null) {
-			if ((select >= jyunTehaiLength) && (mDrawItem.mState != DrawItem.STATE_SUTEHAI_MACHI)) {
+			if ((select >= jyunTehaiLength) && (mDrawItem.mState != DrawItem.STATE_RIHAI_WAIT)) {
 				if (isDisp) {
 					canvas.drawBitmap(mHaiImage[tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
 				} else {
@@ -603,7 +604,7 @@ public class AndjongView extends View implements EventIF {
 			Fuuro[] fuuros = tehai.getFuuros();
 			for (int i = 0; i < fuuroNums; i++) {
 				Hai hais[] = fuuros[i].getHai();
-				int type = fuuros[i].getType();
+				//int type = fuuros[i].getType();
 				int relation = fuuros[i].getRelation();
 
 				if (relation == Mahjong.RELATION_KAMICHA) {
@@ -883,7 +884,7 @@ public class AndjongView extends View implements EventIF {
 		return mName;
 	}
 
-    private int mSkipIdx = 0;
+    //private int mSkipIdx = 0;
 
     /** 進行の待ち時間 */
 	private static int PROGRESS_WAIT_TIME = 300;
@@ -940,7 +941,11 @@ public class AndjongView extends View implements EventIF {
 			mDrawItem.setKyokuString(getResources(), mInfoUi.getkyoku());
 
 			mDrawItem.setState(DrawItem.STATE_KYOKU_START);
+
+			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
+
+			// アクションを待つ。
 			mPlayerAction.actionWait();
 			break;
 		case HAIPAI:
@@ -949,67 +954,32 @@ public class AndjongView extends View implements EventIF {
 			synchronized (mDrawItem) {
 				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
 					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
+					mDrawItem.mPlayerInfos[i].mTsumoHai = null;
 				}
 			}
+
+			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RYUUKYOKU:// 流局
 			// サイ振りを局の開始と考える。
 			mDrawItem.setState(DrawItem.STATE_RYUUKYOKU);
+
+			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
+
+			// アクションを待つ。
 			mPlayerAction.actionWait();
 			break;
 		case NAGASHI:// 流し
-			// 表示することはない。
+			// 何も表示しない。
 			break;
 		case TSUMO:// ツモ
-			/*
-			this.post(new Runnable() {
-				public void run() {
-					String[] yaku;
-					Tehai tehai = new Tehai();
-					tehai.addJyunTehai(new Hai(1));
-					tehai.addJyunTehai(new Hai(1));
-					tehai.addJyunTehai(new Hai(1));
-					tehai.addJyunTehai(new Hai(2));
-					tehai.addJyunTehai(new Hai(2));
-					tehai.addJyunTehai(new Hai(2));
-					tehai.addJyunTehai(new Hai(3));
-					tehai.addJyunTehai(new Hai(3));
-					tehai.addJyunTehai(new Hai(3));
-					tehai.addJyunTehai(new Hai(4));
-					tehai.addJyunTehai(new Hai(4));
-					tehai.addJyunTehai(new Hai(4));
-					tehai.addJyunTehai(new Hai(5));
-					Hai addHai = new Hai(5);
-					yaku = mInfoUi.getYakuName(tehai, mInfoUi.getSuteHai());
-					showAlertDialog("テスト" + yaku[0]);
-				}
-			});
-			*/
-			// 手牌を表示します。
-			//printJyunTehai(tehai);
+			// ツモ牌を取得する。
+			mDrawItem.mPlayerInfos[mInfoUi.getJikaze()].mTsumoHai = mInfoUi.getTsumoHai();
 
-//			if (drawItem.isOnDraw == false) {
-				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
-					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
-				}
-				mDrawItem.tsumoKaze = mInfoUi.getJikaze();
-//				Log.d(TAG, "tsumoKaze = " + mDrawItem.tsumoKaze + " manKaze = " + mInfoUi.getManKaze() + " ChiiCha = " + mInfoUi.getChiichaIdx());
-				mDrawItem.tsumoHai = mInfoUi.getTsumoHai();
-
-				mDrawItem.tsumoHais[mInfoUi.getJikaze()] = mInfoUi.getTsumoHai();
-
-				this.postInvalidate(0, 0, getWidth(), getHeight());
-//			}
-			//Log.d(this.getClass().getName(), "tsumo, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai.getId());
-
-
-			// ツモ牌を表示します。
-			/*
-			System.out
-					.println(":" + idToString((mInfoUi.getTsumoHai()).getId()));
-					*/
+			// 描画する。
+			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case TSUMOAGARI:// ツモあがり
 			/*
@@ -1024,9 +994,33 @@ public class AndjongView extends View implements EventIF {
 					.println(":" + idToString((mInfoUi.getTsumoHai()).getId()));
 					*/
 			break;
+		case SUTEHAI:// 捨牌
+			// 手牌をコピーする。
+			mInfoUi.copyTehai(mDrawItem.mPlayerInfos[fromKaze].mTehai, fromKaze);
+
+			// 河をコピーする。
+			mInfoUi.copyKawa(mDrawItem.mPlayerInfos[fromKaze].mKawa, fromKaze);
+
+			// ツモ牌をなくす。
+			mDrawItem.mPlayerInfos[fromKaze].mTsumoHai = null;
+
+			// 描画する。
+			this.postInvalidate(0, 0, getWidth(), getHeight());
+			break;
+		case SUTEHAISELECT:
+			if (fromKaze == mInfoUi.getJikaze()) {
+				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
+					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
+				}
+					//mDrawItem.tsumoKaze = 5;
+					//mDrawItem.tsumoHai = null;
+					//mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
+					this.postInvalidate(0, 0, getWidth(), getHeight());
+			}
+			break;
 		case RIHAI_WAIT:
-			mSkipIdx = mInfoUi.getSutehaiIdx();
-			mDrawItem.mState = DrawItem.STATE_SUTEHAI_MACHI;
+			mDrawItem.setSkipIdx(mInfoUi.getSutehaiIdx());
+			mDrawItem.mState = DrawItem.STATE_RIHAI_WAIT;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			try {
 				Thread.sleep(200, 0);
@@ -1037,45 +1031,6 @@ public class AndjongView extends View implements EventIF {
 			mSelectSutehaiIdx = 13;
 			mDrawItem.mState = DrawItem.STATE_PLAY;
 			break;
-		case SUTEHAI:// 捨牌
-			// 自分の捨牌のみを表示します。
-			if (fromKaze == mInfoUi.getJikaze()) {
-				/*
-				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
-						+ "][捨牌]");
-
-				// 河を表示します。
-				printKawa(kawa);
-				*/
-
-				Log.d(this.getClass().getName(), "sutehai");
-				{
-					for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
-						mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
-						mInfoUi.copyKawa(mDrawItem.mPlayerInfos[i].mKawa, i);
-					}
-					mDrawItem.tsumoKaze = 5;
-					mDrawItem.tsumoHai = null;
-					mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
-					this.postInvalidate(0, 0, getWidth(), getHeight());
-				}
-				// 捨牌を表示します。
-				// System.out.println(":"
-				// + idToString((infoUi.getSuteHai()).getId()));
-				// System.out.println();
-			}
-			break;
-		case SUTEHAISELECT:
-			if (fromKaze == mInfoUi.getJikaze()) {
-				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
-					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
-				}
-					mDrawItem.tsumoKaze = 5;
-					mDrawItem.tsumoHai = null;
-					mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
-					this.postInvalidate(0, 0, getWidth(), getHeight());
-			}
-			break;
 		case PON:// ポン
 			// 自分の捨牌のみを表示します。
 			if (fromKaze == mInfoUi.getJikaze()) {
@@ -1084,9 +1039,9 @@ public class AndjongView extends View implements EventIF {
 						mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
 						mInfoUi.copyKawa(mDrawItem.mPlayerInfos[i].mKawa, i);
 					}
-					mDrawItem.tsumoKaze = 5;
-					mDrawItem.tsumoHai = null;
-					mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
+					//mDrawItem.tsumoKaze = 5;
+					//mDrawItem.tsumoHai = null;
+					//mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
 					this.postInvalidate(0, 0, getWidth(), getHeight());
 				}
 

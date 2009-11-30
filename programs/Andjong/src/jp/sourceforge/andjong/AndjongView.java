@@ -23,6 +23,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 public class AndjongView extends View implements EventIF {
 	private static final String TAG = "AndjongView";

@@ -10,7 +10,13 @@ public class PlayerAction {
 	private int mSutehaiIdx;
 
 	/** アクション要求 */
-	private boolean mActionRequest;
+	//private boolean mActionRequest;
+
+	/** ツモが可能 */
+	private boolean mValidTsumo;
+
+	/** ポンが可能 */
+	private boolean mValidPon;
 
 	/**
 	 * コンストラクター
@@ -18,8 +24,17 @@ public class PlayerAction {
 	public PlayerAction() {
 		super();
 
-		initSutehaiIdx();
-		mActionRequest = false;
+		init();
+	}
+
+	/**
+	 * 初期化する。
+	 */
+	public synchronized void init() {
+		//mActionRequest = false;
+		mSutehaiIdx = Integer.MAX_VALUE;
+		mValidTsumo = false;
+		mValidPon = false;
 	}
 
 	public void setState(int state) {
@@ -68,21 +83,16 @@ public class PlayerAction {
 	}
 
 	/**
-	 * 捨牌のインデックスを初期化する。
-	 */
-	public synchronized void initSutehaiIdx() {
-		mSutehaiIdx = Integer.MAX_VALUE;
-	}
-
-	/**
 	 * アクション要求を設定する。
 	 *
 	 * @param actionRequest
 	 *            アクション要求
 	 */
+	/*
 	public synchronized void setActionRequest(boolean actionRequest) {
 		this.mActionRequest = actionRequest;
 	}
+	*/
 
 	/**
 	 * アクション要求を取得する。
@@ -90,6 +100,44 @@ public class PlayerAction {
 	 * @return
 	 */
 	public synchronized boolean isActionRequest() {
-		return mActionRequest;
+		return mValidTsumo | mValidPon;
+	}
+
+	/**
+	 * ツモが可能かを設定する。
+	 *
+	 * @param validTsumo
+	 *            可否
+	 */
+	public synchronized void setValidTsumo(boolean validTsumo) {
+		this.mValidTsumo = validTsumo;
+	}
+
+	/**
+	 * ツモが可能かを取得する。
+	 *
+	 * @return 可否
+	 */
+	public synchronized boolean isValidTsumo() {
+		return mValidTsumo;
+	}
+
+	/**
+	 * ポンが可能かを設定する。
+	 *
+	 * @param validTsumo
+	 *            可否
+	 */
+	public synchronized void setValidPon(boolean validPon) {
+		this.mValidPon = validPon;
+	}
+
+	/**
+	 * ポンが可能かを取得する。
+	 *
+	 * @return 可否
+	 */
+	public synchronized boolean isValidPon() {
+		return mValidPon;
 	}
 }

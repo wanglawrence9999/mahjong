@@ -40,58 +40,27 @@ public class Man implements EventIF {
 			// 手牌をコピーする。
 			mInfo.copyTehai(mTehai, mInfo.getJikaze());
 			while (true) {
+				int agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
+				if (agariScore > 0) {
+					mPlayerAction.setValidTsumo(true);
+				}
+
+				// 入力を待つ。
 				mPlayerAction.actionWait();
 				sutehaiIdx = mPlayerAction.getSutehaiIdx();
 				if (sutehaiIdx != Integer.MAX_VALUE) {
-					mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
-					if (sutehaiIdx == 100) {
-						int agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
-						if (agariScore > 0) {
-							return EID.RON;
+					if (mPlayerAction.isValidTsumo()) {
+						if (sutehaiIdx == 100) {
+							mPlayerAction.init();
+							return EID.TSUMOAGARI;
 						}
-						continue;
 					}
-					if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
+					if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
 						break;
 					}
 				}
-				/*
-				try {
-					// 入力待ち
-					Thread.sleep(10, 0);
-					sutehaiIdx = mInfo.getSutehaiIdx();
-					if (sutehaiIdx != Integer.MAX_VALUE) {
-						mInfo.setSutehaiIdx(Integer.MAX_VALUE);
-						if (sutehaiIdx == 100) {
-							int agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
-							if (agariScore > 0) {
-								return EID.RON;
-							}
-							continue;
-						}
-						if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
-							break;
-						}
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				*/
 			}
-			/*
-			cmd = null;
-			br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print(":");
-			try {
-				cmd = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			sutehaiIdx = Integer.parseInt(cmd);
-			*/
-//			if (sutehaiIdx == 0)
-//				return EID.TSUMOAGARI;
-//			sutehaiIdx--;
+			mPlayerAction.init();
 			this.sutehaiIdx = sutehaiIdx;
 			return EID.SUTEHAI;
 		case SUTEHAISELECT:
@@ -138,7 +107,8 @@ public class Man implements EventIF {
 			}
 
 			if (mTehai.validPon(mInfo.getSuteHai())) {
-				mPlayerAction.setActionRequest(true);
+				mPlayerAction.setValidPon(true);
+				//mPlayerAction.setActionRequest(true);
 				while (true) {
 					mPlayerAction.actionWait();
 					sutehaiIdx = mPlayerAction.getSutehaiIdx();
@@ -148,13 +118,15 @@ public class Man implements EventIF {
 						}
 						mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
 						if (sutehaiIdx == 100) {
-							mPlayerAction.setActionRequest(false);
+							mPlayerAction.init();
+							//mPlayerAction.setActionRequest(false);
 							return EID.PON;
 						}
 						break;
 					}
 				}
-				mPlayerAction.setActionRequest(false);
+				mPlayerAction.init();
+				//mPlayerAction.setActionRequest(false);
 			}
 			/*
 			cmd = null;

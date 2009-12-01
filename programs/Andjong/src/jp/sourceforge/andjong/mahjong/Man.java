@@ -35,17 +35,27 @@ public class Man implements EventIF {
 	@Override
 	public EID event(EID eid, int fromKaze, int toKaze) {
 		int sutehaiIdx = 0;
+		int agariScore = 0;
 		switch (eid) {
 		case TSUMO:
 			// 手牌をコピーする。
 			mInfo.copyTehai(mTehai, mInfo.getJikaze());
-			while (true) {
-				int agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
-				if (agariScore > 0) {
-					mPlayerAction.setValidTsumo(true);
+			agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
+			if (agariScore > 0) {
+			//if (true) {
+				mPlayerAction.setValidTsumo(true);
+				mPlayerAction.setMenuSelect(0);
+				mPlayerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
+				mPlayerAction.actionWait();
+				if (mPlayerAction.getMenuSelect() == 0) {
+					mPlayerAction.init();
+					return EID.TSUMOAGARI;
 				}
-
+				mPlayerAction.init();
+			}
+			while (true) {
 				// 入力を待つ。
+				mPlayerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
 				mPlayerAction.actionWait();
 				sutehaiIdx = mPlayerAction.getSutehaiIdx();
 				if (sutehaiIdx != Integer.MAX_VALUE) {
@@ -82,67 +92,45 @@ public class Man implements EventIF {
 			this.sutehaiIdx = sutehaiIdx;
 			return EID.SUTEHAI;
 		case SUTEHAI:
-			if (fromKaze == 0) {
+			if (fromKaze == mInfo.getJikaze()) {
 				return EID.NAGASHI;
 			}
 			mInfo.copyTehai(mTehai, mInfo.getJikaze());
-			int score = mInfo.getAgariScore(mTehai, mInfo.getSuteHai());
-			if (score > 0) {
-				while (true) {
-					try {
-						// 入力待ち
-						Thread.sleep(10, 0);
-						sutehaiIdx = mPlayerAction.getSutehaiIdx();
-						if (sutehaiIdx != Integer.MAX_VALUE) {
-							mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
-							if (sutehaiIdx == 100) {
-								return EID.RON;
-							}
-							break;
-						}
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
-			if (mTehai.validPon(mInfo.getSuteHai())) {
-				mPlayerAction.setValidPon(true);
-				//mPlayerAction.setActionRequest(true);
-				while (true) {
-					mPlayerAction.actionWait();
-					sutehaiIdx = mPlayerAction.getSutehaiIdx();
-					if (sutehaiIdx != Integer.MAX_VALUE) {
-						synchronized (mPlayerAction) {
-							mPlayerAction.setState(PlayerAction.STATE_NONE);
-						}
-						mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
-						if (sutehaiIdx == 100) {
-							mPlayerAction.init();
-							//mPlayerAction.setActionRequest(false);
-							return EID.PON;
-						}
-						break;
-					}
+			agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
+			if (agariScore > 0) {
+				mPlayerAction.setValidTsumo(true);
+				mPlayerAction.setMenuSelect(0);
+				mPlayerAction.setState(PlayerAction.STATE_RON_SELECT);
+				mPlayerAction.actionWait();
+				if (mPlayerAction.getMenuSelect() == 0) {
+					mPlayerAction.init();
+					return EID.RON;
 				}
 				mPlayerAction.init();
-				//mPlayerAction.setActionRequest(false);
 			}
-			/*
-			cmd = null;
-			br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print(":");
-			try {
-				cmd = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			if (cmd.length() > 0)
-				sutehaiIdx = Integer.parseInt(cmd);
-			if (sutehaiIdx == 1) {
-				return EID.RON;
-			}
-			*/
+
+//			if (mTehai.validPon(mInfo.getSuteHai())) {
+//				mPlayerAction.setValidPon(true);
+//				//mPlayerAction.setActionRequest(true);
+//				while (true) {
+//					mPlayerAction.actionWait();
+//					sutehaiIdx = mPlayerAction.getSutehaiIdx();
+//					if (sutehaiIdx != Integer.MAX_VALUE) {
+//						synchronized (mPlayerAction) {
+//							mPlayerAction.setState(PlayerAction.STATE_NONE);
+//						}
+//						mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
+//						if (sutehaiIdx == 100) {
+//							mPlayerAction.init();
+//							//mPlayerAction.setActionRequest(false);
+//							return EID.PON;
+//						}
+//						break;
+//					}
+//				}
+//				mPlayerAction.init();
+//				//mPlayerAction.setActionRequest(false);
+//			}
 			break;
 		default:
 			break;

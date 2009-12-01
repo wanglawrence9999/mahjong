@@ -94,12 +94,12 @@ public class AI implements EventIF {
 //		}
 
 		// 牌が少なくなったら鳴いてみます。
-		if (info.getTsumoRemain() < 16) {
-			// ポンできるかチェックします。
-			if (tehai.validPon(info.getSuteHai())) {
-				return EID.PON;
-			}
-		}
+//		if (info.getTsumoRemain() < 16) {
+//			// ポンできるかチェックします。
+//			if (tehai.validPon(info.getSuteHai())) {
+//				return EID.PON;
+//			}
+//		}
 
 		return EID.NAGASHI;
 	}

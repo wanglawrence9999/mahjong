@@ -24,8 +24,12 @@ public class DrawItem {
 	public static final int STATE_PLAY = 3;
 	/** óùîvë“Çø */
 	public static final int STATE_RIHAI_WAIT = 4;
+	/** ÉcÉÇ */
+	public static final int STATE_TSUMO = 5;
+	/** ÉçÉì */
+	public static final int STATE_RON = 6;
 	/** ó¨ã« */
-	public static final int STATE_RYUUKYOKU = 5;
+	public static final int STATE_RYUUKYOKU = 7;
 
 	/** èÛë‘ */
 	int mState = STATE_INIT_WAIT;

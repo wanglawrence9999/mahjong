@@ -57,6 +57,9 @@ public class AndjongView extends View implements EventIF {
 	/** 起家マークのイメージ */
 	private Bitmap mChiichaImage;
 
+	/** メニュー選択のイメージ */
+	private Bitmap mMenuSelectImage;
+
 	/** 背景のペイント */
 	private Paint mBackgroundPaint;
 
@@ -85,6 +88,24 @@ public class AndjongView extends View implements EventIF {
 
 	/** メッセージの枠 */
 	private RectF mMessageRect;
+
+	/** メニューエリアの幅 */
+	private static final int MENU_AREA_WIDTH = 157;
+	/** メニューエリアの高さ */
+	private static final int MENU_AREA_HEIGHT = 70;
+
+	/** メニュー(1)エリアのLeft */
+	private static final int MENU1_AREA_LEFT = 2;
+	/** メニュー(2)エリアのLeft */
+	private static final int MENU2_AREA_LEFT = MENU1_AREA_LEFT + MENU_AREA_WIDTH + 2;
+	/** メニューエリアのTop */
+	private static final int MENU_AREA_TOP = 408;
+
+	/** メニュー(1)の枠 */
+	private RectF mMenu1Rect;
+
+	/** メニュー(2)の枠 */
+	private RectF mMenu2Rect;
 
 	/** 描画アイテム */
 	private DrawItem mDrawItem = new DrawItem();
@@ -232,6 +253,8 @@ public class AndjongView extends View implements EventIF {
 		mTenbou100Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_100);
 
 		mChiichaImage = BitmapFactory.decodeResource(res, R.drawable.chiicha);
+
+		mMenuSelectImage = BitmapFactory.decodeResource(res, R.drawable.menu_select);
 	}
 
 	/**
@@ -248,6 +271,9 @@ public class AndjongView extends View implements EventIF {
 		mMessagePaint.setColor(Color.DKGRAY);
 
 		mMessageRect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
+
+		mMenu1Rect = new RectF(MENU1_AREA_LEFT, MENU_AREA_TOP, MENU1_AREA_LEFT + MENU_AREA_WIDTH, MENU_AREA_TOP + MENU_AREA_HEIGHT);
+		mMenu2Rect = new RectF(MENU2_AREA_LEFT, MENU_AREA_TOP, MENU2_AREA_LEFT + MENU_AREA_WIDTH, MENU_AREA_TOP + MENU_AREA_HEIGHT);
 	}
 
 	/**
@@ -301,6 +327,10 @@ public class AndjongView extends View implements EventIF {
 				// 局を表示する。
 				drawMessage(canvas, mDrawItem.getKyokuString());
 				return;
+			case DrawItem.STATE_TSUMO:
+				// ツモのメッセージを表示する。
+				drawMessage(canvas, "ツモ");
+				break;
 			case DrawItem.STATE_RYUUKYOKU:
 				// 流局のメッセージを表示する。
 				drawMessage(canvas, getResources().getString(R.string.ryuukyoku));
@@ -310,7 +340,20 @@ public class AndjongView extends View implements EventIF {
 			// アクションボタンを表示する。
 			boolean actionRequest = mPlayerAction.isActionRequest();
 			if (actionRequest) {
-				drawMessage(canvas, getResources().getString(R.string.action_button));
+				//drawMessage(canvas, getResources().getString(R.string.action_button));
+
+				if (mPlayerAction.isValidRon()) {
+					drawMenu1Message(canvas, "ロン");
+				} else {
+					drawMenu1Message(canvas, "ツモ");
+				}
+				drawMenu2Message(canvas, "流し");
+
+				if (mPlayerAction.getMenuSelect() == 0) {
+					canvas.drawBitmap(mMenuSelectImage, MENU1_AREA_LEFT, MENU_AREA_TOP, null);
+				} else {
+					canvas.drawBitmap(mMenuSelectImage, MENU2_AREA_LEFT, MENU_AREA_TOP, null);
+				}
 			}
 
 			// 局を表示する。
@@ -366,6 +409,16 @@ public class AndjongView extends View implements EventIF {
 	private void drawMessage(Canvas canvas, String string) {
 		canvas.drawRoundRect(mMessageRect, MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
 		drawString((MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2, (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2, canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
+	}
+
+	private void drawMenu1Message(Canvas canvas, String string) {
+		canvas.drawRoundRect(mMenu1Rect, MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
+		drawString(MENU1_AREA_LEFT + (MENU_AREA_WIDTH / 2), MENU_AREA_TOP + (MENU_AREA_HEIGHT / 2), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
+	}
+
+	private void drawMenu2Message(Canvas canvas, String string) {
+		canvas.drawRoundRect(mMenu2Rect, MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
+		drawString(MENU2_AREA_LEFT + (MENU_AREA_WIDTH / 2), MENU_AREA_TOP + (MENU_AREA_HEIGHT / 2), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
 	}
 
 	/**
@@ -573,7 +626,7 @@ public class AndjongView extends View implements EventIF {
 					continue;
 				}
 			}
-			if (i == select) {
+			if ((i == select) && (mPlayerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
 				canvas.drawBitmap(mHaiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
 			} else {
 				if (isDisp) {
@@ -834,8 +887,37 @@ public class AndjongView extends View implements EventIF {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
+		boolean actionRequest = mPlayerAction.isActionRequest();
+		int menuSelect = mPlayerAction.getMenuSelect();
+		if (actionRequest) {
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				menuSelect--;
+				menuSelect %= 2;
+				mPlayerAction.setMenuSelect(menuSelect);
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				menuSelect++;
+				menuSelect %= 2;
+				mPlayerAction.setMenuSelect(menuSelect);
+				break;
+			case KeyEvent.KEYCODE_ENTER:
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+				mPlayerAction.actionNotifyAll();
+				break;
+			default:
+				return super.onKeyDown(keyCode, event);
+			}
+			invalidate();
+			return true;
+		}
+
+		int state = mPlayerAction.getState();
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_UP:
+			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
+				return true;
+			}
 			mSelectSutehaiIdx = 0;
 			if(mDrawItem.mIsDebug){
 				mDrawItem.mIsDebug = false;
@@ -844,15 +926,24 @@ public class AndjongView extends View implements EventIF {
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
+			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
+				return true;
+			}
 			mSelectSutehaiIdx = 100;
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
+			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
+				return true;
+			}
 			mSelectSutehaiIdx--;
 			if (mSelectSutehaiIdx < 0) {
 				mSelectSutehaiIdx = 13;
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_RIGHT:
+			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
+				return true;
+			}
 			mSelectSutehaiIdx++;
 			if (mSelectSutehaiIdx > 13) {
 				mSelectSutehaiIdx = 0;
@@ -957,6 +1048,7 @@ public class AndjongView extends View implements EventIF {
 			synchronized (mDrawItem) {
 				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
 					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
+					mInfoUi.copyKawa(mDrawItem.mPlayerInfos[i].mKawa, i);
 					mDrawItem.mPlayerInfos[i].mTsumoHai = null;
 				}
 			}
@@ -985,17 +1077,13 @@ public class AndjongView extends View implements EventIF {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case TSUMOAGARI:// ツモあがり
-			/*
-			System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
-					+ "][ツモあがり]");
+			mDrawItem.setState(DrawItem.STATE_TSUMO);
 
-			// 手牌を表示します。
-			printJyunTehai(tehai);
+			// 描画する。
+			this.postInvalidate(0, 0, getWidth(), getHeight());
 
-			// ツモ牌を表示します。
-			System.out
-					.println(":" + idToString((mInfoUi.getTsumoHai()).getId()));
-					*/
+			// アクションを待つ。
+			mPlayerAction.actionWait();
 			break;
 		case SUTEHAI:// 捨牌
 			// 手牌をコピーする。

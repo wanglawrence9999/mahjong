@@ -2,7 +2,10 @@ package jp.sourceforge.andjong.mahjong;
 
 public class PlayerAction {
 	public static final int STATE_NONE = 0;
-	public static final int STATE_ACTION_WAIT = 1;
+	public static final int STATE_SUTEHAI_SELECT = 1;
+	public static final int STATE_RON_SELECT= 2;
+	public static final int STATE_TSUMO_SELECT= 3;
+	public static final int STATE_ACTION_WAIT = 4;
 
 	private int mState = STATE_NONE;
 
@@ -12,11 +15,17 @@ public class PlayerAction {
 	/** アクション要求 */
 	//private boolean mActionRequest;
 
+	/** ロンが可能 */
+	private boolean mValidRon;
+
 	/** ツモが可能 */
 	private boolean mValidTsumo;
 
 	/** ポンが可能 */
 	private boolean mValidPon;
+
+	/** メニュー選択 */
+	private int mMenuSelect;
 
 	/**
 	 * コンストラクター
@@ -31,17 +40,19 @@ public class PlayerAction {
 	 * 初期化する。
 	 */
 	public synchronized void init() {
-		//mActionRequest = false;
+		mState = STATE_NONE;
 		mSutehaiIdx = Integer.MAX_VALUE;
+		mValidRon = false;
 		mValidTsumo = false;
 		mValidPon = false;
+		setMenuSelect(0);
 	}
 
-	public void setState(int state) {
+	public synchronized void setState(int state) {
 		this.mState = state;
 	}
 
-	public int getState() {
+	public synchronized int getState() {
 		return mState;
 	}
 
@@ -100,7 +111,26 @@ public class PlayerAction {
 	 * @return
 	 */
 	public synchronized boolean isActionRequest() {
-		return mValidTsumo | mValidPon;
+		return mValidRon | mValidTsumo | mValidPon;
+	}
+
+	/**
+	 * ロンが可能かを設定する。
+	 *
+	 * @param validRon
+	 *            可否
+	 */
+	public synchronized void setValidRon(boolean validRon) {
+		this.mValidRon = validRon;
+	}
+
+	/**
+	 * ロンが可能かを取得する。
+	 *
+	 * @return 可否
+	 */
+	public synchronized boolean isValidRon() {
+		return mValidRon;
 	}
 
 	/**
@@ -139,5 +169,13 @@ public class PlayerAction {
 	 */
 	public synchronized boolean isValidPon() {
 		return mValidPon;
+	}
+
+	public synchronized void setMenuSelect(int menuSelect) {
+		this.mMenuSelect = menuSelect;
+	}
+
+	public synchronized int getMenuSelect() {
+		return mMenuSelect;
 	}
 }

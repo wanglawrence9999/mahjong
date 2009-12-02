@@ -350,6 +350,40 @@ public class Mahjong implements Runnable {
 		// 配牌する。
 		haipai();
 
+		if (false) {
+			for (int i = 0; i < 13; i++)
+				mPlayers[1].getTehai().rmJyunTehai(i);
+
+			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(1));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(3));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(5));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(7));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(8));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(9));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(10));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(11));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(11));
+			/*
+			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
+			mPlayers[1].getTehai().addJyunTehai(new Hai(8));
+			*/
+		}
+
 		// UIイベント（配牌）を発行する。
 		mView.event(EID.HAIPAI, mFromKaze, mToKaze);
 
@@ -538,6 +572,9 @@ public class Mahjong implements Runnable {
 		case REACH:
 			// 捨牌のインデックスを取得する。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+			activePlayer.setReach(true);
+			mView.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
+
 			if (sutehaiIdx == 13) {// ツモ切り
 				Hai.copy(mSuteHai, mTsumoHai);
 				activePlayer.getKawa().add(mSuteHai);

@@ -327,6 +327,10 @@ public class AndjongView extends View implements EventIF {
 				// 局を表示する。
 				drawMessage(canvas, mDrawItem.getKyokuString());
 				return;
+			case DrawItem.STATE_REACH:
+				// リーチのメッセージを表示する。
+				drawMessage(canvas, "リーチ");
+				break;
 			case DrawItem.STATE_TSUMO:
 				// ツモのメッセージを表示する。
 				drawMessage(canvas, "ツモ");
@@ -981,7 +985,7 @@ public class AndjongView extends View implements EventIF {
     //private int mSkipIdx = 0;
 
     /** 進行の待ち時間 */
-	private static int PROGRESS_WAIT_TIME = 300;
+	private static int PROGRESS_WAIT_TIME = 100;
 
 	/**
 	 * イベントを処理する。
@@ -1086,6 +1090,7 @@ public class AndjongView extends View implements EventIF {
 			mPlayerAction.actionWait();
 			break;
 		case SUTEHAI:// 捨牌
+			Log.e(TAG, "SUTEHAI fromKaze = " + fromKaze);
 			// 手牌をコピーする。
 			mInfoUi.copyTehai(mDrawItem.mPlayerInfos[fromKaze].mTehai, fromKaze);
 
@@ -1114,7 +1119,7 @@ public class AndjongView extends View implements EventIF {
 			mDrawItem.mState = DrawItem.STATE_RIHAI_WAIT;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			try {
-				Thread.sleep(200, 0);
+				Thread.sleep(PROGRESS_WAIT_TIME, 0);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -1159,21 +1164,27 @@ public class AndjongView extends View implements EventIF {
 			}
 			break;
 		case REACH:
-			/*
-			// 自分の捨牌のみを表示します。
-			if (fromKaze == mInfoUi.getJikaze()) {
-				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
-						+ "][リーチ]");
+			Log.e(TAG, "REACH fromKaze = " + fromKaze);
+			// 手牌をコピーする。
+			mInfoUi.copyTehai(mDrawItem.mPlayerInfos[fromKaze].mTehai, fromKaze);
 
-				// 河を表示します。
-				printKawa(kawa);
+			// 河をコピーする。
+			mInfoUi.copyKawa(mDrawItem.mPlayerInfos[fromKaze].mKawa, fromKaze);
 
-				// 捨牌を表示します。
-				// System.out.println(":"
-				// + idToString((infoUi.getSuteHai()).getId()));
-				System.out.println();
+			// ツモ牌をなくす。
+			mDrawItem.mPlayerInfos[fromKaze].mTsumoHai = null;
+
+			mDrawItem.mState = DrawItem.STATE_REACH;
+			this.postInvalidate(0, 0, getWidth(), getHeight());
+			try {
+				Thread.sleep(2000, 0);
+			} catch (InterruptedException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
 			}
-			*/
+			mDrawItem.mState = DrawItem.STATE_PLAY;
+			// 描画する。
+			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RON:// ロン
 			/*

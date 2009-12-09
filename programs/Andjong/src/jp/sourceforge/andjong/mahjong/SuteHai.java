@@ -8,13 +8,13 @@ package jp.sourceforge.andjong.mahjong;
  */
 public class SuteHai extends Hai {
 	/** 鳴きフラグ */
-	private boolean naki;
+	private boolean m_naki;
 
 	/** リーチフラグ */
-	private boolean reach;
+	private boolean m_reach;
 
 	/** 手出しフラグ */
-	private boolean tedashi;
+	private boolean m_tedashi;
 
 	/**
 	 * 捨牌を作成する。
@@ -26,46 +26,46 @@ public class SuteHai extends Hai {
 	/**
 	 * IDから捨牌を作成する。
 	 *
-	 * @param id
+	 * @param a_id
 	 *            ID
 	 */
-	public SuteHai(int id) {
-		super(id);
+	public SuteHai(int a_id) {
+		super(a_id);
 	}
 
 	/**
 	 * 牌から捨牌を作成する。
 	 *
-	 * @param hai
+	 * @param a_hai
 	 *            牌
 	 */
-	public SuteHai(Hai hai) {
-		super(hai);
+	public SuteHai(Hai a_hai) {
+		super(a_hai);
 	}
 
 	/**
 	 * 捨牌をコピーする。
 	 *
-	 * @param destSuteHai
+	 * @param a_dest
 	 *            コピー先の捨牌
-	 * @param srcSuteHai
+	 * @param a_src
 	 *            コピー元の捨牌
 	 */
-	public static void copy(SuteHai destSuteHai, SuteHai srcSuteHai) {
-		Hai.copy(destSuteHai, srcSuteHai);
-		destSuteHai.naki = srcSuteHai.naki;
-		destSuteHai.reach = srcSuteHai.reach;
-		destSuteHai.tedashi = srcSuteHai.tedashi;
+	public static void copy(SuteHai a_dest, SuteHai a_src) {
+		Hai.copy(a_dest, a_src);
+		a_dest.m_naki = a_src.m_naki;
+		a_dest.m_reach = a_src.m_reach;
+		a_dest.m_tedashi = a_src.m_tedashi;
 	}
 
 	/**
 	 * 鳴きフラグを設定する。
 	 *
-	 * @param naki
+	 * @param a_naki
 	 *            鳴きフラグ
 	 */
-	public void setNaki(boolean naki) {
-		this.naki = naki;
+	public void setNaki(boolean a_naki) {
+		this.m_naki = a_naki;
 	}
 
 	/**
@@ -74,17 +74,17 @@ public class SuteHai extends Hai {
 	 * @return 鳴きフラグ
 	 */
 	public boolean isNaki() {
-		return naki;
+		return m_naki;
 	}
 
 	/**
 	 * リーチフラグを設定する。
 	 *
-	 * @param reach
+	 * @param a_reach
 	 *            リーチフラグ
 	 */
-	public void setReach(boolean reach) {
-		this.reach = reach;
+	public void setReach(boolean a_reach) {
+		this.m_reach = a_reach;
 	}
 
 	/**
@@ -93,17 +93,17 @@ public class SuteHai extends Hai {
 	 * @return リーチフラグ
 	 */
 	public boolean isReach() {
-		return reach;
+		return m_reach;
 	}
 
 	/**
 	 * 手出しフラグを設定する。
 	 *
-	 * @param tedashi
+	 * @param a_tedashi
 	 *            手出しフラグ
 	 */
-	public void setTedashi(boolean tedashi) {
-		this.tedashi = tedashi;
+	public void setTedashi(boolean a_tedashi) {
+		this.m_tedashi = a_tedashi;
 	}
 
 	/**
@@ -112,6 +112,6 @@ public class SuteHai extends Hai {
 	 * @return 手出しフラグ
 	 */
 	public boolean isTedashi() {
-		return tedashi;
+		return m_tedashi;
 	}
 }

@@ -302,13 +302,13 @@ public class Hai {
 	/**
 	 * 牌をコピーする。
 	 *
-	 * @param dest
+	 * @param a_dest
 	 *            コピー先の牌
-	 * @param src
+	 * @param a_src
 	 *            コピー元の牌
 	 */
-	public static void copy(Hai dest, Hai src) {
-		dest.m_id = src.m_id;
+	public static void copy(Hai a_dest, Hai a_src) {
+		a_dest.m_id = a_src.m_id;
 	}
 
 	/**

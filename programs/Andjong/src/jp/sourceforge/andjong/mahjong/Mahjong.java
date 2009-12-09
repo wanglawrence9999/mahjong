@@ -507,7 +507,7 @@ public class Mahjong implements Runnable {
 
 		int startHaisIdx = ((sum % 4) * 36) + sum;
 
-		mYama.setTsumoHaisStartIdx(startHaisIdx);
+		mYama.setTsumoHaisStartIndex(startHaisIdx);
 	}
 
 	/**

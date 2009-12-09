@@ -52,7 +52,7 @@ public class AgariScore {
 
 			// ›Æ’£‘Ò‚¿‚Ìê‡‚Q•„’Ç‰Á
 			//””v‚Ì‚Q`‚W‚©‚Ç‚¤‚©”»’è
-			if(addHai.isYaotyuu() == false){
+			if(addHai.isYaochuu() == false){
 				for(int i = 0 ; i < combi.shunCount ; i++){
 					if((addHai.getNo()-1) == combi.shunIds[i]){
 						countHu += 2;
@@ -61,7 +61,7 @@ public class AgariScore {
 			}
 
 			// •Ó’£‘Ò‚¿(3)‚Ìê‡‚Q•„’Ç‰Á
-			if((addHai.isYaotyuu() == false) && (addHai.getNo() == NO_3)){
+			if((addHai.isYaochuu() == false) && (addHai.getNo() == NO_3)){
 				for(int i = 0 ; i < combi.shunCount ; i++){
 					if( (addHai.getId()-2) == combi.shunIds[i]){
 						countHu += 2;
@@ -70,7 +70,7 @@ public class AgariScore {
 			}
 
 			// •Ó’£‘Ò‚¿(7)‚Ìê‡‚Q•„’Ç‰Á
-			if((addHai.isYaotyuu() == false) && (addHai.getNo() == NO_7)){
+			if((addHai.isYaochuu() == false) && (addHai.getNo() == NO_7)){
 				for(int i = 0 ; i < combi.shunCount ; i++){
 					if( addHai.getId() == combi.shunIds[i]){
 						countHu += 2;
@@ -83,7 +83,7 @@ public class AgariScore {
 		for (int i = 0; i < combi.kouCount; i++) {
 			Hai checkHai = new Hai(combi.kouIds[i]);
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
-			if (checkHai.isYaotyuu() == true) {
+			if (checkHai.isYaochuu() == true) {
 				countHu += 8;
 			} else {
 				countHu += 4;
@@ -94,7 +94,7 @@ public class AgariScore {
 		for (int i = 0; i < tehai.getMinKousLength(); i++) {
 			checkHais = tehai.getMinKous();
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
-			if (checkHais[i][0].isYaotyuu() == true) {
+			if (checkHais[i][0].isYaochuu() == true) {
 				countHu += 4;
 			} else {
 				countHu += 2;
@@ -105,7 +105,7 @@ public class AgariScore {
 		for (int i = 0; i < tehai.getMinKansLength(); i++) {
 			checkHais = tehai.getMinKans();
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
-			if (checkHais[i][0].isYaotyuu() == true) {
+			if (checkHais[i][0].isYaochuu() == true) {
 				countHu += 16;
 			} else {
 				countHu += 8;
@@ -116,7 +116,7 @@ public class AgariScore {
 		for (int i = 0; i < tehai.getAnKansLength(); i++) {
 			checkHais = tehai.getAnKans();
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
-			if (checkHais[i][0].isYaotyuu() == true) {
+			if (checkHais[i][0].isYaochuu() == true) {
 				countHu += 32;
 			} else {
 				countHu += 16;

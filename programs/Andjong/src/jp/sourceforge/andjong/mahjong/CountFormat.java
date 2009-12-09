@@ -71,12 +71,12 @@ public class CountFormat {
 		countFormat.length = 0;
 
 		if (addHai != null) {
-			addHaiId = addHai.getIdA();
+			addHaiId = addHai.getNoKind();
 			set = false;
 		}
 
 		for (int i = 0; i < tehai.getJyunTehaiLength();) {
-			jyunTehaiId = (tehai.getJyunTehai())[i].getIdA();
+			jyunTehaiId = (tehai.getJyunTehai())[i].getNoKind();
 
 			if (!set && (jyunTehaiId > addHaiId)) {
 				set = true;
@@ -95,7 +95,7 @@ public class CountFormat {
 			}
 
 			while (++i < tehai.getJyunTehaiLength())
-				if (jyunTehaiId == (tehai.getJyunTehai())[i].getIdA())
+				if (jyunTehaiId == (tehai.getJyunTehai())[i].getNoKind())
 					countFormat.counts[countFormat.length].length++;
 				else
 					break;
@@ -259,7 +259,7 @@ public class CountFormat {
 		/*
 		 * 順子をチェックする。
 		 */
-		if (((pos + 2) < countFormat.length) && ((countFormat.counts[pos + 2].id & Hai.ID_A_TSUU) == 0)) {
+		if (((pos + 2) < countFormat.length) && ((countFormat.counts[pos + 2].id & Hai.KIND_TSUU) == 0)) {
 			if ((countFormat.counts[pos].id + 1 == countFormat.counts[pos + 1].id) && (countFormat.counts[pos + 1].length > 0)) {
 				if ((countFormat.counts[pos].id + 2 == countFormat.counts[pos + 2].id) && (countFormat.counts[pos + 2].length > 0)) {
 					/*

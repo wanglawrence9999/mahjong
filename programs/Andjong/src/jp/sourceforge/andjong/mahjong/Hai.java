@@ -7,8 +7,9 @@ package jp.sourceforge.andjong.mahjong;
  *
  */
 public class Hai {
-	/** ID */
-	private int id;
+	/*
+	 * ID
+	 */
 
 	/** 一萬 */
 	public final static int ID_WAN_1 = 0;
@@ -86,23 +87,30 @@ public class Hai {
 	/** IDの最大値 */
 	public final static int ID_MAX = ID_CHUN;
 
-	/** 一 */
+	/** IDの個数の最大値 */
+	public final static int ID_ITEM_MAX = ID_MAX + 1;
+
+	/*
+	 * NO
+	 */
+
+	/** 1 */
 	public final static int NO_1 = 1;
-	/** 二 */
+	/** 2 */
 	public final static int NO_2 = 2;
-	/** 三 */
+	/** 3 */
 	public final static int NO_3 = 3;
-	/** 四 */
+	/** 4 */
 	public final static int NO_4 = 4;
-	/** 五 */
+	/** 5 */
 	public final static int NO_5 = 5;
-	/** 六 */
+	/** 6 */
 	public final static int NO_6 = 6;
-	/** 七 */
+	/** 7 */
 	public final static int NO_7 = 7;
-	/** 八 */
+	/** 8 */
 	public final static int NO_8 = 8;
-	/** 九 */
+	/** 9 */
 	public final static int NO_9 = 9;
 
 	/** 一萬 */
@@ -178,35 +186,27 @@ public class Hai {
 	/** 中 */
 	public final static int NO_CHUN = 3;
 
+	/*
+	 * 種類
+	 */
+
 	/** 萬子 */
-	public final static int ID_A_WAN = 0x00000010;
+	public final static int KIND_WAN = 0x00000010;
 	/** 筒子 */
-	public final static int ID_A_PIN = 0x00000020;
+	public final static int KIND_PIN = 0x00000020;
 	/** 索子 */
-	public final static int ID_A_SOU = 0x00000040;
+	public final static int KIND_SOU = 0x00000040;
 	/** 数牌 */
-	public final static int ID_A_SHUU = ID_A_WAN | ID_A_PIN | ID_A_SOU;
-
+	public final static int KIND_SHUU = KIND_WAN | KIND_PIN | KIND_SOU;
 	/** 風牌 */
-	public final static int ID_A_FON = 0x00000100;
+	public final static int KIND_FON = 0x00000100;
 	/** 三元牌 */
-	public final static int ID_A_SANGEN = 0x00000200;
+	public final static int KIND_SANGEN = 0x00000200;
 	/** 字牌 */
-	public final static int ID_A_TSUU = ID_A_FON | ID_A_SANGEN;
-
-	/** 萬子 */
-	public final static int KIND_WAN = 0;
-	/** 筒子 */
-	public final static int KIND_PIN = 1;
-	/** 索子 */
-	public final static int KIND_SOU = 2;
-	/** 風牌 */
-	public final static int KIND_FON = 3;
-	/** 三元牌 */
-	public final static int KIND_SANGEN = 4;
+	public final static int KIND_TSUU = KIND_FON | KIND_SANGEN;
 
 	/** 番号の配列 */
-	private final static int[] nos = {
+	private final static int[] NOS = {
 	// 萬子
 	NO_WAN_1, NO_WAN_2, NO_WAN_3, NO_WAN_4, NO_WAN_5, NO_WAN_6, NO_WAN_7, NO_WAN_8, NO_WAN_9,
 	// 筒子
@@ -218,21 +218,8 @@ public class Hai {
 	// 三元牌
 	NO_HAKU, NO_HATSU, NO_CHUN };
 
-	/** ID Format Aの配列 */
-	private final static int[] idAs = {
-	// 萬子
-	ID_A_WAN | NO_WAN_1, ID_A_WAN | NO_WAN_2, ID_A_WAN | NO_WAN_3, ID_A_WAN | NO_WAN_4, ID_A_WAN | NO_WAN_5, ID_A_WAN | NO_WAN_6, ID_A_WAN | NO_WAN_7, ID_A_WAN | NO_WAN_8, ID_A_WAN | NO_WAN_9,
-	// 筒子
-	ID_A_PIN | NO_PIN_1, ID_A_PIN | NO_PIN_2, ID_A_PIN | NO_PIN_3, ID_A_PIN | NO_PIN_4, ID_A_PIN | NO_PIN_5, ID_A_PIN | NO_PIN_6, ID_A_PIN | NO_PIN_7, ID_A_PIN | NO_PIN_8, ID_A_PIN | NO_PIN_9,
-	// 索子
-	ID_A_SOU | NO_SOU_1, ID_A_SOU | NO_SOU_2, ID_A_SOU | NO_SOU_3, ID_A_SOU | NO_SOU_4, ID_A_SOU | NO_SOU_5, ID_A_SOU | NO_SOU_6, ID_A_SOU | NO_SOU_7, ID_A_SOU | NO_SOU_8, ID_A_SOU | NO_SOU_9,
-	// 風牌
-	ID_A_FON | NO_TON, ID_A_FON | NO_NAN, ID_A_FON | NO_SHA, ID_A_FON | NO_PE,
-	// 三元牌
-	ID_A_SANGEN | NO_HAKU, ID_A_SANGEN | NO_HATSU, ID_A_SANGEN | NO_CHUN };
-
 	/** 種類の配列 */
-	private final static int[] kinds = {
+	private final static int[] KINDS = {
 	// 萬子
 	KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN,
 	// 筒子
@@ -245,7 +232,7 @@ public class Hai {
 	KIND_SANGEN, KIND_SANGEN, KIND_SANGEN };
 
 	/** 一九牌フラグの配列 */
-	private final static boolean[] ichikyuus = {
+	private final static boolean[] IS_ICHIKYUUS = {
 	// 萬子
 	true, false, false, false, false, false, false, false, true,
 	// 筒子
@@ -258,7 +245,7 @@ public class Hai {
 	false, false, false };
 
 	/** 字牌フラグの配列 */
-	private final static boolean[] tsuus = {
+	private final static boolean[] IS_TSUUS = {
 	// 萬子
 	false, false, false, false, false, false, false, false, false,
 	// 筒子
@@ -270,43 +257,58 @@ public class Hai {
 	// 三元牌
 	true, true, true };
 
+	/** ネクスト牌のIDの配列 */
+	private final static int[] NEXT_HAI_IDS = {
+	// 萬子
+	NO_WAN_2, NO_WAN_3, NO_WAN_4, NO_WAN_5, NO_WAN_6, NO_WAN_7, NO_WAN_8, NO_WAN_9, NO_WAN_1,
+	// 筒子
+	NO_PIN_2, NO_PIN_3, NO_PIN_4, NO_PIN_5, NO_PIN_6, NO_PIN_7, NO_PIN_8, NO_PIN_9, NO_PIN_1,
+	// 索子
+	NO_SOU_2, NO_SOU_3, NO_SOU_4, NO_SOU_5, NO_SOU_6, NO_SOU_7, NO_SOU_8, NO_SOU_9, NO_SOU_1,
+	// 風牌
+	NO_NAN, NO_SHA, NO_PE, NO_TON,
+	// 三元牌
+	NO_HATSU, NO_CHUN, NO_HAKU };
+
+	/** ID */
+	private int m_id;
+
 	/**
 	 * 空の牌を作成する。
 	 */
 	public Hai() {
-
 	}
 
 	/**
 	 * IDから牌を作成する。
 	 *
-	 * @param id
+	 * @param a_id
 	 *            ID
 	 */
-	public Hai(int id) {
-		this.id = id;
+	public Hai(int a_id) {
+		this.m_id = a_id;
 	}
 
 	/**
 	 * 牌から牌を作成する。
 	 *
-	 * @param hai
+	 * @param a_hai
 	 *            牌
 	 */
-	public Hai(Hai hai) {
-		copy(this, hai);
+	public Hai(Hai a_hai) {
+		copy(this, a_hai);
 	}
 
 	/**
 	 * 牌をコピーする。
 	 *
-	 * @param destHai
+	 * @param dest
 	 *            コピー先の牌
-	 * @param srcHai
+	 * @param src
 	 *            コピー元の牌
 	 */
-	public static void copy(Hai destHai, Hai srcHai) {
-		destHai.id = srcHai.id;
+	public static void copy(Hai dest, Hai src) {
+		dest.m_id = src.m_id;
 	}
 
 	/**
@@ -315,7 +317,7 @@ public class Hai {
 	 * @return ID
 	 */
 	public int getId() {
-		return id;
+		return m_id;
 	}
 
 	/**
@@ -324,16 +326,7 @@ public class Hai {
 	 * @return 番号
 	 */
 	public int getNo() {
-		return nos[id];
-	}
-
-	/**
-	 * ID Format Aを取得する。
-	 *
-	 * @return ID Format A
-	 */
-	public int getIdA() {
-		return idAs[id];
+		return NOS[m_id];
 	}
 
 	/**
@@ -342,7 +335,16 @@ public class Hai {
 	 * @return 種類
 	 */
 	public int getKind() {
-		return kinds[id];
+		return KINDS[m_id];
+	}
+
+	/**
+	 * 番号と種類のORを取得する。
+	 *
+	 * @return 番号と種類のOR
+	 */
+	public int getNoKind() {
+		return NOS[m_id] | KINDS[m_id];
 	}
 
 	/**
@@ -351,7 +353,7 @@ public class Hai {
 	 * @return 一九牌フラグ
 	 */
 	public boolean isIchikyuu() {
-		return ichikyuus[id];
+		return IS_ICHIKYUUS[m_id];
 	}
 
 	/**
@@ -360,7 +362,7 @@ public class Hai {
 	 * @return 字牌フラグ
 	 */
 	public boolean isTsuu() {
-		return tsuus[id];
+		return IS_TSUUS[m_id];
 	}
 
 	/**
@@ -368,8 +370,8 @@ public class Hai {
 	 *
 	 * @return 一九字牌フラグ
 	 */
-	public boolean isYaotyuu() {
-		return ichikyuus[id] | tsuus[id];
+	public boolean isYaochuu() {
+		return IS_ICHIKYUUS[m_id] | IS_TSUUS[m_id];
 	}
 
 	/**
@@ -377,30 +379,7 @@ public class Hai {
 	 *
 	 * @return ネクスト牌のID
 	 */
-	public int getNextId() {
-		int nextId;
-
-		switch (id) {
-		case ID_WAN_9:
-			nextId = ID_WAN_1;
-			break;
-		case ID_PIN_9:
-			nextId = ID_PIN_1;
-			break;
-		case ID_SOU_9:
-			nextId = ID_SOU_1;
-			break;
-		case ID_PE:
-			nextId = ID_TON;
-			break;
-		case ID_CHUN:
-			nextId = ID_HAKU;
-			break;
-		default:
-			nextId = id + 1;
-			break;
-		}
-
-		return nextId;
+	public int getNextHaiId() {
+		return NEXT_HAI_IDS[m_id];
 	}
 }

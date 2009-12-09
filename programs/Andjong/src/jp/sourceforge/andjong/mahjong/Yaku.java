@@ -615,7 +615,7 @@ public class Yaku {
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		for (int i = 0; i < jyunTehaiLength; i++) {
 			//１９字牌ならば不成立
-			if (jyunTehai[i].isYaotyuu() == true){
+			if (jyunTehai[i].isYaochuu() == true){
 				return false;
 			}
 		}
@@ -633,7 +633,7 @@ public class Yaku {
 		//明刻の牌をチェック
 		for(int i = 0; i < tehai.getMinKousLength(); i++){
 			checkHai = tehai.getMinKous();
-			if (checkHai[i][0].isYaotyuu() == true){
+			if (checkHai[i][0].isYaochuu() == true){
 				return false;
 			}
 		}
@@ -641,7 +641,7 @@ public class Yaku {
 		//明槓の牌をチェック
 		for(int i = 0; i < tehai.getMinKansLength(); i++){
 			checkHai = tehai.getMinKans();
-			if (checkHai[i][0].isYaotyuu() == true){
+			if (checkHai[i][0].isYaochuu() == true){
 				return false;
 			}
 		}
@@ -649,7 +649,7 @@ public class Yaku {
 		//暗槓の牌をチェック
 		for(int i = 0; i < tehai.getAnKansLength(); i++){
 			checkHai = tehai.getAnKans();
-			if (checkHai[i][0].isYaotyuu() == true){
+			if (checkHai[i][0].isYaochuu() == true){
 				return false;
 			}
 		}
@@ -893,7 +893,7 @@ public class Yaku {
 		for(int i = 0; i < combi.kouCount ; i++){
 			checkHai = new Hai(combi.kouIds[i]);
 			//数牌の場合は数字をチェック
-			if (checkHai.isYaotyuu() == false){
+			if (checkHai.isYaochuu() == false){
 				return false;
 			}
 		}
@@ -910,7 +910,7 @@ public class Yaku {
 
 		//純手牌の頭をチェック
 		checkHai = new Hai(combi.atamaId);
-		if (checkHai.isYaotyuu() == false){
+		if (checkHai.isYaochuu() == false){
 			return false;
 		}
 
@@ -926,7 +926,7 @@ public class Yaku {
 		for(int i = 0; i < tehai.getMinKousLength(); i++){
 			checkHais = tehai.getMinKous();
 			//数牌の場合は数字をチェック
-			if (checkHais[i][0].isYaotyuu() == false){
+			if (checkHais[i][0].isYaochuu() == false){
 				return false;
 			}
 		}
@@ -935,7 +935,7 @@ public class Yaku {
 		for(int i = 0; i < tehai.getMinKansLength(); i++){
 			checkHais = tehai.getMinKans();
 			//数牌の場合は数字をチェック
-			if (checkHais[i][0].isYaotyuu() == false){
+			if (checkHais[i][0].isYaochuu() == false){
 				return false;
 			}
 		}
@@ -944,7 +944,7 @@ public class Yaku {
 		for(int i = 0; i < tehai.getAnKansLength(); i++){
 			checkHais = tehai.getAnKans();
 			//数牌の場合は数字をチェック
-			if (checkHais[i][0].isYaotyuu() == false){
+			if (checkHais[i][0].isYaochuu() == false){
 				return false;
 			}
 		}
@@ -1303,7 +1303,7 @@ public class Yaku {
 			}
 
 			//中張牌ならば不成立
-			if(checkHai.isYaotyuu() == false ){
+			if(checkHai.isYaochuu() == false ){
 				return false;
 			}
 		}
@@ -1329,7 +1329,7 @@ public class Yaku {
 			return false;
 		}
 		//中張牌ならば不成立
-		if(checkHai.isYaotyuu() == false ){
+		if(checkHai.isYaochuu() == false ){
 			return false;
 		}
 
@@ -1350,7 +1350,7 @@ public class Yaku {
 				return false;
 			}
 			//中張牌ならば不成立
-			if(checkHais[i][0].isYaotyuu() == false ){
+			if(checkHais[i][0].isYaochuu() == false ){
 				return false;
 			}
 		}
@@ -1363,7 +1363,7 @@ public class Yaku {
 				return false;
 			}
 			//中張牌ならば不成立
-			if(checkHais[i][0].isYaotyuu() == false ){
+			if(checkHais[i][0].isYaochuu() == false ){
 				return false;
 			}
 		}
@@ -1376,7 +1376,7 @@ public class Yaku {
 				return false;
 			}
 			//中張牌ならば不成立
-			if(checkHais[i][0].isYaotyuu() == false ){
+			if(checkHais[i][0].isYaochuu() == false ){
 				return false;
 			}
 		}

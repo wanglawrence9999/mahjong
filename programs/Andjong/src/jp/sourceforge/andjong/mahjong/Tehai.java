@@ -349,13 +349,13 @@ public class Tehai {
 			return false;
 		}
 
-		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiIdA = suteHai.getNoKind();
 		int suteHaiR1IdA = suteHaiIdA + 1;
 		int suteHaiR2IdA = suteHaiIdA + 2;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (jyunTehai[i].getIdA() == suteHaiR1IdA) {
+			if (jyunTehai[i].getNoKind() == suteHaiR1IdA) {
 				for (int j = i + 1; j < jyunTehaiLength; j++) {
-					if (jyunTehai[j].getIdA() == suteHaiR2IdA) {
+					if (jyunTehai[j].getNoKind() == suteHaiR2IdA) {
 						return true;
 					}
 				}
@@ -379,15 +379,15 @@ public class Tehai {
 
 		Hai.copy(minShuns[minShunsLength][0], suteHai);
 
-		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiIdA = suteHai.getNoKind();
 		int suteHaiR1IdA = suteHaiIdA + 1;
 		int suteHaiR2IdA = suteHaiIdA + 2;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (jyunTehai[i].getIdA() == suteHaiR1IdA) {
+			if (jyunTehai[i].getNoKind() == suteHaiR1IdA) {
 				Hai.copy(minShuns[minShunsLength][1], jyunTehai[i]);
 				rmJyunTehai(i);
 				for (int j = i; j < jyunTehaiLength; j++) {
-					if (jyunTehai[j].getIdA() == suteHaiR2IdA) {
+					if (jyunTehai[j].getNoKind() == suteHaiR2IdA) {
 						Hai.copy(minShuns[minShunsLength][2], jyunTehai[j]);
 						rmJyunTehai(j);
 						minShunsLength++;
@@ -428,13 +428,13 @@ public class Tehai {
 			return false;
 		}
 
-		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiIdA = suteHai.getNoKind();
 		int suteHaiL1IdA = suteHaiIdA - 1;
 		int suteHaiR1IdA = suteHaiIdA + 1;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (jyunTehai[i].getIdA() == suteHaiL1IdA) {
+			if (jyunTehai[i].getNoKind() == suteHaiL1IdA) {
 				for (int j = i + 1; j < jyunTehaiLength; j++) {
-					if (jyunTehai[j].getIdA() == suteHaiR1IdA) {
+					if (jyunTehai[j].getNoKind() == suteHaiR1IdA) {
 						return true;
 					}
 				}
@@ -458,15 +458,15 @@ public class Tehai {
 
 		Hai.copy(minShuns[minShunsLength][1], suteHai);
 
-		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiIdA = suteHai.getNoKind();
 		int suteHaiL1IdA = suteHaiIdA - 1;
 		int suteHaiR1IdA = suteHaiIdA + 1;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (jyunTehai[i].getIdA() == suteHaiL1IdA) {
+			if (jyunTehai[i].getNoKind() == suteHaiL1IdA) {
 				Hai.copy(minShuns[minShunsLength][0], jyunTehai[i]);
 				rmJyunTehai(i);
 				for (int j = i; j < jyunTehaiLength; j++) {
-					if (jyunTehai[j].getIdA() == suteHaiR1IdA) {
+					if (jyunTehai[j].getNoKind() == suteHaiR1IdA) {
 						Hai.copy(minShuns[minShunsLength][2], jyunTehai[j]);
 						rmJyunTehai(j);
 						minShunsLength++;
@@ -507,13 +507,13 @@ public class Tehai {
 			return false;
 		}
 
-		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiIdA = suteHai.getNoKind();
 		int suteHaiL2IdA = suteHaiIdA - 2;
 		int suteHaiL1IdA = suteHaiIdA - 1;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (jyunTehai[i].getIdA() == suteHaiL2IdA) {
+			if (jyunTehai[i].getNoKind() == suteHaiL2IdA) {
 				for (int j = i + 1; j < jyunTehaiLength; j++) {
-					if (jyunTehai[j].getIdA() == suteHaiL1IdA) {
+					if (jyunTehai[j].getNoKind() == suteHaiL1IdA) {
 						return true;
 					}
 				}
@@ -537,15 +537,15 @@ public class Tehai {
 
 		Hai.copy(minShuns[minShunsLength][2], suteHai);
 
-		int suteHaiIdA = suteHai.getIdA();
+		int suteHaiIdA = suteHai.getNoKind();
 		int suteHaiL2IdA = suteHaiIdA - 2;
 		int suteHaiL1IdA = suteHaiIdA - 1;
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (jyunTehai[i].getIdA() == suteHaiL2IdA) {
+			if (jyunTehai[i].getNoKind() == suteHaiL2IdA) {
 				Hai.copy(minShuns[minShunsLength][0], jyunTehai[i]);
 				rmJyunTehai(i);
 				for (int j = i; j < jyunTehaiLength; j++) {
-					if (jyunTehai[j].getIdA() == suteHaiL1IdA) {
+					if (jyunTehai[j].getNoKind() == suteHaiL1IdA) {
 						Hai.copy(minShuns[minShunsLength][1], jyunTehai[j]);
 						rmJyunTehai(j);
 						minShunsLength++;

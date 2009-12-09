@@ -215,7 +215,7 @@ public class AI implements EventIF {
 		int score = 0;
 
 		for (int i = 0; i < countFormat.length; i++) {
-			if ((countFormat.counts[i].id & Hai.ID_A_SHUU) != 0) {
+			if ((countFormat.counts[i].id & Hai.KIND_SHUU) != 0) {
 				score += countFormat.counts[i].length * HYOUKA_SHUU;
 			}
 
@@ -227,7 +227,7 @@ public class AI implements EventIF {
 				score += 8;
 			}
 
-			if ((countFormat.counts[i].id & Hai.ID_A_SHUU) > 0) {
+			if ((countFormat.counts[i].id & Hai.KIND_SHUU) > 0) {
 				if ((countFormat.counts[i].id + 1) == countFormat.counts[i + 1].id) {
 					score += 4;
 				}

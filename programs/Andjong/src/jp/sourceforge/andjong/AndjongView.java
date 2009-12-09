@@ -663,7 +663,7 @@ public class AndjongView extends View implements EventIF {
 		if (fuuroNums > 0) {
 			Fuuro[] fuuros = tehai.getFuuros();
 			for (int i = 0; i < fuuroNums; i++) {
-				Hai hais[] = fuuros[i].getHai();
+				Hai hais[] = fuuros[i].getHais();
 				//int type = fuuros[i].getType();
 				int relation = fuuros[i].getRelation();
 

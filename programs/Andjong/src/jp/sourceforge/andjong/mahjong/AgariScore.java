@@ -79,6 +79,7 @@ public class AgariScore {
 			}
 		}
 
+		/*
 		// à√çèÇ…ÇÊÇÈâ¡ì_
 		for (int i = 0; i < combi.kouCount; i++) {
 			Hai checkHai = new Hai(combi.kouIds[i]);
@@ -122,6 +123,7 @@ public class AgariScore {
 				countHu += 16;
 			}
 		}
+		*/
 
 		// ÉcÉÇè„Ç™ÇËÇ≈ïΩòaÇ™ê¨óßÇµÇƒÇ¢Ç»ÇØÇÍÇŒÇQïàí«â¡
 		if(setting.getYakuflg(AgariSetting.YakuflgName.TUMO.ordinal() )== true){

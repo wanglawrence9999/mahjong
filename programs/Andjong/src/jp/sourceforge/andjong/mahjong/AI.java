@@ -158,8 +158,8 @@ public class AI implements EventIF {
 		// ",hai:" + UI.idToString(tsumoHai.getId()));
 		Hai hai = new Hai();
 
-		Hai[] jyunTehai = new Hai[Tehai.JYUNTEHAI_MAX];
-		for (int i = 0; i < Tehai.JYUNTEHAI_MAX; i++)
+		Hai[] jyunTehai = new Hai[Tehai.JYUN_TEHAI_LENGTH_MAX];
+		for (int i = 0; i < Tehai.JYUN_TEHAI_LENGTH_MAX; i++)
 			jyunTehai[i] = new Hai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		Tehai.copyJyunTehai(jyunTehai, tehai.getJyunTehai(), jyunTehaiLength);

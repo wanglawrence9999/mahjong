@@ -1,7 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 import static jp.sourceforge.andjong.mahjong.AgariSetting.YakuflgName.*;
 import static jp.sourceforge.andjong.mahjong.Hai.*;
-import static jp.sourceforge.andjong.mahjong.Tehai.JYUNTEHAI_MAX;
+import static jp.sourceforge.andjong.mahjong.Tehai.JYUN_TEHAI_LENGTH_MAX;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 /**
@@ -34,10 +34,7 @@ public class Yaku {
 		this.combi  = combi;
 		this.setting = setting;
 		//鳴きがある場合
-		if((tehai.getMinKansLength() != 0)
-		|| (tehai.getMinKousLength() != 0)
-		|| (tehai.getMinShunsLength() != 0)
-		){
+		if (tehai.getFuuroNums() != 0) {
 			nakiflg = true;
 		}
 
@@ -620,6 +617,7 @@ public class Yaku {
 			}
 		}
 
+		/*
 		//明順の牌をチェック
 		for(int i = 0; i < tehai.getMinShunsLength(); i++){
 			checkHai = tehai.getMinShuns();
@@ -653,6 +651,7 @@ public class Yaku {
 				return false;
 			}
 		}
+		*/
 
 		return true;
 	}
@@ -785,6 +784,7 @@ public class Yaku {
 			}
 		}
 
+		/*
 		//明刻の牌をチェック
 		for(int i = 0; i < tehai.getMinKousLength(); i++){
 			checkHai = tehai.getMinKous();
@@ -813,6 +813,7 @@ public class Yaku {
 				return true;
 			}
 		}
+		*/
 		return false;
 	}
 
@@ -914,6 +915,7 @@ public class Yaku {
 			return false;
 		}
 
+		/*
 		//明順の牌をチェック
 		for(int i = 0; i < tehai.getMinShunsLength(); i++){
 			checkHais = tehai.getMinShuns();
@@ -948,6 +950,7 @@ public class Yaku {
 				return false;
 			}
 		}
+		*/
 
 		return true;
 	}
@@ -1057,6 +1060,7 @@ public class Yaku {
 			checkSansyoku(id,sansyokuflg);
 		}
 
+		/*
 		//鳴いた牌の明刻をチェック
 		for(int i = 0 ; i < tehai.getMinKousLength() ; i++){
 			checkHai = tehai.getMinKous();
@@ -1077,6 +1081,7 @@ public class Yaku {
 			id = checkHai[i][0].getId();
 			checkSansyoku(id,sansyokuflg);
 		}
+		*/
 
 		//三色同刻が出来ているかどうかチェック
 		for(int i = 0 ; i < sansyokuflg[0].length ; i++){
@@ -1243,6 +1248,7 @@ public class Yaku {
 				}
 			}
 
+			/*
 			//明順の牌をチェック
 			for(int j = 0; j < tehai.getMinShunsLength(); j++){
 				checkHai = tehai.getMinShuns();
@@ -1278,6 +1284,7 @@ public class Yaku {
 					honituflg = false;
 				}
 			}
+			*/
 
 			//混一が成立している
 			if(honituflg == true){
@@ -1333,6 +1340,7 @@ public class Yaku {
 			return false;
 		}
 
+		/*
 		//明順の牌をチェック
 		for(int i = 0; i < tehai.getMinShunsLength(); i++){
 			checkHais = tehai.getMinShuns();
@@ -1380,6 +1388,7 @@ public class Yaku {
 				return false;
 			}
 		}
+		*/
 
 		return true;
 	}
@@ -1448,6 +1457,7 @@ public class Yaku {
 				}
 			}
 
+			/*
 			//明順の牌をチェック
 			for(int j = 0; j < tehai.getMinShunsLength(); j++){
 				checkHai = tehai.getMinShuns();
@@ -1483,6 +1493,7 @@ public class Yaku {
 					Tinituflg = false;
 				}
 			}
+			*/
 
 			//清一が成立している
 			if(Tinituflg == true){
@@ -1632,6 +1643,7 @@ public class Yaku {
 			}
 		}
 
+		/*
 		//明刻の牌をチェック
 		for(int j = 0; j < tehai.getMinKousLength(); j++){
 			checkHai = tehai.getMinKous();
@@ -1658,6 +1670,7 @@ public class Yaku {
 				return false;
 			}
 		}
+		*/
 
 		return true;
 	}
@@ -1701,6 +1714,7 @@ public class Yaku {
 			}
 		}
 
+		/*
 		//明順の牌をチェック
 		for(int i = 0; i < tehai.getMinShunsLength(); i++){
 			checkHai = tehai.getMinShuns();
@@ -1761,6 +1775,7 @@ public class Yaku {
 				return false;
 			}
 		}
+		*/
 
 		//条件に該当した
 		return true;
@@ -1769,7 +1784,7 @@ public class Yaku {
 	boolean checkCyuurennpoutou() {
 		//牌の数を調べるための配列 (0番地は使用しない）
 		int countNumber[] = {0,0,0,0,0,0,0,0,0,0};
-		Hai checkHai[] = new Hai[JYUNTEHAI_MAX];
+		Hai checkHai[] = new Hai[JYUN_TEHAI_LENGTH_MAX];
 
 		//鳴きがある場合は成立しない
 		if(nakiflg == true){
@@ -1809,7 +1824,7 @@ public class Yaku {
 		int checkId[] = {ID_WAN_1,ID_WAN_9,ID_PIN_1,ID_PIN_9,ID_SOU_1,ID_SOU_9,
 								ID_TON,ID_NAN,ID_SHA,ID_PE,ID_HAKU,ID_HATSU,ID_CHUN};
 		int countHai[] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
-		Hai checkHai[] = new Hai[JYUNTEHAI_MAX];
+		Hai checkHai[] = new Hai[JYUN_TEHAI_LENGTH_MAX];
 
 		//鳴きがある場合は成立しない
 		if(nakiflg == true){

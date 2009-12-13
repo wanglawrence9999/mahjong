@@ -165,7 +165,7 @@ public class AI implements EventIF {
 		Tehai.copyJyunTehai(jyunTehai, tehai.getJyunTehai(), jyunTehaiLength);
 
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			tehai.copyJyunTehaiIdx(hai, i);
+			tehai.copyJyunTehaiIndex(hai, i);
 			tehai.rmJyunTehai(i);
 			CountFormat.getCountFormat(tehai, countFormat, addHai);
 			score = getCountFormatScore(countFormat);

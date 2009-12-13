@@ -1112,10 +1112,10 @@ public class Yaku {
 			return true;
 		}
 
-		//ˆÃ‚ÆˆÃÈ‚Ì‡Œv‚ª‚R‚Â‚Å‚Í‚È‚¢ê‡‚Í•s¬—§
-		if((combi.kouCount + tehai.getAnKansLength()) != 3){
-			return false;
-		}
+//		//ˆÃ‚ÆˆÃÈ‚Ì‡Œv‚ª‚R‚Â‚Å‚Í‚È‚¢ê‡‚Í•s¬—§
+//		if((combi.kouCount + tehai.getAnKansLength()) != 3){
+//			return false;
+//		}
 
 		//ƒcƒ‚ã‚ª‚è‚Ìê‡‚Í¬—§
 		if(setting.getYakuflg(TUMO.ordinal()) == true){
@@ -1202,8 +1202,8 @@ public class Yaku {
 
 	boolean checkSankantu() {
 		int kansnumber = 0;
-		kansnumber += tehai.getAnKansLength();
-		kansnumber += tehai.getMinKansLength();
+//		kansnumber += tehai.getAnKansLength();
+//		kansnumber += tehai.getMinKansLength();
 		if(kansnumber == 3){
 			return true;
 		}else{
@@ -1509,7 +1509,8 @@ public class Yaku {
 
 	boolean checkSuuankou() {
 		//è”v‚ÌˆÃ‚ª4‚Â
-		if((combi.kouCount + tehai.getAnKansLength()) != 4){
+		if(true){
+//		if((combi.kouCount + tehai.getAnKansLength()) != 4){
 			return false;
 		}else{
 			//ƒcƒ‚˜a—¹‚è‚Ìê‡‚Í¬—§
@@ -1530,8 +1531,8 @@ public class Yaku {
 
 	boolean checkSuukantu() {
 		int kansnumber = 0;
-		kansnumber += tehai.getAnKansLength();
-		kansnumber += tehai.getMinKansLength();
+//		kansnumber += tehai.getAnKansLength();
+//		kansnumber += tehai.getMinKansLength();
 		if(kansnumber == 4){
 			return true;
 		}else{

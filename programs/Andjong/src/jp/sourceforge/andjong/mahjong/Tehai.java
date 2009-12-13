@@ -25,18 +25,6 @@ public class Tehai {
 	/** 純手牌の長さ */
 	private int m_jyunTehaiLength;
 
-	/** 明槓の配列 */
-	private Hai[][] m_minKans = new Hai[FUURO_MAX][MENTSU_LENGTH_4];
-
-	/** 明槓の配列の長さ */
-	private int m_minKansLength;
-
-	/** 暗槓の配列 */
-	private Hai[][] m_anKans = new Hai[FUURO_MAX][MENTSU_LENGTH_4];
-
-	/** 暗槓の配列の長さ */
-	private int m_anKansLength;
-
 	/** 副露の配列 */
 	private Fuuro[] m_fuuros = new Fuuro[FUURO_MAX];
 
@@ -49,10 +37,6 @@ public class Tehai {
 		}
 
 		for (int i = 0; i < FUURO_MAX; i++) {
-			for (int j = 0; j < MENTSU_LENGTH_4; j++) {
-				m_minKans[i][j] = new Hai();
-				m_anKans[i][j] = new Hai();
-			}
 			m_fuuros[i] = new Fuuro();
 		}
 	}
@@ -69,8 +53,6 @@ public class Tehai {
 	 */
 	public void initialize() {
 		m_jyunTehaiLength = 0;
-		m_minKansLength = 0;
-		m_anKansLength = 0;
 		m_fuuroNums = 0;
 	}
 
@@ -89,12 +71,6 @@ public class Tehai {
 			a_dest.m_jyunTehaiLength = a_src.m_jyunTehaiLength;
 			Tehai.copyJyunTehai(a_dest.m_jyunTehai, a_src.m_jyunTehai, a_dest.m_jyunTehaiLength);
 		}
-
-		a_dest.m_minKansLength = a_src.m_minKansLength;
-		Tehai.copyMinKans(a_dest.m_minKans, a_src.m_minKans, a_dest.m_minKansLength);
-
-		a_dest.m_anKansLength = a_src.m_anKansLength;
-		Tehai.copyMinKans(a_dest.m_anKans, a_src.m_anKans, a_dest.m_anKansLength);
 
 		a_dest.m_fuuroNums = a_src.m_fuuroNums;
 		copyFuuros(a_dest.m_fuuros, a_src.m_fuuros, a_dest.m_fuuroNums);
@@ -216,7 +192,7 @@ public class Tehai {
 	 * @param a_index
 	 *            指定位置
 	 */
-	public boolean copyJyunTehaiIdx(Hai a_hai, int a_index) {
+	public boolean copyJyunTehaiIndex(Hai a_hai, int a_index) {
 		if (a_index >= m_jyunTehaiLength) {
 			return false;
 		}
@@ -247,10 +223,6 @@ public class Tehai {
 		}
 
 		if (m_fuuroNums >= FUURO_MAX) {
-			return false;
-		}
-
-		if (m_jyunTehaiLength <= MENTSU_LENGTH_3) {
 			return false;
 		}
 
@@ -342,10 +314,6 @@ public class Tehai {
 			return false;
 		}
 
-		if (m_jyunTehaiLength <= MENTSU_LENGTH_3) {
-			return false;
-		}
-
 		int noKindCenter = a_suteHai.getNoKind();
 		int noKindLeft = noKindCenter - 1;
 		int noKindRight = noKindCenter + 1;
@@ -367,6 +335,8 @@ public class Tehai {
 	 *
 	 * @param a_suteHai
 	 *            捨牌
+	 * @param a_relation
+	 *            関係
 	 * @return 結果
 	 */
 	public boolean setChiiCenter(Hai a_suteHai, int a_relation) {
@@ -430,10 +400,6 @@ public class Tehai {
 			return false;
 		}
 
-		if (m_jyunTehaiLength <= MENTSU_LENGTH_3) {
-			return false;
-		}
-
 		int noKindRight = a_suteHai.getNoKind();
 		int noKindLeft = noKindRight - 2;
 		int noKindCenter = noKindRight - 1;
@@ -455,6 +421,8 @@ public class Tehai {
 	 *
 	 * @param a_suteHai
 	 *            捨牌
+	 * @param a_relation
+	 *            関係
 	 * @return 結果
 	 */
 	public boolean setChiiRight(Hai a_suteHai, int a_relation) {
@@ -537,28 +505,196 @@ public class Tehai {
 
 		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
 
-		int iMinKou = 0;
-		hais[iMinKou] = new Hai(a_suteHai);
-		iMinKou++;
+		int iHais = 0;
+		hais[iHais] = new Hai(a_suteHai);
+		iHais++;
 
 		int id = a_suteHai.getId();
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
 			if (id == m_jyunTehai[i].getId()) {
-				hais[iMinKou] = new Hai(m_jyunTehai[i]);
-				iMinKou++;
+				hais[iHais] = new Hai(m_jyunTehai[i]);
+				iHais++;
 
 				rmJyunTehai(i);
 				i--;
 
-				if (iMinKou >= MENTSU_LENGTH_3) {
+				if (iHais >= MENTSU_LENGTH_3) {
 					break;
 				}
 			}
 		}
 
-		hais[iMinKou] = new Hai();
+		hais[iHais] = new Hai();
 
 		m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_MINKOU);
+		m_fuuros[m_fuuroNums].setRelation(a_relation);
+		m_fuuros[m_fuuroNums].setHais(hais);
+		m_fuuroNums++;
+
+		return true;
+	}
+
+	/**
+	 * 槓の可否をチェックする。
+	 *
+	 * @param a_addHai
+	 *            追加する牌
+	 * @return 暗槓の可否
+	 */
+	public boolean validKan(Hai a_addHai) {
+		if (m_fuuroNums >= FUURO_MAX) {
+			return false;
+		}
+
+		int id = a_addHai.getId();
+		for (int i = 0, count = 1; i < m_jyunTehaiLength; i++) {
+			if (id == m_jyunTehai[i].getId()) {
+				count++;
+				if (count >= MENTSU_LENGTH_4) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 大明槓を設定する。
+	 *
+	 * @param a_suteHai
+	 *            捨牌
+	 * @param a_relation
+	 *            関係
+	 * @return 結果
+	 */
+	public boolean setDaiMinKan(Hai a_suteHai, int a_relation) {
+		if (!validKan(a_suteHai)) {
+			return false;
+		}
+
+		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
+
+		int iHais = 0;
+		hais[iHais] = new Hai(a_suteHai);
+		iHais++;
+
+		int suteHaiId = a_suteHai.getId();
+		for (int i = 0; i < m_jyunTehaiLength; i++) {
+			if (suteHaiId == m_jyunTehai[i].getId()) {
+				hais[iHais] = new Hai(m_jyunTehai[i]);
+				iHais++;
+
+				rmJyunTehai(i);
+				i--;
+
+				if (iHais >= MENTSU_LENGTH_4) {
+					break;
+				}
+			}
+		}
+
+		hais[iHais] = new Hai();
+
+		m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_MINKOU);
+		m_fuuros[m_fuuroNums].setRelation(a_relation);
+		m_fuuros[m_fuuroNums].setHais(hais);
+		m_fuuroNums++;
+
+		return true;
+	}
+
+	/**
+	 * 加槓の可否をチェックする。
+	 *
+	 * @param a_tsumoHai
+	 *            ツモ牌
+	 * @return 加槓の可否
+	 */
+	public boolean validKaKan(Hai a_tsumoHai) {
+		if (m_fuuroNums >= FUURO_MAX) {
+			return false;
+		}
+
+		int id = a_tsumoHai.getId();
+		for (int i = 0; i < m_fuuroNums; i++) {
+			if (m_fuuros[i].getType() == Fuuro.TYPE_MINKOU) {
+				if (id == (m_fuuros[i].getHais())[0].getId()) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 加槓を設定する。
+	 *
+	 * @param a_tsumoHai
+	 *            ツモ牌
+	 * @return 結果
+	 */
+	public boolean setKaKan(Hai a_tsumoHai) {
+		if (!validKaKan(a_tsumoHai)) {
+			return false;
+		}
+
+		Hai hais[];
+
+		int id = a_tsumoHai.getId();
+		for (int i = 0; i < m_fuuroNums; i++) {
+			if (m_fuuros[i].getType() == Fuuro.TYPE_MINKOU) {
+				hais = m_fuuros[i].getHais();
+				if (id == hais[0].getId()) {
+					Hai.copy(hais[3], a_tsumoHai);
+					m_fuuros[i].setType(Fuuro.TYPE_KAKAN);
+					m_fuuros[i].setHais(hais);
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * 暗槓を設定する。
+	 *
+	 * @param a_tsumoHai
+	 *            ツモ牌
+	 * @param a_relation
+	 *            関係
+	 * @return 結果
+	 */
+	public boolean setAnKan(Hai a_tsumoHai, int a_relation) {
+		if (!validKan(a_tsumoHai)) {
+			return false;
+		}
+
+		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
+
+		int iHais = 0;
+		hais[iHais] = new Hai(a_tsumoHai);
+		iHais++;
+
+		int id = a_tsumoHai.getId();
+		for (int i = 0; i < m_jyunTehaiLength; i++) {
+			if (id == m_jyunTehai[i].getId()) {
+				hais[iHais] = new Hai(m_jyunTehai[i]);
+				iHais++;
+
+				rmJyunTehai(i);
+				i--;
+
+				if (iHais >= MENTSU_LENGTH_4) {
+					break;
+				}
+			}
+		}
+
+		hais[iHais] = new Hai();
+
+		m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_ANKAN);
 		m_fuuros[m_fuuroNums].setRelation(a_relation);
 		m_fuuros[m_fuuroNums].setHais(hais);
 		m_fuuroNums++;
@@ -585,270 +721,23 @@ public class Tehai {
 	}
 
 	/**
-	 * 明槓を追加する。
+	 * 副露の配列をコピーする。
 	 *
-	 * @param minKan
-	 *            明槓
-	 * @return 結果
-	 */
-	public boolean addMinKan(Hai[] minKan) {
-		if (m_minKansLength >= FUURO_MAX) {
-			return false;
-		}
-
-		for (int i = 0; i < MENTSU_LENGTH_4; i++) {
-			Hai.copy(m_minKans[m_minKansLength][i], minKan[i]);
-		}
-		m_minKansLength++;
-
-		return true;
-	}
-
-	/**
-	 * 明槓の配列を取得する。
-	 *
-	 * @return 明槓の配列
-	 */
-	public Hai[][] getMinKans() {
-		return m_minKans;
-	}
-
-	/**
-	 * 明槓の配列の長さを取得する。
-	 *
-	 * @return 明槓の配列の長さ
-	 */
-	public int getMinKansLength() {
-		return m_minKansLength;
-	}
-
-	/**
-	 * 明槓の配列をコピーする。
-	 *
-	 * @param destMinKans
-	 *            コピー先の明槓の配列
-	 * @param srcMinKans
-	 *            コピー元の明槓の配列
-	 * @param length
+	 * @param a_dest
+	 *            コピー先の副露の配列
+	 * @param a_src
+	 *            コピー元の副露の配列
+	 * @param a_length
 	 *            コピーする長さ
 	 * @return 結果
 	 */
-	public static boolean copyMinKans(Hai[][] destMinKans, Hai[][] srcMinKans, int length) {
-		if (length >= FUURO_MAX) {
+	public static boolean copyFuuros(Fuuro[] a_dest, Fuuro[] a_src, int a_length) {
+		if (a_length >= FUURO_MAX) {
 			return false;
 		}
 
-		for (int i = 0; i < length; i++) {
-			for (int j = 0; j < MENTSU_LENGTH_4; j++) {
-				Hai.copy(destMinKans[i][j], srcMinKans[i][j]);
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * 明槓の可否をチェックする。
-	 *
-	 * @param addHai
-	 *            追加する牌
-	 * @return 明槓の可否
-	 */
-	public boolean validMinKan(Hai addHai) {
-		if (m_jyunTehaiLength <= MENTSU_LENGTH_4) {
-			return false;
-		}
-
-		if (m_minKansLength >= FUURO_MAX) {
-			return false;
-		}
-
-		int addHaiId = addHai.getId();
-		for (int i = 0, minKanIdx = 1; i < m_jyunTehaiLength; i++) {
-			if (addHaiId == m_jyunTehai[i].getId()) {
-				minKanIdx++;
-				if (minKanIdx >= MENTSU_LENGTH_4) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * 明槓を設定する。
-	 *
-	 * @param suteHai
-	 *            捨牌
-	 * @return 結果
-	 */
-	public boolean setMinKan(Hai suteHai) {
-		if (!validMinKan(suteHai)) {
-			return false;
-		}
-
-		int minKanIdx = 0;
-
-		Hai.copy(m_minKans[m_minKansLength][minKanIdx], suteHai);
-		minKanIdx++;
-
-		int suteHaiId = suteHai.getId();
-
-		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (suteHaiId == m_jyunTehai[i].getId()) {
-				Hai.copy(m_minKans[m_minKansLength][minKanIdx], m_jyunTehai[i]);
-				minKanIdx++;
-
-				rmJyunTehai(i--);
-
-				if (minKanIdx >= MENTSU_LENGTH_4) {
-					break;
-				}
-			}
-		}
-
-		m_minKansLength++;
-
-		return true;
-	}
-
-	/**
-	 * 暗槓を追加する。
-	 *
-	 * @param anKan
-	 *            暗槓
-	 * @return 結果
-	 */
-	public boolean addAnKan(Hai[] anKan) {
-		if (m_anKansLength >= FUURO_MAX) {
-			return false;
-		}
-
-		for (int i = 0; i < MENTSU_LENGTH_4; i++) {
-			Hai.copy(m_anKans[m_anKansLength][i], anKan[i]);
-		}
-		m_anKansLength++;
-
-		return true;
-	}
-
-	/**
-	 * 暗槓の配列を取得する。
-	 *
-	 * @return 暗槓の配列
-	 */
-	public Hai[][] getAnKans() {
-		return m_anKans;
-	}
-
-	/**
-	 * 暗槓の配列の長さを取得する。
-	 *
-	 * @return 暗槓の配列の長さ
-	 */
-	public int getAnKansLength() {
-		return m_anKansLength;
-	}
-
-	/**
-	 * 暗槓の配列をコピーする。
-	 *
-	 * @param destAnKans
-	 *            コピー先の暗槓の配列
-	 * @param srcAnKans
-	 *            コピー元の暗槓の配列
-	 * @param length
-	 *            コピーする長さ
-	 * @return 結果
-	 */
-	public static boolean copyAnKans(Hai[][] destAnKans, Hai[][] srcAnKans, int length) {
-		if (length >= FUURO_MAX) {
-			return false;
-		}
-
-		for (int i = 0; i < length; i++) {
-			for (int j = 0; j < MENTSU_LENGTH_4; j++) {
-				Hai.copy(destAnKans[i][j], srcAnKans[i][j]);
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * 暗槓の可否をチェックする。
-	 *
-	 * @param addHai
-	 *            追加する牌
-	 * @return 暗槓の可否
-	 */
-	public boolean validAnKan(Hai addHai) {
-		if (m_jyunTehaiLength <= MENTSU_LENGTH_4) {
-			return false;
-		}
-
-		if (m_anKansLength >= FUURO_MAX) {
-			return false;
-		}
-
-		int addHaiId = addHai.getId();
-		for (int i = 0, anKanIdx = 1; i < m_jyunTehaiLength; i++) {
-			if (addHaiId == m_jyunTehai[i].getId()) {
-				anKanIdx++;
-				if (anKanIdx >= MENTSU_LENGTH_4) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * 暗槓を設定する。
-	 *
-	 * @param tsumoHai
-	 *            ツモ牌
-	 * @return 結果
-	 */
-	public boolean setAnKan(Hai tsumoHai) {
-		if (!validAnKan(tsumoHai)) {
-			return false;
-		}
-
-		int anKanIdx = 0;
-
-		Hai.copy(m_anKans[m_anKansLength][anKanIdx], tsumoHai);
-		anKanIdx++;
-
-		int tsumoHaiId = tsumoHai.getId();
-
-		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (tsumoHaiId == m_jyunTehai[i].getId()) {
-				Hai.copy(m_anKans[m_anKansLength][anKanIdx], m_jyunTehai[i]);
-				anKanIdx++;
-
-				rmJyunTehai(i--);
-
-				if (anKanIdx >= MENTSU_LENGTH_4) {
-					break;
-				}
-			}
-		}
-
-		m_anKansLength++;
-
-		return true;
-	}
-
-	public static boolean copyFuuros(Fuuro[] destFuuros, Fuuro[] srcFuuros, int length) {
-		if (length >= FUURO_MAX) {
-			return false;
-		}
-
-		for (int i = 0; i < length; i++) {
-			Fuuro.copy(destFuuros[i], srcFuuros[i]);
+		for (int i = 0; i < a_length; i++) {
+			Fuuro.copy(a_dest[i], a_src[i]);
 		}
 
 		return true;

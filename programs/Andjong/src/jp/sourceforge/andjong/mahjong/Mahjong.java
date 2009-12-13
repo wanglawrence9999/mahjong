@@ -559,7 +559,7 @@ public class Mahjong implements Runnable {
 				Hai.copy(mSuteHai, mTsumoHai);
 				activePlayer.getKawa().add(mSuteHai);
 			} else {// 手出し
-				activePlayer.getTehai().copyJyunTehaiIdx(mSuteHai, sutehaiIdx);
+				activePlayer.getTehai().copyJyunTehaiIndex(mSuteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(mTsumoHai);
 				activePlayer.getKawa().add(mSuteHai);
@@ -580,7 +580,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().add(mSuteHai);
 				activePlayer.getKawa().setReach(true);
 			} else {// 手出し
-				activePlayer.getTehai().copyJyunTehaiIdx(mSuteHai, sutehaiIdx);
+				activePlayer.getTehai().copyJyunTehaiIndex(mSuteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getTehai().addJyunTehai(mTsumoHai);
 				activePlayer.getKawa().add(mSuteHai);
@@ -655,7 +655,7 @@ public class Mahjong implements Runnable {
 
 				// 捨牌のインデックスを取得する。
 				int sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
-				activePlayer.getTehai().copyJyunTehaiIdx(mSuteHai, sutehaiIdx);
+				activePlayer.getTehai().copyJyunTehaiIndex(mSuteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getKawa().add(mSuteHai);
 				activePlayer.getKawa().setNaki(true);

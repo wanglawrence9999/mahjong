@@ -2,9 +2,9 @@ package jp.sourceforge.andjong.mahjong;
 
 /**
  * 手牌を管理する。
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class Tehai {
 	/** 純手牌の長さの最大値 */
@@ -24,12 +24,6 @@ public class Tehai {
 
 	/** 純手牌の長さ */
 	private int m_jyunTehaiLength;
-
-	/** 明順の配列 */
-	private Hai[][] m_minShuns = new Hai[FUURO_MAX][MENTSU_LENGTH_3];
-
-	/** 明順の配列の長さ */
-	private int m_minShunsLength;
 
 	/** 明槓の配列 */
 	private Hai[][] m_minKans = new Hai[FUURO_MAX][MENTSU_LENGTH_4];
@@ -55,10 +49,6 @@ public class Tehai {
 		}
 
 		for (int i = 0; i < FUURO_MAX; i++) {
-			for (int j = 0; j < MENTSU_LENGTH_3; j++) {
-				m_minShuns[i][j] = new Hai();
-			}
-
 			for (int j = 0; j < MENTSU_LENGTH_4; j++) {
 				m_minKans[i][j] = new Hai();
 				m_anKans[i][j] = new Hai();
@@ -79,7 +69,6 @@ public class Tehai {
 	 */
 	public void initialize() {
 		m_jyunTehaiLength = 0;
-		m_minShunsLength = 0;
 		m_minKansLength = 0;
 		m_anKansLength = 0;
 		m_fuuroNums = 0;
@@ -87,7 +76,7 @@ public class Tehai {
 
 	/**
 	 * 手牌をコピーする。
-	 * 
+	 *
 	 * @param a_dest
 	 *            コピー先の手牌
 	 * @param a_src
@@ -101,9 +90,6 @@ public class Tehai {
 			Tehai.copyJyunTehai(a_dest.m_jyunTehai, a_src.m_jyunTehai, a_dest.m_jyunTehaiLength);
 		}
 
-		a_dest.m_minShunsLength = a_src.m_minShunsLength;
-		Tehai.copyMinShuns(a_dest.m_minShuns, a_src.m_minShuns, a_dest.m_minShunsLength);
-
 		a_dest.m_minKansLength = a_src.m_minKansLength;
 		Tehai.copyMinKans(a_dest.m_minKans, a_src.m_minKans, a_dest.m_minKansLength);
 
@@ -116,7 +102,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌を取得する。
-	 * 
+	 *
 	 * @return 純手牌
 	 */
 	public Hai[] getJyunTehai() {
@@ -125,7 +111,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌の長さを取得する。
-	 * 
+	 *
 	 * @return 純手牌の長さ
 	 */
 	public int getJyunTehaiLength() {
@@ -134,7 +120,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌に牌を追加する。
-	 * 
+	 *
 	 * @param a_hai
 	 *            追加する牌
 	 * @return 結果
@@ -161,7 +147,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌から指定位置の牌を削除する。
-	 * 
+	 *
 	 * @param a_index
 	 *            指定位置
 	 * @return 結果
@@ -182,7 +168,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌から指定の牌を削除する。
-	 * 
+	 *
 	 * @param a_hai
 	 *            指定の牌
 	 * @return 結果
@@ -201,7 +187,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌をコピーする。
-	 * 
+	 *
 	 * @param a_dest
 	 *            コピー先の純手牌
 	 * @param a_src
@@ -224,7 +210,7 @@ public class Tehai {
 
 	/**
 	 * 純手牌の指定位置の牌をコピーする。
-	 * 
+	 *
 	 * @param a_hai
 	 *            牌
 	 * @param a_index
@@ -241,89 +227,26 @@ public class Tehai {
 	}
 
 	/**
-	 * 明順を追加する。
-	 * 
-	 * @param minShun
-	 *            明順
-	 * @return 結果
-	 */
-	public boolean addMinShun(Hai[] minShun) {
-		if (m_minShunsLength >= FUURO_MAX) {
-			return false;
-		}
-
-		for (int i = 0; i < MENTSU_LENGTH_3; i++) {
-			Hai.copy(m_minShuns[m_minShunsLength][i], minShun[i]);
-		}
-		m_minShunsLength++;
-
-		return true;
-	}
-
-	/**
-	 * 明順の配列を取得する。
-	 * 
-	 * @return 明順の配列
-	 */
-	public Hai[][] getMinShuns() {
-		return m_minShuns;
-	}
-
-	/**
-	 * 明順の配列の長さを取得する。
-	 * 
-	 * @return 明順の配列の長さ
-	 */
-	public int getMinShunsLength() {
-		return m_minShunsLength;
-	}
-
-	/**
-	 * 明順の配列をコピーする。
-	 * 
-	 * @param destMinShuns
-	 *            コピー先の明順の配列
-	 * @param srcMinShuns
-	 *            コピー元の明順の配列
-	 * @param length
-	 *            コピーする長さ
-	 * @return 結果
-	 */
-	public static boolean copyMinShuns(Hai[][] destMinShuns, Hai[][] srcMinShuns, int length) {
-		if (length >= FUURO_MAX) {
-			return false;
-		}
-
-		for (int i = 0; i < length; i++) {
-			for (int j = 0; j < MENTSU_LENGTH_3; j++) {
-				Hai.copy(destMinShuns[i][j], srcMinShuns[i][j]);
-			}
-		}
-
-		return true;
-	}
-
-	/**
 	 * チー(左)の可否をチェックする。
-	 * 
-	 * @param suteHai
+	 *
+	 * @param a_suteHai
 	 *            捨牌
 	 * @return チー(左)の可否
 	 */
-	public boolean validChiiLeft(Hai suteHai) {
-		if (suteHai.isTsuu()) {
+	public boolean validChiiLeft(Hai a_suteHai) {
+		if (a_suteHai.isTsuu()) {
 			return false;
 		}
 
-		if (suteHai.getNo() == Hai.NO_8) {
+		if (a_suteHai.getNo() == Hai.NO_8) {
 			return false;
 		}
 
-		if (suteHai.getNo() == Hai.NO_9) {
+		if (a_suteHai.getNo() == Hai.NO_9) {
 			return false;
 		}
 
-		if (m_minShunsLength >= FUURO_MAX) {
+		if (m_fuuroNums >= FUURO_MAX) {
 			return false;
 		}
 
@@ -331,13 +254,13 @@ public class Tehai {
 			return false;
 		}
 
-		int suteHaiIdA = suteHai.getNoKind();
-		int suteHaiR1IdA = suteHaiIdA + 1;
-		int suteHaiR2IdA = suteHaiIdA + 2;
+		int noKindLeft = a_suteHai.getNoKind();
+		int noKindCenter = noKindLeft + 1;
+		int noKindRight = noKindLeft + 2;
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (m_jyunTehai[i].getNoKind() == suteHaiR1IdA) {
+			if (m_jyunTehai[i].getNoKind() == noKindCenter) {
 				for (int j = i + 1; j < m_jyunTehaiLength; j++) {
-					if (m_jyunTehai[j].getNoKind() == suteHaiR2IdA) {
+					if (m_jyunTehai[j].getNoKind() == noKindRight) {
 						return true;
 					}
 				}
@@ -349,30 +272,43 @@ public class Tehai {
 
 	/**
 	 * チー(左)を設定する。
-	 * 
-	 * @param suteHai
+	 *
+	 * @param a_suteHai
 	 *            捨牌
+	 * @param a_relation
+	 *            関係
 	 * @return 結果
 	 */
-	public boolean setChiiLeft(Hai suteHai) {
-		if (!validChiiLeft(suteHai)) {
+	public boolean setChiiLeft(Hai a_suteHai, int a_relation) {
+		if (!validChiiLeft(a_suteHai)) {
 			return false;
 		}
 
-		Hai.copy(m_minShuns[m_minShunsLength][0], suteHai);
+		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
 
-		int suteHaiIdA = suteHai.getNoKind();
-		int suteHaiR1IdA = suteHaiIdA + 1;
-		int suteHaiR2IdA = suteHaiIdA + 2;
+		hais[0] = new Hai(a_suteHai);
+
+		int noKindLeft = a_suteHai.getNoKind();
+		int noKindCenter = noKindLeft + 1;
+		int noKindRight = noKindLeft + 2;
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (m_jyunTehai[i].getNoKind() == suteHaiR1IdA) {
-				Hai.copy(m_minShuns[m_minShunsLength][1], m_jyunTehai[i]);
+			if (m_jyunTehai[i].getNoKind() == noKindCenter) {
+				hais[1] = new Hai(m_jyunTehai[i]);
+
 				rmJyunTehai(i);
+
 				for (int j = i; j < m_jyunTehaiLength; j++) {
-					if (m_jyunTehai[j].getNoKind() == suteHaiR2IdA) {
-						Hai.copy(m_minShuns[m_minShunsLength][2], m_jyunTehai[j]);
+					if (m_jyunTehai[j].getNoKind() == noKindRight) {
+						hais[2] = new Hai(m_jyunTehai[j]);
+
 						rmJyunTehai(j);
-						m_minShunsLength++;
+
+						hais[3] = new Hai();
+
+						m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_MINSHUN);
+						m_fuuros[m_fuuroNums].setRelation(a_relation);
+						m_fuuros[m_fuuroNums].setHais(hais);
+						m_fuuroNums++;
 						return true;
 					}
 				}
@@ -384,25 +320,25 @@ public class Tehai {
 
 	/**
 	 * チー(中央)の可否をチェックする。
-	 * 
-	 * @param suteHai
+	 *
+	 * @param a_suteHai
 	 *            捨牌
 	 * @return チー(中央)の可否
 	 */
-	public boolean validChiiCenter(Hai suteHai) {
-		if (suteHai.isTsuu()) {
+	public boolean validChiiCenter(Hai a_suteHai) {
+		if (a_suteHai.isTsuu()) {
 			return false;
 		}
 
-		if (suteHai.getNo() == Hai.NO_1) {
+		if (a_suteHai.getNo() == Hai.NO_1) {
 			return false;
 		}
 
-		if (suteHai.getNo() == Hai.NO_9) {
+		if (a_suteHai.getNo() == Hai.NO_9) {
 			return false;
 		}
 
-		if (m_minShunsLength >= FUURO_MAX) {
+		if (m_fuuroNums >= FUURO_MAX) {
 			return false;
 		}
 
@@ -410,13 +346,13 @@ public class Tehai {
 			return false;
 		}
 
-		int suteHaiIdA = suteHai.getNoKind();
-		int suteHaiL1IdA = suteHaiIdA - 1;
-		int suteHaiR1IdA = suteHaiIdA + 1;
+		int noKindCenter = a_suteHai.getNoKind();
+		int noKindLeft = noKindCenter - 1;
+		int noKindRight = noKindCenter + 1;
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (m_jyunTehai[i].getNoKind() == suteHaiL1IdA) {
+			if (m_jyunTehai[i].getNoKind() == noKindLeft) {
 				for (int j = i + 1; j < m_jyunTehaiLength; j++) {
-					if (m_jyunTehai[j].getNoKind() == suteHaiR1IdA) {
+					if (m_jyunTehai[j].getNoKind() == noKindRight) {
 						return true;
 					}
 				}
@@ -428,30 +364,39 @@ public class Tehai {
 
 	/**
 	 * チー(中央)を設定する。
-	 * 
-	 * @param suteHai
+	 *
+	 * @param a_suteHai
 	 *            捨牌
 	 * @return 結果
 	 */
-	public boolean setChiiCenter(Hai suteHai) {
-		if (!validChiiCenter(suteHai)) {
+	public boolean setChiiCenter(Hai a_suteHai, int a_relation) {
+		if (!validChiiCenter(a_suteHai)) {
 			return false;
 		}
 
-		Hai.copy(m_minShuns[m_minShunsLength][1], suteHai);
+		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
 
-		int suteHaiIdA = suteHai.getNoKind();
-		int suteHaiL1IdA = suteHaiIdA - 1;
-		int suteHaiR1IdA = suteHaiIdA + 1;
+		hais[1] = new Hai(a_suteHai);
+
+		int noKindCenter = a_suteHai.getNoKind();
+		int noKindLeft = noKindCenter - 1;
+		int noKindRight = noKindCenter + 1;
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (m_jyunTehai[i].getNoKind() == suteHaiL1IdA) {
-				Hai.copy(m_minShuns[m_minShunsLength][0], m_jyunTehai[i]);
+			if (m_jyunTehai[i].getNoKind() == noKindLeft) {
+				hais[0] = new Hai(m_jyunTehai[i]);
+
 				rmJyunTehai(i);
+
 				for (int j = i; j < m_jyunTehaiLength; j++) {
-					if (m_jyunTehai[j].getNoKind() == suteHaiR1IdA) {
-						Hai.copy(m_minShuns[m_minShunsLength][2], m_jyunTehai[j]);
+					if (m_jyunTehai[j].getNoKind() == noKindRight) {
+						hais[2] = new Hai(m_jyunTehai[j]);
+
 						rmJyunTehai(j);
-						m_minShunsLength++;
+
+						m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_MINSHUN);
+						m_fuuros[m_fuuroNums].setRelation(a_relation);
+						m_fuuros[m_fuuroNums].setHais(hais);
+						m_fuuroNums++;
 						return true;
 					}
 				}
@@ -463,25 +408,25 @@ public class Tehai {
 
 	/**
 	 * チー(右)の可否をチェックする。
-	 * 
-	 * @param suteHai
+	 *
+	 * @param a_suteHai
 	 *            捨牌
 	 * @return チー(右)の可否
 	 */
-	public boolean validChiiRight(Hai suteHai) {
-		if (suteHai.isTsuu()) {
+	public boolean validChiiRight(Hai a_suteHai) {
+		if (a_suteHai.isTsuu()) {
 			return false;
 		}
 
-		if (suteHai.getNo() == Hai.NO_1) {
+		if (a_suteHai.getNo() == Hai.NO_1) {
 			return false;
 		}
 
-		if (suteHai.getNo() == Hai.NO_2) {
+		if (a_suteHai.getNo() == Hai.NO_2) {
 			return false;
 		}
 
-		if (m_minShunsLength >= FUURO_MAX) {
+		if (m_fuuroNums >= FUURO_MAX) {
 			return false;
 		}
 
@@ -489,13 +434,13 @@ public class Tehai {
 			return false;
 		}
 
-		int suteHaiIdA = suteHai.getNoKind();
-		int suteHaiL2IdA = suteHaiIdA - 2;
-		int suteHaiL1IdA = suteHaiIdA - 1;
+		int noKindRight = a_suteHai.getNoKind();
+		int noKindLeft = noKindRight - 2;
+		int noKindCenter = noKindRight - 1;
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (m_jyunTehai[i].getNoKind() == suteHaiL2IdA) {
+			if (m_jyunTehai[i].getNoKind() == noKindLeft) {
 				for (int j = i + 1; j < m_jyunTehaiLength; j++) {
-					if (m_jyunTehai[j].getNoKind() == suteHaiL1IdA) {
+					if (m_jyunTehai[j].getNoKind() == noKindCenter) {
 						return true;
 					}
 				}
@@ -507,30 +452,41 @@ public class Tehai {
 
 	/**
 	 * チー(右)を設定する。
-	 * 
-	 * @param suteHai
+	 *
+	 * @param a_suteHai
 	 *            捨牌
 	 * @return 結果
 	 */
-	public boolean setChiiRight(Hai suteHai) {
-		if (!validChiiRight(suteHai)) {
+	public boolean setChiiRight(Hai a_suteHai, int a_relation) {
+		if (!validChiiRight(a_suteHai)) {
 			return false;
 		}
 
-		Hai.copy(m_minShuns[m_minShunsLength][2], suteHai);
+		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
 
-		int suteHaiIdA = suteHai.getNoKind();
-		int suteHaiL2IdA = suteHaiIdA - 2;
-		int suteHaiL1IdA = suteHaiIdA - 1;
+		hais[2] = new Hai(a_suteHai);
+
+		int noKindRight = a_suteHai.getNoKind();
+		int noKindLeft = noKindRight - 2;
+		int noKindCenter = noKindRight - 1;
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
-			if (m_jyunTehai[i].getNoKind() == suteHaiL2IdA) {
-				Hai.copy(m_minShuns[m_minShunsLength][0], m_jyunTehai[i]);
+			if (m_jyunTehai[i].getNoKind() == noKindLeft) {
+				hais[0] = new Hai(m_jyunTehai[i]);
+
 				rmJyunTehai(i);
+
 				for (int j = i; j < m_jyunTehaiLength; j++) {
-					if (m_jyunTehai[j].getNoKind() == suteHaiL1IdA) {
-						Hai.copy(m_minShuns[m_minShunsLength][1], m_jyunTehai[j]);
+					if (m_jyunTehai[j].getNoKind() == noKindCenter) {
+						hais[1] = new Hai(m_jyunTehai[j]);
+
 						rmJyunTehai(j);
-						m_minShunsLength++;
+
+						hais[3] = new Hai();
+
+						m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_MINSHUN);
+						m_fuuros[m_fuuroNums].setRelation(a_relation);
+						m_fuuros[m_fuuroNums].setHais(hais);
+						m_fuuroNums++;
 						return true;
 					}
 				}
@@ -542,7 +498,7 @@ public class Tehai {
 
 	/**
 	 * ポンの可否をチェックする。
-	 * 
+	 *
 	 * @param a_suteHai
 	 *            捨牌
 	 * @return ポンの可否
@@ -567,7 +523,7 @@ public class Tehai {
 
 	/**
 	 * ポンを設定する。
-	 * 
+	 *
 	 * @param a_suteHai
 	 *            捨牌
 	 * @param a_relation
@@ -612,7 +568,7 @@ public class Tehai {
 
 	/**
 	 * 副露の配列を取得する。
-	 * 
+	 *
 	 * @return 副露の配列
 	 */
 	public Fuuro[] getFuuros() {
@@ -621,7 +577,7 @@ public class Tehai {
 
 	/**
 	 * 副露の個数を取得する。
-	 * 
+	 *
 	 * @return 副露の個数
 	 */
 	public int getFuuroNums() {
@@ -630,7 +586,7 @@ public class Tehai {
 
 	/**
 	 * 明槓を追加する。
-	 * 
+	 *
 	 * @param minKan
 	 *            明槓
 	 * @return 結果
@@ -650,7 +606,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列を取得する。
-	 * 
+	 *
 	 * @return 明槓の配列
 	 */
 	public Hai[][] getMinKans() {
@@ -659,7 +615,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列の長さを取得する。
-	 * 
+	 *
 	 * @return 明槓の配列の長さ
 	 */
 	public int getMinKansLength() {
@@ -668,7 +624,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の配列をコピーする。
-	 * 
+	 *
 	 * @param destMinKans
 	 *            コピー先の明槓の配列
 	 * @param srcMinKans
@@ -693,7 +649,7 @@ public class Tehai {
 
 	/**
 	 * 明槓の可否をチェックする。
-	 * 
+	 *
 	 * @param addHai
 	 *            追加する牌
 	 * @return 明槓の可否
@@ -722,7 +678,7 @@ public class Tehai {
 
 	/**
 	 * 明槓を設定する。
-	 * 
+	 *
 	 * @param suteHai
 	 *            捨牌
 	 * @return 結果
@@ -759,7 +715,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓を追加する。
-	 * 
+	 *
 	 * @param anKan
 	 *            暗槓
 	 * @return 結果
@@ -779,7 +735,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列を取得する。
-	 * 
+	 *
 	 * @return 暗槓の配列
 	 */
 	public Hai[][] getAnKans() {
@@ -788,7 +744,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列の長さを取得する。
-	 * 
+	 *
 	 * @return 暗槓の配列の長さ
 	 */
 	public int getAnKansLength() {
@@ -797,7 +753,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の配列をコピーする。
-	 * 
+	 *
 	 * @param destAnKans
 	 *            コピー先の暗槓の配列
 	 * @param srcAnKans
@@ -822,7 +778,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓の可否をチェックする。
-	 * 
+	 *
 	 * @param addHai
 	 *            追加する牌
 	 * @return 暗槓の可否
@@ -851,7 +807,7 @@ public class Tehai {
 
 	/**
 	 * 暗槓を設定する。
-	 * 
+	 *
 	 * @param tsumoHai
 	 *            ツモ牌
 	 * @return 結果

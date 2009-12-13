@@ -973,15 +973,15 @@ public class Yaku {
 		}
 
 		//鳴いた牌をチェック
-		for(int i = 0 ; i < tehai.getMinShunsLength() ; i++){
-			checkHai = tehai.getMinShuns();
-			id = checkHai[i][0].getId();
-			for(int j =0 ; j < checkId.length ; j++){
-				if(id == checkId[j]){
-					ikkituukanflg[j] = true;
-				}
-			}
-		}
+//		for(int i = 0 ; i < tehai.getMinShunsLength() ; i++){
+//			checkHai = tehai.getMinShuns();
+//			id = checkHai[i][0].getId();
+//			for(int j =0 ; j < checkId.length ; j++){
+//				if(id == checkId[j]){
+//					ikkituukanflg[j] = true;
+//				}
+//			}
+//		}
 
 		//一気通貫が出来ているかどうかチェック
 		if(   (ikkituukanflg[0] == true && ikkituukanflg[1] == true && ikkituukanflg[2] == true )
@@ -1025,11 +1025,11 @@ public class Yaku {
 		}
 
 		//鳴いた牌をチェック
-		for(int i = 0 ; i < tehai.getMinShunsLength() ; i++){
-			checkHai = tehai.getMinShuns();
-			id = checkHai[i][0].getId();
-			checkSansyoku(id,sansyokuflg);
-		}
+//		for(int i = 0 ; i < tehai.getMinShunsLength() ; i++){
+//			checkHai = tehai.getMinShuns();
+//			id = checkHai[i][0].getId();
+//			checkSansyoku(id,sansyokuflg);
+//		}
 
 		//三色同順が出来ているかどうかチェック
 		for(int i = 0 ; i < sansyokuflg[0].length ; i++){
@@ -1096,11 +1096,12 @@ public class Yaku {
 
 	boolean checkToitoi() {
 		//手牌に順子がある
-		if((combi.shunCount != 0) || (tehai.getMinShunsLength() != 0) ){
-			return false;
-		}else{
-			return true;
-		}
+//		if((combi.shunCount != 0) || (tehai.getMinShunsLength() != 0) ){
+//			return false;
+//		}else{
+//			return true;
+//		}
+		return false;
 	}
 
 	boolean checkSanankou() {

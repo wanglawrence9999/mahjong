@@ -10,10 +10,10 @@ import java.util.Random;
  */
 public class Sai {
 	/** 番号 */
-	private int no = 1;
+	private int m_no = 1;
 
 	/** 乱数ジェネレータ */
-	private Random random = new Random();
+	private Random m_random = new Random();
 
 	/**
 	 * 番号を取得する。
@@ -21,7 +21,7 @@ public class Sai {
 	 * @return 番号
 	 */
 	public int getNo() {
-		return no;
+		return m_no;
 	}
 
 	/**
@@ -30,6 +30,6 @@ public class Sai {
 	 * @return 番号
 	 */
 	public int saifuri() {
-		return no = random.nextInt(6) + 1;
+		return m_no = m_random.nextInt(6) + 1;
 	}
 }

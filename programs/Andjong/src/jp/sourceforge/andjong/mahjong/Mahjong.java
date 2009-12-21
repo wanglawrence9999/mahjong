@@ -13,10 +13,10 @@ import jp.sourceforge.andjong.mahjong.EventIF.EID;
  */
 public class Mahjong implements Runnable {
 	/** AndjongView */
-	private AndjongView mView;
+	private AndjongView m_view;
 
 	/** 山 */
-	private Yama mYama;
+	private Yama m_yama;
 
 	/** 東一局 */
 	public final static int KYOKU_TON_1 = 0;
@@ -28,49 +28,49 @@ public class Mahjong implements Runnable {
 	public final static int KYOKU_TON_4 = 3;
 
 	/** 局 */
-	private int mKyoku;
+	private int m_kyoku;
 
 	/** 局の最大値 */
-	private int mKyokuEnd;
+	private int m_kyokuEnd;
 
 	/** ツモ牌 */
-	private Hai mTsumoHai;
+	private Hai m_tsumoHai;
 
 	/** 捨牌 */
-	private Hai mSuteHai;
+	private Hai m_suteHai;
 
 	/** リーチ棒の数 */
-	private int mReachbou;
+	private int m_reachbou;
 
 	/** 本場 */
-	private int mHonba;
+	private int m_honba;
 
 	/** プレイヤーの人数 */
-	private int mPlayerNum;
+	private int m_playerNum;
 
 	/** プレイヤーに提供する情報 */
-	private Info mInfo;
+	private Info m_info;
 
 	/** プレイヤーの配列 */
-	private Player[] mPlayers;
+	private Player[] m_players;
 
 	/** 風をプレイヤーインデックスに変換する配列 */
-	private int[] mKazeToPlayerIdx = new int[4];
+	private int[] m_kazeToPlayerIdx = new int[4];
 
 	/** UIに提供する情報 */
-	private InfoUI mInfoUi;
+	private InfoUI m_infoUi;
 
 	/** サイコロの配列 */
-	private Sai[] mSais = new Sai[] { new Sai(), new Sai() };
+	private Sai[] m_sais = new Sai[] { new Sai(), new Sai() };
 
 	/** 親のプレイヤーインデックス */
-	private int mOyaIdx;
+	private int m_oyaIdx;
 
 	/** 起家のプレイヤーインデックス */
-	private int mChiichaIdx;
+	private int m_chiichaIdx;
 
 	/** 連荘 */
-	private boolean mRenchan;
+	private boolean m_renchan;
 
 	/** イベントを発行した風 */
 	private int mFromKaze;
@@ -89,7 +89,7 @@ public class Mahjong implements Runnable {
 	 */
 	public Mahjong(AndjongView view) {
 		super();
-		this.mView = view;
+		this.m_view = view;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class Mahjong implements Runnable {
 	 * @return 山
 	 */
 	Yama getYama() {
-		return mYama;
+		return m_yama;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class Mahjong implements Runnable {
 	 * @return 局
 	 */
 	int getkyoku() {
-		return mKyoku;
+		return m_kyoku;
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class Mahjong implements Runnable {
 	 * @return ツモ牌
 	 */
 	Hai getTsumoHai() {
-		return mTsumoHai;
+		return m_tsumoHai;
 	}
 
 	/**
@@ -125,15 +125,15 @@ public class Mahjong implements Runnable {
 	 * @return 捨牌
 	 */
 	Hai getSuteHai() {
-		return mSuteHai;
+		return m_suteHai;
 	}
 
 	public int getReachbou() {
-		return mReachbou;
+		return m_reachbou;
 	}
 
 	public void setReachbou(int reachbou) {
-		mReachbou = reachbou;
+		m_reachbou = reachbou;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class Mahjong implements Runnable {
 	 * @return 起家のプレイヤーインデックス
 	 */
 	public int getChiichaIdx() {
-		return mChiichaIdx;
+		return m_chiichaIdx;
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class Mahjong implements Runnable {
 	 * @return サイコロの配列
 	 */
 	Sai[] getSais() {
-		return mSais;
+		return m_sais;
 	}
 
 	public final static int KAZE_TON = 0;
@@ -201,10 +201,10 @@ public class Mahjong implements Runnable {
 	/** アクティブプレイヤー */
 	private Player activePlayer;
 
-	private PlayerAction mPlayerAction = new PlayerAction();
+	private PlayerAction m_playerAction = new PlayerAction();
 
 	public int getManKaze() {
-		return mPlayers[0].getJikaze();
+		return m_players[0].getJikaze();
 	}
 
 	/**
@@ -212,98 +212,98 @@ public class Mahjong implements Runnable {
 	 */
 	public void play() {
 		// 初期化する。
-		init();
+		initialize();
 
 		// 場所を決める。
 		// TODO 未実装。固定とする。
 
 		// イベント（場所決め）を発行する。
-		mView.event(EID.BASHOGIME, KAZE_NONE, KAZE_NONE);
+		m_view.event(EID.BASHOGIME, KAZE_NONE, KAZE_NONE);
 
 		// 親を決める。
 		// TODO プレイヤーにサイコロを振らせる機能は未実装。
-		mSais[0].saifuri();
-		mSais[1].saifuri();
-		mOyaIdx = (mSais[0].getNo() + mSais[1].getNo() - 1) % 4;
-		mChiichaIdx = mOyaIdx;
+		m_sais[0].saifuri();
+		m_sais[1].saifuri();
+		m_oyaIdx = (m_sais[0].getNo() + m_sais[1].getNo() - 1) % 4;
+		m_chiichaIdx = m_oyaIdx;
 
 		// イベント（親決め）を発行する。
-		mView.event(EID.OYAGIME, KAZE_NONE, KAZE_NONE);
+		m_view.event(EID.OYAGIME, KAZE_NONE, KAZE_NONE);
 
 		// 局を繰り返して、ゲームを進行する。
-		while (mKyoku <= mKyokuEnd) {
+		while (m_kyoku <= m_kyokuEnd) {
 			// 局を開始する。
 			startKyoku();
 
 			// 連荘の場合、局を進めない。
-			if (mRenchan) {
+			if (m_renchan) {
 				// イベント（連荘）を発行する。
-				mView.event(EID.RENCHAN, KAZE_NONE, KAZE_NONE);
+				m_view.event(EID.RENCHAN, KAZE_NONE, KAZE_NONE);
 				continue;
 			}
 
 			// 局を進める。
-			mKyoku++;
+			m_kyoku++;
 
 			// 本場を初期化する。
 			// TODO 上がりの位置に移動しないと。
-			mHonba = 0;
+			m_honba = 0;
 		}
 
 		// イベント（ゲームの終了）を発行する。
-		mView.event(EID.END, KAZE_NONE, KAZE_NONE);
+		m_view.event(EID.END, KAZE_NONE, KAZE_NONE);
 	}
 
 	/**
 	 * 初期化する。
 	 */
-	private void init() {
+	private void initialize() {
 		// 山を作成する。
-		mYama = new Yama();
+		m_yama = new Yama();
 
 		// 局を初期化する。
-		mKyoku = KYOKU_TON_1;
+		m_kyoku = KYOKU_TON_1;
 
 		// 局の終了を設定する。
-		mKyokuEnd = KYOKU_TON_4;
+		m_kyokuEnd = KYOKU_TON_4;
 
 		// ツモ牌を作成する。
-		mTsumoHai = new Hai();
+		m_tsumoHai = new Hai();
 
 		// 捨牌を作成する。
-		mSuteHai = new Hai();
+		m_suteHai = new Hai();
 
 		// リーチ棒の数を初期化する。
-		mReachbou = 0;
+		m_reachbou = 0;
 
 		// 本場を初期化する。
-		mHonba = 0;
+		m_honba = 0;
 
 		// プレイヤーの人数を設定する。
-		mPlayerNum = 4;
+		m_playerNum = 4;
 
 		// プレイヤーに提供する情報を作成する。
-		mInfo = new Info(this);
+		m_info = new Info(this);
 
 		// プレイヤーの配列を初期化する。
-		mPlayers = new Player[mPlayerNum];
-		mPlayers[0] = new Player((EventIF) new Man(mInfo, "A", mPlayerAction));
-		mPlayers[1] = new Player((EventIF) new AI(mInfo, "B"));
-		mPlayers[2] = new Player((EventIF) new AI(mInfo, "C"));
-		mPlayers[3] = new Player((EventIF) new AI(mInfo, "D"));
+		m_players = new Player[m_playerNum];
+		m_players[0] = new Player((EventIF) new Man(m_info, "A", m_playerAction));
+		m_players[1] = new Player((EventIF) new AI(m_info, "B"));
+		m_players[2] = new Player((EventIF) new AI(m_info, "C"));
+		m_players[3] = new Player((EventIF) new AI(m_info, "D"));
 
-		for (int i = 0; i < mPlayerNum; i++) {
-			mPlayers[i].setTenbou(TENBOU_INIT);
+		for (int i = 0; i < m_playerNum; i++) {
+			m_players[i].setTenbou(TENBOU_INIT);
 		}
 
 		// 風をプレイヤーインデックスに変換する配列を初期化する。
-		mKazeToPlayerIdx = new int[mPlayers.length];
+		m_kazeToPlayerIdx = new int[m_players.length];
 
 		// UIに提供する情報を作成する。
-		mInfoUi = new InfoUI(this, mPlayerAction);
+		m_infoUi = new InfoUI(this, m_playerAction);
 
 		// UIを初期化する。
-		mView.initUi(mInfoUi, "AndjongView");
+		m_view.initUi(m_infoUi, "AndjongView");
 	}
 
 	/**
@@ -312,61 +312,61 @@ public class Mahjong implements Runnable {
 	private void startKyoku() {
 		// リーチ棒の数を初期化する。
 		// TODO 上がりの位置に移動しないと。
-		mReachbou = 0;
+		m_reachbou = 0;
 
 		// 連荘を初期化する。
-		mRenchan = false;
+		m_renchan = false;
 
 		// イベントを発行した風を初期化する。
-		mFromKaze = mPlayers[mOyaIdx].getJikaze();
+		mFromKaze = m_players[m_oyaIdx].getJikaze();
 
 		// イベントの対象となった風を初期化する。
-		mToKaze = mPlayers[mOyaIdx].getJikaze();
+		mToKaze = m_players[m_oyaIdx].getJikaze();
 
 		// プレイヤーの自風を設定する。
 		setJikaze();
 
 		// プレイヤー配列を初期化する。
-		for (int i = 0; i < mPlayers.length; i++) {
-			mPlayers[i].init();
+		for (int i = 0; i < m_players.length; i++) {
+			m_players[i].init();
 		}
 
 		// 洗牌する。
-		mYama.xipai();
+		m_yama.xipai();
 
 		// UIイベント（洗牌）を発行する。
-		mView.event(EID.SENPAI, mFromKaze, mToKaze);
+		m_view.event(EID.SENPAI, mFromKaze, mToKaze);
 
 		// サイ振りをする。
-		mSais[0].saifuri();
-		mSais[1].saifuri();
+		m_sais[0].saifuri();
+		m_sais[1].saifuri();
 
 		// UIイベント（サイ振り）を発行する。
-		mView.event(EID.SAIFURI, mFromKaze, mToKaze);
+		m_view.event(EID.SAIFURI, mFromKaze, mToKaze);
 
 		// 山に割れ目を設定する。
-		setWareme(mSais);
+		setWareme(m_sais);
 
 		// 配牌する。
 		haipai();
 
 		if (false) {
 			for (int i = 0; i < 13; i++)
-				mPlayers[1].getTehai().rmJyunTehai(i);
+				m_players[1].getTehai().rmJyunTehai(i);
 
-			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(1));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(3));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(5));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(7));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(8));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(9));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(10));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(11));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(11));
+			m_players[1].getTehai().addJyunTehai(new Hai(0));
+			m_players[1].getTehai().addJyunTehai(new Hai(1));
+			m_players[1].getTehai().addJyunTehai(new Hai(2));
+			m_players[1].getTehai().addJyunTehai(new Hai(3));
+			m_players[1].getTehai().addJyunTehai(new Hai(4));
+			m_players[1].getTehai().addJyunTehai(new Hai(5));
+			m_players[1].getTehai().addJyunTehai(new Hai(6));
+			m_players[1].getTehai().addJyunTehai(new Hai(7));
+			m_players[1].getTehai().addJyunTehai(new Hai(8));
+			m_players[1].getTehai().addJyunTehai(new Hai(9));
+			m_players[1].getTehai().addJyunTehai(new Hai(10));
+			m_players[1].getTehai().addJyunTehai(new Hai(11));
+			m_players[1].getTehai().addJyunTehai(new Hai(11));
 			/*
 			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
 			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
@@ -385,31 +385,31 @@ public class Mahjong implements Runnable {
 		}
 
 		// UIイベント（配牌）を発行する。
-		mView.event(EID.HAIPAI, mFromKaze, mToKaze);
+		m_view.event(EID.HAIPAI, mFromKaze, mToKaze);
 
 		EID retEid;
 
 		// 局を進行する。
 		KYOKU_MAIN: while (true) {
 			// UIイベント（進行待ち）を発行する。
-			mView.event(EID.PROGRESS_WAIT, KAZE_NONE, KAZE_NONE);
+			m_view.event(EID.PROGRESS_WAIT, KAZE_NONE, KAZE_NONE);
 
 			// ツモ牌を取得する。
-			mTsumoHai = mYama.tsumo();
+			m_tsumoHai = m_yama.tsumo();
 
 			// ツモ牌がない場合、流局する。
-			if (mTsumoHai == null) {
+			if (m_tsumoHai == null) {
 				// UIイベント（流局）を発行する。
-				mView.event(EID.RYUUKYOKU, KAZE_NONE, KAZE_NONE);
+				m_view.event(EID.RYUUKYOKU, KAZE_NONE, KAZE_NONE);
 
 				// 親を更新する。上がり連荘とする。
-				mOyaIdx++;
-				if (mOyaIdx >= mPlayers.length) {
-					mOyaIdx = 0;
+				m_oyaIdx++;
+				if (m_oyaIdx >= m_players.length) {
+					m_oyaIdx = 0;
 				}
 
 				// 本場を増やす。
-				mHonba++;
+				m_honba++;
 
 				break KYOKU_MAIN;
 			}
@@ -421,39 +421,39 @@ public class Mahjong implements Runnable {
 			switch (retEid) {
 			case TSUMOAGARI:// ツモあがり
 				// UIイベント（ツモあがり）を発行する。
-				mView.event(retEid, mFromKaze, mToKaze);
+				m_view.event(retEid, mFromKaze, mToKaze);
 
 				// TODO 点数を清算する。
-				activePlayer.increaseTenbou(mReachbou * 1000);
+				activePlayer.increaseTenbou(m_reachbou * 1000);
 
 				// 親を更新する。
-				if (mOyaIdx != mKazeToPlayerIdx[mFromKaze]) {
-					mOyaIdx++;
-					if (mOyaIdx >= mPlayers.length) {
-						mOyaIdx = 0;
+				if (m_oyaIdx != m_kazeToPlayerIdx[mFromKaze]) {
+					m_oyaIdx++;
+					if (m_oyaIdx >= m_players.length) {
+						m_oyaIdx = 0;
 					}
 				} else {
-					mRenchan = true;
-					mHonba++;
+					m_renchan = true;
+					m_honba++;
 				}
 
 				break KYOKU_MAIN;
 			case RON:// ロン
 				// UIイベント（ロン）を発行する。
-				mView.event(retEid, mFromKaze, mToKaze);
+				m_view.event(retEid, mFromKaze, mToKaze);
 
 				// TODO 点数を清算する。
-				activePlayer.increaseTenbou(mReachbou * 1000);
+				activePlayer.increaseTenbou(m_reachbou * 1000);
 
 				// 親を更新する。
-				if (mOyaIdx != mKazeToPlayerIdx[mFromKaze]) {
-					mOyaIdx++;
-					if (mOyaIdx >= mPlayers.length) {
-						mOyaIdx = 0;
+				if (m_oyaIdx != m_kazeToPlayerIdx[mFromKaze]) {
+					m_oyaIdx++;
+					if (m_oyaIdx >= m_players.length) {
+						m_oyaIdx = 0;
 					}
 				} else {
-					mRenchan = true;
-					mHonba++;
+					m_renchan = true;
+					m_honba++;
 				}
 
 				break KYOKU_MAIN;
@@ -462,7 +462,7 @@ public class Mahjong implements Runnable {
 				if (tenbou >= 1000) {
 					activePlayer.reduceTenbou(1000);
 					activePlayer.setReach(true);
-					mReachbou++;
+					m_reachbou++;
 				}
 				break;
 			default:
@@ -471,7 +471,7 @@ public class Mahjong implements Runnable {
 
 			// イベントを発行した風を更新する。
 			mFromKaze++;
-			if (mFromKaze >= mPlayers.length) {
+			if (mFromKaze >= m_players.length) {
 				mFromKaze = 0;
 			}
 		}
@@ -481,16 +481,16 @@ public class Mahjong implements Runnable {
 	 * プレイヤーの自風を設定する。
 	 */
 	private void setJikaze() {
-		for (int i = 0, j = mOyaIdx; i < mPlayers.length; i++, j++) {
-			if (j >= mPlayers.length) {
+		for (int i = 0, j = m_oyaIdx; i < m_players.length; i++, j++) {
+			if (j >= m_players.length) {
 				j = 0;
 			}
 
 			// プレイヤーの自風を設定する。
-			mPlayers[j].setJikaze(i);
+			m_players[j].setJikaze(i);
 
 			// 風をプレイヤーインデックスに変換する配列を設定する。
-			mKazeToPlayerIdx[i] = j;
+			m_kazeToPlayerIdx[i] = j;
 		}
 	}
 
@@ -507,19 +507,19 @@ public class Mahjong implements Runnable {
 
 		int startHaisIdx = ((sum % 4) * 36) + sum;
 
-		mYama.setTsumoHaisStartIndex(startHaisIdx);
+		m_yama.setTsumoHaisStartIndex(startHaisIdx);
 	}
 
 	/**
 	 * 配牌する。
 	 */
 	private void haipai() {
-		for (int i = 0, j = mOyaIdx, max = mPlayers.length * 13; i < max; i++, j++) {
-			if (j >= mPlayers.length) {
+		for (int i = 0, j = m_oyaIdx, max = m_players.length * 13; i < max; i++, j++) {
+			if (j >= m_players.length) {
 				j = 0;
 			}
 
-			mPlayers[j].getTehai().addJyunTehai(mYama.tsumo());
+			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 	}
 
@@ -530,16 +530,16 @@ public class Mahjong implements Runnable {
 	 */
 	private EID tsumoEvent() {
 		// アクティブプレイヤーを設定する。
-		activePlayer = mPlayers[mKazeToPlayerIdx[mFromKaze]];
+		activePlayer = m_players[m_kazeToPlayerIdx[mFromKaze]];
 
 		// UIイベント（ツモ）を発行する。
-		mView.event(EID.TSUMO, mFromKaze, mFromKaze);
+		m_view.event(EID.TSUMO, mFromKaze, mFromKaze);
 
 		// イベント（ツモ）を発行する。
 		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, mFromKaze, mFromKaze);
 
 		// UIイベント（進行待ち）を発行する。
-		mView.event(EID.PROGRESS_WAIT, mFromKaze, mFromKaze);
+		m_view.event(EID.PROGRESS_WAIT, mFromKaze, mFromKaze);
 
 		int sutehaiIdx;
 
@@ -552,17 +552,17 @@ public class Mahjong implements Runnable {
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 
 			// 理牌の間をとる。
-			mInfoUi.setSutehaiIdx(sutehaiIdx);
-			mView.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
+			m_infoUi.setSutehaiIdx(sutehaiIdx);
+			m_view.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
 
 			if (sutehaiIdx == 13) {// ツモ切り
-				Hai.copy(mSuteHai, mTsumoHai);
-				activePlayer.getKawa().add(mSuteHai);
+				Hai.copy(m_suteHai, m_tsumoHai);
+				activePlayer.getKawa().add(m_suteHai);
 			} else {// 手出し
-				activePlayer.getTehai().copyJyunTehaiIndex(mSuteHai, sutehaiIdx);
+				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
-				activePlayer.getTehai().addJyunTehai(mTsumoHai);
-				activePlayer.getKawa().add(mSuteHai);
+				activePlayer.getTehai().addJyunTehai(m_tsumoHai);
+				activePlayer.getKawa().add(m_suteHai);
 				activePlayer.getKawa().setTedashi(true);
 			}
 
@@ -573,17 +573,17 @@ public class Mahjong implements Runnable {
 			// 捨牌のインデックスを取得する。
 			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
 			activePlayer.setReach(true);
-			mView.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
+			m_view.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
 
 			if (sutehaiIdx == 13) {// ツモ切り
-				Hai.copy(mSuteHai, mTsumoHai);
-				activePlayer.getKawa().add(mSuteHai);
+				Hai.copy(m_suteHai, m_tsumoHai);
+				activePlayer.getKawa().add(m_suteHai);
 				activePlayer.getKawa().setReach(true);
 			} else {// 手出し
-				activePlayer.getTehai().copyJyunTehaiIndex(mSuteHai, sutehaiIdx);
+				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
-				activePlayer.getTehai().addJyunTehai(mTsumoHai);
-				activePlayer.getKawa().add(mSuteHai);
+				activePlayer.getTehai().addJyunTehai(m_tsumoHai);
+				activePlayer.getKawa().add(m_suteHai);
 				activePlayer.getKawa().setTedashi(true);
 				activePlayer.getKawa().setReach(true);
 			}
@@ -613,16 +613,16 @@ public class Mahjong implements Runnable {
 		EID retEid = EID.NAGASHI;
 
 		// UIイベントを発行する。
-		mView.event(eid, fromKaze, toKaze);
+		m_view.event(eid, fromKaze, toKaze);
 
 		// 各プレイヤーにイベントを通知する。
-		NOTIFYLOOP: for (int i = 0, j = fromKaze; i < mPlayers.length; i++, j++) {
-			if (j >= mPlayers.length) {
+		NOTIFYLOOP: for (int i = 0, j = fromKaze; i < m_players.length; i++, j++) {
+			if (j >= m_players.length) {
 				j = 0;
 			}
 
 			// アクティブプレイヤーを設定する。
-			activePlayer = mPlayers[mKazeToPlayerIdx[j]];
+			activePlayer = m_players[m_kazeToPlayerIdx[j]];
 
 			// UIイベントを発行する。
 			//mView.event(eid, fromKaze, toKaze);
@@ -636,28 +636,28 @@ public class Mahjong implements Runnable {
 				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = toKaze;
-				activePlayer = mPlayers[mKazeToPlayerIdx[this.mFromKaze]];
+				activePlayer = m_players[m_kazeToPlayerIdx[this.mFromKaze]];
 				break NOTIFYLOOP;
 			case RON:// ロン
 				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = toKaze;
-				activePlayer = mPlayers[mKazeToPlayerIdx[this.mFromKaze]];
+				activePlayer = m_players[m_kazeToPlayerIdx[this.mFromKaze]];
 				break NOTIFYLOOP;
 			case PON:
 				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = fromKaze;
-				activePlayer = mPlayers[mKazeToPlayerIdx[this.mFromKaze]];
-				activePlayer.getTehai().setPon(mSuteHai, getRelation(this.mFromKaze, this.mToKaze));
+				activePlayer = m_players[m_kazeToPlayerIdx[this.mFromKaze]];
+				activePlayer.getTehai().setPon(m_suteHai, getRelation(this.mFromKaze, this.mToKaze));
 
 				notifyEvent(EID.SUTEHAISELECT, this.mFromKaze, this.mToKaze);
 
 				// 捨牌のインデックスを取得する。
 				int sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
-				activePlayer.getTehai().copyJyunTehaiIndex(mSuteHai, sutehaiIdx);
+				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
-				activePlayer.getKawa().add(mSuteHai);
+				activePlayer.getKawa().add(m_suteHai);
 				activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
 
@@ -711,7 +711,7 @@ public class Mahjong implements Runnable {
 	 * @return 本場
 	 */
 	int getHonba() {
-		return mHonba;
+		return m_honba;
 	}
 
 	/**
@@ -722,7 +722,7 @@ public class Mahjong implements Runnable {
 	 * @return リーチ
 	 */
 	boolean isReach(int kaze) {
-		return mPlayers[mKazeToPlayerIdx[kaze]].isReach();
+		return m_players[m_kazeToPlayerIdx[kaze]].isReach();
 	}
 
 	/**
@@ -737,7 +737,7 @@ public class Mahjong implements Runnable {
 		if (activePlayer.getJikaze() == kaze) {
 			Tehai.copy(tehai, activePlayer.getTehai(), true);
 		} else {
-			Tehai.copy(tehai, mPlayers[mKazeToPlayerIdx[kaze]].getTehai(), false);
+			Tehai.copy(tehai, m_players[m_kazeToPlayerIdx[kaze]].getTehai(), false);
 		}
 	}
 
@@ -750,7 +750,7 @@ public class Mahjong implements Runnable {
 	 *            風
 	 */
 	void copyTehaiUi(Tehai tehai, int kaze) {
-		Tehai.copy(tehai, mPlayers[mKazeToPlayerIdx[kaze]].getTehai(), true);
+		Tehai.copy(tehai, m_players[m_kazeToPlayerIdx[kaze]].getTehai(), true);
 	}
 
 	/**
@@ -762,7 +762,7 @@ public class Mahjong implements Runnable {
 	 *            風
 	 */
 	void copyKawa(Kawa kawa, int kaze) {
-		Kawa.copy(kawa, mPlayers[mKazeToPlayerIdx[kaze]].getKawa());
+		Kawa.copy(kawa, m_players[m_kazeToPlayerIdx[kaze]].getKawa());
 	}
 
 	/**
@@ -771,15 +771,15 @@ public class Mahjong implements Runnable {
 	 * @return ツモの残り数
 	 */
 	int getTsumoRemain() {
-		return mYama.getTsumoNokori();
+		return m_yama.getTsumoNokori();
 	}
 
 	String getName(int kaze) {
-		return mPlayers[mKazeToPlayerIdx[kaze]].getEventIf().getName();
+		return m_players[m_kazeToPlayerIdx[kaze]].getEventIf().getName();
 	}
 
 	int getTenbou(int kaze) {
-		return mPlayers[mKazeToPlayerIdx[kaze]].getTenbou();
+		return m_players[m_kazeToPlayerIdx[kaze]].getTenbou();
 	}
 
 	private Combi[] combis = new Combi[10];
@@ -807,6 +807,6 @@ public class Mahjong implements Runnable {
 	}
 
 	public void setSutehaiIdx(int sutehaiIdx) {
-		mInfo.setSutehaiIdx(sutehaiIdx);
+		m_info.setSutehaiIdx(sutehaiIdx);
 	}
 }

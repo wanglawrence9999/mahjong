@@ -3,7 +3,7 @@ package jp.sourceforge.andjong.mahjong;
 import jp.sourceforge.andjong.AndjongView;
 import jp.sourceforge.andjong.mahjong.AgariScore;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
-import jp.sourceforge.andjong.mahjong.EventIF.EID;
+import jp.sourceforge.andjong.mahjong.EventIf.EID;
 
 /**
  * ゲームを管理するクラスです。
@@ -58,7 +58,7 @@ public class Mahjong implements Runnable {
 	private int[] m_kazeToPlayerIdx = new int[4];
 
 	/** UIに提供する情報 */
-	private InfoUI m_infoUi;
+	private InfoUi m_infoUi;
 
 	/** サイコロの配列 */
 	private Sai[] m_sais = new Sai[] { new Sai(), new Sai() };
@@ -287,10 +287,10 @@ public class Mahjong implements Runnable {
 
 		// プレイヤーの配列を初期化する。
 		m_players = new Player[m_playerNum];
-		m_players[0] = new Player((EventIF) new Man(m_info, "A", m_playerAction));
-		m_players[1] = new Player((EventIF) new AI(m_info, "B"));
-		m_players[2] = new Player((EventIF) new AI(m_info, "C"));
-		m_players[3] = new Player((EventIF) new AI(m_info, "D"));
+		m_players[0] = new Player((EventIf) new Man(m_info, "A", m_playerAction));
+		m_players[1] = new Player((EventIf) new AI(m_info, "B"));
+		m_players[2] = new Player((EventIf) new AI(m_info, "C"));
+		m_players[3] = new Player((EventIf) new AI(m_info, "D"));
 
 		for (int i = 0; i < m_playerNum; i++) {
 			m_players[i].setTenbou(TENBOU_INIT);
@@ -300,7 +300,7 @@ public class Mahjong implements Runnable {
 		m_kazeToPlayerIdx = new int[m_players.length];
 
 		// UIに提供する情報を作成する。
-		m_infoUi = new InfoUI(this, m_playerAction);
+		m_infoUi = new InfoUi(this, m_playerAction);
 
 		// UIを初期化する。
 		m_view.initUi(m_infoUi, "AndjongView");

@@ -2,10 +2,10 @@ package jp.sourceforge.andjong;
 
 import jp.sourceforge.andjong.R;
 import jp.sourceforge.andjong.DrawItem.PlayerInfo;
-import jp.sourceforge.andjong.mahjong.EventIF;
+import jp.sourceforge.andjong.mahjong.EventIf;
 import jp.sourceforge.andjong.mahjong.Fuuro;
 import jp.sourceforge.andjong.mahjong.Hai;
-import jp.sourceforge.andjong.mahjong.InfoUI;
+import jp.sourceforge.andjong.mahjong.InfoUi;
 import jp.sourceforge.andjong.mahjong.Kawa;
 import jp.sourceforge.andjong.mahjong.Mahjong;
 import jp.sourceforge.andjong.mahjong.PlayerAction;
@@ -27,7 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class AndjongView extends View implements EventIF {
+public class AndjongView extends View implements EventIf {
 	private static final String TAG = "AndjongView";
 
 	/** アクティビティ */
@@ -111,7 +111,7 @@ public class AndjongView extends View implements EventIF {
 	private DrawItem mDrawItem = new DrawItem();
 
 	/** InfoUI */
-	private InfoUI mInfoUi;
+	private InfoUi mInfoUi;
 
 	/** UIの名前 */
 	private String mName;
@@ -301,7 +301,7 @@ public class AndjongView extends View implements EventIF {
 	 * @param name
 	 *            UIの名前
 	 */
-	public void initUi(InfoUI infoUi, String name) {
+	public void initUi(InfoUi infoUi, String name) {
 		this.mInfoUi = infoUi;
 		this.mName = name;
 

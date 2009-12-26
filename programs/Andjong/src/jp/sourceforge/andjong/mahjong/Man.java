@@ -6,9 +6,9 @@ import java.io.InputStreamReader;
 
 import android.util.Log;
 
-import jp.sourceforge.andjong.mahjong.EventIF.EID;
+import jp.sourceforge.andjong.mahjong.EventIf.EID;
 
-public class Man implements EventIF {
+public class Man implements EventIf {
 	/** ƒvƒŒƒCƒ„[‚É’ñ‹Ÿ‚·‚éî•ñ */
 	private Info mInfo;
 

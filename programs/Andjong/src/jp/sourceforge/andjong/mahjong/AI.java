@@ -8,7 +8,7 @@ import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
  * @author Yuji Urushibara
  *
  */
-public class AI implements EventIF {
+public class AI implements EventIf {
 	private Info info;
 
 	private Tehai tehai = new Tehai();

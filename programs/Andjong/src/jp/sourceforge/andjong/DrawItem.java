@@ -5,7 +5,7 @@ import jp.sourceforge.andjong.mahjong.Hai;
 import jp.sourceforge.andjong.mahjong.Kawa;
 import jp.sourceforge.andjong.mahjong.Mahjong;
 import jp.sourceforge.andjong.mahjong.Tehai;
-import jp.sourceforge.andjong.mahjong.EventIF.EID;
+import jp.sourceforge.andjong.mahjong.EventIf.EID;
 
 /**
  * 描画アイテムを管理する。

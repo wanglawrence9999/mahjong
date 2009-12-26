@@ -8,14 +8,14 @@ package jp.sourceforge.andjong.mahjong;
  */
 class Player {
 	/** EventIF */
-	private EventIF eventIf;
+	private EventIf eventIf;
 
 	/**
 	 * EventIF‚ğæ“¾‚µ‚Ü‚·BB
 	 *
 	 * @return EventIF
 	 */
-	EventIF getEventIf() {
+	EventIf getEventIf() {
 		return eventIf;
 	}
 
@@ -135,7 +135,7 @@ class Player {
 	 * @param eventIf
 	 *            EventIF
 	 */
-	Player(EventIF eventIf) {
+	Player(EventIf eventIf) {
 		this.eventIf = eventIf;
 	}
 

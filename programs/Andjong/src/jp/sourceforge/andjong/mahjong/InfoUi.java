@@ -1,9 +1,9 @@
 package jp.sourceforge.andjong.mahjong;
 
-public class InfoUiTemp extends Info {
+public class InfoUi extends Info {
 	private PlayerAction mPlayerAction;
 
-	public InfoUiTemp(Mahjong game, PlayerAction playerAction) {
+	public InfoUi(Mahjong game, PlayerAction playerAction) {
 		super(game);
 		this.setPlayerAction(playerAction);
 	}

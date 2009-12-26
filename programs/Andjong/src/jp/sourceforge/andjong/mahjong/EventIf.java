@@ -1,6 +1,6 @@
 package jp.sourceforge.andjong.mahjong;
 
-public interface EventIfTemp {
+public interface EventIf {
 	/** ƒCƒxƒ“ƒgID */
 	enum EID {
 		/** êŠŒˆ‚ß */

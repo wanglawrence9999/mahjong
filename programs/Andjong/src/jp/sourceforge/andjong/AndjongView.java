@@ -381,7 +381,7 @@ public class AndjongView extends View implements EventIf {
 			}
 
 			// 点棒を表示する。
-			for (int i = 0; i < Mahjong.KAZE_COUNT_MAX; i++) {
+			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
 				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[0]].mTenbo).toString());
 			}
 
@@ -997,9 +997,9 @@ public class AndjongView extends View implements EventIf {
 	 * @param eid
 	 *            イベントID
 	 */
-	public EID event(EID eid, int fromKaze, int toKaze) {
+	public EventId event(EventId eid, int fromKaze, int toKaze) {
 		switch (eid) {
-		case PROGRESS_WAIT:// 進行待ち
+		case UI_WAIT_PROGRESS:// 進行待ち
 			try {
 				Thread.sleep(PROGRESS_WAIT_TIME, 0);
 			} catch (InterruptedException e) {
@@ -1007,10 +1007,7 @@ public class AndjongView extends View implements EventIf {
 				e.printStackTrace();
 			}
 			break;
-		case BASHOGIME:// 場所決め
-			// 何も表示しない。
-			break;
-		case OYAGIME:// 親決め
+		case START_GAME:// 親決め
 			// この段階で初期化されている情報を設定する。
 			mDrawItem.setState(DrawItem.STATE_NONE);
 			synchronized (mDrawItem) {
@@ -1029,10 +1026,7 @@ public class AndjongView extends View implements EventIf {
 				mDrawItem.setChiicha(mInfoUi.getChiichaIdx());
 			}
 			break;
-		case SENPAI:// 洗牌
-			// 何も表示しない。
-			break;
-		case SAIFURI:// サイ振り
+		case START_KYOKU:// サイ振り
 			// サイ振りを局の開始と考える。
 
 			// 局の文字列を設定する。
@@ -1045,8 +1039,8 @@ public class AndjongView extends View implements EventIf {
 
 			// アクションを待つ。
 			mPlayerAction.actionWait();
-			break;
-		case HAIPAI:
+//			break;
+//		case HAIPAI:
 			// 手牌を設定して、プレイ状態にする。
 			mDrawItem.setState(DrawItem.STATE_PLAY);
 			synchronized (mDrawItem) {
@@ -1080,7 +1074,7 @@ public class AndjongView extends View implements EventIf {
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
-		case TSUMOAGARI:// ツモあがり
+		case TSUMO_AGARI:// ツモあがり
 			mDrawItem.setState(DrawItem.STATE_TSUMO);
 
 			// 描画する。
@@ -1103,7 +1097,7 @@ public class AndjongView extends View implements EventIf {
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
-		case SUTEHAISELECT:
+		case SELECT_SUTEHAI:
 			if (fromKaze == mInfoUi.getJikaze()) {
 				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
 					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
@@ -1114,7 +1108,7 @@ public class AndjongView extends View implements EventIf {
 					this.postInvalidate(0, 0, getWidth(), getHeight());
 			}
 			break;
-		case RIHAI_WAIT:
+		case UI_WAIT_RIHAI:
 			mDrawItem.setSkipIdx(mInfoUi.getSutehaiIdx());
 			mDrawItem.mState = DrawItem.STATE_RIHAI_WAIT;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -1186,7 +1180,7 @@ public class AndjongView extends View implements EventIf {
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
-		case RON:// ロン
+		case RON_AGARI:// ロン
 			/*
 			this.post(new Runnable() {
 				public void run() {
@@ -1210,10 +1204,10 @@ public class AndjongView extends View implements EventIf {
 			break;
 		}
 
-		return EID.NAGASHI;
+		return EventId.NAGASHI;
 	}
 
-	public int getSutehaiIdx() {
+	public int getISutehai() {
 		return mSutehaiIdx;
 	}
 

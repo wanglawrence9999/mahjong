@@ -3,7 +3,7 @@ package jp.sourceforge.andjong.mahjong;
 import jp.sourceforge.andjong.AndjongView;
 import jp.sourceforge.andjong.mahjong.AgariScore;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
-import jp.sourceforge.andjong.mahjong.EventIf.EID;
+import static jp.sourceforge.andjong.mahjong.EventIf.*;
 
 /**
  * ゲームを管理するクラスです。
@@ -64,10 +64,10 @@ public class Mahjong implements Runnable {
 	private Sai[] m_sais = new Sai[] { new Sai(), new Sai() };
 
 	/** 親のプレイヤーインデックス */
-	private int m_oyaIdx;
+	private int m_iOya;
 
 	/** 起家のプレイヤーインデックス */
-	private int m_chiichaIdx;
+	private int m_iChiicha;
 
 	/** 連荘 */
 	private boolean m_renchan;
@@ -142,7 +142,7 @@ public class Mahjong implements Runnable {
 	 * @return 起家のプレイヤーインデックス
 	 */
 	public int getChiichaIdx() {
-		return m_chiichaIdx;
+		return m_iChiicha;
 	}
 
 	/**
@@ -153,13 +153,6 @@ public class Mahjong implements Runnable {
 	Sai[] getSais() {
 		return m_sais;
 	}
-
-	public final static int KAZE_TON = 0;
-	public final static int KAZE_NAN = 1;
-	public final static int KAZE_SHA = 2;
-	public final static int KAZE_PE = 3;
-	public final static int KAZE_COUNT_MAX = KAZE_PE + 1;
-	public final static int KAZE_NONE = 4;
 
 	public int getRelation(
 			int fromKaze,
@@ -214,21 +207,15 @@ public class Mahjong implements Runnable {
 		// 初期化する。
 		initialize();
 
-		// 場所を決める。
-		// TODO 未実装。固定とする。
-
-		// イベント（場所決め）を発行する。
-		m_view.event(EID.BASHOGIME, KAZE_NONE, KAZE_NONE);
-
 		// 親を決める。
-		// TODO プレイヤーにサイコロを振らせる機能は未実装。
 		m_sais[0].saifuri();
 		m_sais[1].saifuri();
-		m_oyaIdx = (m_sais[0].getNo() + m_sais[1].getNo() - 1) % 4;
-		m_chiichaIdx = m_oyaIdx;
+		m_iOya = (m_sais[0].getNo() + m_sais[1].getNo() - 1) % 4;
+		m_iChiicha = m_iOya;
 
 		// イベント（親決め）を発行する。
-		m_view.event(EID.OYAGIME, KAZE_NONE, KAZE_NONE);
+		//m_view.event(EventId.OYAGIME, KAZE_NONE, KAZE_NONE);
+		m_view.event(EventId.START_GAME, KAZE_NONE, KAZE_NONE);
 
 		// 局を繰り返して、ゲームを進行する。
 		while (m_kyoku <= m_kyokuEnd) {
@@ -238,7 +225,7 @@ public class Mahjong implements Runnable {
 			// 連荘の場合、局を進めない。
 			if (m_renchan) {
 				// イベント（連荘）を発行する。
-				m_view.event(EID.RENCHAN, KAZE_NONE, KAZE_NONE);
+				//m_view.event(EventId.RENCHAN, KAZE_NONE, KAZE_NONE);
 				continue;
 			}
 
@@ -251,7 +238,7 @@ public class Mahjong implements Runnable {
 		}
 
 		// イベント（ゲームの終了）を発行する。
-		m_view.event(EID.END, KAZE_NONE, KAZE_NONE);
+		m_view.event(EventId.END_GAME, KAZE_NONE, KAZE_NONE);
 	}
 
 	/**
@@ -318,10 +305,10 @@ public class Mahjong implements Runnable {
 		m_renchan = false;
 
 		// イベントを発行した風を初期化する。
-		mFromKaze = m_players[m_oyaIdx].getJikaze();
+		mFromKaze = m_players[m_iOya].getJikaze();
 
 		// イベントの対象となった風を初期化する。
-		mToKaze = m_players[m_oyaIdx].getJikaze();
+		mToKaze = m_players[m_iOya].getJikaze();
 
 		// プレイヤーの自風を設定する。
 		setJikaze();
@@ -334,15 +321,12 @@ public class Mahjong implements Runnable {
 		// 洗牌する。
 		m_yama.xipai();
 
-		// UIイベント（洗牌）を発行する。
-		m_view.event(EID.SENPAI, mFromKaze, mToKaze);
-
 		// サイ振りをする。
 		m_sais[0].saifuri();
 		m_sais[1].saifuri();
 
 		// UIイベント（サイ振り）を発行する。
-		m_view.event(EID.SAIFURI, mFromKaze, mToKaze);
+		//m_view.event(EventId.SAIFURI, mFromKaze, mToKaze);
 
 		// 山に割れ目を設定する。
 		setWareme(m_sais);
@@ -385,14 +369,15 @@ public class Mahjong implements Runnable {
 		}
 
 		// UIイベント（配牌）を発行する。
-		m_view.event(EID.HAIPAI, mFromKaze, mToKaze);
+		//m_view.event(EventId.HAIPAI, mFromKaze, mToKaze);
+		m_view.event(EventId.START_KYOKU, mFromKaze, mToKaze);
 
-		EID retEid;
+		EventId retEid;
 
 		// 局を進行する。
 		KYOKU_MAIN: while (true) {
 			// UIイベント（進行待ち）を発行する。
-			m_view.event(EID.PROGRESS_WAIT, KAZE_NONE, KAZE_NONE);
+			m_view.event(EventId.UI_WAIT_PROGRESS, KAZE_NONE, KAZE_NONE);
 
 			// ツモ牌を取得する。
 			m_tsumoHai = m_yama.tsumo();
@@ -400,12 +385,12 @@ public class Mahjong implements Runnable {
 			// ツモ牌がない場合、流局する。
 			if (m_tsumoHai == null) {
 				// UIイベント（流局）を発行する。
-				m_view.event(EID.RYUUKYOKU, KAZE_NONE, KAZE_NONE);
+				m_view.event(EventId.RYUUKYOKU, KAZE_NONE, KAZE_NONE);
 
 				// 親を更新する。上がり連荘とする。
-				m_oyaIdx++;
-				if (m_oyaIdx >= m_players.length) {
-					m_oyaIdx = 0;
+				m_iOya++;
+				if (m_iOya >= m_players.length) {
+					m_iOya = 0;
 				}
 
 				// 本場を増やす。
@@ -419,7 +404,7 @@ public class Mahjong implements Runnable {
 
 			// イベントを処理する。
 			switch (retEid) {
-			case TSUMOAGARI:// ツモあがり
+			case TSUMO_AGARI:// ツモあがり
 				// UIイベント（ツモあがり）を発行する。
 				m_view.event(retEid, mFromKaze, mToKaze);
 
@@ -427,10 +412,10 @@ public class Mahjong implements Runnable {
 				activePlayer.increaseTenbou(m_reachbou * 1000);
 
 				// 親を更新する。
-				if (m_oyaIdx != m_kazeToPlayerIdx[mFromKaze]) {
-					m_oyaIdx++;
-					if (m_oyaIdx >= m_players.length) {
-						m_oyaIdx = 0;
+				if (m_iOya != m_kazeToPlayerIdx[mFromKaze]) {
+					m_iOya++;
+					if (m_iOya >= m_players.length) {
+						m_iOya = 0;
 					}
 				} else {
 					m_renchan = true;
@@ -438,7 +423,7 @@ public class Mahjong implements Runnable {
 				}
 
 				break KYOKU_MAIN;
-			case RON:// ロン
+			case RON_AGARI:// ロン
 				// UIイベント（ロン）を発行する。
 				m_view.event(retEid, mFromKaze, mToKaze);
 
@@ -446,10 +431,10 @@ public class Mahjong implements Runnable {
 				activePlayer.increaseTenbou(m_reachbou * 1000);
 
 				// 親を更新する。
-				if (m_oyaIdx != m_kazeToPlayerIdx[mFromKaze]) {
-					m_oyaIdx++;
-					if (m_oyaIdx >= m_players.length) {
-						m_oyaIdx = 0;
+				if (m_iOya != m_kazeToPlayerIdx[mFromKaze]) {
+					m_iOya++;
+					if (m_iOya >= m_players.length) {
+						m_iOya = 0;
 					}
 				} else {
 					m_renchan = true;
@@ -481,7 +466,7 @@ public class Mahjong implements Runnable {
 	 * プレイヤーの自風を設定する。
 	 */
 	private void setJikaze() {
-		for (int i = 0, j = m_oyaIdx; i < m_players.length; i++, j++) {
+		for (int i = 0, j = m_iOya; i < m_players.length; i++, j++) {
 			if (j >= m_players.length) {
 				j = 0;
 			}
@@ -514,7 +499,7 @@ public class Mahjong implements Runnable {
 	 * 配牌する。
 	 */
 	private void haipai() {
-		for (int i = 0, j = m_oyaIdx, max = m_players.length * 13; i < max; i++, j++) {
+		for (int i = 0, j = m_iOya, max = m_players.length * 13; i < max; i++, j++) {
 			if (j >= m_players.length) {
 				j = 0;
 			}
@@ -528,32 +513,32 @@ public class Mahjong implements Runnable {
 	 *
 	 * @return イベントID
 	 */
-	private EID tsumoEvent() {
+	private EventId tsumoEvent() {
 		// アクティブプレイヤーを設定する。
 		activePlayer = m_players[m_kazeToPlayerIdx[mFromKaze]];
 
 		// UIイベント（ツモ）を発行する。
-		m_view.event(EID.TSUMO, mFromKaze, mFromKaze);
+		m_view.event(EventId.TSUMO, mFromKaze, mFromKaze);
 
 		// イベント（ツモ）を発行する。
-		EID retEid = activePlayer.getEventIf().event(EID.TSUMO, mFromKaze, mFromKaze);
+		EventId retEid = activePlayer.getEventIf().event(EventId.TSUMO, mFromKaze, mFromKaze);
 
 		// UIイベント（進行待ち）を発行する。
-		m_view.event(EID.PROGRESS_WAIT, mFromKaze, mFromKaze);
+		m_view.event(EventId.UI_WAIT_PROGRESS, mFromKaze, mFromKaze);
 
 		int sutehaiIdx;
 
 		// イベントを処理する。
 		switch (retEid) {
-		case TSUMOAGARI:// ツモあがり
+		case TSUMO_AGARI:// ツモあがり
 			break;
 		case SUTEHAI:// 捨牌
 			// 捨牌のインデックスを取得する。
-			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+			sutehaiIdx = activePlayer.getEventIf().getISutehai();
 
 			// 理牌の間をとる。
 			m_infoUi.setSutehaiIdx(sutehaiIdx);
-			m_view.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
+			m_view.event(EventId.UI_WAIT_RIHAI, mFromKaze, mFromKaze);
 
 			if (sutehaiIdx == 13) {// ツモ切り
 				Hai.copy(m_suteHai, m_tsumoHai);
@@ -567,13 +552,13 @@ public class Mahjong implements Runnable {
 			}
 
 			// イベントを通知する。
-			retEid = notifyEvent(EID.SUTEHAI, mFromKaze, mFromKaze);
+			retEid = notifyEvent(EventId.SUTEHAI, mFromKaze, mFromKaze);
 			break;
 		case REACH:
 			// 捨牌のインデックスを取得する。
-			sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+			sutehaiIdx = activePlayer.getEventIf().getISutehai();
 			activePlayer.setReach(true);
-			m_view.event(EID.RIHAI_WAIT, mFromKaze, mFromKaze);
+			m_view.event(EventId.UI_WAIT_RIHAI, mFromKaze, mFromKaze);
 
 			if (sutehaiIdx == 13) {// ツモ切り
 				Hai.copy(m_suteHai, m_tsumoHai);
@@ -589,7 +574,7 @@ public class Mahjong implements Runnable {
 			}
 
 			// イベントを通知する。
-			retEid = notifyEvent(EID.REACH, mFromKaze, mFromKaze);
+			retEid = notifyEvent(EventId.REACH, mFromKaze, mFromKaze);
 			break;
 		default:
 			break;
@@ -609,8 +594,8 @@ public class Mahjong implements Runnable {
 	 *            イベントの対象となった風
 	 * @return イベントID
 	 */
-	private EID notifyEvent(EID eid, int fromKaze, int toKaze) {
-		EID retEid = EID.NAGASHI;
+	private EventId notifyEvent(EventId eid, int fromKaze, int toKaze) {
+		EventId retEid = EventId.NAGASHI;
 
 		// UIイベントを発行する。
 		m_view.event(eid, fromKaze, toKaze);
@@ -632,13 +617,13 @@ public class Mahjong implements Runnable {
 
 			// イベントを処理する。
 			switch (retEid) {
-			case TSUMOAGARI:// ツモあがり
+			case TSUMO_AGARI:// ツモあがり
 				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = toKaze;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.mFromKaze]];
 				break NOTIFYLOOP;
-			case RON:// ロン
+			case RON_AGARI:// ロン
 				// アクティブプレイヤーを設定する。
 				this.mFromKaze = j;
 				this.mToKaze = toKaze;
@@ -651,10 +636,10 @@ public class Mahjong implements Runnable {
 				activePlayer = m_players[m_kazeToPlayerIdx[this.mFromKaze]];
 				activePlayer.getTehai().setPon(m_suteHai, getRelation(this.mFromKaze, this.mToKaze));
 
-				notifyEvent(EID.SUTEHAISELECT, this.mFromKaze, this.mToKaze);
+				notifyEvent(EventId.SELECT_SUTEHAI, this.mFromKaze, this.mToKaze);
 
 				// 捨牌のインデックスを取得する。
-				int sutehaiIdx = activePlayer.getEventIf().getSutehaiIdx();
+				int sutehaiIdx = activePlayer.getEventIf().getISutehai();
 				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getKawa().add(m_suteHai);
@@ -662,13 +647,13 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setTedashi(true);
 
 				// イベントを通知する。
-				retEid = notifyEvent(EID.PON, this.mFromKaze, this.mToKaze);
+				retEid = notifyEvent(EventId.PON, this.mFromKaze, this.mToKaze);
 				break NOTIFYLOOP;
 			default:
 				break;
 			}
 
-			if (eid == EID.SUTEHAISELECT) {
+			if (eid == EventId.SELECT_SUTEHAI) {
 				return retEid;
 			}
 		}

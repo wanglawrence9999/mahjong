@@ -26,7 +26,7 @@ public class AgariScore {
 		}
 
 		//頭の牌を取得
-		Hai atamaHai = new Hai(combi.atamaId);
+		Hai atamaHai = new Hai(combi.m_atamaNoKind);
 
 		// ３元牌なら２符追加
 		if (atamaHai.getKind() == KIND_SANGEN) {
@@ -46,15 +46,15 @@ public class AgariScore {
 		//平和が成立する場合は、待ちによる２符追加よりも優先される
 		if(yaku.checkPinfu() == false){
 			// 単騎待ちの場合２符追加
-			if(addHai.getId() == combi.atamaId){
+			if(addHai.getId() == combi.m_atamaNoKind){
 				countHu += 2;
 			}
 
 			// 嵌張待ちの場合２符追加
 			//数牌の２～８かどうか判定
 			if(addHai.isYaochuu() == false){
-				for(int i = 0 ; i < combi.shunCount ; i++){
-					if((addHai.getNo()-1) == combi.shunIds[i]){
+				for(int i = 0 ; i < combi.m_shunNum ; i++){
+					if((addHai.getNo()-1) == combi.m_shunNoKinds[i]){
 						countHu += 2;
 					}
 				}
@@ -62,8 +62,8 @@ public class AgariScore {
 
 			// 辺張待ち(3)の場合２符追加
 			if((addHai.isYaochuu() == false) && (addHai.getNo() == NO_3)){
-				for(int i = 0 ; i < combi.shunCount ; i++){
-					if( (addHai.getId()-2) == combi.shunIds[i]){
+				for(int i = 0 ; i < combi.m_shunNum ; i++){
+					if( (addHai.getId()-2) == combi.m_shunNoKinds[i]){
 						countHu += 2;
 					}
 				}
@@ -71,8 +71,8 @@ public class AgariScore {
 
 			// 辺張待ち(7)の場合２符追加
 			if((addHai.isYaochuu() == false) && (addHai.getNo() == NO_7)){
-				for(int i = 0 ; i < combi.shunCount ; i++){
-					if( addHai.getId() == combi.shunIds[i]){
+				for(int i = 0 ; i < combi.m_shunNum ; i++){
+					if( addHai.getId() == combi.m_shunNoKinds[i]){
 						countHu += 2;
 					}
 				}
@@ -188,10 +188,10 @@ public class AgariScore {
 
 	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting) {
 		// カウントフォーマットを取得します。
-		CountFormat.getCountFormat(tehai, countFormat, addHai);
+		countFormat.setCountFormat(tehai, addHai);
 
 		// あがりの組み合わせを取得します。
-		int combisCount = countFormat.getCombi(combis);
+		int combisCount = countFormat.getCombis(combis);
 
 		// あがりの組み合わせがない場合は0点
 		if (combisCount == 0)
@@ -220,15 +220,15 @@ public class AgariScore {
 		}
 		return maxagariScore;
 	}
-	
+
 	public String[] getYakuName(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting) {
 		//和了り役の名前
 		String[] yakuNames = {""};
 		// カウントフォーマットを取得します。
-		CountFormat.getCountFormat(tehai, countFormat, addHai);
+		countFormat.setCountFormat(tehai, addHai);
 
 		// あがりの組み合わせを取得します。
-		int combisCount = countFormat.getCombi(combis);
+		int combisCount = countFormat.getCombis(combis);
 
 		// あがりの組み合わせがない場合は0点
 		if (combisCount == 0){
@@ -250,7 +250,7 @@ public class AgariScore {
 			hanSuu[i] = yaku.getHanSuu();
 			huSuu[i] = countHu(tehai, addHai, combis[i],yaku,setting);
 			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
-			
+
 			if(maxagariScore < agariScore[i]){
 				maxagariScore = agariScore[i];
 				yakuNames = yaku.getYakuName();

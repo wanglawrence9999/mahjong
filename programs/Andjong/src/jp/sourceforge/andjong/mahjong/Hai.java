@@ -339,9 +339,9 @@ public class Hai {
 	}
 
 	/**
-	 * 番号と種類のORを取得する。
+	 * NK(番号と種類のOR)を取得する。
 	 *
-	 * @return 番号と種類のOR
+	 * @return NK(番号と種類のOR)
 	 */
 	public int getNoKind() {
 		return NOS[m_id] | KINDS[m_id];
@@ -363,6 +363,17 @@ public class Hai {
 	 */
 	public boolean isTsuu() {
 		return IS_TSUUS[m_id];
+	}
+
+	/**
+	 * 字牌フラグを取得する。
+	 *
+	 * @param a_noKind
+	 *            NK(番号と種類のOR)
+	 * @return 字牌フラグ
+	 */
+	public static boolean isTsuu(int a_noKind) {
+		return (a_noKind | KIND_TSUU) != 0;
 	}
 
 	/**

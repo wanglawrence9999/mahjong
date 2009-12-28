@@ -9,24 +9,128 @@ import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
  *
  */
 public class AI implements EventIf {
-	private Info info;
+	/** Infoのコンストラクタ */
+	private Info m_info;
 
-	private Tehai tehai = new Tehai();
+	/** AIの名前 */
+	private String m_name;
+
+	/** 捨牌のインデックス */
+	private int m_iSutehai;
+
+	/** 手牌 */
+	private Tehai m_tehai = new Tehai();
+
+	/**
+	 * AIを作成する。
+	 *
+	 * @param a_info
+	 *            Infoのコンストラクタ
+	 * @param a_name
+	 *            AIの名前
+	 */
+	public AI(Info a_info, String a_name) {
+		this.m_info = a_info;
+		this.m_name = a_name;
+	}
+
+	@Override
+	public String getName() {
+		return m_name;
+	}
+
+	@Override
+	public int getISutehai() {
+		return m_iSutehai;
+	}
+
+	@Override
+	public EventId event(EventId a_eventId, int a_kazeFrom, int a_kazeTo) {
+		EventId eventId = EventId.NAGASHI;
+
+		switch (a_eventId) {
+		case TSUMO:
+			eventId = eventTsumo(a_kazeFrom, a_kazeTo);
+			break;
+		case SUTEHAI:
+			eventId = eventSutehai(a_kazeFrom, a_kazeTo);
+			break;
+		case SELECT_SUTEHAI:
+			m_info.copyTehai(m_tehai);
+			thinkSutehai(null);
+			break;
+		default:
+			break;
+		}
+
+		return eventId;
+	}
+
+	/**
+	 * イベント(ツモ)を処理する。
+	 *
+	 * @param a_kazeFrom
+	 *            イベントを発行した風
+	 * @param a_kazeTo
+	 *            イベントを発行した風
+	 * @return イベントID
+	 */
+	private EventId eventTsumo(int a_kazeFrom, int a_kazeTo) {
+		// ツモあがりの場合は、イベント(ツモあがり)を返す。
+		int agariScore = m_info.getAgariScore();
+		if (agariScore > 0) {
+			return EventId.TSUMO_AGARI;
+		}
+
+		// リーチの場合は、ツモ切りする。
+		if (m_info.isReach()) {
+			m_iSutehai = 13;
+			return EventId.SUTEHAI;
+		}
+
+		m_info.copyTehai(m_tehai);
+		Hai tsumoHai = m_info.getTsumoHai();
+
+		thinkSutehai(tsumoHai);
+
+		// 捨牌を決めたので手牌を更新します。
+		if (m_iSutehai != 13) {
+			m_tehai.rmJyunTehai(m_iSutehai);
+			m_tehai.addJyunTehai(tsumoHai);
+		}
+
+		// リーチする場合はイベント（リーチ）を返します。
+		if (thinkReach(m_tehai)) {
+			return EventId.REACH;
+		}
+
+		return EventId.SUTEHAI;
+	}
+
+	/**
+	 * イベント(捨牌)を処理する。
+	 *
+	 * @param a_kazeFrom
+	 *            イベントを発行した風
+	 * @param a_kazeTo
+	 *            イベントを発行した風
+	 * @return イベントID
+	 */
+	private EventId eventSutehai(int a_kazeFrom, int a_kazeTo) {
+		if (a_kazeFrom == m_info.getJikaze()) {
+			return EventId.NAGASHI;
+		}
+
+		int agariScore = m_info.getAgariScore();
+		if (agariScore > 0) {
+			return EventId.RON_AGARI;
+		}
+
+		return EventId.NAGASHI;
+	}
 
 	/** カウントフォーマット */
 	private CountFormat countFormat = new CountFormat();
-
-	private int sutehaiIdx = 0;
-
-	public int getSutehaiIdx() {
-		return sutehaiIdx;
-	}
-
-	private String name;
-
-	public String getName() {
-		return name;
-	}
 
 	private final static int HYOUKA_SHUU = 1;
 
@@ -36,123 +140,11 @@ public class AI implements EventIf {
 			combis[i] = new Combi();
 	}
 
-	public AI(Info info, String name) {
-		this.info = info;
-		this.name = name;
-	}
-
-	public EID event(EID eid, int fromKaze, int toKaze) {
-		EID returnEid = EID.NAGASHI;
-
-		// イベントを処理する。
-		switch (eid) {
-		case TSUMO:// ツモ
-			returnEid = eidTsumo(fromKaze, toKaze);
-			break;
-		case SUTEHAI:// 捨牌
-			returnEid = eidSutehai(fromKaze, toKaze);
-			break;
-		case SUTEHAISELECT:
-			if (fromKaze != info.getJikaze()) {
-				return EID.NAGASHI;
-			}
-			// 自分の手牌をコピーします。
-			info.copyTehai(tehai, fromKaze);
-			thinkSutehai(null);
-			break;
-		default:
-			break;
-		}
-
-		return returnEid;
-	}
-
-	private EID eidSutehai(int fromKaze, int toKaze) {
-		if (fromKaze == info.getJikaze()) {
-			return EID.NAGASHI;
-		}
-		int agariScore = info.getAgariScore(tehai, info.getSuteHai());
-		if (agariScore > 0) {
-			return EID.RON;
-		}
-
-//		{
-//			if (tehai.validChiiRight(info.getSuteHai())) {
-//				System.out.println("validChiiRight！！！！！！！！！！！！！！！！！！！");
-//				Hai[] jyunTehai = tehai.getJyunTehai();
-//				int jyunTehaiLength = tehai.getJyunTehaiLength();
-//				for (int i = 0; i < jyunTehaiLength; i++)
-//					System.out.print(Console.idToString(jyunTehai[i].getId()));
-//				System.out.println();
-//				tehai.setChiiRight(info.getSuteHai());
-//				jyunTehai = tehai.getJyunTehai();
-//				jyunTehaiLength = tehai.getJyunTehaiLength();
-//				for (int i = 0; i < jyunTehaiLength; i++)
-//					System.out.print(Console.idToString(jyunTehai[i].getId()));
-//				System.out.println();
-//			}
-//		}
-
-		// 牌が少なくなったら鳴いてみます。
-//		if (info.getTsumoRemain() < 16) {
-//			// ポンできるかチェックします。
-//			if (tehai.validPon(info.getSuteHai())) {
-//				return EID.PON;
-//			}
-//		}
-
-		return EID.NAGASHI;
-	}
-
-	/**
-	 * イベント（ツモ）を処理する。
-	 *
-	 * @param fromKaze
-	 *            イベントを発行した風
-	 * @param toKaze
-	 *            イベントの対象となった風
-	 * @return イベントID
-	 */
-	private EID eidTsumo(int fromKaze, int toKaze) {
-		// 自分の手牌をコピーします。
-		info.copyTehai(tehai, fromKaze);
-
-		// ツモ牌を取得します。
-		Hai tsumoHai = info.getTsumoHai();
-
-		// ツモあがりの場合はイベント（ツモあがり）を返します。
-		int agariScore = info.getAgariScore(tehai, tsumoHai);
-		if (agariScore > 0) {
-			return EID.TSUMOAGARI;
-		}
-
-		// リーチの場合はツモ切りします。
-		if (info.isReach(info.getJikaze())) {
-			sutehaiIdx = 13;
-			return EID.SUTEHAI;
-		}
-
-		thinkSutehai(tsumoHai);
-
-		// 捨牌を決めたので手牌を更新します。
-		if (sutehaiIdx != 13) {
-			tehai.rmJyunTehai(sutehaiIdx);
-			tehai.addJyunTehai(tsumoHai);
-		}
-
-		// リーチする場合はイベント（リーチ）を返します。
-		if (thinkReach(tehai)) {
-			return EID.REACH;
-		}
-
-		return EID.SUTEHAI;
-	}
-
 	private void thinkSutehai(Hai addHai) {
 		int score = 0;
 		int maxScore = 0;
 
-		CountFormat.getCountFormat(tehai, countFormat, null);
+		countFormat.setCountFormat(m_tehai, null);
 		maxScore = getCountFormatScore(countFormat);
 		// System.out.println("score:" + score + ",maxScore:" + maxScore +
 		// ",hai:" + UI.idToString(tsumoHai.getId()));
@@ -161,22 +153,22 @@ public class AI implements EventIf {
 		Hai[] jyunTehai = new Hai[Tehai.JYUN_TEHAI_LENGTH_MAX];
 		for (int i = 0; i < Tehai.JYUN_TEHAI_LENGTH_MAX; i++)
 			jyunTehai[i] = new Hai();
-		int jyunTehaiLength = tehai.getJyunTehaiLength();
-		Tehai.copyJyunTehai(jyunTehai, tehai.getJyunTehai(), jyunTehaiLength);
+		int jyunTehaiLength = m_tehai.getJyunTehaiLength();
+		Tehai.copyJyunTehai(jyunTehai, m_tehai.getJyunTehai(), jyunTehaiLength);
 
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			tehai.copyJyunTehaiIndex(hai, i);
-			tehai.rmJyunTehai(i);
-			CountFormat.getCountFormat(tehai, countFormat, addHai);
+			m_tehai.copyJyunTehaiIndex(hai, i);
+			m_tehai.rmJyunTehai(i);
+			countFormat.setCountFormat(m_tehai, addHai);
 			score = getCountFormatScore(countFormat);
 			// System.out.println("score:" + score + ",maxScore:" + maxScore +
 			// ",hai:" + UI.idToString(hai.getId()));
 			if (score > maxScore) {
 				maxScore = score;
 				// System.out.println("setSutehaiIdx:" + i);
-				sutehaiIdx = i;
+				m_iSutehai = i;
 			}
-			tehai.addJyunTehai(hai);
+			m_tehai.addJyunTehai(hai);
 		}
 	}
 
@@ -203,8 +195,8 @@ public class AI implements EventIf {
 
 	private boolean thinkReach(Tehai tehai) {
 		for (Hai hai : haiTable) {
-			CountFormat.getCountFormat(tehai, countFormat, hai);
-			if (countFormat.getCombi(combis) > 0) {
+			countFormat.setCountFormat(tehai, hai);
+			if (countFormat.getCombis(combis) > 0) {
 				return true;
 			}
 		}
@@ -214,25 +206,25 @@ public class AI implements EventIf {
 	private int getCountFormatScore(CountFormat countFormat) {
 		int score = 0;
 
-		for (int i = 0; i < countFormat.length; i++) {
-			if ((countFormat.counts[i].id & Hai.KIND_SHUU) != 0) {
-				score += countFormat.counts[i].length * HYOUKA_SHUU;
+		for (int i = 0; i < countFormat.m_countNum; i++) {
+			if ((countFormat.m_counts[i].m_noKind & Hai.KIND_SHUU) != 0) {
+				score += countFormat.m_counts[i].m_num * HYOUKA_SHUU;
 			}
 
-			if (countFormat.counts[i].length == 2) {
+			if (countFormat.m_counts[i].m_num == 2) {
 				score += 4;
 			}
 
-			if (countFormat.counts[i].length >= 3) {
+			if (countFormat.m_counts[i].m_num >= 3) {
 				score += 8;
 			}
 
-			if ((countFormat.counts[i].id & Hai.KIND_SHUU) > 0) {
-				if ((countFormat.counts[i].id + 1) == countFormat.counts[i + 1].id) {
+			if ((countFormat.m_counts[i].m_noKind & Hai.KIND_SHUU) > 0) {
+				if ((countFormat.m_counts[i].m_noKind + 1) == countFormat.m_counts[i + 1].m_noKind) {
 					score += 4;
 				}
 
-				if ((countFormat.counts[i].id + 2) == countFormat.counts[i + 2].id) {
+				if ((countFormat.m_counts[i].m_noKind + 2) == countFormat.m_counts[i + 2].m_noKind) {
 					score += 4;
 				}
 			}

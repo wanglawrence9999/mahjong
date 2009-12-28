@@ -5,7 +5,7 @@ import jp.sourceforge.andjong.mahjong.Hai;
 import jp.sourceforge.andjong.mahjong.Kawa;
 import jp.sourceforge.andjong.mahjong.Mahjong;
 import jp.sourceforge.andjong.mahjong.Tehai;
-import jp.sourceforge.andjong.mahjong.EventIf.EID;
+import jp.sourceforge.andjong.mahjong.EventIf.EventId;
 
 /**
  * 描画アイテムを管理する。
@@ -185,7 +185,7 @@ public class DrawItem {
 	boolean mIsDebug = false;
 
 	/** イベントID */
-	EID eid;
+	EventId eid;
 
 	{
 		for (int i = 0; i < 4; i++) {

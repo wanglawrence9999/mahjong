@@ -664,12 +664,12 @@ public class Yaku {
 		}
 
 		//面子が順子だけではない
-		if(combi.shunCount != 4){
+		if(combi.m_shunNum != 4){
 			return false;
 		}
 
 		//頭が三元牌
-		atamaHai = new Hai(combi.atamaId);
+		atamaHai = new Hai(combi.m_atamaNoKind);
 		if( atamaHai.getKind() == KIND_SANGEN ){
 			return false;
 		}
@@ -700,8 +700,8 @@ public class Yaku {
 			case 1:
 			case 2:
 			case 3:
-				for(int i = 0 ; i < combi.shunCount ; i++){
-					if(addHaiid == combi.shunIds[i]){
+				for(int i = 0 ; i < combi.m_shunNum ; i++){
+					if(addHaiid == combi.m_shunNoKinds[i]){
 						ryanmenflg = true;
 					}
 				}
@@ -710,9 +710,9 @@ public class Yaku {
 			case 4:
 			case 5:
 			case 6:
-				for(int i = 0 ; i < combi.shunCount ; i++){
-					if((addHaiid == combi.shunIds[i])
-					 ||(addHaiid-2 == combi.shunIds[i])){
+				for(int i = 0 ; i < combi.m_shunNum ; i++){
+					if((addHaiid == combi.m_shunNoKinds[i])
+					 ||(addHaiid-2 == combi.m_shunNoKinds[i])){
 						ryanmenflg = true;
 					}
 				}
@@ -721,8 +721,8 @@ public class Yaku {
 			case 7:
 			case 8:
 			case 9:
-				for(int i = 0 ; i < combi.shunCount ; i++){
-					if(addHaiid-2 == (combi.shunIds[i])){
+				for(int i = 0 ; i < combi.m_shunNum ; i++){
+					if(addHaiid-2 == (combi.m_shunNoKinds[i])){
 						ryanmenflg = true;
 					}
 				}
@@ -746,8 +746,8 @@ public class Yaku {
 		}
 
 		//順子の組み合わせを確認する
-		for (int i = 0; i < combi.shunCount -1; i++) {
-			if(combi.shunIds[i] == combi.shunIds[i+1]){
+		for (int i = 0; i < combi.m_shunNum -1; i++) {
+			if(combi.m_shunNoKinds[i] == combi.m_shunNoKinds[i+1]){
 				return true;
 			}
 		}
@@ -777,9 +777,9 @@ public class Yaku {
 		Hai checkHai[][];
 
 		//純手牌をチェック
-		for(int i = 0; i < combi.kouCount ; i++){
+		for(int i = 0; i < combi.m_kouNum ; i++){
 			//IDと役牌のIDをチェック
-			if( combi.kouIds[i] == yakuHaiId ){
+			if( combi.m_kouNoKinds[i] == yakuHaiId ){
 				return true;
 			}
 		}
@@ -891,8 +891,8 @@ public class Yaku {
 		Hai checkHai;
 
 		//純手牌の刻子をチェック
-		for(int i = 0; i < combi.kouCount ; i++){
-			checkHai = new Hai(combi.kouIds[i]);
+		for(int i = 0; i < combi.m_kouNum ; i++){
+			checkHai = new Hai(combi.m_kouNoKinds[i]);
 			//数牌の場合は数字をチェック
 			if (checkHai.isYaochuu() == false){
 				return false;
@@ -900,8 +900,8 @@ public class Yaku {
 		}
 
 		//純手牌の順子をチェック
-		for(int i = 0; i < combi.shunCount ; i++){
-			checkHai = new Hai(combi.shunIds[i]);
+		for(int i = 0; i < combi.m_shunNum ; i++){
+			checkHai = new Hai(combi.m_shunNoKinds[i]);
 			//数牌の場合は数字をチェック
 			if (checkHai.isTsuu() == false){
 				if ((checkHai.getNo() > 1) && (checkHai.getNo() < 7))
@@ -910,7 +910,7 @@ public class Yaku {
 		}
 
 		//純手牌の頭をチェック
-		checkHai = new Hai(combi.atamaId);
+		checkHai = new Hai(combi.m_atamaNoKind);
 		if (checkHai.isYaochuu() == false){
 			return false;
 		}
@@ -963,8 +963,8 @@ public class Yaku {
 		int checkId[] = {ID_WAN_1,ID_WAN_4,ID_WAN_7,ID_PIN_1,ID_PIN_4,ID_PIN_7,ID_SOU_1,ID_SOU_4,ID_SOU_7};
 
 		//手牌の順子をチェック
-		for(int i = 0 ; i < combi.shunCount ; i++){
-			id = combi.shunIds[i];
+		for(int i = 0 ; i < combi.m_shunNum ; i++){
+			id = combi.m_shunNoKinds[i];
 			for(int j =0 ; j < checkId.length ; j++){
 				if(id == checkId[j]){
 					ikkituukanflg[j] = true;
@@ -1019,8 +1019,8 @@ public class Yaku {
 		}
 
 		//手牌の順子をチェック
-		for(int i = 0 ; i < combi.shunCount ; i++){
-			id = combi.shunIds[i];
+		for(int i = 0 ; i < combi.m_shunNum ; i++){
+			id = combi.m_shunNoKinds[i];
 			checkSansyoku(id,sansyokuflg);
 		}
 
@@ -1055,8 +1055,8 @@ public class Yaku {
 		}
 
 		//手牌の刻子をチェック
-		for(int i = 0 ; i < combi.kouCount ; i++){
-			id = combi.kouIds[i];
+		for(int i = 0 ; i < combi.m_kouNum ; i++){
+			id = combi.m_kouNoKinds[i];
 			checkSansyoku(id,sansyokuflg);
 		}
 
@@ -1125,13 +1125,13 @@ public class Yaku {
 		else{
 			int id = addHai.getId();
 			//ロン上がりで頭待ちの場合は成立
-			if(id == combi.atamaId){
+			if(id == combi.m_atamaNoKind){
 				return true;
 			}else{
 				//和了った牌と刻子になっている牌が同じか確認
 				boolean checkflg = false;
-				for(int i = 0 ; i < combi.kouCount ; i++){
-					if(id == combi.kouIds[i]){
+				for(int i = 0 ; i < combi.m_kouNum ; i++){
+					if(id == combi.m_kouNoKinds[i]){
 						checkflg = true;
 					}
 				}
@@ -1145,16 +1145,16 @@ public class Yaku {
 						//順子の待ちにもなっていないか確認する
 						//　例:11123 で1で和了り  , 45556 の5で和了り
 						boolean checkshun = false;
-						for(int i = 0 ; i < combi.shunCount ; i++){
+						for(int i = 0 ; i < combi.m_shunNum ; i++){
 							switch(addHai.getNo()){
 								case 1:
-									if(id == combi.shunIds[i]){
+									if(id == combi.m_shunNoKinds[i]){
 										checkshun = true;
 									}
 									break;
 								case 2:
-									if((id == combi.shunIds[i])
-									 ||(id-1 == combi.shunIds[i])){
+									if((id == combi.m_shunNoKinds[i])
+									 ||(id-1 == combi.m_shunNoKinds[i])){
 										checkshun = true;
 									}
 									break;
@@ -1163,20 +1163,20 @@ public class Yaku {
 								case 5:
 								case 6:
 								case 7:
-									if((id == combi.shunIds[i])
-										 ||(id-1 == combi.shunIds[i])
-										 ||(id-2 == combi.shunIds[i])){
+									if((id == combi.m_shunNoKinds[i])
+										 ||(id-1 == combi.m_shunNoKinds[i])
+										 ||(id-2 == combi.m_shunNoKinds[i])){
 											checkshun = true;
 									}
 									break;
 								case 8:
-									if((id-1 == combi.shunIds[i])
-										 ||(id-2 == combi.shunIds[i])){
+									if((id-1 == combi.m_shunNoKinds[i])
+										 ||(id-2 == combi.m_shunNoKinds[i])){
 											checkshun = true;
 									}
 									break;
 								case 9:
-									if(id-2 == combi.shunIds[i]){
+									if(id-2 == combi.m_shunNoKinds[i]){
 											checkshun = true;
 									}
 									break;
@@ -1218,13 +1218,13 @@ public class Yaku {
 		}
 
 		//順子が４つである
-		if(combi.shunCount < 4){
+		if(combi.m_shunNum < 4){
 			return false;
 		}
 
 		//順子の組み合わせを確認する
-		if(combi.shunIds[0] == combi.shunIds[1]
-		&& combi.shunIds[2] == combi.shunIds[3]){
+		if(combi.m_shunNoKinds[0] == combi.m_shunNoKinds[1]
+		&& combi.m_shunNoKinds[2] == combi.m_shunNoKinds[3]){
 			return true;
 		}else{
 			return false;
@@ -1303,8 +1303,8 @@ public class Yaku {
 		Hai checkHai;
 
 		//純手牌の刻子をチェック
-		for(int i = 0; i < combi.kouCount ; i++){
-			checkHai = new Hai(combi.kouIds[i]);
+		for(int i = 0; i < combi.m_kouNum ; i++){
+			checkHai = new Hai(combi.m_kouNoKinds[i]);
 			//字牌があれば不成立
 			if( checkHai.isTsuu() == true){
 				return false;
@@ -1317,8 +1317,8 @@ public class Yaku {
 		}
 
 		//純手牌の順子をチェック
-		for(int i = 0; i < combi.shunCount ; i++){
-			checkHai = new Hai(combi.shunIds[i]);
+		for(int i = 0; i < combi.m_shunNum ; i++){
+			checkHai = new Hai(combi.m_shunNoKinds[i]);
 			//字牌があれば不成立
 			if( checkHai.isTsuu() == true){
 				return false;
@@ -1331,7 +1331,7 @@ public class Yaku {
 		}
 
 		//純手牌の頭をチェック
-		checkHai = new Hai(combi.atamaId);
+		checkHai = new Hai(combi.m_atamaNoKind);
 		//字牌があれば不成立
 		if( checkHai.isTsuu() == true){
 			return false;
@@ -1410,7 +1410,7 @@ public class Yaku {
 			countSangen++;
 		}
 		//頭が三元牌 かつ、三元牌役が2つ成立
-		Hai atamaHai = new Hai(combi.atamaId);
+		Hai atamaHai = new Hai(combi.m_atamaNoKind);
 		if((atamaHai.getKind() == KIND_SANGEN) && (countSangen == 2)){
 			return true;
 		}
@@ -1520,7 +1520,7 @@ public class Yaku {
 			//ロン和了りの場合
 			else{
 				//頭待ちならば成立 (四暗刻単騎待ち)
-				if(addHai.getId() == combi.atamaId){
+				if(addHai.getId() == combi.m_atamaNoKind){
 					return true;
 				}else{
 					return false;
@@ -1592,7 +1592,7 @@ public class Yaku {
 		}
 
 		//頭が風牌 かつ、風牌役が3つ成立
-		Hai atamaHai = new Hai(combi.atamaId);
+		Hai atamaHai = new Hai(combi.m_atamaNoKind);
 		if((atamaHai.getKind() == KIND_FON) && (countFon == 3)){
 			return true;
 		}else{

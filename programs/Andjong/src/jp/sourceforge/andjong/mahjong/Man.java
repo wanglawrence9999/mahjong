@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 import android.util.Log;
 
-import jp.sourceforge.andjong.mahjong.EventIf.EID;
+import jp.sourceforge.andjong.mahjong.EventIf.EventId;
 
 public class Man implements EventIf {
 	/** ƒvƒŒƒCƒ„[‚É’ñ‹Ÿ‚·‚éî•ñ */
@@ -33,7 +33,7 @@ public class Man implements EventIf {
 	private Tehai mTehai = new Tehai();
 
 	@Override
-	public EID event(EID eid, int fromKaze, int toKaze) {
+	public EventId event(EventId eid, int fromKaze, int toKaze) {
 		int sutehaiIdx = 0;
 		int agariScore = 0;
 		switch (eid) {
@@ -49,7 +49,7 @@ public class Man implements EventIf {
 				mPlayerAction.actionWait();
 				if (mPlayerAction.getMenuSelect() == 0) {
 					mPlayerAction.init();
-					return EID.TSUMOAGARI;
+					return EventId.TSUMO_AGARI;
 				}
 				mPlayerAction.init();
 			}
@@ -62,7 +62,7 @@ public class Man implements EventIf {
 					if (mPlayerAction.isValidTsumo()) {
 						if (sutehaiIdx == 100) {
 							mPlayerAction.init();
-							return EID.TSUMOAGARI;
+							return EventId.TSUMO_AGARI;
 						}
 					}
 					if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
@@ -72,8 +72,8 @@ public class Man implements EventIf {
 			}
 			mPlayerAction.init();
 			this.sutehaiIdx = sutehaiIdx;
-			return EID.SUTEHAI;
-		case SUTEHAISELECT:
+			return EventId.SUTEHAI;
+		case SELECT_SUTEHAI:
 			while (true) {
 				try {
 					// “ü—Í‘Ò‚¿
@@ -90,10 +90,10 @@ public class Man implements EventIf {
 				}
 			}
 			this.sutehaiIdx = sutehaiIdx;
-			return EID.SUTEHAI;
+			return EventId.SUTEHAI;
 		case SUTEHAI:
 			if (fromKaze == mInfo.getJikaze()) {
-				return EID.NAGASHI;
+				return EventId.NAGASHI;
 			}
 			mInfo.copyTehai(mTehai, mInfo.getJikaze());
 			agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
@@ -104,7 +104,7 @@ public class Man implements EventIf {
 				mPlayerAction.actionWait();
 				if (mPlayerAction.getMenuSelect() == 0) {
 					mPlayerAction.init();
-					return EID.RON;
+					return EventId.RON_AGARI;
 				}
 				mPlayerAction.init();
 			}
@@ -136,10 +136,10 @@ public class Man implements EventIf {
 			break;
 		}
 
-		return EID.NAGASHI;
+		return EventId.NAGASHI;
 	}
 
-	public int getSutehaiIdx() {
+	public int getISutehai() {
 		return sutehaiIdx;
 	}
 }

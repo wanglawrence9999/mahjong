@@ -47,6 +47,10 @@ public class Info {
 		return game.getJikaze();
 	}
 
+	public void copyTehai(Tehai tehai) {
+		game.copyTehai(tehai, game.getJikaze());
+	}
+
 	/**
 	 * 手牌をコピーする。
 	 *
@@ -89,6 +93,10 @@ public class Info {
 		return new Hai(game.getSuteHai());
 	}
 
+	public int getAgariScore() {
+		return 0;
+	}
+
 	/**
 	 * あがり点を取得する。
 	 *
@@ -100,6 +108,10 @@ public class Info {
 	 */
 	public int getAgariScore(Tehai tehai, Hai addHai) {
 		return game.getAgariScore(tehai, addHai);
+	}
+
+	public boolean isReach() {
+		return game.isReach(game.getJikaze());
 	}
 
 	/**

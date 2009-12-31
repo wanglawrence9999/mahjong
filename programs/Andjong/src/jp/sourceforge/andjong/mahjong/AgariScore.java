@@ -18,7 +18,7 @@ public class AgariScore {
 	 */
 	int countHu(Tehai tehai, Hai addHai, Combi combi, Yaku yaku,AgariSetting setting) {
 		int countHu = 20;
-		Hai checkHais[][];
+		Hai checkHais[];
 
 		//µ‘Îq‚Ìê‡‚Í‚Q‚T•„
 		if(yaku.checkTeetoitu() == true){
@@ -26,7 +26,7 @@ public class AgariScore {
 		}
 
 		//“ª‚Ì”v‚ğæ“¾
-		Hai atamaHai = new Hai(combi.m_atamaNoKind);
+		Hai atamaHai = new Hai(Hai.noKindToId(combi.m_atamaNoKind));
 
 		// ‚RŒ³”v‚È‚ç‚Q•„’Ç‰Á
 		if (atamaHai.getKind() == KIND_SANGEN) {
@@ -46,7 +46,7 @@ public class AgariScore {
 		//•½˜a‚ª¬—§‚·‚éê‡‚ÍA‘Ò‚¿‚É‚æ‚é‚Q•„’Ç‰Á‚æ‚è‚à—Dæ‚³‚ê‚é
 		if(yaku.checkPinfu() == false){
 			// ’P‹R‘Ò‚¿‚Ìê‡‚Q•„’Ç‰Á
-			if(addHai.getId() == combi.m_atamaNoKind){
+			if(addHai.getNoKind() == combi.m_atamaNoKind){
 				countHu += 2;
 			}
 
@@ -54,7 +54,7 @@ public class AgariScore {
 			//””v‚Ì‚Q`‚W‚©‚Ç‚¤‚©”»’è
 			if(addHai.isYaochuu() == false){
 				for(int i = 0 ; i < combi.m_shunNum ; i++){
-					if((addHai.getNo()-1) == combi.m_shunNoKinds[i]){
+					if((addHai.getNoKind()-1) == combi.m_shunNoKinds[i]){
 						countHu += 2;
 					}
 				}
@@ -63,7 +63,7 @@ public class AgariScore {
 			// •Ó’£‘Ò‚¿(3)‚Ìê‡‚Q•„’Ç‰Á
 			if((addHai.isYaochuu() == false) && (addHai.getNo() == NO_3)){
 				for(int i = 0 ; i < combi.m_shunNum ; i++){
-					if( (addHai.getId()-2) == combi.m_shunNoKinds[i]){
+					if( (addHai.getNoKind()-2) == combi.m_shunNoKinds[i]){
 						countHu += 2;
 					}
 				}
@@ -72,17 +72,16 @@ public class AgariScore {
 			// •Ó’£‘Ò‚¿(7)‚Ìê‡‚Q•„’Ç‰Á
 			if((addHai.isYaochuu() == false) && (addHai.getNo() == NO_7)){
 				for(int i = 0 ; i < combi.m_shunNum ; i++){
-					if( addHai.getId() == combi.m_shunNoKinds[i]){
+					if( addHai.getNoKind() == combi.m_shunNoKinds[i]){
 						countHu += 2;
 					}
 				}
 			}
 		}
 
-		/*
 		// ˆÃ‚É‚æ‚é‰Á“_
-		for (int i = 0; i < combi.kouCount; i++) {
-			Hai checkHai = new Hai(combi.kouIds[i]);
+		for (int i = 0; i < combi.m_kouNum; i++) {
+			Hai checkHai = new Hai(Hai.noKindToId(combi.m_kouNoKinds[i]));
 			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
 			if (checkHai.isYaochuu() == true) {
 				countHu += 8;
@@ -91,39 +90,49 @@ public class AgariScore {
 			}
 		}
 
-		// –¾‚É‚æ‚é‰Á“_
-		for (int i = 0; i < tehai.getMinKousLength(); i++) {
-			checkHais = tehai.getMinKous();
-			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
-			if (checkHais[i][0].isYaochuu() == true) {
-				countHu += 4;
-			} else {
-				countHu += 2;
+		Fuuro[] fuuros;
+		fuuros = tehai.getFuuros();
+		int fuuroNum;
+		fuuroNum = tehai.getFuuroNum();
+		int type;
+		for (int i = 0; i < fuuroNum; i++) {
+			type = fuuros[i].getType();
+			switch (type) {
+			case Fuuro.TYPE_MINKOU:
+				//–¾‚Ì”v‚ğƒ`ƒFƒbƒN
+				checkHais = fuuros[i].getHais();
+				// ”v‚ªš”v‚à‚µ‚­‚Í1,9
+				if (checkHais[0].isYaochuu() == true) {
+					countHu += 4;
+				} else {
+					countHu += 2;
+				}
+				break;
+			case Fuuro.TYPE_DAIMINKAN:
+			case Fuuro.TYPE_KAKAN:
+				//–¾È‚Ì”v‚ğƒ`ƒFƒbƒN
+				checkHais = fuuros[i].getHais();
+				// ”v‚ªš”v‚à‚µ‚­‚Í1,9
+				if (checkHais[0].isYaochuu() == true) {
+					countHu += 16;
+				} else {
+					countHu += 8;
+				}
+				break;
+			case Fuuro.TYPE_ANKAN:
+				//ˆÃÈ‚Ì”v‚ğƒ`ƒFƒbƒN
+				checkHais = fuuros[i].getHais();
+				// ”v‚ªš”v‚à‚µ‚­‚Í1,9
+				if (checkHais[0].isYaochuu() == true) {
+					countHu += 32;
+				} else {
+					countHu += 16;
+				}
+				break;
+			default:
+				break;
 			}
 		}
-
-		// –¾È‚É‚æ‚é‰Á“_
-		for (int i = 0; i < tehai.getMinKansLength(); i++) {
-			checkHais = tehai.getMinKans();
-			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
-			if (checkHais[i][0].isYaochuu() == true) {
-				countHu += 16;
-			} else {
-				countHu += 8;
-			}
-		}
-
-		// ˆÃÈ‚É‚æ‚é‰Á“_
-		for (int i = 0; i < tehai.getAnKansLength(); i++) {
-			checkHais = tehai.getAnKans();
-			// ”v‚ªš”v‚à‚µ‚­‚Í1,9
-			if (checkHais[i][0].isYaochuu() == true) {
-				countHu += 32;
-			} else {
-				countHu += 16;
-			}
-		}
-		*/
 
 		// ƒcƒ‚ã‚ª‚è‚Å•½˜a‚ª¬—§‚µ‚Ä‚¢‚È‚¯‚ê‚Î‚Q•ˆ’Ç‰Á
 		if(setting.getYakuflg(AgariSetting.YakuflgName.TUMO.ordinal() )== true){
@@ -186,12 +195,21 @@ public class AgariScore {
 		return score;
 	}
 
+	/** ˜a—¹‚è–ğ‚Ì–¼‘O */
+	String[] m_yakuNames;
+
+	public String[] getYakuNames() {
+		return m_yakuNames;
+	}
+
 	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting) {
 		// ƒJƒEƒ“ƒgƒtƒH[ƒ}ƒbƒg‚ğæ“¾‚µ‚Ü‚·B
 		countFormat.setCountFormat(tehai, addHai);
 
 		// ‚ ‚ª‚è‚Ì‘g‚İ‡‚í‚¹‚ğæ“¾‚µ‚Ü‚·B
 		int combisCount = countFormat.getCombis(combis);
+		combis = countFormat.getCombis();
+		combisCount = countFormat.getCombiNum();
 
 		// ‚ ‚ª‚è‚Ì‘g‚İ‡‚í‚¹‚ª‚È‚¢ê‡‚Í0“_
 		if (combisCount == 0)
@@ -211,6 +229,11 @@ public class AgariScore {
 			hanSuu[i] = yaku.getHanSuu();
 			huSuu[i] = countHu(tehai, addHai, combis[i],yaku,setting);
 			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
+
+			if(maxagariScore < agariScore[i]){
+				maxagariScore = agariScore[i];
+				m_yakuNames = yaku.getYakuName();
+			}
 		}
 
 		// Å‘å’l‚ğ’T‚·

@@ -206,6 +206,12 @@ public class CountFormat {
 
 			m_countNum++;
 		}
+
+		if (!set) {
+			m_counts[m_countNum].m_noKind = addHaiNoKind;
+			m_counts[m_countNum].m_num = 1;
+			m_countNum++;
+		}
 	}
 
 	/**
@@ -219,6 +225,14 @@ public class CountFormat {
 		m_combiManage.initialize(getTotalCountLength());
 		searchCombi(0);
 		a_combis = m_combiManage.m_combis;
+		return m_combiManage.m_combiNum;
+	}
+
+	public Combi[] getCombis() {
+		return m_combiManage.m_combis;
+	}
+
+	public int getCombiNum() {
 		return m_combiManage.m_combiNum;
 	}
 

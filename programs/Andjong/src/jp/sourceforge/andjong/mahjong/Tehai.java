@@ -716,7 +716,7 @@ public class Tehai {
 	 *
 	 * @return •›˜I‚ÌŒÂ”
 	 */
-	public int getFuuroNums() {
+	public int getFuuroNum() {
 		return m_fuuroNums;
 	}
 

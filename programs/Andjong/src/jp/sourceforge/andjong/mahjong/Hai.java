@@ -373,7 +373,7 @@ public class Hai {
 	 * @return Žš”vƒtƒ‰ƒO
 	 */
 	public static boolean isTsuu(int a_noKind) {
-		return (a_noKind | KIND_TSUU) != 0;
+		return (a_noKind & KIND_TSUU) != 0;
 	}
 
 	/**
@@ -392,5 +392,28 @@ public class Hai {
 	 */
 	public int getNextHaiId() {
 		return NEXT_HAI_IDS[m_id];
+	}
+
+	/**
+	 * NK(”Ô†‚ÆŽí—Þ‚ÌOR)‚ðID‚É•ÏŠ·‚·‚éB
+	 *
+	 * @param a_noKind
+	 *            NK(”Ô†‚ÆŽí—Þ‚ÌOR)
+	 * @return ID
+	 */
+	public static int noKindToId(int a_noKind) {
+		int id;
+		if (a_noKind >= KIND_SANGEN) {
+			id = a_noKind - KIND_SANGEN + ID_HAKU - 1;
+		} else if (a_noKind >= KIND_FON) {
+			id = a_noKind - KIND_FON + ID_TON - 1;
+		} else if (a_noKind >= KIND_SOU) {
+			id = a_noKind - KIND_SOU + ID_SOU_1 - 1;
+		} else if (a_noKind >= KIND_PIN) {
+			id = a_noKind - KIND_PIN + ID_PIN_1 - 1;
+		} else {
+			id = a_noKind - KIND_WAN + ID_WAN_1 - 1;
+		}
+		return id;
 	}
 }

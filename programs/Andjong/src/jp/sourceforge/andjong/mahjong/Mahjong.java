@@ -1,7 +1,9 @@
 package jp.sourceforge.andjong.mahjong;
 
+import android.util.Log;
 import jp.sourceforge.andjong.AndjongView;
 import jp.sourceforge.andjong.mahjong.AgariScore;
+import jp.sourceforge.andjong.mahjong.AgariSetting.YakuflgName;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 import static jp.sourceforge.andjong.mahjong.EventIf.*;
 
@@ -334,40 +336,6 @@ public class Mahjong implements Runnable {
 		// 配牌する。
 		haipai();
 
-		if (false) {
-			for (int i = 0; i < 13; i++)
-				m_players[1].getTehai().rmJyunTehai(i);
-
-			m_players[1].getTehai().addJyunTehai(new Hai(0));
-			m_players[1].getTehai().addJyunTehai(new Hai(1));
-			m_players[1].getTehai().addJyunTehai(new Hai(2));
-			m_players[1].getTehai().addJyunTehai(new Hai(3));
-			m_players[1].getTehai().addJyunTehai(new Hai(4));
-			m_players[1].getTehai().addJyunTehai(new Hai(5));
-			m_players[1].getTehai().addJyunTehai(new Hai(6));
-			m_players[1].getTehai().addJyunTehai(new Hai(7));
-			m_players[1].getTehai().addJyunTehai(new Hai(8));
-			m_players[1].getTehai().addJyunTehai(new Hai(9));
-			m_players[1].getTehai().addJyunTehai(new Hai(10));
-			m_players[1].getTehai().addJyunTehai(new Hai(11));
-			m_players[1].getTehai().addJyunTehai(new Hai(11));
-			/*
-			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(0));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(2));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(4));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(6));
-			mPlayers[1].getTehai().addJyunTehai(new Hai(8));
-			*/
-		}
-
 		// UIイベント（配牌）を発行する。
 		//m_view.event(EventId.HAIPAI, mFromKaze, mToKaze);
 		m_view.event(EventId.START_KYOKU, mFromKaze, mToKaze);
@@ -516,6 +484,25 @@ public class Mahjong implements Runnable {
 	private EventId tsumoEvent() {
 		// アクティブプレイヤーを設定する。
 		activePlayer = m_players[m_kazeToPlayerIdx[mFromKaze]];
+
+		boolean isTest = true;
+		if (isTest) {
+			activePlayer.setReach(true);
+			int haiIds[] = {1, 1, 1, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // タンヤオ
+			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12}; // 平和
+			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+			//int haiIds[] = {0, 0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14};
+			Tehai tehai = new Tehai();
+			for (int i = 0; i < haiIds.length - 1; i++) {
+				tehai.addJyunTehai(new Hai(haiIds[i]));
+			}
+			Hai addHai = new Hai(haiIds[haiIds.length - 1]);
+
+			int agariScore = getAgariScore(tehai, addHai);
+			String[] yakuNames = m_score.getYakuNames();
+
+			Log.e("TEST", "agariScore = " + agariScore);
+		}
 
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, mFromKaze, mFromKaze);
@@ -773,10 +760,15 @@ public class Mahjong implements Runnable {
 			combis[i] = new Combi();
 	}
 
+	AgariScore m_score;
+
 	public int getAgariScore(Tehai tehai, Hai addHai) {
 		AgariSetting setting = new AgariSetting(this);
-		AgariScore score = new AgariScore();
-		return score.getAgariScore(tehai, addHai, combis, setting);
+		if (activePlayer.isReach()) {
+			setting.setYakuflg(YakuflgName.REACH.ordinal(), true);
+		}
+		m_score = new AgariScore();
+		return m_score.getAgariScore(tehai, addHai, combis, setting);
 	}
 
 	public String[] getYakuName(Tehai tehai, Hai addHai){

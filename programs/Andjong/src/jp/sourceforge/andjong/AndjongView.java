@@ -659,7 +659,7 @@ public class AndjongView extends View implements EventIf {
 		}
 
 		int fuuroLeft = FUURO_LEFT;
-		int fuuroNums = tehai.getFuuroNums();
+		int fuuroNums = tehai.getFuuroNum();
 		if (fuuroNums > 0) {
 			Fuuro[] fuuros = tehai.getFuuros();
 			for (int i = 0; i < fuuroNums; i++) {

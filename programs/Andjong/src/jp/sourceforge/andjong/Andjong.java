@@ -22,8 +22,6 @@ public class Andjong extends Activity implements OnClickListener {
 		// すべてのボタンに、クリックリスナーを設定する。
 		View newButton = this.findViewById(R.id.new_button);
 		newButton.setOnClickListener(this);
-		View aboutButton = this.findViewById(R.id.about_button);
-		aboutButton.setOnClickListener(this);
 		View exitButton = this.findViewById(R.id.exit_button);
 		exitButton.setOnClickListener(this);
 	}
@@ -32,9 +30,6 @@ public class Andjong extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.new_button:
 			startActivity(new Intent(Andjong.this, Game.class));
-			break;
-		case R.id.about_button:
-			startActivity(new Intent(this, About.class));
 			break;
 		case R.id.exit_button:
 			finish();

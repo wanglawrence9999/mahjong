@@ -677,7 +677,7 @@ public class Yaku {
 		}
 
 		//頭が三元牌
-		atamaHai = new Hai(combi.m_atamaNoKind);
+		atamaHai = new Hai(Hai.noKindToId(combi.m_atamaNoKind));
 		if( atamaHai.getKind() == KIND_SANGEN ){
 			return false;
 		}
@@ -788,7 +788,7 @@ public class Yaku {
 		//純手牌をチェック
 		for(int i = 0; i < combi.m_kouNum ; i++){
 			//IDと役牌のIDをチェック
-			if( combi.m_kouNoKinds[i] == yakuHaiId ){
+			if( Hai.noKindToId(combi.m_kouNoKinds[i]) == yakuHaiId ){
 				return true;
 			}
 		}
@@ -911,7 +911,7 @@ public class Yaku {
 
 		//純手牌の刻子をチェック
 		for(int i = 0; i < combi.m_kouNum ; i++){
-			checkHai = new Hai(combi.m_kouNoKinds[i]);
+			checkHai = new Hai(Hai.noKindToId(combi.m_kouNoKinds[i]));
 			//数牌の場合は数字をチェック
 			if (checkHai.isYaochuu() == false){
 				return false;
@@ -920,7 +920,7 @@ public class Yaku {
 
 		//純手牌の順子をチェック
 		for(int i = 0; i < combi.m_shunNum ; i++){
-			checkHai = new Hai(combi.m_shunNoKinds[i]);
+			checkHai = new Hai(Hai.noKindToId(combi.m_shunNoKinds[i]));
 			//数牌の場合は数字をチェック
 			if (checkHai.isTsuu() == false){
 				if ((checkHai.getNo() > 1) && (checkHai.getNo() < 7))
@@ -1392,7 +1392,7 @@ public class Yaku {
 
 		//純手牌の刻子をチェック
 		for(int i = 0; i < combi.m_kouNum ; i++){
-			checkHai = new Hai(combi.m_kouNoKinds[i]);
+			checkHai = new Hai(Hai.noKindToId(combi.m_kouNoKinds[i]));
 			//字牌があれば不成立
 			if( checkHai.isTsuu() == true){
 				return false;
@@ -1406,7 +1406,7 @@ public class Yaku {
 
 		//純手牌の順子をチェック
 		for(int i = 0; i < combi.m_shunNum ; i++){
-			checkHai = new Hai(combi.m_shunNoKinds[i]);
+			checkHai = new Hai(Hai.noKindToId(combi.m_shunNoKinds[i]));
 			//字牌があれば不成立
 			if( checkHai.isTsuu() == true){
 				return false;

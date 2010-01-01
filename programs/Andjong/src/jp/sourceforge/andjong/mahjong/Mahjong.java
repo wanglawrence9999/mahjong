@@ -6,6 +6,7 @@ import jp.sourceforge.andjong.mahjong.AgariScore;
 import jp.sourceforge.andjong.mahjong.AgariSetting.YakuflgName;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 import static jp.sourceforge.andjong.mahjong.EventIf.*;
+import static jp.sourceforge.andjong.mahjong.Hai.*;
 
 /**
  * ゲームを管理するクラスです。
@@ -487,8 +488,18 @@ public class Mahjong implements Runnable {
 
 		boolean isTest = true;
 		if (isTest) {
-			activePlayer.setReach(true);
-			int haiIds[] = {1, 1, 1, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // タンヤオ
+			//activePlayer.setReach(true);
+			int haiIds[] = {ID_NAN, ID_NAN, ID_NAN, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 東
+			//int haiIds[] = {ID_TON, ID_TON, ID_TON, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 東
+			//int haiIds[] = {1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
+			//int haiIds[] = {1, 1, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // タンヤオ
+			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_CHUN, ID_CHUN, ID_CHUN, 5, 6, 7, ID_HATSU, ID_HATSU, 10, 11, 12}; // 役牌
+			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_CHUN, ID_CHUN, ID_CHUN, 5, 6, 7, 10, 10, 10, 11, 12}; // 役牌
+			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_HATSU, ID_HATSU, ID_HATSU, ID_CHUN, ID_CHUN, ID_CHUN, 10, 10, 10, 11, 12}; // 役牌
+			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_HATSU, ID_HATSU, ID_HATSU, 5, 6, 7, 10, 10, 10, 11, 12}; // 役牌
+			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 役牌
+			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
+			//int haiIds[] = {1, 1, 1, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // タンヤオ
 			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12}; // 平和
 			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 			//int haiIds[] = {0, 0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14};
@@ -496,6 +507,8 @@ public class Mahjong implements Runnable {
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				tehai.addJyunTehai(new Hai(haiIds[i]));
 			}
+			//tehai.setChiiLeft(new Hai(1), 0);
+			//tehai.setPon(new Hai(1), 0);
 			Hai addHai = new Hai(haiIds[haiIds.length - 1]);
 
 			int agariScore = getAgariScore(tehai, addHai);
@@ -766,6 +779,8 @@ public class Mahjong implements Runnable {
 		AgariSetting setting = new AgariSetting(this);
 		if (activePlayer.isReach()) {
 			setting.setYakuflg(YakuflgName.REACH.ordinal(), true);
+			setting.setBakaze(KAZE_TON);
+			setting.setJikaze(activePlayer.getJikaze());
 		}
 		m_score = new AgariScore();
 		return m_score.getAgariScore(tehai, addHai, combis, setting);

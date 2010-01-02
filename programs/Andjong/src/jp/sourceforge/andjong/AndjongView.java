@@ -2,6 +2,7 @@ package jp.sourceforge.andjong;
 
 import jp.sourceforge.andjong.R;
 import jp.sourceforge.andjong.DrawItem.PlayerInfo;
+import static jp.sourceforge.andjong.DrawItem.*;
 import jp.sourceforge.andjong.mahjong.EventIf;
 import jp.sourceforge.andjong.mahjong.Fuuro;
 import jp.sourceforge.andjong.mahjong.Hai;
@@ -114,7 +115,7 @@ public class AndjongView extends View implements EventIf {
 	private RectF m_menuRect[];
 
 	/** 描画アイテム */
-	private DrawItem mDrawItem = new DrawItem();
+	private DrawItem m_drawItem = new DrawItem();
 
 	/** InfoUI */
 	private InfoUi mInfoUi;
@@ -187,7 +188,7 @@ public class AndjongView extends View implements EventIf {
 		initPaint(getResources());
 
 		// UIが初期化されるまで待つ。
-		mDrawItem.setState(DrawItem.STATE_INIT_WAIT);
+		m_drawItem.setState(STATE_INIT_WAIT);
 
 		// フォーカスを有効にする。
 		setFocusable(true);
@@ -324,7 +325,7 @@ public class AndjongView extends View implements EventIf {
 		m_playerAction = mInfoUi.getPlayerAction();
 
 		// 状態なしにしておく。
-		mDrawItem.setState(DrawItem.STATE_NONE);
+		m_drawItem.setState(STATE_NONE);
 	}
 
 	@Override
@@ -332,32 +333,39 @@ public class AndjongView extends View implements EventIf {
 		// 背景を描画する。
 		canvas.drawRect(0, 0, getWidth(), getHeight(), mBackgroundPaint);
 
-		synchronized (mDrawItem) {
-			switch (mDrawItem.mState) {
-			case DrawItem.STATE_INIT_WAIT:
-			case DrawItem.STATE_NONE:
+		synchronized (m_drawItem) {
+			switch (m_drawItem.m_state) {
+			case STATE_INIT_WAIT:
+			case STATE_NONE:
 				// 何も描画しない。
 				return;
-			case DrawItem.STATE_KYOKU_START:
+			case STATE_KYOKU_START:
 				// 局を表示する。
-				drawMessage(canvas, mDrawItem.getKyokuString());
+				drawMessage(canvas, m_drawItem.getKyokuString());
 				return;
-			case DrawItem.STATE_REACH:
+			case STATE_REACH:
 				// リーチのメッセージを表示する。
 				drawMessage(canvas, "リーチ");
 				break;
-			case DrawItem.STATE_RON:
+			case STATE_RON:
 				// ロンのメッセージを表示する。
 				drawMessage(canvas, "ロン");
 				break;
-			case DrawItem.STATE_TSUMO:
+			case STATE_TSUMO:
 				// ツモのメッセージを表示する。
 				drawMessage(canvas, "ツモ");
 				break;
-			case DrawItem.STATE_RYUUKYOKU:
+			case STATE_RYUUKYOKU:
 				// 流局のメッセージを表示する。
 				drawMessage(canvas, getResources().getString(R.string.ryuukyoku));
 				break;
+			case STATE_RESULT:
+				// ドラを表示する。
+				drawDoras(canvas);
+
+				// 結果のメッセージを表示する。
+				drawMessage(canvas, "結果");
+				return;
 			}
 
 			// アクションボタンを表示する。
@@ -386,13 +394,13 @@ public class AndjongView extends View implements EventIf {
 			}
 
 			// 局を表示する。
-			drawString(KYOKU_LEFT, KYOKU_TOP, canvas, KYOKU_TEXT_SIZE, Color.WHITE, mDrawItem.getKyokuString());
+			drawString(KYOKU_LEFT, KYOKU_TOP, canvas, KYOKU_TEXT_SIZE, Color.WHITE, m_drawItem.getKyokuString());
 
 			// リーチ棒の数を表示する。
-			drawReachbou(canvas, mDrawItem.getReachbou());
+			drawReachbou(canvas, m_drawItem.getReachbou());
 
 			// 本場を表示する。
-			drawHonba(canvas, mDrawItem.getHonba());
+			drawHonba(canvas, m_drawItem.getHonba());
 
 			// ドラを表示する。
 			drawDoras(canvas);
@@ -407,22 +415,22 @@ public class AndjongView extends View implements EventIf {
 
 			// 点棒を表示する。
 			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
-				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(mDrawItem.mPlayerInfos[dispKaze[0]].mTenbo).toString());
+				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[0]].m_tenbo).toString());
 			}
 
 			// 起家マークを表示する。
-			drawChiicha(canvas, mDrawItem.getChiicha());
+			drawChiicha(canvas, m_drawItem.getChiicha());
 
-			Bitmap test2 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[0]].mTehai, mDrawItem.mPlayerInfos[dispKaze[0]].mKawa, PLACE_PLAYER, dispKaze[0], true, mDrawItem.mPlayerInfos[dispKaze[0]].mTsumoHai);
+			Bitmap test2 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[0]].m_tehai, m_drawItem.m_playerInfos[dispKaze[0]].m_kawa, PLACE_PLAYER, dispKaze[0], true, m_drawItem.m_playerInfos[dispKaze[0]].m_tsumoHai);
 			canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
 
-			Bitmap test3 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[1]].mTehai, mDrawItem.mPlayerInfos[dispKaze[1]].mKawa, PLACE_KAMICHA, dispKaze[1], false, mDrawItem.mPlayerInfos[dispKaze[1]].mTsumoHai);
+			Bitmap test3 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[1]].m_tehai, m_drawItem.m_playerInfos[dispKaze[1]].m_kawa, PLACE_KAMICHA, dispKaze[1], false, m_drawItem.m_playerInfos[dispKaze[1]].m_tsumoHai);
 			canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
 
-			Bitmap test = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[2]].mTehai, mDrawItem.mPlayerInfos[dispKaze[2]].mKawa, PLACE_TOIMEN, dispKaze[2], false, mDrawItem.mPlayerInfos[dispKaze[2]].mTsumoHai);
+			Bitmap test = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[2]].m_tehai, m_drawItem.m_playerInfos[dispKaze[2]].m_kawa, PLACE_TOIMEN, dispKaze[2], false, m_drawItem.m_playerInfos[dispKaze[2]].m_tsumoHai);
 			canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
 
-			Bitmap test4 = getKawaTehaiAreaImage(mDrawItem.mPlayerInfos[dispKaze[3]].mTehai, mDrawItem.mPlayerInfos[dispKaze[3]].mKawa, PLACE_SHIMOCHA, dispKaze[3], false, mDrawItem.mPlayerInfos[dispKaze[3]].mTsumoHai);
+			Bitmap test4 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[3]].m_tehai, m_drawItem.m_playerInfos[dispKaze[3]].m_kawa, PLACE_SHIMOCHA, dispKaze[3], false, m_drawItem.m_playerInfos[dispKaze[3]].m_tsumoHai);
 			canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
 		}
 	}
@@ -640,14 +648,14 @@ public class AndjongView extends View implements EventIf {
 
 	private void drawTehai(int left, int top, Canvas canvas, Tehai tehai, Hai tsumoHai, int kaze, int select, boolean isPlayer) {
 		top += 15;
-		boolean isDisp = isPlayer || mDrawItem.mIsDebug;
+		boolean isDisp = isPlayer || m_drawItem.m_isDebug;
 
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		int width = mHaiImage[0].getWidth();
 		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (tsumoHai != null && mDrawItem.mState == DrawItem.STATE_RIHAI_WAIT) {
-				if (i == mDrawItem.getSkipIdx()) {
+			if (tsumoHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
+				if (i == m_drawItem.getSkipIdx()) {
 					continue;
 				}
 			}
@@ -664,7 +672,7 @@ public class AndjongView extends View implements EventIf {
 
 		//Log.d(this.getClass().getName(), "print, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai);
 		if (tsumoHai != null) {
-			if ((select >= jyunTehaiLength) && (mDrawItem.mState != DrawItem.STATE_RIHAI_WAIT)) {
+			if ((select >= jyunTehaiLength) && (m_drawItem.m_state != STATE_RIHAI_WAIT)) {
 				if (isDisp) {
 					canvas.drawBitmap(mHaiImage[tsumoHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
 				} else {
@@ -742,9 +750,9 @@ public class AndjongView extends View implements EventIf {
 		}
 
 		if (action == MotionEvent.ACTION_DOWN) {
-			synchronized (mDrawItem) {
-				switch (mDrawItem.mState) {
-				case DrawItem.STATE_PLAY:
+			synchronized (m_drawItem) {
+				switch (m_drawItem.m_state) {
+				case STATE_PLAY:
 					break;
 				default:
 					Log.d(TAG, "mDrawItem actionNotifyAll");
@@ -953,10 +961,10 @@ public class AndjongView extends View implements EventIf {
 				return true;
 			}
 			mSelectSutehaiIdx = 0;
-			if(mDrawItem.mIsDebug){
-				mDrawItem.mIsDebug = false;
+			if(m_drawItem.m_isDebug){
+				m_drawItem.m_isDebug = false;
 			}else{
-				mDrawItem.mIsDebug = true;
+				m_drawItem.m_isDebug = true;
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
@@ -985,9 +993,9 @@ public class AndjongView extends View implements EventIf {
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
-			synchronized (mDrawItem) {
-				switch (mDrawItem.mState) {
-				case DrawItem.STATE_PLAY:
+			synchronized (m_drawItem) {
+				switch (m_drawItem.m_state) {
+				case STATE_PLAY:
 					Log.d(TAG, "STATE_PLAY actionNotifyAll");
 					m_playerAction.setSutehaiIdx(mSelectSutehaiIdx);
 					m_playerAction.actionNotifyAll();
@@ -1042,30 +1050,30 @@ public class AndjongView extends View implements EventIf {
 			break;
 		case START_GAME:// 親決め
 			// この段階で初期化されている情報を設定する。
-			mDrawItem.setState(DrawItem.STATE_NONE);
-			synchronized (mDrawItem) {
+			m_drawItem.setState(STATE_NONE);
+			synchronized (m_drawItem) {
 				// 点棒を設定する。
-				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
-					mDrawItem.mPlayerInfos[i].mTenbo = mInfoUi.getTenbou(i);
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					m_drawItem.m_playerInfos[i].m_tenbo = mInfoUi.getTenbou(i);
 				}
 
 				// リーチ棒の数を設定する。
-				mDrawItem.setReachbou(mInfoUi.getReachbou());
+				m_drawItem.setReachbou(mInfoUi.getReachbou());
 
 				// 本場を設定する。
-				mDrawItem.setHonba(mInfoUi.getHonba());
+				m_drawItem.setHonba(mInfoUi.getHonba());
 
 				// 起家を設定する。
-				mDrawItem.setChiicha(mInfoUi.getChiichaIdx());
+				m_drawItem.setChiicha(mInfoUi.getChiichaIdx());
 			}
 			break;
 		case START_KYOKU:// サイ振り
 			// サイ振りを局の開始と考える。
 
 			// 局の文字列を設定する。
-			mDrawItem.setKyokuString(getResources(), mInfoUi.getkyoku());
+			m_drawItem.setKyokuString(getResources(), mInfoUi.getkyoku());
 
-			mDrawItem.setState(DrawItem.STATE_KYOKU_START);
+			m_drawItem.setState(STATE_KYOKU_START);
 
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -1075,12 +1083,12 @@ public class AndjongView extends View implements EventIf {
 //			break;
 //		case HAIPAI:
 			// 手牌を設定して、プレイ状態にする。
-			mDrawItem.setState(DrawItem.STATE_PLAY);
-			synchronized (mDrawItem) {
-				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
-					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
-					mInfoUi.copyKawa(mDrawItem.mPlayerInfos[i].mKawa, i);
-					mDrawItem.mPlayerInfos[i].mTsumoHai = null;
+			m_drawItem.setState(STATE_PLAY);
+			synchronized (m_drawItem) {
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					mInfoUi.copyTehai(m_drawItem.m_playerInfos[i].m_tehai, i);
+					mInfoUi.copyKawa(m_drawItem.m_playerInfos[i].m_kawa, i);
+					m_drawItem.m_playerInfos[i].m_tsumoHai = null;
 				}
 			}
 
@@ -1089,7 +1097,7 @@ public class AndjongView extends View implements EventIf {
 			break;
 		case RYUUKYOKU:// 流局
 			// サイ振りを局の開始と考える。
-			mDrawItem.setState(DrawItem.STATE_RYUUKYOKU);
+			m_drawItem.setState(STATE_RYUUKYOKU);
 
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -1102,13 +1110,13 @@ public class AndjongView extends View implements EventIf {
 			break;
 		case TSUMO:// ツモ
 			// ツモ牌を取得する。
-			mDrawItem.mPlayerInfos[mInfoUi.getJikaze()].mTsumoHai = mInfoUi.getTsumoHai();
+			m_drawItem.m_playerInfos[mInfoUi.getJikaze()].m_tsumoHai = mInfoUi.getTsumoHai();
 
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case TSUMO_AGARI:// ツモあがり
-			mDrawItem.setState(DrawItem.STATE_TSUMO);
+			m_drawItem.setState(STATE_TSUMO);
 
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -1121,21 +1129,21 @@ public class AndjongView extends View implements EventIf {
 		case SUTEHAI:// 捨牌
 			Log.e(TAG, "SUTEHAI fromKaze = " + fromKaze);
 			// 手牌をコピーする。
-			mInfoUi.copyTehai(mDrawItem.mPlayerInfos[fromKaze].mTehai, fromKaze);
+			mInfoUi.copyTehai(m_drawItem.m_playerInfos[fromKaze].m_tehai, fromKaze);
 
 			// 河をコピーする。
-			mInfoUi.copyKawa(mDrawItem.mPlayerInfos[fromKaze].mKawa, fromKaze);
+			mInfoUi.copyKawa(m_drawItem.m_playerInfos[fromKaze].m_kawa, fromKaze);
 
 			// ツモ牌をなくす。
-			mDrawItem.mPlayerInfos[fromKaze].mTsumoHai = null;
+			m_drawItem.m_playerInfos[fromKaze].m_tsumoHai = null;
 
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case SELECT_SUTEHAI:
 			if (fromKaze == mInfoUi.getJikaze()) {
-				for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
-					mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					mInfoUi.copyTehai(m_drawItem.m_playerInfos[i].m_tehai, i);
 				}
 					//mDrawItem.tsumoKaze = 5;
 					//mDrawItem.tsumoHai = null;
@@ -1144,8 +1152,8 @@ public class AndjongView extends View implements EventIf {
 			}
 			break;
 		case UI_WAIT_RIHAI:
-			mDrawItem.setSkipIdx(mInfoUi.getSutehaiIdx());
-			mDrawItem.mState = DrawItem.STATE_RIHAI_WAIT;
+			m_drawItem.setSkipIdx(mInfoUi.getSutehaiIdx());
+			m_drawItem.m_state = STATE_RIHAI_WAIT;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			try {
 				Thread.sleep(PROGRESS_WAIT_TIME, 0);
@@ -1154,15 +1162,15 @@ public class AndjongView extends View implements EventIf {
 				e.printStackTrace();
 			}
 			mSelectSutehaiIdx = 13;
-			mDrawItem.mState = DrawItem.STATE_PLAY;
+			m_drawItem.m_state = STATE_PLAY;
 			break;
 		case PON:// ポン
 			// 自分の捨牌のみを表示します。
 			if (fromKaze == mInfoUi.getJikaze()) {
 				{
-					for (int i = 0; i < mDrawItem.mPlayerInfos.length; i++) {
-						mInfoUi.copyTehai(mDrawItem.mPlayerInfos[i].mTehai, i);
-						mInfoUi.copyKawa(mDrawItem.mPlayerInfos[i].mKawa, i);
+					for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+						mInfoUi.copyTehai(m_drawItem.m_playerInfos[i].m_tehai, i);
+						mInfoUi.copyKawa(m_drawItem.m_playerInfos[i].m_kawa, i);
 					}
 					//mDrawItem.tsumoKaze = 5;
 					//mDrawItem.tsumoHai = null;
@@ -1195,15 +1203,15 @@ public class AndjongView extends View implements EventIf {
 		case REACH:
 			Log.e(TAG, "REACH fromKaze = " + fromKaze);
 			// 手牌をコピーする。
-			mInfoUi.copyTehai(mDrawItem.mPlayerInfos[fromKaze].mTehai, fromKaze);
+			mInfoUi.copyTehai(m_drawItem.m_playerInfos[fromKaze].m_tehai, fromKaze);
 
 			// 河をコピーする。
-			mInfoUi.copyKawa(mDrawItem.mPlayerInfos[fromKaze].mKawa, fromKaze);
+			mInfoUi.copyKawa(m_drawItem.m_playerInfos[fromKaze].m_kawa, fromKaze);
 
 			// ツモ牌をなくす。
-			mDrawItem.mPlayerInfos[fromKaze].mTsumoHai = null;
+			m_drawItem.m_playerInfos[fromKaze].m_tsumoHai = null;
 
-			mDrawItem.mState = DrawItem.STATE_REACH;
+			m_drawItem.m_state = STATE_REACH;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			try {
 				Thread.sleep(2000, 0);
@@ -1211,19 +1219,25 @@ public class AndjongView extends View implements EventIf {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
-			mDrawItem.mState = DrawItem.STATE_PLAY;
+			m_drawItem.m_state = STATE_PLAY;
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RON_AGARI:// ロン
 			Log.d(TAG, "RON_AGARI");
-			mDrawItem.mState = DrawItem.STATE_RON;
+			m_drawItem.m_state = STATE_RON;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 
 			// アクションを待つ。
 			Log.d(TAG, "actionWait start");
 			m_playerAction.actionWait();
 			Log.d(TAG, "actionWait end");
+
+			// 結果画面を表示する。
+			m_drawItem.m_state = STATE_RESULT;
+
+			// アクションを待つ。
+			m_playerAction.actionWait();
 			break;
 		default:
 			break;

@@ -32,39 +32,41 @@ public class DrawItem {
 	public static final int STATE_RON = 7;
 	/** 流局 */
 	public static final int STATE_RYUUKYOKU = 8;
+	/** 結果 */
+	public static final int STATE_RESULT = 9;
 
 	/** 状態 */
-	int mState = STATE_INIT_WAIT;
+	int m_state = STATE_INIT_WAIT;
 
 	/** 局の文字列 */
-	private String mKyokuString = null;
+	private String m_kyokuString = null;
 
 	/** リーチ棒の数 */
-	private int mReachbou = 0;
+	private int m_reachbou = 0;
 
 	/** 本場 */
-	private int mHonba = 0;
+	private int m_honba = 0;
 
 	/** 起家 */
-	private int mChiicha = 0;
+	private int m_chiicha = 0;
 
 	/** 手牌から捨てた牌のインデックス */
-	private int mSkipIdx = 0;
+	private int m_iSkip = 0;
 
 	/**
 	 * 局の文字列を設定する。
 	 *
-	 * @param kyoku
+	 * @param a_kyoku
 	 *            局
 	 */
-	public synchronized void setKyokuString(Resources resources, int kyoku) {
-		if (kyoku > Mahjong.KYOKU_TON_4) {
-			mKyokuString = null;
+	public synchronized void setKyokuString(Resources a_resources, int a_kyoku) {
+		if (a_kyoku > Mahjong.KYOKU_TON_4) {
+			m_kyokuString = null;
 			return;
 		}
 
-		String[] kyokuStrings = resources.getStringArray(R.array.kyoku);
-		mKyokuString = kyokuStrings[kyoku];
+		String[] kyokuStrings = a_resources.getStringArray(R.array.kyoku);
+		m_kyokuString = kyokuStrings[a_kyoku];
 	}
 
 	/**
@@ -73,17 +75,17 @@ public class DrawItem {
 	 * @return 局の文字列
 	 */
 	public synchronized String getKyokuString() {
-		return mKyokuString;
+		return m_kyokuString;
 	}
 
 	/**
 	 * リーチ棒の数を設定する。
 	 *
-	 * @param reachbou
+	 * @param a_reachbou
 	 *            リーチ棒の数
 	 */
-	public synchronized void setReachbou(int reachbou) {
-		this.mReachbou = reachbou;
+	public synchronized void setReachbou(int a_reachbou) {
+		this.m_reachbou = a_reachbou;
 	}
 
 	/**
@@ -92,17 +94,17 @@ public class DrawItem {
 	 * @return リーチ棒の数
 	 */
 	public synchronized int getReachbou() {
-		return mReachbou;
+		return m_reachbou;
 	}
 
 	/**
 	 * 本場を設定する。
 	 *
-	 * @param honba
+	 * @param a_honba
 	 *            本場
 	 */
-	public synchronized void setHonba(int honba) {
-		this.mHonba = honba;
+	public synchronized void setHonba(int a_honba) {
+		this.m_honba = a_honba;
 	}
 
 	/**
@@ -111,17 +113,17 @@ public class DrawItem {
 	 * @return 本場
 	 */
 	public synchronized int getHonba() {
-		return mHonba;
+		return m_honba;
 	}
 
 	/**
 	 * 起家を設定する。
 	 *
-	 * @param chiicha
+	 * @param a_chiicha
 	 *            起家
 	 */
-	public synchronized void setChiicha(int chiicha) {
-		this.mChiicha = chiicha;
+	public synchronized void setChiicha(int a_chiicha) {
+		this.m_chiicha = a_chiicha;
 	}
 
 	/**
@@ -130,17 +132,17 @@ public class DrawItem {
 	 * @return 起家
 	 */
 	public synchronized int getChiicha() {
-		return mChiicha;
+		return m_chiicha;
 	}
 
 	/**
 	 * 手牌から捨てた牌のインデックスを設定する。
 	 *
-	 * @param skipIdx
+	 * @param a_iSkip
 	 *            手牌から捨てた牌のインデックス
 	 */
-	public synchronized void setSkipIdx(int skipIdx) {
-		this.mSkipIdx = skipIdx;
+	public synchronized void setSkipIdx(int a_iSkip) {
+		this.m_iSkip = a_iSkip;
 	}
 
 	/**
@@ -149,17 +151,17 @@ public class DrawItem {
 	 * @return 手牌から捨てた牌のインデックス
 	 */
 	public synchronized int getSkipIdx() {
-		return mSkipIdx;
+		return m_iSkip;
 	}
 
 	/**
 	 * 状態を設定する。
 	 *
-	 * @param state
+	 * @param m_state
 	 *            状態
 	 */
-	synchronized void setState(int state) {
-		this.mState = state;
+	synchronized void setState(int m_state) {
+		this.m_state = m_state;
 	}
 
 	/**
@@ -168,28 +170,32 @@ public class DrawItem {
 	 * @return 状態
 	 */
 	synchronized int getState() {
-		return mState;
+		return m_state;
 	}
 
 	public class PlayerInfo {
 		/** 手牌 */
-		Tehai mTehai = new Tehai();
-		Kawa mKawa = new Kawa();
-		Hai mTsumoHai;
+		Tehai m_tehai = new Tehai();
+		/** 河 */
+		Kawa m_kawa = new Kawa();
+		/** ツモ牌 */
+		Hai m_tsumoHai;
 		/** 点棒 */
-		int mTenbo;
+		int m_tenbo;
 	}
 
-	PlayerInfo mPlayerInfos[] = new PlayerInfo[4];
+	/** プレイヤー情報 */
+	PlayerInfo m_playerInfos[] = new PlayerInfo[4];
 
-	boolean mIsDebug = false;
+	/** デバッグフラグ */
+	boolean m_isDebug = false;
 
 	/** イベントID */
-	EventId eid;
+	EventId m_eid;
 
 	{
 		for (int i = 0; i < 4; i++) {
-			mPlayerInfos[i] = new PlayerInfo();
+			m_playerInfos[i] = new PlayerInfo();
 		}
 	}
 }

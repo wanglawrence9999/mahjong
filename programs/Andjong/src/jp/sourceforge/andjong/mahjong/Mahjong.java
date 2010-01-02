@@ -475,6 +475,16 @@ public class Mahjong implements Runnable {
 
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
+
+		if (true) {
+			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
+				m_players[0].getTehai().rmJyunTehai(0);
+			}
+			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
+			for (int i = 0; i < haiIds.length - 1; i++) {
+				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
+			}
+		}
 	}
 
 	/**

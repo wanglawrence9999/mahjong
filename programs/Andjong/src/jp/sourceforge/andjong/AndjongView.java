@@ -89,23 +89,29 @@ public class AndjongView extends View implements EventIf {
 	/** メッセージの枠 */
 	private RectF mMessageRect;
 
-	/** メニューエリアの幅 */
-	private static final int MENU_AREA_WIDTH = 157;
-	/** メニューエリアの高さ */
-	private static final int MENU_AREA_HEIGHT = 70;
+	/*
+	 * メニュー
+	 */
 
-	/** メニュー(1)エリアのLeft */
-	private static final int MENU1_AREA_LEFT = 2;
-	/** メニュー(2)エリアのLeft */
-	private static final int MENU2_AREA_LEFT = MENU1_AREA_LEFT + MENU_AREA_WIDTH + 2;
-	/** メニューエリアのTop */
-	private static final int MENU_AREA_TOP = 408;
+	/** メニューの個数の最大値 */
+	private static final int MENU_ITEM_MAX = 4;
 
-	/** メニュー(1)の枠 */
-	private RectF mMenu1Rect;
+	/** メニューの幅 */
+	private static final int MENU_WIDTH = 78;
+	/** メニューの高さ */
+	private static final int MENU_HEIGHT = 72;
 
-	/** メニュー(2)の枠 */
-	private RectF mMenu2Rect;
+	/** メニューエリアのtop */
+	private static final int MENU_AREA_TOP = 406;
+	/** メニューエリアのleft */
+	private static final int MENU_AREA_LEFT = 0;
+	/** メニューエリアのtopのマージン */
+	private static final int MENU_AREA_TOP_MARGIN = 1;
+	/** メニューエリアのleftのマージン */
+	private static final int MENU_AREA_LEFT_MARGIN = 1;
+
+	/** メニューの枠 */
+	private RectF m_menuRect[];
 
 	/** 描画アイテム */
 	private DrawItem mDrawItem = new DrawItem();
@@ -117,7 +123,7 @@ public class AndjongView extends View implements EventIf {
 	private String mName;
 
 	/** プレイヤーアクション */
-	private PlayerAction mPlayerAction;
+	private PlayerAction m_playerAction;
 
 	/** 局のLeft */
 	private static final int KYOKU_LEFT = 160;
@@ -269,11 +275,20 @@ public class AndjongView extends View implements EventIf {
 
 		mMessagePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mMessagePaint.setColor(Color.DKGRAY);
-
+		mMessagePaint.setAlpha(200);
 		mMessageRect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
 
-		mMenu1Rect = new RectF(MENU1_AREA_LEFT, MENU_AREA_TOP, MENU1_AREA_LEFT + MENU_AREA_WIDTH, MENU_AREA_TOP + MENU_AREA_HEIGHT);
-		mMenu2Rect = new RectF(MENU2_AREA_LEFT, MENU_AREA_TOP, MENU2_AREA_LEFT + MENU_AREA_WIDTH, MENU_AREA_TOP + MENU_AREA_HEIGHT);
+		// メニューを初期化する。
+		m_menuRect = new RectF[MENU_ITEM_MAX];
+		int left;
+		int top = MENU_AREA_TOP + MENU_AREA_TOP_MARGIN;
+		int right;
+		int bottom = top + MENU_HEIGHT;
+		for (int i = 0; i < m_menuRect.length; i++) {
+			left = (MENU_AREA_LEFT + MENU_AREA_LEFT_MARGIN) + ((MENU_WIDTH + (MENU_AREA_LEFT_MARGIN * 2)) * i);
+			right = left + MENU_WIDTH;
+			m_menuRect[i] = new RectF(left, top, right, bottom);
+		}
 	}
 
 	/**
@@ -306,7 +321,7 @@ public class AndjongView extends View implements EventIf {
 		this.mName = name;
 
 		// プレイヤーアクションを取得する。
-		mPlayerAction = mInfoUi.getPlayerAction();
+		m_playerAction = mInfoUi.getPlayerAction();
 
 		// 状態なしにしておく。
 		mDrawItem.setState(DrawItem.STATE_NONE);
@@ -331,6 +346,10 @@ public class AndjongView extends View implements EventIf {
 				// リーチのメッセージを表示する。
 				drawMessage(canvas, "リーチ");
 				break;
+			case DrawItem.STATE_RON:
+				// ロンのメッセージを表示する。
+				drawMessage(canvas, "ロン");
+				break;
 			case DrawItem.STATE_TSUMO:
 				// ツモのメッセージを表示する。
 				drawMessage(canvas, "ツモ");
@@ -342,21 +361,27 @@ public class AndjongView extends View implements EventIf {
 			}
 
 			// アクションボタンを表示する。
-			boolean actionRequest = mPlayerAction.isActionRequest();
+			boolean actionRequest = m_playerAction.isActionRequest();
 			if (actionRequest) {
 				//drawMessage(canvas, getResources().getString(R.string.action_button));
+				int iMenu = 0;
 
-				if (mPlayerAction.isValidRon()) {
-					drawMenu1Message(canvas, "ロン");
-				} else {
-					drawMenu1Message(canvas, "ツモ");
+				if (m_playerAction.isValidRon()) {
+					drawMenuMessage(canvas, "ロン", iMenu);
+					iMenu++;
 				}
-				drawMenu2Message(canvas, "流し");
 
-				if (mPlayerAction.getMenuSelect() == 0) {
-					canvas.drawBitmap(mMenuSelectImage, MENU1_AREA_LEFT, MENU_AREA_TOP, null);
+				if (m_playerAction.isValidTsumo()) {
+					drawMenuMessage(canvas, "ツモ", iMenu);
+					iMenu++;
+				}
+
+				//drawMenuMessage(canvas, "流し", iMenu);
+
+				if (m_playerAction.getMenuSelect() == 0) {
+					//canvas.drawBitmap(mMenuSelectImage, MENU1_AREA_LEFT, MENU_AREA_TOP, null);
 				} else {
-					canvas.drawBitmap(mMenuSelectImage, MENU2_AREA_LEFT, MENU_AREA_TOP, null);
+					//canvas.drawBitmap(mMenuSelectImage, MENU2_AREA_LEFT, MENU_AREA_TOP, null);
 				}
 			}
 
@@ -415,14 +440,10 @@ public class AndjongView extends View implements EventIf {
 		drawString((MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2, (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2, canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
 	}
 
-	private void drawMenu1Message(Canvas canvas, String string) {
-		canvas.drawRoundRect(mMenu1Rect, MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
-		drawString(MENU1_AREA_LEFT + (MENU_AREA_WIDTH / 2), MENU_AREA_TOP + (MENU_AREA_HEIGHT / 2), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
-	}
 
-	private void drawMenu2Message(Canvas canvas, String string) {
-		canvas.drawRoundRect(mMenu2Rect, MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
-		drawString(MENU2_AREA_LEFT + (MENU_AREA_WIDTH / 2), MENU_AREA_TOP + (MENU_AREA_HEIGHT / 2), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
+	private void drawMenuMessage(Canvas canvas, String string, int no) {
+		canvas.drawRoundRect(m_menuRect[no], MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
+		drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 2)), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
 	}
 
 	/**
@@ -630,7 +651,7 @@ public class AndjongView extends View implements EventIf {
 					continue;
 				}
 			}
-			if ((i == select) && (mPlayerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
+			if ((i == select) && (m_playerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
 				canvas.drawBitmap(mHaiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
 			} else {
 				if (isDisp) {
@@ -695,36 +716,44 @@ public class AndjongView extends View implements EventIf {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		synchronized (mDrawItem) {
-			switch (mDrawItem.mState) {
-			case DrawItem.STATE_PLAY:
-				break;
-			default:
-				mPlayerAction.actionNotifyAll();
-				return true;
-			}
-		}
+		int x = (int) event.getX();
+		int y = (int) event.getY();
+		int action = event.getAction();
 
-		boolean actionRequest = mPlayerAction.isActionRequest();
+		Log.d(TAG, "onTouchEvent: x = " + x + ", y = " + y);
+
+		boolean actionRequest = m_playerAction.isActionRequest();
 		if (actionRequest) {
-			int tx = (int)event.getX();
-			int ty = (int)event.getY();
-			int act_evt = event.getAction();
-			if (act_evt == MotionEvent.ACTION_DOWN) {
-				if (tx >= MESSAGE_AREA_LEFT && tx <= MESSAGE_AREA_RIGHT) {
-					if (ty >= MESSAGE_AREA_TOP && ty <= MESSAGE_AREA_BOTTOM) {
-						//showAlertDialog("MENU");
+			if (action == MotionEvent.ACTION_DOWN) {
+				int iMenu = 5;
+				for (int i = 0; i < m_menuRect.length; i++) {
+					if (x >= m_menuRect[i].left && x <= m_menuRect[i].right) {
+						if (y >= m_menuRect[i].top && y <= m_menuRect[i].bottom) {
+							iMenu = i;
+							break;
+						}
 					}
 				}
+				Log.d(TAG, "actionRequest actionNotifyAll");
+				m_playerAction.setMenuSelect(iMenu);
+				m_playerAction.actionNotifyAll();
 			}
 			return true;
 		}
 
-/*
- 		if (event.getAction() != MotionEvent.ACTION_DOWN)
-			return super.onTouchEvent(event);
+		if (action == MotionEvent.ACTION_DOWN) {
+			synchronized (mDrawItem) {
+				switch (mDrawItem.mState) {
+				case DrawItem.STATE_PLAY:
+					break;
+				default:
+					Log.d(TAG, "mDrawItem actionNotifyAll");
+					m_playerAction.actionNotifyAll();
+					return true;
+				}
+			}
+		}
 
-*/
 		/* X,Y座標の取得 */
 		int tx = (int)event.getX();
 		int ty = (int)event.getY();
@@ -891,23 +920,24 @@ public class AndjongView extends View implements EventIf {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
-		boolean actionRequest = mPlayerAction.isActionRequest();
-		int menuSelect = mPlayerAction.getMenuSelect();
+		boolean actionRequest = m_playerAction.isActionRequest();
+		int menuSelect = m_playerAction.getMenuSelect();
 		if (actionRequest) {
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				menuSelect--;
 				menuSelect %= 2;
-				mPlayerAction.setMenuSelect(menuSelect);
+				m_playerAction.setMenuSelect(menuSelect);
 				break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				menuSelect++;
 				menuSelect %= 2;
-				mPlayerAction.setMenuSelect(menuSelect);
+				m_playerAction.setMenuSelect(menuSelect);
 				break;
 			case KeyEvent.KEYCODE_ENTER:
 			case KeyEvent.KEYCODE_DPAD_CENTER:
-				mPlayerAction.actionNotifyAll();
+				Log.d(TAG, "KEYCODE_DPAD_CENTER actionNotifyAll");
+				m_playerAction.actionNotifyAll();
 				break;
 			default:
 				return super.onKeyDown(keyCode, event);
@@ -916,7 +946,7 @@ public class AndjongView extends View implements EventIf {
 			return true;
 		}
 
-		int state = mPlayerAction.getState();
+		int state = m_playerAction.getState();
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_UP:
 			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
@@ -958,11 +988,13 @@ public class AndjongView extends View implements EventIf {
 			synchronized (mDrawItem) {
 				switch (mDrawItem.mState) {
 				case DrawItem.STATE_PLAY:
-					mPlayerAction.setSutehaiIdx(mSelectSutehaiIdx);
-					mPlayerAction.actionNotifyAll();
+					Log.d(TAG, "STATE_PLAY actionNotifyAll");
+					m_playerAction.setSutehaiIdx(mSelectSutehaiIdx);
+					m_playerAction.actionNotifyAll();
 					break;
 				default:
-					mPlayerAction.actionNotifyAll();
+					Log.d(TAG, "default actionNotifyAll");
+					m_playerAction.actionNotifyAll();
 					break;
 				}
 			}
@@ -998,6 +1030,7 @@ public class AndjongView extends View implements EventIf {
 	 *            イベントID
 	 */
 	public EventId event(EventId eid, int fromKaze, int toKaze) {
+		Log.d(TAG, "eid = " + eid.toString());
 		switch (eid) {
 		case UI_WAIT_PROGRESS:// 進行待ち
 			try {
@@ -1038,7 +1071,7 @@ public class AndjongView extends View implements EventIf {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 
 			// アクションを待つ。
-			mPlayerAction.actionWait();
+			m_playerAction.actionWait();
 //			break;
 //		case HAIPAI:
 			// 手牌を設定して、プレイ状態にする。
@@ -1062,7 +1095,7 @@ public class AndjongView extends View implements EventIf {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 
 			// アクションを待つ。
-			mPlayerAction.actionWait();
+			m_playerAction.actionWait();
 			break;
 		case NAGASHI:// 流し
 			// 何も表示しない。
@@ -1081,7 +1114,9 @@ public class AndjongView extends View implements EventIf {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 
 			// アクションを待つ。
-			mPlayerAction.actionWait();
+			Log.d(TAG, "actionWait start");
+			m_playerAction.actionWait();
+			Log.d(TAG, "actionWait end");
 			break;
 		case SUTEHAI:// 捨牌
 			Log.e(TAG, "SUTEHAI fromKaze = " + fromKaze);
@@ -1181,24 +1216,14 @@ public class AndjongView extends View implements EventIf {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RON_AGARI:// ロン
-			/*
-			this.post(new Runnable() {
-				public void run() {
-					String[] yaku;
-					yaku = mInfoUi.getYakuName(tehai, mInfoUi.getSuteHai());
-					showAlertDialog("ロン" + yaku[0]);
-				}
-			});
+			Log.d(TAG, "RON_AGARI");
+			mDrawItem.mState = DrawItem.STATE_RON;
+			this.postInvalidate(0, 0, getWidth(), getHeight());
 
-			System.out
-					.print("[" + jikazeToString(mInfoUi.getJikaze()) + "][ロン]");
-
-			// 手牌を表示します。
-			printJyunTehai(tehai);
-
-			// 当たり牌を表示します。
-			System.out.println(":" + idToString((mInfoUi.getSuteHai()).getId()));
-			*/
+			// アクションを待つ。
+			Log.d(TAG, "actionWait start");
+			m_playerAction.actionWait();
+			Log.d(TAG, "actionWait end");
 			break;
 		default:
 			break;

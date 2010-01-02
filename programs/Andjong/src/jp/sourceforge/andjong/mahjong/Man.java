@@ -1,13 +1,5 @@
 package jp.sourceforge.andjong.mahjong;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import android.util.Log;
-
-import jp.sourceforge.andjong.mahjong.EventIf.EventId;
-
 public class Man implements EventIf {
 	/** ƒvƒŒƒCƒ„[‚É’ñ‹Ÿ‚·‚éî•ñ */
 	private Info mInfo;
@@ -96,9 +88,9 @@ public class Man implements EventIf {
 				return EventId.NAGASHI;
 			}
 			mInfo.copyTehai(mTehai, mInfo.getJikaze());
-			agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
+			agariScore = mInfo.getAgariScore(mTehai, mInfo.getSuteHai());
 			if (agariScore > 0) {
-				mPlayerAction.setValidTsumo(true);
+				mPlayerAction.setValidRon(true);
 				mPlayerAction.setMenuSelect(0);
 				mPlayerAction.setState(PlayerAction.STATE_RON_SELECT);
 				mPlayerAction.actionWait();

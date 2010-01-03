@@ -409,6 +409,11 @@ public class AndjongView extends View implements EventIf {
 				//drawMessage(canvas, getResources().getString(R.string.action_button));
 				int iMenu = 0;
 
+				if (m_playerAction.isValidReach()) {
+					drawMenuMessage(a_canvas, "óßíº", iMenu);
+					iMenu++;
+				}
+
 				if (m_playerAction.isValidRon()) {
 					drawMenuMessage(a_canvas, "ÉçÉì", iMenu);
 					iMenu++;
@@ -416,11 +421,6 @@ public class AndjongView extends View implements EventIf {
 
 				if (m_playerAction.isValidTsumo()) {
 					drawMenuMessage(a_canvas, "ÉcÉÇ", iMenu);
-					iMenu++;
-				}
-
-				if (m_playerAction.isValidReach()) {
-					drawMenuMessage(a_canvas, "óßíº", iMenu);
 					iMenu++;
 				}
 

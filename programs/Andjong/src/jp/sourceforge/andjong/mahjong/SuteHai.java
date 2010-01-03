@@ -8,13 +8,13 @@ package jp.sourceforge.andjong.mahjong;
  */
 public class SuteHai extends Hai {
 	/** 鳴きフラグ */
-	private boolean m_naki;
+	private boolean m_naki = false;
 
 	/** リーチフラグ */
-	private boolean m_reach;
+	private boolean m_reach = false;
 
 	/** 手出しフラグ */
-	private boolean m_tedashi;
+	private boolean m_tedashi = false;
 
 	/**
 	 * 捨牌を作成する。
@@ -56,6 +56,21 @@ public class SuteHai extends Hai {
 		a_dest.m_naki = a_src.m_naki;
 		a_dest.m_reach = a_src.m_reach;
 		a_dest.m_tedashi = a_src.m_tedashi;
+	}
+
+	/**
+	 * 捨牌をコピーする。
+	 *
+	 * @param a_dest
+	 *            コピー先の捨牌
+	 * @param a_src
+	 *            コピー元の捨牌
+	 */
+	public static void copy(SuteHai a_dest, Hai a_src) {
+		Hai.copy(a_dest, a_src);
+		a_dest.m_naki = false;
+		a_dest.m_reach = false;
+		a_dest.m_tedashi = false;
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 
+import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
+
 /**
  * プレイヤーに提供する情報を管理するクラスです。
  *
@@ -200,5 +202,58 @@ public class Info {
 
 	{
 		setSutehaiIdx(Integer.MAX_VALUE);
+	}
+
+	private Combi[] combis = new Combi[10];
+	{
+		for (int i = 0; i < combis.length; i++)
+			combis[i] = new Combi();
+	}
+
+	public int getReachIndexs(Tehai a_tehai, Hai a_tsumoHai, int[] a_indexs) {
+		// 鳴いている場合は、リーチできない。
+		if (a_tehai.getFuuroNum() > 0) {
+			return 0;
+		}
+
+		Tehai tehai = new Tehai();
+		Tehai.copy(tehai, a_tehai, true);
+
+		int index = 0;
+		Hai[] jyunTehai = tehai.getJyunTehai();
+		int jyunTehaiLength = tehai.getJyunTehaiLength();
+		Hai haiTemp = new Hai();
+		Hai addHai;
+		CountFormat countFormat = new CountFormat();
+
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			Hai.copy(haiTemp, jyunTehai[i]);
+			tehai.rmJyunTehai(jyunTehai[i]);
+			for (int id = 0; id < Hai.ID_ITEM_MAX; id++) {
+				addHai = new Hai(id);
+				tehai.addJyunTehai(addHai);
+				countFormat.setCountFormat(tehai, a_tsumoHai);
+				if (countFormat.getCombis(combis) > 0) {
+					a_indexs[index] = i;
+					index++;
+					tehai.rmJyunTehai(addHai);
+					break;
+				}
+				tehai.rmJyunTehai(addHai);
+			}
+			tehai.addJyunTehai(haiTemp);
+		}
+
+		countFormat.setCountFormat(tehai, null);
+		if (countFormat.getCombis(combis) > 0) {
+			a_indexs[index] = 13;
+			index++;
+		}
+
+		return index;
+	}
+
+	public void postInvalidate() {
+		game.postInvalidate();
 	}
 }

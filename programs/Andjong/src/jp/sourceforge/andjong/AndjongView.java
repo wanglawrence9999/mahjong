@@ -763,6 +763,9 @@ public class AndjongView extends View implements EventIf {
 		}
 	}
 
+	private static final int TOUCH_TOP = 480 - 97;
+	private static final int TOUCH_BOTTOM = 480;
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		int x = (int) event.getX();
@@ -809,154 +812,29 @@ public class AndjongView extends View implements EventIf {
 		int act_evt = event.getAction();
 
 		/* YÀ•W‚Ì”»’è(”v‚Ì‚‚³‚ÌŠÔ) */
-		if ((397 <= ty) && (ty <= 426) )
+		if ((TOUCH_TOP <= ty) && (ty <= TOUCH_BOTTOM) )
 		{
-			/* XÀ•W‚Ì”»’è(”v1‚Ì‰¡‚Ì”ÍˆÍ) */
-			if ((3 <= tx) && (tx <= 21) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 0;
-				mHaiSelectStatus = true;
+			int iSelect = (tx - 2) / HAI_WIDTH;
+			if (iSelect > 13) {
+				iSelect = 13;
 			}
-			/* XÀ•W‚Ì”»’è(”v2‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((22 <= tx) && (tx <= 40) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 1;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v3‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((41 <= tx) && (tx <= 59) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 2;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v4‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((60 <= tx) && (tx <= 78) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 3;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v5‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((79 <= tx) && (tx <= 97) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 4;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v6‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((98 <= tx) && (tx <= 116) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 5;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v7‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((117 <= tx) && (tx <= 136) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 6;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v8‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((137 <= tx) && (tx <= 155) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 7;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v9‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((156 <= tx) && (tx <= 174) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 8;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v10‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((175 <= tx) && (tx <= 191) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 9;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v11‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((192 <= tx) && (tx <= 211) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 10;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v12‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((212 <= tx) && (tx <= 230) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 11;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v13‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((231 <= tx) && (tx <= 249) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 12;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			/* XÀ•W‚Ì”»’è(”v14‚Ì‰¡‚Ì”ÍˆÍ) */
-			else if ((256 <= tx) && (tx <= 274) )
-			{
-				/* ‘I‘ğ”v‚Ì”Ô†‚ğ•Û */
-				mSelectSutehaiIdx = 13;
-
-				/* ”v‚ğ‘I‘ğó‘Ô */
-				mHaiSelectStatus = true;
-			}
-			else
-			{
-				// do nothing
-			}
+			mSelectSutehaiIdx = iSelect;
+			mHaiSelectStatus = true;
 		}
 		else
 		{
-			/* ”v‚ª‘I‘ğó‘ÔEƒCƒxƒ“ƒgACTION_UPEYÀ•W‚ª385ˆÈ‰º‚ÌA”v‚ªÌ‚Ä‚ç‚ê‚½‚Æ‚·‚é */
-			if ((mHaiSelectStatus == true) && (act_evt == MotionEvent.ACTION_UP) && (ty <= 385))
-			{
-				m_infoUi.getPlayerAction().setSutehaiIdx(mSelectSutehaiIdx);
-				/* ”v‚ğ”ñ‘I‘ğó‘Ô‚É‚·‚é */
-				mHaiSelectStatus = false;
-			}
-			else if (act_evt == MotionEvent.ACTION_MOVE)
-			{
-				// ACTION_MOVEƒCƒxƒ“ƒg‚Ìê‡‚ÍA”v‚Ìó‘Ô‚ğ•ÏX‚µ‚È‚¢B(ˆ—‚ğ‰½‚à‚µ‚È‚¢)
-			}
-			else
-			{
-				/* ”v‚ğ”ñ‘I‘ğó‘Ô‚É‚·‚é */
-				mHaiSelectStatus = false;
+			synchronized (m_drawItem) {
+				switch (m_drawItem.m_state) {
+				case STATE_PLAY:
+					Log.d(TAG, "STATE_PLAY actionNotifyAll");
+					m_playerAction.setSutehaiIdx(mSelectSutehaiIdx);
+					m_playerAction.actionNotifyAll();
+					break;
+				default:
+					Log.d(TAG, "default actionNotifyAll");
+					m_playerAction.actionNotifyAll();
+					break;
+				}
 			}
 		}
 		/* Ä•`‰æ‚Ìw¦ */

@@ -617,6 +617,13 @@ public class Yaku {
 			}
 		}
 
+		// ’Ç‰Á”v‚ğƒ`ƒFƒbƒN
+
+		//‚P‚Xš”v‚È‚ç‚Î•s¬—§
+		if (addHai.isYaochuu() == true){
+			return false;
+		}
+
 		Fuuro[] fuuros;
 		fuuros = tehai.getFuuros();
 		int fuuroNum;

@@ -1,8 +1,10 @@
 package jp.sourceforge.andjong.mahjong;
 
+import android.util.Log;
+
 public class Man implements EventIf {
 	/** プレイヤーに提供する情報 */
-	private Info mInfo;
+	private Info m_info;
 
 	/** 捨牌のインデックス */
 	private int sutehaiIdx = 0;
@@ -16,28 +18,39 @@ public class Man implements EventIf {
 	private PlayerAction mPlayerAction;
 
 	public Man(Info info, String name, PlayerAction playerAction) {
-		this.mInfo = info;
+		this.m_info = info;
 		this.name = name;
 		this.mPlayerAction = playerAction;
 	}
 
 	/** 手牌 */
-	private Tehai mTehai = new Tehai();
+	private Tehai m_tehai = new Tehai();
 
 	@Override
 	public EventId event(EventId eid, int fromKaze, int toKaze) {
 		int sutehaiIdx = 0;
 		int agariScore = 0;
+		Hai tsumoHai;
+		int indexNum = 0;
+		int[] indexs = new int[14];
 		switch (eid) {
 		case TSUMO:
 			// 手牌をコピーする。
-			mInfo.copyTehai(mTehai, mInfo.getJikaze());
-			agariScore = mInfo.getAgariScore(mTehai, mInfo.getTsumoHai());
+			m_info.copyTehai(m_tehai, m_info.getJikaze());
+			// ツモ牌を取得する。
+			tsumoHai = m_info.getTsumoHai();
+
+			Log.d("Man", "getReachIndexs in");
+			indexNum = m_info.getReachIndexs(m_tehai, tsumoHai, indexs);
+			Log.d("Man", "getReachIndexs = " + indexNum);
+
+			agariScore = m_info.getAgariScore(m_tehai, tsumoHai);
 			if (agariScore > 0) {
-			//if (true) {
+				Log.d("Man", "agariScore = " + agariScore);
 				mPlayerAction.setValidTsumo(true);
 				mPlayerAction.setMenuSelect(0);
 				mPlayerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
+				m_info.postInvalidate();
 				mPlayerAction.actionWait();
 				if (mPlayerAction.getMenuSelect() == 0) {
 					mPlayerAction.init();
@@ -84,15 +97,17 @@ public class Man implements EventIf {
 			this.sutehaiIdx = sutehaiIdx;
 			return EventId.SUTEHAI;
 		case SUTEHAI:
-			if (fromKaze == mInfo.getJikaze()) {
+			if (fromKaze == m_info.getJikaze()) {
 				return EventId.NAGASHI;
 			}
-			mInfo.copyTehai(mTehai, mInfo.getJikaze());
-			agariScore = mInfo.getAgariScore(mTehai, mInfo.getSuteHai());
+			m_info.copyTehai(m_tehai, m_info.getJikaze());
+			agariScore = m_info.getAgariScore(m_tehai, m_info.getSuteHai());
 			if (agariScore > 0) {
+				Log.d("Man", "agariScore = " + agariScore);
 				mPlayerAction.setValidRon(true);
 				mPlayerAction.setMenuSelect(0);
 				mPlayerAction.setState(PlayerAction.STATE_RON_SELECT);
+				m_info.postInvalidate();
 				mPlayerAction.actionWait();
 				if (mPlayerAction.getMenuSelect() == 0) {
 					mPlayerAction.init();

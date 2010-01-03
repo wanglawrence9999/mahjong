@@ -45,7 +45,7 @@ public class PlayerAction {
 		mValidRon = false;
 		mValidTsumo = false;
 		mValidPon = false;
-		setMenuSelect(0);
+		setMenuSelect(5);
 	}
 
 	public synchronized void setState(int state) {
@@ -92,18 +92,6 @@ public class PlayerAction {
 	public synchronized int getSutehaiIdx() {
 		return mSutehaiIdx;
 	}
-
-	/**
-	 * アクション要求を設定する。
-	 *
-	 * @param actionRequest
-	 *            アクション要求
-	 */
-	/*
-	public synchronized void setActionRequest(boolean actionRequest) {
-		this.mActionRequest = actionRequest;
-	}
-	*/
 
 	/**
 	 * アクション要求を取得する。

@@ -477,7 +477,8 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		if (true) {
+		//if (true) {
+		if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
@@ -500,7 +501,8 @@ public class Mahjong implements Runnable {
 		boolean isTest = true;
 		if (isTest) {
 			//activePlayer.setReach(true);
-			int haiIds[] = {ID_NAN, ID_NAN, ID_NAN, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 東
+			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 9}; // ピンフイーペーコー
+			//int haiIds[] = {ID_NAN, ID_NAN, ID_NAN, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 東
 			//int haiIds[] = {ID_TON, ID_TON, ID_TON, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 東
 			//int haiIds[] = {1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
 			//int haiIds[] = {1, 1, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // タンヤオ
@@ -523,7 +525,6 @@ public class Mahjong implements Runnable {
 			Hai addHai = new Hai(haiIds[haiIds.length - 1]);
 
 			int agariScore = getAgariScore(tehai, addHai);
-			String[] yakuNames = m_agariInfo.m_yakuNames;
 
 			Log.e("TEST", "agariScore = " + agariScore);
 		}
@@ -816,5 +817,9 @@ public class Mahjong implements Runnable {
 
 	public void setSutehaiIdx(int sutehaiIdx) {
 		m_info.setSutehaiIdx(sutehaiIdx);
+	}
+
+	public void postInvalidate() {
+		m_view.postInvalidate(0, 0, 320, 480);
 	}
 }

@@ -33,6 +33,8 @@ public class Man implements EventIf {
 		Hai tsumoHai;
 		int indexNum = 0;
 		int[] indexs = new int[14];
+		int menuNum = 0;
+		EventId eventId[] = new EventId[4];
 		switch (eid) {
 		case TSUMO:
 			// 手牌をコピーする。
@@ -40,21 +42,51 @@ public class Man implements EventIf {
 			// ツモ牌を取得する。
 			tsumoHai = m_info.getTsumoHai();
 
-			Log.d("Man", "getReachIndexs in");
-			indexNum = m_info.getReachIndexs(m_tehai, tsumoHai, indexs);
-			Log.d("Man", "getReachIndexs = " + indexNum);
+			if (!m_info.isReach()) {
+				Log.d("Man", "getReachIndexs in");
+				indexNum = m_info.getReachIndexs(m_tehai, tsumoHai, indexs);
+				Log.d("Man", "getReachIndexs = " + indexNum);
+				if (indexNum > 0) {
+					mPlayerAction.setValidReach(true);
+					eventId[menuNum] = EventId.REACH;
+					menuNum++;
+				}
+			}
 
 			agariScore = m_info.getAgariScore(m_tehai, tsumoHai);
 			if (agariScore > 0) {
 				Log.d("Man", "agariScore = " + agariScore);
 				mPlayerAction.setValidTsumo(true);
-				mPlayerAction.setMenuSelect(0);
+				eventId[menuNum] = EventId.TSUMO_AGARI;
+				menuNum++;
+			}
+
+			if (menuNum > 0) {
+				mPlayerAction.setMenuSelect(5);
 				mPlayerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
 				m_info.postInvalidate();
 				mPlayerAction.actionWait();
-				if (mPlayerAction.getMenuSelect() == 0) {
+				int menuSelect = mPlayerAction.getMenuSelect();
+				if (menuSelect < menuNum) {
 					mPlayerAction.init();
-					return EventId.TSUMO_AGARI;
+					if (eventId[menuSelect] == EventId.REACH) {
+						mPlayerAction.m_indexs = indexs;
+						mPlayerAction.m_indexNum = indexNum;
+						while (true) {
+							// 入力を待つ。
+							mPlayerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+							mPlayerAction.actionWait();
+							sutehaiIdx = mPlayerAction.getSutehaiIdx();
+							if (sutehaiIdx != Integer.MAX_VALUE) {
+								if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
+									break;
+								}
+							}
+						}
+						mPlayerAction.init();
+						this.sutehaiIdx = sutehaiIdx;
+					}
+					return eventId[menuSelect];
 				}
 				mPlayerAction.init();
 			}
@@ -105,7 +137,7 @@ public class Man implements EventIf {
 			if (agariScore > 0) {
 				Log.d("Man", "agariScore = " + agariScore);
 				mPlayerAction.setValidRon(true);
-				mPlayerAction.setMenuSelect(0);
+				mPlayerAction.setMenuSelect(5);
 				mPlayerAction.setState(PlayerAction.STATE_RON_SELECT);
 				m_info.postInvalidate();
 				mPlayerAction.actionWait();

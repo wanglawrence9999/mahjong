@@ -198,6 +198,8 @@ public class DrawItem {
 
 	Hai m_suteHai = new Hai();
 
+	boolean m_isManReach = false;
+
 	{
 		for (int i = 0; i < 4; i++) {
 			m_playerInfos[i] = new PlayerInfo();

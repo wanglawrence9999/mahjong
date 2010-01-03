@@ -419,6 +419,11 @@ public class AndjongView extends View implements EventIf {
 					iMenu++;
 				}
 
+				if (m_playerAction.isValidReach()) {
+					drawMenuMessage(a_canvas, "立直", iMenu);
+					iMenu++;
+				}
+
 				//drawMenuMessage(canvas, "流し", iMenu);
 
 				if (m_playerAction.getMenuSelect() == 0) {
@@ -774,6 +779,10 @@ public class AndjongView extends View implements EventIf {
 
 		Log.d(TAG, "onTouchEvent: x = " + x + ", y = " + y);
 
+		if (action == MotionEvent.ACTION_UP) {
+			//return true;
+		}
+
 		boolean actionRequest = m_playerAction.isActionRequest();
 		if (actionRequest) {
 			if (action == MotionEvent.ACTION_DOWN) {
@@ -797,6 +806,7 @@ public class AndjongView extends View implements EventIf {
 			synchronized (m_drawItem) {
 				switch (m_drawItem.m_state) {
 				case STATE_PLAY:
+					Log.d(TAG, "mDrawItem STATE_PLAY");
 					break;
 				default:
 					Log.d(TAG, "mDrawItem actionNotifyAll");
@@ -807,33 +817,36 @@ public class AndjongView extends View implements EventIf {
 		}
 
 		/* X,Y座標の取得 */
-		int tx = (int)event.getX();
-		int ty = (int)event.getY();
+		int tx = (int) event.getX();
+		int ty = (int) event.getY();
 		int act_evt = event.getAction();
 
 		/* Y座標の判定(牌の高さの間) */
-		if ((TOUCH_TOP <= ty) && (ty <= TOUCH_BOTTOM) )
-		{
-			int iSelect = (tx - 2) / HAI_WIDTH;
-			if (iSelect > 13) {
-				iSelect = 13;
+		if ((TOUCH_TOP <= ty) && (ty <= TOUCH_BOTTOM)) {
+			if (m_drawItem.m_isManReach) {
+				mSelectSutehaiIdx = 13;
+			} else {
+				int iSelect = (tx - 2) / HAI_WIDTH;
+				if (iSelect > 13) {
+					iSelect = 13;
+				}
+				mSelectSutehaiIdx = iSelect;
 			}
-			mSelectSutehaiIdx = iSelect;
 			mHaiSelectStatus = true;
-		}
-		else
-		{
-			synchronized (m_drawItem) {
-				switch (m_drawItem.m_state) {
-				case STATE_PLAY:
-					Log.d(TAG, "STATE_PLAY actionNotifyAll");
-					m_playerAction.setSutehaiIdx(mSelectSutehaiIdx);
-					m_playerAction.actionNotifyAll();
-					break;
-				default:
-					Log.d(TAG, "default actionNotifyAll");
-					m_playerAction.actionNotifyAll();
-					break;
+		} else {
+			if (act_evt == MotionEvent.ACTION_DOWN) {
+				synchronized (m_drawItem) {
+					switch (m_drawItem.m_state) {
+					case STATE_PLAY:
+						Log.d(TAG, "STATE_PLAY actionNotifyAll");
+						m_playerAction.setSutehaiIdx(mSelectSutehaiIdx);
+						m_playerAction.actionNotifyAll();
+						break;
+					default:
+						Log.d(TAG, "default actionNotifyAll");
+						m_playerAction.actionNotifyAll();
+						break;
+					}
 				}
 			}
 		}
@@ -930,6 +943,9 @@ public class AndjongView extends View implements EventIf {
 		default:
 			return super.onKeyDown(keyCode, event);
 		}
+		if (m_drawItem.m_isManReach) {
+			mSelectSutehaiIdx = 13;
+		}
 		invalidate();
 		return true;
 	}
@@ -992,6 +1008,7 @@ public class AndjongView extends View implements EventIf {
 			break;
 		case START_KYOKU:// サイ振り
 			// サイ振りを局の開始と考える。
+			m_drawItem.m_isManReach = false;
 
 			// 局の文字列を設定する。
 			m_drawItem.setKyokuString(getResources(), m_infoUi.getkyoku());
@@ -1140,10 +1157,14 @@ public class AndjongView extends View implements EventIf {
 			// ツモ牌をなくす。
 			m_drawItem.m_playerInfos[a_kazeFrom].m_tsumoHai = null;
 
+			if (m_infoUi.getManKaze() == a_kazeFrom) {
+				m_drawItem.m_isManReach = true;
+				//mSelectSutehaiIdx = m_playerAction.m_indexs[0];
+			}
 			m_drawItem.m_state = STATE_REACH;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			try {
-				Thread.sleep(2000, 0);
+				Thread.sleep(1000, 0);
 			} catch (InterruptedException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();

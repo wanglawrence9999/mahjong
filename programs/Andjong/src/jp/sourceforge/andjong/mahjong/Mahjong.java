@@ -489,6 +489,8 @@ public class Mahjong implements Runnable {
 		}
 	}
 
+	boolean m_isTsumo = false;
+
 	/**
 	 * イベント（ツモ）を発行する。
 	 *
@@ -528,12 +530,15 @@ public class Mahjong implements Runnable {
 
 			Log.e("TEST", "agariScore = " + agariScore);
 		}
+		m_isTsumo = true;
 
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, mFromKaze, mFromKaze);
 
 		// イベント（ツモ）を発行する。
 		EventId retEid = activePlayer.getEventIf().event(EventId.TSUMO, mFromKaze, mFromKaze);
+
+		m_isTsumo = false;
 
 		// UIイベント（進行待ち）を発行する。
 		m_view.event(EventId.UI_WAIT_PROGRESS, mFromKaze, mFromKaze);
@@ -794,10 +799,15 @@ public class Mahjong implements Runnable {
 
 	public int getAgariScore(Tehai tehai, Hai addHai) {
 		AgariSetting setting = new AgariSetting(this);
+		setting.setDoraHais(m_infoUi.getDoraHais());
 		if (activePlayer.isReach()) {
 			setting.setYakuflg(YakuflgName.REACH.ordinal(), true);
 			setting.setBakaze(KAZE_TON);
 			setting.setJikaze(activePlayer.getJikaze());
+			setting.setDoraHais(m_infoUi.getUraDoraHais());
+		}
+		if (m_isTsumo) {
+			setting.setYakuflg(YakuflgName.TUMO.ordinal(), true);
 		}
 		m_score = new AgariScore();
 		return m_score.getAgariScore(tehai, addHai, combis, setting, m_agariInfo);

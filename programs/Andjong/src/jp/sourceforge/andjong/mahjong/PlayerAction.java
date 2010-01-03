@@ -12,9 +12,6 @@ public class PlayerAction {
 	/** 捨牌のインデックス */
 	private int mSutehaiIdx;
 
-	/** アクション要求 */
-	//private boolean mActionRequest;
-
 	/** ロンが可能 */
 	private boolean mValidRon;
 
@@ -26,6 +23,9 @@ public class PlayerAction {
 
 	/** メニュー選択 */
 	private int mMenuSelect;
+
+	public int m_indexs[];
+	public int m_indexNum;
 
 	/**
 	 * コンストラクター
@@ -45,6 +45,7 @@ public class PlayerAction {
 		mValidRon = false;
 		mValidTsumo = false;
 		mValidPon = false;
+		m_validReach = false;
 		setMenuSelect(5);
 	}
 
@@ -99,7 +100,7 @@ public class PlayerAction {
 	 * @return
 	 */
 	public synchronized boolean isActionRequest() {
-		return mValidRon | mValidTsumo | mValidPon;
+		return mValidRon | mValidTsumo | mValidPon | m_validReach;
 	}
 
 	/**
@@ -157,6 +158,16 @@ public class PlayerAction {
 	 */
 	public synchronized boolean isValidPon() {
 		return mValidPon;
+	}
+
+	boolean m_validReach;
+
+	public synchronized void setValidReach(boolean a_validReach) {
+		this.m_validReach = a_validReach;
+	}
+
+	public synchronized boolean isValidReach() {
+		return m_validReach;
 	}
 
 	public synchronized void setMenuSelect(int menuSelect) {

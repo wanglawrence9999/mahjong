@@ -47,7 +47,7 @@ public class Kawa {
 	public static void copy(Kawa a_dest, Kawa a_src) {
 		a_dest.m_suteHaisLength = a_src.m_suteHaisLength;
 		for (int i = 0; i < a_dest.m_suteHaisLength; i++) {
-			Hai.copy(a_dest.m_suteHais[i], a_src.m_suteHais[i]);
+			SuteHai.copy(a_dest.m_suteHais[i], a_src.m_suteHais[i]);
 		}
 	}
 

@@ -19,7 +19,7 @@ public class Yama {
 	private final static int RINSHAN_HAIS_MAX = 4;
 
 	/** 各ドラ牌の配列の最大数 */
-	private final static int DORA_HAIS_MAX = RINSHAN_HAIS_MAX + 1;
+	public final static int DORA_HAIS_MAX = RINSHAN_HAIS_MAX + 1;
 
 	/** 山牌の配列 */
 	private Hai[] m_yamaHais = new Hai[YAMA_HAIS_MAX];

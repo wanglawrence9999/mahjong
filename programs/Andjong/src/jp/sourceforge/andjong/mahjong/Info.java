@@ -34,7 +34,7 @@ public class Info {
 	 *
 	 * @return 表ドラ、槓ドラの配列
 	 */
-	public Hai[] getDoras() {
+	public Hai[] getDoraHais() {
 		return game.getDoras();
 	}
 

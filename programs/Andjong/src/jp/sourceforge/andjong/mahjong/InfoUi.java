@@ -8,7 +8,7 @@ public class InfoUi extends Info {
 		this.setPlayerAction(playerAction);
 	}
 
-	public Hai[] getDoraAll() {
+	public Hai[] getUraDoraHais() {
 		return game.getYama().getUraDoraHais();
 	}
 

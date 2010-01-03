@@ -191,7 +191,12 @@ public class DrawItem {
 	boolean m_isDebug = false;
 
 	/** ƒCƒxƒ“ƒgID */
-	EventId m_eid;
+	EventId m_eventId;
+
+	int m_kazeFrom;
+	int m_kazeTo;
+
+	Hai m_suteHai = new Hai();
 
 	{
 		for (int i = 0; i < 4; i++) {

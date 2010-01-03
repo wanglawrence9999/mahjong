@@ -394,8 +394,12 @@ public class AndjongView extends View implements EventIf {
 				//int left = (MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2;
 				//int top = (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2;
 				for (int i = 0; i < agariInfo.m_yakuNames.length; i++) {
-					drawString(left, top + (i * 20), a_canvas, 20, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
+					top += (i * 20);
+					drawString(left, top, a_canvas, 20, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
 				}
+				String string = new String();
+				string += agariInfo.m_han + "–| " + agariInfo.m_fu + "•„ " + agariInfo.m_score + "“_";
+				drawString(left, top + 20, a_canvas, 20, Color.WHITE, string, Align.LEFT);
 				return;
 			}
 

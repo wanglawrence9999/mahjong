@@ -4,6 +4,13 @@ import static jp.sourceforge.andjong.mahjong.Hai.*;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 public class AgariScore {
+	public static class AgariInfo {
+		public int m_han;
+		public int m_fu;
+		public int m_score;
+		public String[] m_yakuNames;
+	}
+
 	/** カウントフォーマット */
 	private CountFormat countFormat = new CountFormat();
 
@@ -195,14 +202,7 @@ public class AgariScore {
 		return score;
 	}
 
-	/** 和了り役の名前 */
-	String[] m_yakuNames;
-
-	public String[] getYakuNames() {
-		return m_yakuNames;
-	}
-
-	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting) {
+	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting, AgariInfo a_agariInfo) {
 		// カウントフォーマットを取得します。
 		countFormat.setCountFormat(tehai, addHai);
 
@@ -232,7 +232,10 @@ public class AgariScore {
 
 			if(maxagariScore < agariScore[i]){
 				maxagariScore = agariScore[i];
-				m_yakuNames = yaku.getYakuName();
+				a_agariInfo.m_fu = huSuu[i];
+				a_agariInfo.m_han = hanSuu[i];
+				a_agariInfo.m_score = agariScore[i];
+				a_agariInfo.m_yakuNames = yaku.getYakuName();
 			}
 		}
 

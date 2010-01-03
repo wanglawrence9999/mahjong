@@ -3,6 +3,7 @@ package jp.sourceforge.andjong.mahjong;
 import android.util.Log;
 import jp.sourceforge.andjong.AndjongView;
 import jp.sourceforge.andjong.mahjong.AgariScore;
+import jp.sourceforge.andjong.mahjong.AgariScore.AgariInfo;
 import jp.sourceforge.andjong.mahjong.AgariSetting.YakuflgName;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 import static jp.sourceforge.andjong.mahjong.EventIf.*;
@@ -522,7 +523,7 @@ public class Mahjong implements Runnable {
 			Hai addHai = new Hai(haiIds[haiIds.length - 1]);
 
 			int agariScore = getAgariScore(tehai, addHai);
-			String[] yakuNames = m_score.getYakuNames();
+			String[] yakuNames = m_agariInfo.m_yakuNames;
 
 			Log.e("TEST", "agariScore = " + agariScore);
 		}
@@ -784,6 +785,11 @@ public class Mahjong implements Runnable {
 	}
 
 	AgariScore m_score;
+	AgariInfo m_agariInfo = new AgariInfo();
+
+	public AgariInfo getAgariInfo() {
+		return m_agariInfo;
+	}
 
 	public int getAgariScore(Tehai tehai, Hai addHai) {
 		AgariSetting setting = new AgariSetting(this);
@@ -793,7 +799,7 @@ public class Mahjong implements Runnable {
 			setting.setJikaze(activePlayer.getJikaze());
 		}
 		m_score = new AgariScore();
-		return m_score.getAgariScore(tehai, addHai, combis, setting);
+		return m_score.getAgariScore(tehai, addHai, combis, setting, m_agariInfo);
 	}
 
 	public String[] getYakuName(Tehai tehai, Hai addHai){

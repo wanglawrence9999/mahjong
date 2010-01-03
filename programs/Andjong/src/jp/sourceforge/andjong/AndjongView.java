@@ -13,6 +13,7 @@ import jp.sourceforge.andjong.mahjong.PlayerAction;
 import jp.sourceforge.andjong.mahjong.SuteHai;
 import jp.sourceforge.andjong.mahjong.Tehai;
 import jp.sourceforge.andjong.mahjong.Yama;
+import jp.sourceforge.andjong.mahjong.AgariScore.AgariInfo;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Paint.Align;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -386,8 +388,14 @@ public class AndjongView extends View implements EventIf {
 					drawTehai(2, 50, a_canvas, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tehai, m_drawItem.m_suteHai, 0, 15, true);
 				}
 
-				// 結果のメッセージを表示する。
-				drawMessage(a_canvas, "結果");
+				AgariInfo agariInfo = m_infoUi.getAgariInfo();
+				int left = 2;
+				int top = 50 + 38 + 2 + 10;
+				//int left = (MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2;
+				//int top = (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2;
+				for (int i = 0; i < agariInfo.m_yakuNames.length; i++) {
+					drawString(left, top + (i * 20), a_canvas, 20, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
+				}
 				return;
 			}
 
@@ -417,7 +425,7 @@ public class AndjongView extends View implements EventIf {
 			}
 
 			// 局を表示する。
-			drawString(KYOKU_LEFT, KYOKU_TOP, a_canvas, KYOKU_TEXT_SIZE, Color.WHITE, m_drawItem.getKyokuString());
+			drawString(KYOKU_LEFT, KYOKU_TOP, a_canvas, KYOKU_TEXT_SIZE, Color.WHITE, m_drawItem.getKyokuString(), Align.CENTER);
 
 			// リーチ棒の数を表示する。
 			drawReachbou(a_canvas, m_drawItem.getReachbou());
@@ -438,7 +446,7 @@ public class AndjongView extends View implements EventIf {
 
 			// 点棒を表示する。
 			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
-				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[0]].m_tenbo).toString());
+				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[0]].m_tenbo).toString(), Align.CENTER);
 			}
 
 			// 起家マークを表示する。
@@ -468,13 +476,13 @@ public class AndjongView extends View implements EventIf {
 	 */
 	private void drawMessage(Canvas canvas, String string) {
 		canvas.drawRoundRect(mMessageRect, MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
-		drawString((MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2, (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2, canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
+		drawString((MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2, (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2, canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
 	}
 
 
 	private void drawMenuMessage(Canvas canvas, String string, int no) {
 		canvas.drawRoundRect(m_menuRect[no], MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
-		drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 2)), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string);
+		drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 2)), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
 	}
 
 	/**
@@ -494,11 +502,11 @@ public class AndjongView extends View implements EventIf {
 	 *            文字列
 	 */
 	private void drawString(int left, int top, Canvas canvas, int textSize,
-			int color, String string) {
+			int color, String string, Align a_align) {
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setColor(color);
 		paint.setTextSize(textSize);
-		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setTextAlign(a_align);
 
 		canvas.drawText(string, left, top - ((paint.ascent() + paint.descent()) / 2), paint);
 	}
@@ -536,7 +544,7 @@ public class AndjongView extends View implements EventIf {
 	 */
 	private void drawReachbou(Canvas canvas, int reachbou) {
 		canvas.drawBitmap(mTenbou1000Image, TENBOU_01000_MIN_IMAGE_LEFT, TENBOU_01000_MIN_IMAGE_TOP, null);
-		drawString(REACHBOU_LEFT, REACHBOU_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(reachbou).toString());
+		drawString(REACHBOU_LEFT, REACHBOU_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(reachbou).toString(), Align.CENTER);
 	}
 
 	/**
@@ -549,7 +557,7 @@ public class AndjongView extends View implements EventIf {
 	 */
 	private void drawHonba(Canvas canvas, int honba) {
 		canvas.drawBitmap(mTenbou100Image, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
-		drawString(HONBA_LEFT, HONBA_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(honba).toString());
+		drawString(HONBA_LEFT, HONBA_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(honba).toString(), Align.CENTER);
 	}
 
 	/**

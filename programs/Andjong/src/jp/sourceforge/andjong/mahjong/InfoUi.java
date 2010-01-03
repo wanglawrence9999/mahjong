@@ -1,5 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 
+import jp.sourceforge.andjong.mahjong.AgariScore.AgariInfo;
+
 public class InfoUi extends Info {
 	private PlayerAction mPlayerAction;
 
@@ -43,5 +45,9 @@ public class InfoUi extends Info {
 	 */
 	public int getChiichaIdx() {
 		return game.getChiichaIdx();
+	}
+
+	public AgariInfo getAgariInfo() {
+		return game.getAgariInfo();
 	}
 }

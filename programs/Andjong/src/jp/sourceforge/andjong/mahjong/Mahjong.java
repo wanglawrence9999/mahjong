@@ -223,6 +223,7 @@ public class Mahjong implements Runnable {
 
 		// 局を繰り返して、ゲームを進行する。
 		while (m_kyoku <= m_kyokuEnd) {
+			Log.e("Mahjong", "oya = " + m_iOya);
 			// 局を開始する。
 			startKyoku();
 
@@ -308,14 +309,14 @@ public class Mahjong implements Runnable {
 		// 連荘を初期化する。
 		m_renchan = false;
 
+		// プレイヤーの自風を設定する。
+		setJikaze();
+
 		// イベントを発行した風を初期化する。
 		mFromKaze = m_players[m_iOya].getJikaze();
 
 		// イベントの対象となった風を初期化する。
 		mToKaze = m_players[m_iOya].getJikaze();
-
-		// プレイヤーの自風を設定する。
-		setJikaze();
 
 		// プレイヤー配列を初期化する。
 		for (int i = 0; i < m_players.length; i++) {
@@ -372,6 +373,8 @@ public class Mahjong implements Runnable {
 			// イベント（ツモ）を発行する。
 			retEid = tsumoEvent();
 
+			int score;
+			int amari;
 			// イベントを処理する。
 			switch (retEid) {
 			case TSUMO_AGARI:// ツモあがり
@@ -396,6 +399,14 @@ public class Mahjong implements Runnable {
 
 				break KYOKU_MAIN;
 			case RON_AGARI:// ロン
+				score = m_agariInfo.m_score;
+				if (m_iOya == m_kazeToPlayerIdx[mFromKaze]) {
+					score *= 1.5;
+					amari = score % 100;
+					if (amari > 0) {
+						score = score - amari + 100;
+					}
+				}
 				activePlayer.increaseTenbou(m_agariInfo.m_score);
 				m_players[mToKaze].reduceTenbou(m_agariInfo.m_score);
 
@@ -505,7 +516,7 @@ public class Mahjong implements Runnable {
 		// アクティブプレイヤーを設定する。
 		activePlayer = m_players[m_kazeToPlayerIdx[mFromKaze]];
 
-		boolean isTest = true;
+		boolean isTest = false;
 		if (isTest) {
 			//activePlayer.setReach(true);
 			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 9}; // ピンフイーペーコー

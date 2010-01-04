@@ -447,6 +447,7 @@ public class AndjongView extends View implements EventIf {
 			drawDoraHais(DORAS_LEFT, DORAS_TOP, a_canvas, m_infoUi.getDoraHais());
 
 			int manKaze = m_infoUi.getManKaze();
+			Log.e(TAG, "manKaze = " + manKaze);
 			int dispKaze[] = { 0, 1, 2, 3 };
 			for (int i = 0; i < 4; i++) {
 				dispKaze[i] = manKaze;
@@ -456,7 +457,7 @@ public class AndjongView extends View implements EventIf {
 
 			// 点棒を表示する。
 			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
-				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[i]].m_tenbo).toString(), Align.CENTER);
+				drawString(TENBO_LEFT[i], TENBO_TOP[i], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[i]].m_tenbo).toString(), Align.CENTER);
 			}
 
 			// 起家マークを表示する。
@@ -1030,6 +1031,7 @@ public class AndjongView extends View implements EventIf {
 					m_infoUi.copyTehai(m_drawItem.m_playerInfos[i].m_tehai, i);
 					m_infoUi.copyKawa(m_drawItem.m_playerInfos[i].m_kawa, i);
 					m_drawItem.m_playerInfos[i].m_tsumoHai = null;
+					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
 				}
 			}
 

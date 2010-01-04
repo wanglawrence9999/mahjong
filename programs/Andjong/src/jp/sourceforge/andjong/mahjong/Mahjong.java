@@ -375,11 +375,13 @@ public class Mahjong implements Runnable {
 			// イベントを処理する。
 			switch (retEid) {
 			case TSUMO_AGARI:// ツモあがり
-				// UIイベント（ツモあがり）を発行する。
-				m_view.event(retEid, mFromKaze, mToKaze);
+				activePlayer.increaseTenbou(m_agariInfo.m_score);
 
 				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);
+
+				// UIイベント（ツモあがり）を発行する。
+				m_view.event(retEid, mFromKaze, mToKaze);
 
 				// 親を更新する。
 				if (m_iOya != m_kazeToPlayerIdx[mFromKaze]) {
@@ -394,11 +396,14 @@ public class Mahjong implements Runnable {
 
 				break KYOKU_MAIN;
 			case RON_AGARI:// ロン
-				// UIイベント（ロン）を発行する。
-				m_view.event(retEid, mFromKaze, mToKaze);
+				activePlayer.increaseTenbou(m_agariInfo.m_score);
+				m_players[mToKaze].reduceTenbou(m_agariInfo.m_score);
 
 				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);
+
+				// UIイベント（ロン）を発行する。
+				m_view.event(retEid, mFromKaze, mToKaze);
 
 				// 親を更新する。
 				if (m_iOya != m_kazeToPlayerIdx[mFromKaze]) {

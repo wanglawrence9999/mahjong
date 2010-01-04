@@ -393,9 +393,10 @@ public class AndjongView extends View implements EventIf {
 				int top = 50 + 38 + 2 + 10;
 				//int left = (MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2;
 				//int top = (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2;
+				Log.e(TAG, "length = " + agariInfo.m_yakuNames.length);
 				for (int i = 0; i < agariInfo.m_yakuNames.length; i++) {
-					top += (i * 20);
 					drawString(left, top, a_canvas, 20, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
+					top += 20;
 				}
 				String string = new String();
 				string += agariInfo.m_han + "翻 " + agariInfo.m_fu + "符 " + agariInfo.m_score + "点";
@@ -455,7 +456,7 @@ public class AndjongView extends View implements EventIf {
 
 			// 点棒を表示する。
 			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
-				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[0]].m_tenbo).toString(), Align.CENTER);
+				drawString(TENBO_LEFT[dispKaze[i]], TENBO_TOP[dispKaze[i]], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[i]].m_tenbo).toString(), Align.CENTER);
 			}
 
 			// 起家マークを表示する。
@@ -1060,6 +1061,13 @@ public class AndjongView extends View implements EventIf {
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 			m_drawItem.m_playerInfos[a_kazeFrom].m_tsumoHai = m_infoUi.getTsumoHai();
 
+			synchronized (m_drawItem) {
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
+					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
+				}
+			}
+
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 
@@ -1179,6 +1187,13 @@ public class AndjongView extends View implements EventIf {
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 			m_drawItem.m_suteHai = m_infoUi.getSuteHai();
+
+			synchronized (m_drawItem) {
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
+					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
+				}
+			}
 
 			m_drawItem.m_state = STATE_RON;
 			this.postInvalidate(0, 0, getWidth(), getHeight());

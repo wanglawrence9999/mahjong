@@ -656,13 +656,12 @@ public class Mahjong implements Runnable {
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				break NOTIFYLOOP;
 			case PON:
-				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
-
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
 				this.m_kazeTo = fromKaze;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				activePlayer.getTehai().setPon(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
+				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
 
 				notifyEvent(EventId.SELECT_SUTEHAI, this.m_kazeFrom, this.m_kazeTo);
 

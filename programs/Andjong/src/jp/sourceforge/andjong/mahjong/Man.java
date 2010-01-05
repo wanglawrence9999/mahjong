@@ -69,7 +69,7 @@ public class Man implements EventIf {
 				m_info.postInvalidate();
 				m_playerAction.actionWait();
 				int menuSelect = m_playerAction.getMenuSelect();
-				if (menuSelect < menuNum) {
+				if ((menuSelect >= 0) && (menuSelect < menuNum)) {
 					m_playerAction.init();
 					if (eventId[menuSelect] == EventId.REACH) {
 						m_playerAction.m_indexs = indexs;

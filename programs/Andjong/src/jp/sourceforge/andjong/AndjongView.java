@@ -659,7 +659,7 @@ public class AndjongView extends View implements EventIf {
 
 		if ((m_infoUi.getManKaze() == kaze)) {
 	//	if ((mInfoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
-			drawTehai(TEHAI_LEFT, TEHAI_TOP, canvas, tehai, tsumoHai, kaze, mSelectSutehaiIdx, isPlayer);
+			drawTehai(TEHAI_LEFT, TEHAI_TOP, canvas, tehai, tsumoHai, kaze, m_iSelectSutehai, isPlayer);
 		} else {
 			drawTehai(TEHAI_LEFT, TEHAI_TOP, canvas, tehai, tsumoHai, kaze, 15, isPlayer);
 		}
@@ -828,6 +828,16 @@ public class AndjongView extends View implements EventIf {
 			}
 		}
 
+
+		PlayerInfo playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
+		int jyunTehaiLength = playerInfo.m_tehai.getJyunTehaiLength();
+		Log.e(TAG, "jyunTehaiLength = " + jyunTehaiLength);
+		if (playerInfo.m_tsumoHai != null) {
+			jyunTehaiLength++;
+		}
+		Log.e(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
+		jyunTehaiLength--;
+
 		/* X,Y座標の取得 */
 		int tx = (int) event.getX();
 		int ty = (int) event.getY();
@@ -836,13 +846,13 @@ public class AndjongView extends View implements EventIf {
 		/* Y座標の判定(牌の高さの間) */
 		if ((TOUCH_TOP <= ty) && (ty <= TOUCH_BOTTOM)) {
 			if (m_drawItem.m_isManReach) {
-				mSelectSutehaiIdx = 13;
+				m_iSelectSutehai = jyunTehaiLength;
 			} else {
 				int iSelect = (tx - 2) / HAI_WIDTH;
-				if (iSelect > 13) {
-					iSelect = 13;
+				if (iSelect > jyunTehaiLength) {
+					iSelect = jyunTehaiLength;
 				}
-				mSelectSutehaiIdx = iSelect;
+				m_iSelectSutehai = iSelect;
 			}
 			mHaiSelectStatus = true;
 		} else {
@@ -851,7 +861,7 @@ public class AndjongView extends View implements EventIf {
 					switch (m_drawItem.m_state) {
 					case STATE_PLAY:
 						Log.d(TAG, "STATE_PLAY actionNotifyAll");
-						m_playerAction.setSutehaiIdx(mSelectSutehaiIdx);
+						m_playerAction.setSutehaiIdx(m_iSelectSutehai);
 						m_playerAction.actionNotifyAll();
 						break;
 					default:
@@ -868,7 +878,7 @@ public class AndjongView extends View implements EventIf {
 	}
 
 
-	private int mSelectSutehaiIdx = 0;
+	private int m_iSelectSutehai = 0;
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
@@ -898,13 +908,22 @@ public class AndjongView extends View implements EventIf {
 			return true;
 		}
 
+		PlayerInfo playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
+		int jyunTehaiLength = playerInfo.m_tehai.getJyunTehaiLength();
+		Log.e(TAG, "jyunTehaiLength = " + jyunTehaiLength + ", m_iSelectSutehai = " + m_iSelectSutehai);
+		if (playerInfo.m_tsumoHai != null) {
+			jyunTehaiLength++;
+		}
+		Log.e(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
+		jyunTehaiLength--;
+
 		int state = m_playerAction.getState();
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_UP:
 			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
 				return true;
 			}
-			mSelectSutehaiIdx = 0;
+			//mSelectSutehaiIdx = 0;
 			if(m_drawItem.m_isDebug){
 				m_drawItem.m_isDebug = false;
 			}else{
@@ -915,24 +934,27 @@ public class AndjongView extends View implements EventIf {
 			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
 				return true;
 			}
-			mSelectSutehaiIdx = 100;
+			//mSelectSutehaiIdx = 100;
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
 				return true;
 			}
-			mSelectSutehaiIdx--;
-			if (mSelectSutehaiIdx < 0) {
-				mSelectSutehaiIdx = 13;
+			if (m_iSelectSutehai > jyunTehaiLength) {
+				m_iSelectSutehai = jyunTehaiLength;
+			}
+			m_iSelectSutehai--;
+			if (m_iSelectSutehai < 0) {
+				m_iSelectSutehai = jyunTehaiLength;
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_RIGHT:
 			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
 				return true;
 			}
-			mSelectSutehaiIdx++;
-			if (mSelectSutehaiIdx > 13) {
-				mSelectSutehaiIdx = 0;
+			m_iSelectSutehai++;
+			if (m_iSelectSutehai > jyunTehaiLength) {
+				m_iSelectSutehai = 0;
 			}
 			break;
 		case KeyEvent.KEYCODE_ENTER:
@@ -940,8 +962,8 @@ public class AndjongView extends View implements EventIf {
 			synchronized (m_drawItem) {
 				switch (m_drawItem.m_state) {
 				case STATE_PLAY:
-					Log.d(TAG, "STATE_PLAY actionNotifyAll");
-					m_playerAction.setSutehaiIdx(mSelectSutehaiIdx);
+					Log.e(TAG, "STATE_PLAY actionNotifyAll, m_iSelectSutehai = " + m_iSelectSutehai);
+					m_playerAction.setSutehaiIdx(m_iSelectSutehai);
 					m_playerAction.actionNotifyAll();
 					break;
 				default:
@@ -956,7 +978,7 @@ public class AndjongView extends View implements EventIf {
 			return super.onKeyDown(keyCode, event);
 		}
 		if (m_drawItem.m_isManReach) {
-			mSelectSutehaiIdx = 13;
+			m_iSelectSutehai = jyunTehaiLength;
 		}
 		invalidate();
 		return true;
@@ -1017,6 +1039,9 @@ public class AndjongView extends View implements EventIf {
 				// 起家を設定する。
 				m_drawItem.setChiicha(m_infoUi.getChiichaIdx());
 			}
+			break;
+		case END_GAME:
+			m_drawItem.setState(STATE_NONE);
 			break;
 		case START_KYOKU:// サイ振り
 			// サイ振りを局の開始と考える。
@@ -1127,7 +1152,7 @@ public class AndjongView extends View implements EventIf {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
-			mSelectSutehaiIdx = 13;
+			m_iSelectSutehai = 13;
 			m_drawItem.m_state = STATE_PLAY;
 			break;
 		case PON:// ポン
@@ -1138,32 +1163,12 @@ public class AndjongView extends View implements EventIf {
 						m_infoUi.copyTehai(m_drawItem.m_playerInfos[i].m_tehai, i);
 						m_infoUi.copyKawa(m_drawItem.m_playerInfos[i].m_kawa, i);
 					}
-					//mDrawItem.tsumoKaze = 5;
-					//mDrawItem.tsumoHai = null;
-					//mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
+					// mDrawItem.tsumoKaze = 5;
+					// mDrawItem.tsumoHai = null;
+					// mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
+					m_iSelectSutehai = 0;
 					this.postInvalidate(0, 0, getWidth(), getHeight());
 				}
-
-				/*
-				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
-						+ "][ポン]");
-
-				// 手牌を表示します。
-				printJyunTehai(tehai);
-
-				System.out.println();
-
-				System.out.print("[" + jikazeToString(mInfoUi.getJikaze())
-						+ "][捨牌]");
-
-				// 河を表示します。
-				printKawa(kawa);
-
-				// 捨牌を表示します。
-				// System.out.println(":"
-				// + idToString((infoUi.getSuteHai()).getId()));
-				System.out.println();
-				*/
 			}
 			break;
 		case REACH:

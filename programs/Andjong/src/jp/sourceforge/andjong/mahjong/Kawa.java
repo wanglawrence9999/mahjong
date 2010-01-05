@@ -80,7 +80,7 @@ public class Kawa {
 			return false;
 		}
 
-		Hai.copy(m_suteHais[m_suteHaisLength], a_hai);
+		SuteHai.copy(m_suteHais[m_suteHaisLength], a_hai);
 		m_suteHaisLength++;
 
 		return true;

@@ -7,7 +7,7 @@ public class Man implements EventIf {
 	private Info m_info;
 
 	/** 捨牌のインデックス */
-	private int sutehaiIdx = 0;
+	private int m_iSutehai = 0;
 
 	private String name;
 
@@ -15,12 +15,12 @@ public class Man implements EventIf {
 		return name;
 	}
 
-	private PlayerAction mPlayerAction;
+	private PlayerAction m_playerAction;
 
 	public Man(Info info, String name, PlayerAction playerAction) {
 		this.m_info = info;
 		this.name = name;
-		this.mPlayerAction = playerAction;
+		this.m_playerAction = playerAction;
 	}
 
 	/** 手牌 */
@@ -31,10 +31,12 @@ public class Man implements EventIf {
 		int sutehaiIdx = 0;
 		int agariScore = 0;
 		Hai tsumoHai;
+		Hai suteHai;
 		int indexNum = 0;
 		int[] indexs = new int[14];
 		int menuNum = 0;
 		EventId eventId[] = new EventId[4];
+		int jyunTehaiLength;
 		switch (eid) {
 		case TSUMO:
 			// 手牌をコピーする。
@@ -47,7 +49,7 @@ public class Man implements EventIf {
 				indexNum = m_info.getReachIndexs(m_tehai, tsumoHai, indexs);
 				Log.d("Man", "getReachIndexs = " + indexNum);
 				if (indexNum > 0) {
-					mPlayerAction.setValidReach(true);
+					m_playerAction.setValidReach(true);
 					eventId[menuNum] = EventId.REACH;
 					menuNum++;
 				}
@@ -56,120 +58,105 @@ public class Man implements EventIf {
 			agariScore = m_info.getAgariScore(m_tehai, tsumoHai);
 			if (agariScore > 0) {
 				Log.d("Man", "agariScore = " + agariScore);
-				mPlayerAction.setValidTsumo(true);
+				m_playerAction.setValidTsumo(true);
 				eventId[menuNum] = EventId.TSUMO_AGARI;
 				menuNum++;
 			}
 
 			if (menuNum > 0) {
-				mPlayerAction.setMenuSelect(5);
-				mPlayerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
+				m_playerAction.setMenuSelect(5);
+				m_playerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
 				m_info.postInvalidate();
-				mPlayerAction.actionWait();
-				int menuSelect = mPlayerAction.getMenuSelect();
+				m_playerAction.actionWait();
+				int menuSelect = m_playerAction.getMenuSelect();
 				if (menuSelect < menuNum) {
-					mPlayerAction.init();
+					m_playerAction.init();
 					if (eventId[menuSelect] == EventId.REACH) {
-						mPlayerAction.m_indexs = indexs;
-						mPlayerAction.m_indexNum = indexNum;
+						m_playerAction.m_indexs = indexs;
+						m_playerAction.m_indexNum = indexNum;
 						while (true) {
 							// 入力を待つ。
-							mPlayerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
-							mPlayerAction.actionWait();
-							sutehaiIdx = mPlayerAction.getSutehaiIdx();
+							m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+							m_playerAction.actionWait();
+							sutehaiIdx = m_playerAction.getSutehaiIdx();
 							if (sutehaiIdx != Integer.MAX_VALUE) {
 								if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
 									break;
 								}
 							}
 						}
-						mPlayerAction.init();
-						this.sutehaiIdx = sutehaiIdx;
+						m_playerAction.init();
+						this.m_iSutehai = sutehaiIdx;
 					}
 					return eventId[menuSelect];
 				}
-				mPlayerAction.init();
+				m_playerAction.init();
 			}
 			while (true) {
 				// 入力を待つ。
-				mPlayerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
-				mPlayerAction.actionWait();
-				sutehaiIdx = mPlayerAction.getSutehaiIdx();
+				m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+				m_playerAction.actionWait();
+				sutehaiIdx = m_playerAction.getSutehaiIdx();
 				if (sutehaiIdx != Integer.MAX_VALUE) {
-					if (mPlayerAction.isValidTsumo()) {
-						if (sutehaiIdx == 100) {
-							mPlayerAction.init();
-							return EventId.TSUMO_AGARI;
-						}
-					}
 					if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
 						break;
 					}
 				}
 			}
-			mPlayerAction.init();
-			this.sutehaiIdx = sutehaiIdx;
+			m_playerAction.init();
+			this.m_iSutehai = sutehaiIdx;
 			return EventId.SUTEHAI;
 		case SELECT_SUTEHAI:
+			m_info.copyTehai(m_tehai, m_info.getJikaze());
+			jyunTehaiLength = m_tehai.getJyunTehaiLength();
 			while (true) {
-				try {
-					// 入力待ち
-					Thread.sleep(10, 0);
-					sutehaiIdx = mPlayerAction.getSutehaiIdx();
-					if (sutehaiIdx != Integer.MAX_VALUE) {
-						mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
-						if (sutehaiIdx >= 0 && sutehaiIdx <= 14) {
-							break;
-						}
+				// 入力を待つ。
+				m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+				m_playerAction.actionWait();
+				sutehaiIdx = m_playerAction.getSutehaiIdx();
+				if (sutehaiIdx != Integer.MAX_VALUE) {
+					if (sutehaiIdx >= 0 && sutehaiIdx <= jyunTehaiLength) {
+						break;
 					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
 			}
-			this.sutehaiIdx = sutehaiIdx;
+			Log.d("Man", "sutehaiIdx = " + sutehaiIdx);
+			m_playerAction.init();
+			this.m_iSutehai = sutehaiIdx;
 			return EventId.SUTEHAI;
 		case SUTEHAI:
 			if (fromKaze == m_info.getJikaze()) {
 				return EventId.NAGASHI;
 			}
+
 			m_info.copyTehai(m_tehai, m_info.getJikaze());
-			agariScore = m_info.getAgariScore(m_tehai, m_info.getSuteHai());
+			suteHai = m_info.getSuteHai();
+
+			agariScore = m_info.getAgariScore(m_tehai, suteHai);
 			if (agariScore > 0) {
 				Log.d("Man", "agariScore = " + agariScore);
-				mPlayerAction.setValidRon(true);
-				mPlayerAction.setMenuSelect(5);
-				mPlayerAction.setState(PlayerAction.STATE_RON_SELECT);
-				m_info.postInvalidate();
-				mPlayerAction.actionWait();
-				if (mPlayerAction.getMenuSelect() == 0) {
-					mPlayerAction.init();
-					return EventId.RON_AGARI;
-				}
-				mPlayerAction.init();
+				m_playerAction.setValidRon(true);
+				eventId[menuNum] = EventId.RON_AGARI;
+				menuNum++;
 			}
 
-//			if (mTehai.validPon(mInfo.getSuteHai())) {
-//				mPlayerAction.setValidPon(true);
-//				//mPlayerAction.setActionRequest(true);
-//				while (true) {
-//					mPlayerAction.actionWait();
-//					sutehaiIdx = mPlayerAction.getSutehaiIdx();
-//					if (sutehaiIdx != Integer.MAX_VALUE) {
-//						synchronized (mPlayerAction) {
-//							mPlayerAction.setState(PlayerAction.STATE_NONE);
-//						}
-//						mPlayerAction.setSutehaiIdx(Integer.MAX_VALUE);
-//						if (sutehaiIdx == 100) {
-//							mPlayerAction.init();
-//							//mPlayerAction.setActionRequest(false);
-//							return EID.PON;
-//						}
-//						break;
-//					}
-//				}
-//				mPlayerAction.init();
-//				//mPlayerAction.setActionRequest(false);
-//			}
+			if (m_tehai.validPon(suteHai)) {
+				m_playerAction.setValidPon(true);
+				eventId[menuNum] = EventId.PON;
+				menuNum++;
+			}
+
+			if (menuNum > 0) {
+				m_playerAction.setMenuSelect(5);
+				m_info.postInvalidate();
+				m_playerAction.actionWait();
+				int menuSelect = m_playerAction.getMenuSelect();
+				if (menuSelect < menuNum) {
+					m_playerAction.init();
+					return eventId[menuSelect];
+				}
+				m_playerAction.init();
+			}
 			break;
 		default:
 			break;
@@ -179,6 +166,6 @@ public class Man implements EventIf {
 	}
 
 	public int getISutehai() {
-		return sutehaiIdx;
+		return m_iSutehai;
 	}
 }

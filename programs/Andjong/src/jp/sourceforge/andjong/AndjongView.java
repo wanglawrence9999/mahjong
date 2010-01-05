@@ -425,6 +425,11 @@ public class AndjongView extends View implements EventIf {
 					iMenu++;
 				}
 
+				if (m_playerAction.isValidPon()) {
+					drawMenuMessage(a_canvas, "ƒ|ƒ“", iMenu);
+					iMenu++;
+				}
+
 				//drawMenuMessage(canvas, "—¬‚µ", iMenu);
 
 				if (m_playerAction.getMenuSelect() == 0) {
@@ -668,10 +673,12 @@ public class AndjongView extends View implements EventIf {
 		SuteHai[] suteHais = kawa.getSuteHais();
 		int kawaLength = kawa.getSuteHaisLength();
 		boolean reachFlag = false;
+		int nakiCount = 0;
 		for (int i = 0; i < kawaLength; i++) {
-			if (i == 12) {
+			if (i - nakiCount == 12) {
 				left = leftTemp;
 				top += mHaiImageHeight;
+				nakiCount = 0;
 			}
 
 			if (suteHais[i].isReach() || reachFlag) {
@@ -685,6 +692,9 @@ public class AndjongView extends View implements EventIf {
 			} else {
 				if (!suteHais[i].isNaki()) {
 					canvas.drawBitmap(m_haiImage[suteHais[i].getId()], left, top, paint);
+				} else {
+					left -= mHaiImageWidth;
+					nakiCount++;
 				}
 			}
 
@@ -1063,12 +1073,12 @@ public class AndjongView extends View implements EventIf {
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 			m_drawItem.m_playerInfos[a_kazeFrom].m_tsumoHai = m_infoUi.getTsumoHai();
 
-			synchronized (m_drawItem) {
-				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
-					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
-					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
-				}
-			}
+//			synchronized (m_drawItem) {
+//				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+//					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
+//					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
+//				}
+//			}
 
 			// •`‰æ‚·‚éB
 			this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -1190,12 +1200,12 @@ public class AndjongView extends View implements EventIf {
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 			m_drawItem.m_suteHai = m_infoUi.getSuteHai();
 
-			synchronized (m_drawItem) {
-				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
-					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
-					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
-				}
-			}
+//			synchronized (m_drawItem) {
+//				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+//					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
+//					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
+//				}
+//			}
 
 			m_drawItem.m_state = STATE_RON;
 			this.postInvalidate(0, 0, getWidth(), getHeight());

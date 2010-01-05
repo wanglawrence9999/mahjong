@@ -76,8 +76,11 @@ public class AI implements EventIf {
 	 * @return イベントID
 	 */
 	private EventId eventTsumo(int a_kazeFrom, int a_kazeTo) {
+		m_info.copyTehai(m_tehai);
+		Hai tsumoHai = m_info.getTsumoHai();
+
 		// ツモあがりの場合は、イベント(ツモあがり)を返す。
-		int agariScore = m_info.getAgariScore();
+		int agariScore = m_info.getAgariScore(m_tehai, tsumoHai);
 		if (agariScore > 0) {
 			return EventId.TSUMO_AGARI;
 		}
@@ -87,9 +90,6 @@ public class AI implements EventIf {
 			m_iSutehai = 13;
 			return EventId.SUTEHAI;
 		}
-
-		m_info.copyTehai(m_tehai);
-		Hai tsumoHai = m_info.getTsumoHai();
 
 		thinkSutehai(tsumoHai);
 
@@ -121,7 +121,10 @@ public class AI implements EventIf {
 			return EventId.NAGASHI;
 		}
 
-		int agariScore = m_info.getAgariScore();
+		m_info.copyTehai(m_tehai);
+		Hai suteHai = m_info.getSuteHai();
+
+		int agariScore = m_info.getAgariScore(m_tehai, suteHai);
 		if (agariScore > 0) {
 			return EventId.RON_AGARI;
 		}

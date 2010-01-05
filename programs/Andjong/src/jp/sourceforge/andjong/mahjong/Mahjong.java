@@ -485,12 +485,13 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		if (true) {
-		//if (false) {
+		//if (true) {
+		if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
+			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
+			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
 			}
@@ -655,6 +656,8 @@ public class Mahjong implements Runnable {
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				break NOTIFYLOOP;
 			case PON:
+				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
+
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
 				this.m_kazeTo = fromKaze;
@@ -668,7 +671,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, sutehaiIdx);
 				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
 				activePlayer.getKawa().add(m_suteHai);
-				activePlayer.getKawa().setNaki(true);
+				//activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
 
 				// イベントを通知する。

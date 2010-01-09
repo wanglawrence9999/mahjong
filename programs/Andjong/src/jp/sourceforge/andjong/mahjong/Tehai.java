@@ -209,7 +209,7 @@ public class Tehai {
 	 *            捨牌
 	 * @return チー(左)の可否
 	 */
-	public boolean validChiiLeft(Hai a_suteHai) {
+	public boolean validChiiLeft(Hai a_suteHai, Hai[] a_sarashiHais) {
 		if (a_suteHai.isTsuu()) {
 			return false;
 		}
@@ -233,6 +233,8 @@ public class Tehai {
 			if (m_jyunTehai[i].getNoKind() == noKindCenter) {
 				for (int j = i + 1; j < m_jyunTehaiLength; j++) {
 					if (m_jyunTehai[j].getNoKind() == noKindRight) {
+						a_sarashiHais[0] = new Hai(m_jyunTehai[i]);
+						a_sarashiHais[1] = new Hai(m_jyunTehai[j]);
 						return true;
 					}
 				}
@@ -252,7 +254,8 @@ public class Tehai {
 	 * @return 結果
 	 */
 	public boolean setChiiLeft(Hai a_suteHai, int a_relation) {
-		if (!validChiiLeft(a_suteHai)) {
+		Hai sarashiHais[] = new Hai[2];
+		if (!validChiiLeft(a_suteHai, sarashiHais)) {
 			return false;
 		}
 
@@ -297,7 +300,7 @@ public class Tehai {
 	 *            捨牌
 	 * @return チー(中央)の可否
 	 */
-	public boolean validChiiCenter(Hai a_suteHai) {
+	public boolean validChiiCenter(Hai a_suteHai, Hai[] a_sarashiHais) {
 		if (a_suteHai.isTsuu()) {
 			return false;
 		}
@@ -321,6 +324,8 @@ public class Tehai {
 			if (m_jyunTehai[i].getNoKind() == noKindLeft) {
 				for (int j = i + 1; j < m_jyunTehaiLength; j++) {
 					if (m_jyunTehai[j].getNoKind() == noKindRight) {
+						a_sarashiHais[0] = new Hai(m_jyunTehai[i]);
+						a_sarashiHais[1] = new Hai(m_jyunTehai[j]);
 						return true;
 					}
 				}
@@ -340,7 +345,8 @@ public class Tehai {
 	 * @return 結果
 	 */
 	public boolean setChiiCenter(Hai a_suteHai, int a_relation) {
-		if (!validChiiCenter(a_suteHai)) {
+		Hai sarashiHais[] = new Hai[2];
+		if (!validChiiCenter(a_suteHai, sarashiHais)) {
 			return false;
 		}
 
@@ -363,6 +369,8 @@ public class Tehai {
 
 						rmJyunTehai(j);
 
+						hais[3] = new Hai();
+
 						m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_MINSHUN);
 						m_fuuros[m_fuuroNums].setRelation(a_relation);
 						m_fuuros[m_fuuroNums].setHais(hais);
@@ -383,7 +391,7 @@ public class Tehai {
 	 *            捨牌
 	 * @return チー(右)の可否
 	 */
-	public boolean validChiiRight(Hai a_suteHai) {
+	public boolean validChiiRight(Hai a_suteHai, Hai[] a_sarashiHais) {
 		if (a_suteHai.isTsuu()) {
 			return false;
 		}
@@ -407,6 +415,8 @@ public class Tehai {
 			if (m_jyunTehai[i].getNoKind() == noKindLeft) {
 				for (int j = i + 1; j < m_jyunTehaiLength; j++) {
 					if (m_jyunTehai[j].getNoKind() == noKindCenter) {
+						a_sarashiHais[0] = new Hai(m_jyunTehai[i]);
+						a_sarashiHais[1] = new Hai(m_jyunTehai[j]);
 						return true;
 					}
 				}
@@ -426,7 +436,8 @@ public class Tehai {
 	 * @return 結果
 	 */
 	public boolean setChiiRight(Hai a_suteHai, int a_relation) {
-		if (!validChiiRight(a_suteHai)) {
+		Hai sarashiHais[] = new Hai[2];
+		if (!validChiiRight(a_suteHai, sarashiHais)) {
 			return false;
 		}
 

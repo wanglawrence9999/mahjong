@@ -37,6 +37,15 @@ public class Man implements EventIf {
 		int menuNum = 0;
 		EventId eventId[] = new EventId[4];
 		int jyunTehaiLength;
+
+		Hai[] sarashiHaiLeft = new Hai[2];
+		Hai[] sarashiHaiCenter = new Hai[2];
+		Hai[] sarashiHaiRight = new Hai[2];
+		//boolean isChii = false;
+		int chiiCount = 0;
+		int iChii = 0;
+		int relation = fromKaze - toKaze;
+
 		switch (eid) {
 		case TSUMO:
 			// 手牌をコピーする。
@@ -128,6 +137,7 @@ public class Man implements EventIf {
 			if (fromKaze == m_info.getJikaze()) {
 				return EventId.NAGASHI;
 			}
+			Log.e("SUTEHAI", "fromKaze = " + fromKaze + ", toKaze = " + toKaze);
 
 			m_info.copyTehai(m_tehai, m_info.getJikaze());
 			suteHai = m_info.getSuteHai();
@@ -146,12 +156,61 @@ public class Man implements EventIf {
 				menuNum++;
 			}
 
+			if ((relation == -1) || (relation == 3)) {
+				if (m_tehai.validChiiRight(suteHai, sarashiHaiRight)) {
+					m_playerAction.setValidChiiRight(true, sarashiHaiRight);
+					if (chiiCount == 0) {
+						iChii = menuNum;
+						eventId[menuNum] = EventId.CHII_RIGHT;
+						menuNum++;
+					}
+					chiiCount++;
+				}
+
+				if (m_tehai.validChiiCenter(suteHai, sarashiHaiCenter)) {
+					m_playerAction.setValidChiiCenter(true, sarashiHaiCenter);
+					if (chiiCount == 0) {
+						iChii = menuNum;
+						eventId[menuNum] = EventId.CHII_CENTER;
+						menuNum++;
+					}
+					chiiCount++;
+				}
+
+				if (m_tehai.validChiiLeft(suteHai, sarashiHaiLeft)) {
+					m_playerAction.setValidChiiLeft(true, sarashiHaiLeft);
+					if (chiiCount == 0) {
+						iChii = menuNum;
+						eventId[menuNum] = EventId.CHII_LEFT;
+						menuNum++;
+					}
+					chiiCount++;
+				}
+			}
+
 			if (menuNum > 0) {
 				m_playerAction.setMenuSelect(5);
 				m_info.postInvalidate();
 				m_playerAction.actionWait();
 				int menuSelect = m_playerAction.getMenuSelect();
 				if (menuSelect < menuNum) {
+					if ((eventId[menuSelect] == EventId.CHII_LEFT) ||
+							(eventId[menuSelect] == EventId.CHII_CENTER) ||
+							(eventId[menuSelect] == EventId.CHII_RIGHT)) {
+						if (chiiCount > 1) {
+							while (true) {
+								m_playerAction.init();
+								// 入力を待つ。
+								m_playerAction.setChiiEventId(eventId[iChii]);
+								m_playerAction.setState(PlayerAction.STATE_CHII_SELECT);
+								m_info.postInvalidate();
+								m_playerAction.actionWait();
+								EventId chiiEventId = m_playerAction.getChiiEventId();
+								m_playerAction.init();
+								return chiiEventId;
+							}
+						}
+					}
 					m_playerAction.init();
 					return eventId[menuSelect];
 				}

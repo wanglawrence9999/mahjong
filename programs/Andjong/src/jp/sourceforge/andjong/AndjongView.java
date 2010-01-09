@@ -345,6 +345,10 @@ public class AndjongView extends View implements EventIf {
 		m_drawItem.setState(STATE_NONE);
 	}
 
+	boolean m_isValidChiiLeft;
+	boolean m_isValidChiiCenter;
+	boolean m_isValidChiiRight;
+
 	@Override
 	protected void onDraw(Canvas a_canvas) {
 		// 背景を描画する。
@@ -427,6 +431,29 @@ public class AndjongView extends View implements EventIf {
 
 				if (m_playerAction.isValidPon()) {
 					drawMenuMessage(a_canvas, "ポン", iMenu);
+					iMenu++;
+				}
+
+				m_isValidChiiLeft = m_playerAction.isValidChiiLeft();
+				m_isValidChiiCenter = m_playerAction.isValidChiiCenter();
+				m_isValidChiiRight = m_playerAction.isValidChiiRight();
+
+				/*
+				if (isValidChiiLeft) {
+					drawMenuMessage(a_canvas, "チーL", iMenu);
+					iMenu++;
+				}
+				if (isValidChiiCenter) {
+					drawMenuMessage(a_canvas, "チーC", iMenu);
+					iMenu++;
+				}
+				if (isValidChiiRight) {
+					drawMenuMessage(a_canvas, "チーR", iMenu);
+					iMenu++;
+				}
+				*/
+				if (m_isValidChiiLeft || m_isValidChiiCenter || m_isValidChiiRight) {
+					drawMenuMessage(a_canvas, "チー", iMenu);
 					iMenu++;
 				}
 
@@ -711,36 +738,71 @@ public class AndjongView extends View implements EventIf {
 		Hai[] jyunTehai = tehai.getJyunTehai();
 		int jyunTehaiLength = tehai.getJyunTehaiLength();
 		int width = m_haiImage[0].getWidth();
-		for (int i = 0; i < jyunTehaiLength; i++) {
-			if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
-				if (i == m_drawItem.getSkipIdx()) {
-					continue;
-				}
+		if (isPlayer && (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT)) {
+			EventId chiiEventId = m_playerAction.getChiiEventId();
+			Hai iSelects[];
+			switch (chiiEventId) {
+			case CHII_LEFT:
+				iSelects = m_playerAction.getSarachiHaiLeft();
+				break;
+			case CHII_CENTER:
+				iSelects = m_playerAction.getSarachiHaiCenter();
+				break;
+			default:
+				iSelects = m_playerAction.getSarachiHaiRight();
+				break;
 			}
-			if ((i == select) && (m_playerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
-				canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
-			} else {
-				if (isDisp) {
-					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
-				} else {
-					canvas.drawBitmap(mHaiHideImage, left + (width * i), top, null);
-				}
-			}
-		}
+			int iSelect = 0;
 
-		//Log.d(this.getClass().getName(), "print, tsumoKaze = " + mDrawItem.tsumoKaze + ", id = " + mDrawItem.tsumoHai);
-		if (a_addHai != null) {
-			if ((select >= jyunTehaiLength) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
-				if (isDisp) {
-					canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
-				} else {
-					canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
+			for (int i = 0; i < jyunTehaiLength; i++) {
+				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
+					if (i == m_drawItem.getSkipIdx()) {
+						continue;
+					}
 				}
-			} else {
-				if (isDisp) {
-					canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+				if ((iSelect < 2) &&(jyunTehai[i].getId() == iSelects[iSelect].getId())) {
+				//if ((jyunTehai[i].getId() == iSelects[0].getId()) || (jyunTehai[i].getId() == iSelects[1].getId())) {
+					iSelect++;
+					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
 				} else {
-					canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
+					if (isDisp) {
+						canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
+					} else {
+						canvas.drawBitmap(mHaiHideImage, left + (width * i), top, null);
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < jyunTehaiLength; i++) {
+				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
+					if (i == m_drawItem.getSkipIdx()) {
+						continue;
+					}
+				}
+				if ((i == select) && (m_playerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
+					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+				} else {
+					if (isDisp) {
+						canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
+					} else {
+						canvas.drawBitmap(mHaiHideImage, left + (width * i), top, null);
+					}
+				}
+			}
+
+			if (a_addHai != null) {
+				if ((select >= jyunTehaiLength) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
+					if (isDisp) {
+						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
+					} else {
+						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
+					}
+				} else {
+					if (isDisp) {
+						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+					} else {
+						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
+					}
 				}
 			}
 		}
@@ -785,6 +847,12 @@ public class AndjongView extends View implements EventIf {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if (m_drawItem.m_kazeFrom >= 4) {
+			Log.d(TAG, "Error kazeFrom actionNotifyAll");
+			m_playerAction.actionNotifyAll();
+			return true;
+		}
+
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 		int action = event.getAction();
@@ -810,6 +878,49 @@ public class AndjongView extends View implements EventIf {
 				Log.d(TAG, "actionRequest actionNotifyAll");
 				m_playerAction.setMenuSelect(iMenu);
 				m_playerAction.actionNotifyAll();
+			}
+			return true;
+		}
+
+
+		if (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT) {
+			boolean isValidChiiLeft = m_isValidChiiLeft;
+			boolean isValidChiiCenter = m_isValidChiiCenter;
+			boolean isValidChiiRight = m_isValidChiiRight;
+			EventId chiiEventId = m_playerAction.getChiiEventId();
+			if (action == MotionEvent.ACTION_DOWN) {
+				//int tx = (int) event.getX();
+				int ty = (int) event.getY();
+				if ((TOUCH_TOP <= ty) && (ty <= TOUCH_BOTTOM)) {
+					switch (chiiEventId) {
+					case CHII_LEFT:
+						if (isValidChiiRight) {
+							m_playerAction.setChiiEventId(EventId.CHII_RIGHT);
+						} else {
+							m_playerAction.setChiiEventId(EventId.CHII_CENTER);
+						}
+						break;
+					case CHII_RIGHT:
+						if (isValidChiiCenter) {
+							m_playerAction.setChiiEventId(EventId.CHII_CENTER);
+						} else {
+							m_playerAction.setChiiEventId(EventId.CHII_LEFT);
+						}
+						break;
+					default:
+						if (isValidChiiLeft) {
+							m_playerAction.setChiiEventId(EventId.CHII_LEFT);
+						} else {
+							m_playerAction.setChiiEventId(EventId.CHII_RIGHT);
+						}
+						break;
+					}
+					invalidate();
+				} else {
+					m_isValidChiiLeft = m_isValidChiiCenter = m_isValidChiiRight = false;
+					Log.d(TAG, "chii actionNotifyAll");
+					m_playerAction.actionNotifyAll();
+				}
 			}
 			return true;
 		}
@@ -882,6 +993,13 @@ public class AndjongView extends View implements EventIf {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
+
+		if (m_drawItem.m_kazeFrom >= 4) {
+			Log.d(TAG, "Error kazeFrom actionNotifyAll");
+			m_playerAction.actionNotifyAll();
+			return true;
+		}
+
 		boolean actionRequest = m_playerAction.isActionRequest();
 		int menuSelect = m_playerAction.getMenuSelect();
 		if (actionRequest) {
@@ -906,6 +1024,71 @@ public class AndjongView extends View implements EventIf {
 			}
 			invalidate();
 			return true;
+		}
+
+		if (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT) {
+			boolean isValidChiiLeft = m_isValidChiiLeft;
+			boolean isValidChiiCenter = m_isValidChiiCenter;
+			boolean isValidChiiRight = m_isValidChiiRight;
+			EventId chiiEventId = m_playerAction.getChiiEventId();
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				switch (chiiEventId) {
+				case CHII_RIGHT:
+					if (isValidChiiLeft) {
+						m_playerAction.setChiiEventId(EventId.CHII_LEFT);
+					} else {
+						m_playerAction.setChiiEventId(EventId.CHII_CENTER);
+					}
+					break;
+				case CHII_CENTER:
+					if (isValidChiiRight) {
+						m_playerAction.setChiiEventId(EventId.CHII_RIGHT);
+					} else {
+						m_playerAction.setChiiEventId(EventId.CHII_LEFT);
+					}
+					break;
+				default:
+					if (isValidChiiCenter) {
+						m_playerAction.setChiiEventId(EventId.CHII_CENTER);
+					} else {
+						m_playerAction.setChiiEventId(EventId.CHII_RIGHT);
+					}
+					break;
+				}
+				invalidate();
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				switch (chiiEventId) {
+				case CHII_LEFT:
+					if (isValidChiiRight) {
+						m_playerAction.setChiiEventId(EventId.CHII_RIGHT);
+					} else {
+						m_playerAction.setChiiEventId(EventId.CHII_CENTER);
+					}
+					break;
+				case CHII_RIGHT:
+					if (isValidChiiCenter) {
+						m_playerAction.setChiiEventId(EventId.CHII_CENTER);
+					} else {
+						m_playerAction.setChiiEventId(EventId.CHII_LEFT);
+					}
+					break;
+				default:
+					if (isValidChiiLeft) {
+						m_playerAction.setChiiEventId(EventId.CHII_LEFT);
+					} else {
+						m_playerAction.setChiiEventId(EventId.CHII_RIGHT);
+					}
+					break;
+				}
+				invalidate();
+				break;
+			default:
+				//return super.onKeyDown(keyCode, event);
+			}
+			//invalidate();
+			//return true;
 		}
 
 		PlayerInfo playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
@@ -959,6 +1142,7 @@ public class AndjongView extends View implements EventIf {
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_DPAD_CENTER:
+			m_isValidChiiLeft = m_isValidChiiCenter = m_isValidChiiRight = false;
 			synchronized (m_drawItem) {
 				switch (m_drawItem.m_state) {
 				case STATE_PLAY:
@@ -1156,6 +1340,9 @@ public class AndjongView extends View implements EventIf {
 			m_drawItem.m_state = STATE_PLAY;
 			break;
 		case PON:// ポン
+		case CHII_LEFT:
+		case CHII_CENTER:
+		case CHII_RIGHT:
 			// 自分の捨牌のみを表示します。
 			if (a_kazeFrom == m_infoUi.getJikaze()) {
 				{

@@ -622,6 +622,7 @@ public class Mahjong implements Runnable {
 	 */
 	private EventId notifyEvent(EventId eid, int fromKaze, int toKaze) {
 		EventId retEid = EventId.NAGASHI;
+		int iSuteHai;
 
 		// UIイベントを発行する。
 		m_view.event(eid, fromKaze, toKaze);
@@ -639,6 +640,7 @@ public class Mahjong implements Runnable {
 			//mView.event(eid, fromKaze, toKaze);
 
 			// イベントを発行する。
+			toKaze = j;
 			retEid = activePlayer.getEventIf().event(eid, fromKaze, toKaze);
 
 			// イベントを処理する。
@@ -651,8 +653,10 @@ public class Mahjong implements Runnable {
 				break NOTIFYLOOP;
 			case RON_AGARI:// ロン
 				// アクティブプレイヤーを設定する。
-				this.m_kazeFrom = j;
-				this.m_kazeTo = toKaze;
+				this.m_kazeFrom = toKaze;
+				this.m_kazeTo = fromKaze;
+//				this.m_kazeFrom = j;
+//				this.m_kazeTo = toKaze;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				break NOTIFYLOOP;
 			case PON:
@@ -666,9 +670,9 @@ public class Mahjong implements Runnable {
 				notifyEvent(EventId.SELECT_SUTEHAI, this.m_kazeFrom, this.m_kazeTo);
 
 				// 捨牌のインデックスを取得する。
-				int sutehaiIdx = activePlayer.getEventIf().getISutehai();
-				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, sutehaiIdx);
-				activePlayer.getTehai().rmJyunTehai(sutehaiIdx);
+				iSuteHai = activePlayer.getEventIf().getISutehai();
+				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, iSuteHai);
+				activePlayer.getTehai().rmJyunTehai(iSuteHai);
 				activePlayer.getKawa().add(m_suteHai);
 				//activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
@@ -676,6 +680,69 @@ public class Mahjong implements Runnable {
 				// イベントを通知する。
 				retEid = notifyEvent(EventId.PON, this.m_kazeFrom, this.m_kazeTo);
 				break NOTIFYLOOP;
+			case CHII_LEFT:
+				// アクティブプレイヤーを設定する。
+				this.m_kazeFrom = j;
+				this.m_kazeTo = fromKaze;
+				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
+				activePlayer.getTehai().setChiiLeft(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
+				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
+
+				notifyEvent(EventId.SELECT_SUTEHAI, this.m_kazeFrom, this.m_kazeTo);
+
+				// 捨牌のインデックスを取得する。
+				iSuteHai = activePlayer.getEventIf().getISutehai();
+				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, iSuteHai);
+				activePlayer.getTehai().rmJyunTehai(iSuteHai);
+				activePlayer.getKawa().add(m_suteHai);
+				//activePlayer.getKawa().setNaki(true);
+				activePlayer.getKawa().setTedashi(true);
+
+				// イベントを通知する。
+				retEid = notifyEvent(EventId.CHII_LEFT, this.m_kazeFrom, this.m_kazeTo);
+				break;
+			case CHII_CENTER:
+				// アクティブプレイヤーを設定する。
+				this.m_kazeFrom = j;
+				this.m_kazeTo = fromKaze;
+				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
+				activePlayer.getTehai().setChiiCenter(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
+				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
+
+				notifyEvent(EventId.SELECT_SUTEHAI, this.m_kazeFrom, this.m_kazeTo);
+
+				// 捨牌のインデックスを取得する。
+				iSuteHai = activePlayer.getEventIf().getISutehai();
+				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, iSuteHai);
+				activePlayer.getTehai().rmJyunTehai(iSuteHai);
+				activePlayer.getKawa().add(m_suteHai);
+				//activePlayer.getKawa().setNaki(true);
+				activePlayer.getKawa().setTedashi(true);
+
+				// イベントを通知する。
+				retEid = notifyEvent(EventId.CHII_CENTER, this.m_kazeFrom, this.m_kazeTo);
+				break;
+			case CHII_RIGHT:
+				// アクティブプレイヤーを設定する。
+				this.m_kazeFrom = j;
+				this.m_kazeTo = fromKaze;
+				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
+				activePlayer.getTehai().setChiiRight(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
+				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
+
+				notifyEvent(EventId.SELECT_SUTEHAI, this.m_kazeFrom, this.m_kazeTo);
+
+				// 捨牌のインデックスを取得する。
+				iSuteHai = activePlayer.getEventIf().getISutehai();
+				activePlayer.getTehai().copyJyunTehaiIndex(m_suteHai, iSuteHai);
+				activePlayer.getTehai().rmJyunTehai(iSuteHai);
+				activePlayer.getKawa().add(m_suteHai);
+				//activePlayer.getKawa().setNaki(true);
+				activePlayer.getKawa().setTedashi(true);
+
+				// イベントを通知する。
+				retEid = notifyEvent(EventId.CHII_RIGHT, this.m_kazeFrom, this.m_kazeTo);
+				break;
 			default:
 				break;
 			}

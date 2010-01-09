@@ -1,11 +1,24 @@
 package jp.sourceforge.andjong.mahjong;
 
+import jp.sourceforge.andjong.mahjong.EventIf.EventId;
+
 public class PlayerAction {
 	public static final int STATE_NONE = 0;
 	public static final int STATE_SUTEHAI_SELECT = 1;
 	public static final int STATE_RON_SELECT= 2;
 	public static final int STATE_TSUMO_SELECT= 3;
 	public static final int STATE_ACTION_WAIT = 4;
+	public static final int STATE_CHII_SELECT = 5;
+
+	EventId m_chiiEventId;
+
+	public EventId getChiiEventId() {
+		return m_chiiEventId;
+	}
+
+	public void setChiiEventId(EventId a_chiiEventId) {
+		m_chiiEventId = a_chiiEventId;
+	}
 
 	private int mState = STATE_NONE;
 
@@ -46,6 +59,11 @@ public class PlayerAction {
 		mValidTsumo = false;
 		mValidPon = false;
 		m_validReach = false;
+
+		m_validChiiLeft = false;
+		m_validChiiCenter = false;
+		m_validChiiRight = false;
+
 		setMenuSelect(5);
 	}
 
@@ -100,7 +118,8 @@ public class PlayerAction {
 	 * @return
 	 */
 	public synchronized boolean isActionRequest() {
-		return mValidRon | mValidTsumo | mValidPon | m_validReach;
+		return mValidRon | mValidTsumo | mValidPon | m_validReach
+				| m_validChiiLeft | m_validChiiCenter | m_validChiiRight;
 	}
 
 	/**
@@ -176,5 +195,51 @@ public class PlayerAction {
 
 	public synchronized int getMenuSelect() {
 		return mMenuSelect;
+	}
+
+	private Hai[] m_sarashiHaiLeft = new Hai[2];
+	private Hai[] m_sarashiHaiCenter = new Hai[2];
+	private Hai[] m_sarashiHaiRight = new Hai[2];
+	private boolean m_validChiiLeft;
+	private boolean m_validChiiCenter;
+	private boolean m_validChiiRight;
+
+	public synchronized void setValidChiiLeft(boolean a_validChii, Hai[] a_sarashiHai) {
+		this.m_validChiiLeft = a_validChii;
+		this.m_sarashiHaiLeft = a_sarashiHai;
+	}
+
+	public synchronized boolean isValidChiiLeft() {
+		return m_validChiiLeft;
+	}
+
+	public synchronized Hai[] getSarachiHaiLeft() {
+		return m_sarashiHaiLeft;
+	}
+
+	public synchronized void setValidChiiCenter(boolean a_validChii, Hai[] a_sarashiHai) {
+		this.m_validChiiCenter = a_validChii;
+		this.m_sarashiHaiCenter = a_sarashiHai;
+	}
+
+	public synchronized boolean isValidChiiCenter() {
+		return m_validChiiCenter;
+	}
+
+	public synchronized Hai[] getSarachiHaiCenter() {
+		return m_sarashiHaiCenter;
+	}
+
+	public synchronized void setValidChiiRight(boolean a_validChii, Hai[] a_sarashiHai) {
+		this.m_validChiiRight = a_validChii;
+		this.m_sarashiHaiRight = a_sarashiHai;
+	}
+
+	public synchronized boolean isValidChiiRight() {
+		return m_validChiiRight;
+	}
+
+	public synchronized Hai[] getSarachiHaiRight() {
+		return m_sarashiHaiRight;
 	}
 }

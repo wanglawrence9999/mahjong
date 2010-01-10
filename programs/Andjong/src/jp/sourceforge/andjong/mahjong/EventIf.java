@@ -51,7 +51,9 @@ public interface EventIf {
 		/** 理牌待ち */
 		UI_WAIT_RIHAI,
 		/** 進行待ち */
-		UI_WAIT_PROGRESS
+		UI_WAIT_PROGRESS,
+		/** プレイヤーアクションの入力 */
+		UI_INPUT_PLAYER_ACTION
 	}
 
 	/** 風(東) */

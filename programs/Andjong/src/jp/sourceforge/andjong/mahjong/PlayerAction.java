@@ -40,6 +40,8 @@ public class PlayerAction {
 	public int m_indexs[];
 	public int m_indexNum;
 
+	private boolean m_dispMenu;
+
 	/**
 	 * コンストラクター
 	 */
@@ -63,6 +65,9 @@ public class PlayerAction {
 		m_validChiiLeft = false;
 		m_validChiiCenter = false;
 		m_validChiiRight = false;
+
+		m_validKan = false;
+		m_dispMenu = false;
 
 		setMenuSelect(5);
 	}
@@ -119,7 +124,7 @@ public class PlayerAction {
 	 */
 	public synchronized boolean isActionRequest() {
 		return mValidRon | mValidTsumo | mValidPon | m_validReach
-				| m_validChiiLeft | m_validChiiCenter | m_validChiiRight;
+				| m_validChiiLeft | m_validChiiCenter | m_validChiiRight | m_validKan;
 	}
 
 	/**
@@ -241,5 +246,23 @@ public class PlayerAction {
 
 	public synchronized Hai[] getSarachiHaiRight() {
 		return m_sarashiHaiRight;
+	}
+
+	private boolean m_validKan;
+
+	public synchronized void setValidKan(boolean a_validKan) {
+		this.m_validKan = a_validKan;
+	}
+
+	public synchronized boolean isValidKan() {
+		return m_validKan;
+	}
+
+	public synchronized void setDispMenu(boolean a_dispMenu) {
+		this.m_dispMenu = a_dispMenu;
+	}
+
+	public synchronized boolean isDispMenu() {
+		return m_dispMenu;
 	}
 }

@@ -485,8 +485,8 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		//if (true) {
-		if (false) {
+		if (true) {
+		//if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
@@ -556,6 +556,21 @@ public class Mahjong implements Runnable {
 
 		// イベントを処理する。
 		switch (retEid) {
+		case ANKAN:
+			activePlayer.getTehai().setAnKan(m_tsumoHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
+
+			// イベントを通知する。
+			retEid = notifyEvent(EventId.ANKAN, m_kazeFrom, m_kazeFrom);
+
+			// UIイベント（進行待ち）を発行する。
+			m_view.event(EventId.UI_WAIT_PROGRESS, KAZE_NONE, KAZE_NONE);
+
+			// ツモ牌を取得する。
+			m_tsumoHai = m_yama.rinshanTsumo();
+
+			// イベント（ツモ）を発行する。
+			retEid = tsumoEvent();
+			break;
 		case TSUMO_AGARI:// ツモあがり
 			break;
 		case SUTEHAI:// 捨牌
@@ -912,7 +927,7 @@ public class Mahjong implements Runnable {
 		m_info.setSutehaiIdx(sutehaiIdx);
 	}
 
-	public void postInvalidate() {
-		m_view.postInvalidate(0, 0, 320, 480);
+	public void postUiEvent(EventId a_eventId, int a_kazeFrom, int a_kazeTo) {
+		m_view.event(a_eventId, a_kazeFrom, a_kazeTo);
 	}
 }

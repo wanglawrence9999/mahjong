@@ -27,7 +27,7 @@ public class Man implements EventIf {
 	private Tehai m_tehai = new Tehai();
 
 	@Override
-	public EventId event(EventId eid, int fromKaze, int toKaze) {
+	public EventId event(EventId eid, int a_kazeFrom, int a_kazeTo) {
 		int sutehaiIdx = 0;
 		int agariScore = 0;
 		Hai tsumoHai;
@@ -44,7 +44,7 @@ public class Man implements EventIf {
 		//boolean isChii = false;
 		int chiiCount = 0;
 		int iChii = 0;
-		int relation = fromKaze - toKaze;
+		int relation = a_kazeFrom - a_kazeTo;
 
 		switch (eid) {
 		case TSUMO:
@@ -72,43 +72,78 @@ public class Man implements EventIf {
 				menuNum++;
 			}
 
-			if (menuNum > 0) {
-				m_playerAction.setMenuSelect(5);
-				m_playerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
-				m_info.postInvalidate();
-				m_playerAction.actionWait();
-				int menuSelect = m_playerAction.getMenuSelect();
-				if ((menuSelect >= 0) && (menuSelect < menuNum)) {
-					m_playerAction.init();
-					if (eventId[menuSelect] == EventId.REACH) {
-						m_playerAction.m_indexs = indexs;
-						m_playerAction.m_indexNum = indexNum;
-						while (true) {
-							// 入力を待つ。
-							m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
-							m_playerAction.actionWait();
-							sutehaiIdx = m_playerAction.getSutehaiIdx();
-							if (sutehaiIdx != Integer.MAX_VALUE) {
-								if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
-									break;
-								}
-							}
-						}
-						m_playerAction.init();
-						this.m_iSutehai = sutehaiIdx;
-					}
-					return eventId[menuSelect];
-				}
-				m_playerAction.init();
-			}
+//			if (m_tehai.validKan(tsumoHai)) {
+//				m_playerAction.setValidKan(true);
+//				eventId[menuNum] = EventId.ANKAN;
+//				menuNum++;
+//			}
+
+//			if (menuNum > 0) {
+//				m_playerAction.setMenuSelect(5);
+//				m_playerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
+//				m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
+//				m_playerAction.actionWait();
+//				int menuSelect = m_playerAction.getMenuSelect();
+//				if ((menuSelect >= 0) && (menuSelect < menuNum)) {
+//					m_playerAction.init();
+//					if (eventId[menuSelect] == EventId.REACH) {
+//						m_playerAction.m_indexs = indexs;
+//						m_playerAction.m_indexNum = indexNum;
+//						while (true) {
+//							// 入力を待つ。
+//							m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+//							m_playerAction.actionWait();
+//							sutehaiIdx = m_playerAction.getSutehaiIdx();
+//							if (sutehaiIdx != Integer.MAX_VALUE) {
+//								if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
+//									break;
+//								}
+//							}
+//						}
+//						m_playerAction.init();
+//						this.m_iSutehai = sutehaiIdx;
+//					}
+//					return eventId[menuSelect];
+//				}
+//				m_playerAction.init();
+//			}
+
 			while (true) {
 				// 入力を待つ。
 				m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+				m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
 				m_playerAction.actionWait();
-				sutehaiIdx = m_playerAction.getSutehaiIdx();
-				if (sutehaiIdx != Integer.MAX_VALUE) {
-					if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
-						break;
+				if (m_playerAction.isDispMenu()) {
+
+					int menuSelect = m_playerAction.getMenuSelect();
+					if ((menuSelect >= 0) && (menuSelect < menuNum)) {
+						m_playerAction.init();
+						if (eventId[menuSelect] == EventId.REACH) {
+							m_playerAction.m_indexs = indexs;
+							m_playerAction.m_indexNum = indexNum;
+							while (true) {
+								// 入力を待つ。
+								m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+								m_playerAction.actionWait();
+								sutehaiIdx = m_playerAction.getSutehaiIdx();
+								if (sutehaiIdx != Integer.MAX_VALUE) {
+									if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
+										break;
+									}
+								}
+							}
+							m_playerAction.init();
+							this.m_iSutehai = sutehaiIdx;
+						}
+						return eventId[menuSelect];
+					}
+					m_playerAction.init();
+				} else {
+					sutehaiIdx = m_playerAction.getSutehaiIdx();
+					if (sutehaiIdx != Integer.MAX_VALUE) {
+						if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
+							break;
+						}
 					}
 				}
 			}
@@ -134,10 +169,10 @@ public class Man implements EventIf {
 			this.m_iSutehai = sutehaiIdx;
 			return EventId.SUTEHAI;
 		case SUTEHAI:
-			if (fromKaze == m_info.getJikaze()) {
+			if (a_kazeFrom == m_info.getJikaze()) {
 				return EventId.NAGASHI;
 			}
-			Log.e("SUTEHAI", "fromKaze = " + fromKaze + ", toKaze = " + toKaze);
+			Log.e("SUTEHAI", "fromKaze = " + a_kazeFrom + ", toKaze = " + a_kazeTo);
 
 			m_info.copyTehai(m_tehai, m_info.getJikaze());
 			suteHai = m_info.getSuteHai();
@@ -190,7 +225,7 @@ public class Man implements EventIf {
 
 			if (menuNum > 0) {
 				m_playerAction.setMenuSelect(5);
-				m_info.postInvalidate();
+				m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
 				m_playerAction.actionWait();
 				int menuSelect = m_playerAction.getMenuSelect();
 				if (menuSelect < menuNum) {
@@ -203,7 +238,7 @@ public class Man implements EventIf {
 								// 入力を待つ。
 								m_playerAction.setChiiEventId(eventId[iChii]);
 								m_playerAction.setState(PlayerAction.STATE_CHII_SELECT);
-								m_info.postInvalidate();
+								m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
 								m_playerAction.actionWait();
 								EventId chiiEventId = m_playerAction.getChiiEventId();
 								m_playerAction.init();

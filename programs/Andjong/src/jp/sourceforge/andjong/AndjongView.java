@@ -411,58 +411,59 @@ public class AndjongView extends View implements EventIf {
 			// アクションボタンを表示する。
 			boolean actionRequest = m_playerAction.isActionRequest();
 			if (actionRequest) {
-				//drawMessage(canvas, getResources().getString(R.string.action_button));
-				int iMenu = 0;
-
-				if (m_playerAction.isValidReach()) {
-					drawMenuMessage(a_canvas, "立直", iMenu);
-					iMenu++;
-				}
-
-				if (m_playerAction.isValidRon()) {
-					drawMenuMessage(a_canvas, "ロン", iMenu);
-					iMenu++;
-				}
-
-				if (m_playerAction.isValidTsumo()) {
-					drawMenuMessage(a_canvas, "ツモ", iMenu);
-					iMenu++;
-				}
-
-				if (m_playerAction.isValidPon()) {
-					drawMenuMessage(a_canvas, "ポン", iMenu);
-					iMenu++;
-				}
-
-				m_isValidChiiLeft = m_playerAction.isValidChiiLeft();
-				m_isValidChiiCenter = m_playerAction.isValidChiiCenter();
-				m_isValidChiiRight = m_playerAction.isValidChiiRight();
-
-				/*
-				if (isValidChiiLeft) {
-					drawMenuMessage(a_canvas, "チーL", iMenu);
-					iMenu++;
-				}
-				if (isValidChiiCenter) {
-					drawMenuMessage(a_canvas, "チーC", iMenu);
-					iMenu++;
-				}
-				if (isValidChiiRight) {
-					drawMenuMessage(a_canvas, "チーR", iMenu);
-					iMenu++;
-				}
-				*/
-				if (m_isValidChiiLeft || m_isValidChiiCenter || m_isValidChiiRight) {
-					drawMenuMessage(a_canvas, "チー", iMenu);
-					iMenu++;
-				}
-
-				//drawMenuMessage(canvas, "流し", iMenu);
-
-				if (m_playerAction.getMenuSelect() == 0) {
-					//canvas.drawBitmap(mMenuSelectImage, MENU1_AREA_LEFT, MENU_AREA_TOP, null);
+				if (!m_playerAction.isDispMenu()) {
+					drawMessage(a_canvas, "メニュー");
+					//drawMessage(canvas, getResources().getString(R.string.action_button));
 				} else {
-					//canvas.drawBitmap(mMenuSelectImage, MENU2_AREA_LEFT, MENU_AREA_TOP, null);
+					int iMenu = 0;
+
+					if (m_playerAction.isValidReach()) {
+						drawMenuMessage(a_canvas, "立直", iMenu);
+						iMenu++;
+					}
+
+					if (m_playerAction.isValidRon()) {
+						drawMenuMessage(a_canvas, "ロン", iMenu);
+						iMenu++;
+					}
+
+					if (m_playerAction.isValidTsumo()) {
+						drawMenuMessage(a_canvas, "ツモ", iMenu);
+						iMenu++;
+					}
+
+					if (m_playerAction.isValidPon()) {
+						drawMenuMessage(a_canvas, "ポン", iMenu);
+						iMenu++;
+					}
+
+					m_isValidChiiLeft = m_playerAction.isValidChiiLeft();
+					m_isValidChiiCenter = m_playerAction.isValidChiiCenter();
+					m_isValidChiiRight = m_playerAction.isValidChiiRight();
+
+					/*
+					if (isValidChiiLeft) {
+						drawMenuMessage(a_canvas, "チーL", iMenu);
+						iMenu++;
+					}
+					if (isValidChiiCenter) {
+						drawMenuMessage(a_canvas, "チーC", iMenu);
+						iMenu++;
+					}
+					if (isValidChiiRight) {
+						drawMenuMessage(a_canvas, "チーR", iMenu);
+						iMenu++;
+					}
+					*/
+					if (m_isValidChiiLeft || m_isValidChiiCenter || m_isValidChiiRight) {
+						drawMenuMessage(a_canvas, "チー", iMenu);
+						iMenu++;
+					}
+
+					if (m_playerAction.isValidKan()) {
+						drawMenuMessage(a_canvas, "カン", iMenu);
+						iMenu++;
+					}
 				}
 			}
 
@@ -866,20 +867,32 @@ public class AndjongView extends View implements EventIf {
 		boolean actionRequest = m_playerAction.isActionRequest();
 		if (actionRequest) {
 			if (action == MotionEvent.ACTION_DOWN) {
-				int iMenu = 5;
-				for (int i = 0; i < m_menuRect.length; i++) {
-					if (x >= m_menuRect[i].left && x <= m_menuRect[i].right) {
-						if (y >= m_menuRect[i].top && y <= m_menuRect[i].bottom) {
-							iMenu = i;
-							break;
+				if (!m_playerAction.isDispMenu()) {
+					if ((MESSAGE_AREA_TOP <= y) && (y <= MESSAGE_AREA_BOTTOM)) {
+						if ((MESSAGE_AREA_LEFT <= x) && (x <= MESSAGE_AREA_RIGHT)) {
+							m_playerAction.setDispMenu(true);
+							invalidate();
+							return true;
 						}
 					}
+				} else {
+					m_playerAction.setDispMenu(false);
+					int iMenu = 5;
+					for (int i = 0; i < m_menuRect.length; i++) {
+						if (x >= m_menuRect[i].left && x <= m_menuRect[i].right) {
+							if (y >= m_menuRect[i].top && y <= m_menuRect[i].bottom) {
+								iMenu = i;
+								break;
+							}
+						}
+					}
+					Log.d(TAG, "actionRequest actionNotifyAll");
+					m_playerAction.setMenuSelect(iMenu);
+					m_playerAction.actionNotifyAll();
+
+					return true;
 				}
-				Log.d(TAG, "actionRequest actionNotifyAll");
-				m_playerAction.setMenuSelect(iMenu);
-				m_playerAction.actionNotifyAll();
 			}
-			return true;
 		}
 
 
@@ -1003,27 +1016,32 @@ public class AndjongView extends View implements EventIf {
 		boolean actionRequest = m_playerAction.isActionRequest();
 		int menuSelect = m_playerAction.getMenuSelect();
 		if (actionRequest) {
-			switch (keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT:
-				menuSelect--;
-				menuSelect %= 2;
-				m_playerAction.setMenuSelect(menuSelect);
-				break;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				menuSelect++;
-				menuSelect %= 2;
-				m_playerAction.setMenuSelect(menuSelect);
-				break;
-			case KeyEvent.KEYCODE_ENTER:
-			case KeyEvent.KEYCODE_DPAD_CENTER:
-				Log.d(TAG, "KEYCODE_DPAD_CENTER actionNotifyAll");
-				m_playerAction.actionNotifyAll();
-				break;
-			default:
-				return super.onKeyDown(keyCode, event);
+			if (!m_playerAction.isDispMenu()) {
+				//m_playerAction.setDispMenu(true);
+			} else {
+				switch (keyCode) {
+				case KeyEvent.KEYCODE_DPAD_LEFT:
+					menuSelect--;
+					menuSelect %= 2;
+					m_playerAction.setMenuSelect(menuSelect);
+					break;
+				case KeyEvent.KEYCODE_DPAD_RIGHT:
+					menuSelect++;
+					menuSelect %= 2;
+					m_playerAction.setMenuSelect(menuSelect);
+					break;
+				case KeyEvent.KEYCODE_ENTER:
+				case KeyEvent.KEYCODE_DPAD_CENTER:
+					Log.d(TAG, "KEYCODE_DPAD_CENTER actionNotifyAll");
+					m_playerAction.actionNotifyAll();
+					break;
+				default:
+					return super.onKeyDown(keyCode, event);
+				}
+
+				invalidate();
+				return true;
 			}
-			invalidate();
-			return true;
 		}
 
 		if (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT) {
@@ -1410,6 +1428,8 @@ public class AndjongView extends View implements EventIf {
 
 			// アクションを待つ。
 			m_playerAction.actionWait();
+		case UI_INPUT_PLAYER_ACTION:
+			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		default:
 			break;

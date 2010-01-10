@@ -1,6 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
+import jp.sourceforge.andjong.mahjong.EventIf.EventId;
 
 /**
  * プレイヤーに提供する情報を管理するクラスです。
@@ -253,7 +254,7 @@ public class Info {
 		return index;
 	}
 
-	public void postInvalidate() {
-		game.postInvalidate();
+	public void postUiEvent(EventId a_eventId, int a_kazeFrom, int a_kazeTo) {
+		game.postUiEvent(a_eventId, a_kazeFrom, a_kazeTo);
 	}
 }

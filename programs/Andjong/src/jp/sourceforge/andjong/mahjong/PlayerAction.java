@@ -9,6 +9,7 @@ public class PlayerAction {
 	public static final int STATE_TSUMO_SELECT= 3;
 	public static final int STATE_ACTION_WAIT = 4;
 	public static final int STATE_CHII_SELECT = 5;
+	public static final int STATE_KAN_SELECT = 6;
 
 	EventId m_chiiEventId;
 
@@ -67,6 +68,8 @@ public class PlayerAction {
 		m_validChiiRight = false;
 
 		m_validKan = false;
+		m_kanNum = 0;
+		m_kanSelect = 0;
 		m_dispMenu = false;
 
 		setMenuSelect(5);
@@ -249,9 +252,29 @@ public class PlayerAction {
 	}
 
 	private boolean m_validKan;
+	private Hai[] m_kanHais = new Hai[3];
+	private int m_kanNum = 0;
+	private int m_kanSelect = 0;
 
-	public synchronized void setValidKan(boolean a_validKan) {
+	public synchronized void setValidKan(boolean a_validKan, Hai[] a_kanHais, int kanNum) {
 		this.m_validKan = a_validKan;
+		this.m_kanHais = a_kanHais;
+	}
+
+	public synchronized Hai[] getKanHais() {
+		return m_kanHais;
+	}
+
+	public synchronized int getKanNum() {
+		return m_kanNum;
+	}
+
+	public synchronized void setKanSelect(int a_kanSelect) {
+		this.m_kanSelect = a_kanSelect;
+	}
+
+	public synchronized int getKanSelect() {
+		return m_kanSelect;
 	}
 
 	public synchronized boolean isValidKan() {

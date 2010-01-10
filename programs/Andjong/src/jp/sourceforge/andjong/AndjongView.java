@@ -876,7 +876,6 @@ public class AndjongView extends View implements EventIf {
 						}
 					}
 				} else {
-					m_playerAction.setDispMenu(false);
 					int iMenu = 5;
 					for (int i = 0; i < m_menuRect.length; i++) {
 						if (x >= m_menuRect[i].left && x <= m_menuRect[i].right) {
@@ -885,6 +884,9 @@ public class AndjongView extends View implements EventIf {
 								break;
 							}
 						}
+					}
+					if (iMenu == 5) {
+						m_playerAction.setDispMenu(false);
 					}
 					Log.d(TAG, "actionRequest actionNotifyAll");
 					m_playerAction.setMenuSelect(iMenu);
@@ -1044,7 +1046,32 @@ public class AndjongView extends View implements EventIf {
 			}
 		}
 
-		if (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT) {
+		int state = m_playerAction.getState();
+		if (state == PlayerAction.STATE_KAN_SELECT) {
+			int kanNum = m_playerAction.getKanNum();
+			int kanSelect = m_playerAction.getKanSelect();
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				kanSelect--;
+				if (kanSelect < 0) {
+					kanSelect = kanNum - 1;
+				}
+				m_playerAction.setKanSelect(kanSelect);
+				invalidate();
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				kanSelect++;
+				if (kanSelect >= kanNum) {
+					kanSelect = 0;
+				}
+				m_playerAction.setKanSelect(kanSelect);
+				invalidate();
+				break;
+			default:
+				//return super.onKeyDown(keyCode, event);
+			}
+		}
+		if (state == PlayerAction.STATE_CHII_SELECT) {
 			boolean isValidChiiLeft = m_isValidChiiLeft;
 			boolean isValidChiiCenter = m_isValidChiiCenter;
 			boolean isValidChiiRight = m_isValidChiiRight;
@@ -1118,7 +1145,7 @@ public class AndjongView extends View implements EventIf {
 		Log.e(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
 		jyunTehaiLength--;
 
-		int state = m_playerAction.getState();
+		//int state = m_playerAction.getState();
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_UP:
 			if (state != PlayerAction.STATE_SUTEHAI_SELECT) {
@@ -1361,6 +1388,9 @@ public class AndjongView extends View implements EventIf {
 		case CHII_LEFT:
 		case CHII_CENTER:
 		case CHII_RIGHT:
+		case KAN:
+		case ANKAN:
+		case DAIMINKAN:
 			// é©ï™ÇÃéÃîvÇÃÇ›Çï\é¶ÇµÇ‹Ç∑ÅB
 			if (a_kazeFrom == m_infoUi.getJikaze()) {
 				{

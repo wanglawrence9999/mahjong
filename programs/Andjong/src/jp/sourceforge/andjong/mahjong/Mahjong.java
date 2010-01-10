@@ -490,7 +490,8 @@ public class Mahjong implements Runnable {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
+			int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
+			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
@@ -553,11 +554,15 @@ public class Mahjong implements Runnable {
 		m_view.event(EventId.UI_WAIT_PROGRESS, m_kazeFrom, m_kazeFrom);
 
 		int sutehaiIdx;
+		Hai[] kanHais;
 
 		// イベントを処理する。
 		switch (retEid) {
 		case ANKAN:
-			activePlayer.getTehai().setAnKan(m_tsumoHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
+			activePlayer.getTehai().addJyunTehai(m_tsumoHai);
+			sutehaiIdx = activePlayer.getEventIf().getISutehai();
+			kanHais = m_playerAction.getKanHais();
+			activePlayer.getTehai().setAnKan(kanHais[sutehaiIdx], getRelation(this.m_kazeFrom, this.m_kazeTo));
 
 			// イベントを通知する。
 			retEid = notifyEvent(EventId.ANKAN, m_kazeFrom, m_kazeFrom);

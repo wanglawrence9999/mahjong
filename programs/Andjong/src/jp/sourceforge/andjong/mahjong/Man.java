@@ -38,6 +38,8 @@ public class Man implements EventIf {
 		EventId eventId[] = new EventId[4];
 		int jyunTehaiLength;
 
+		Hai[] kanHais = new Hai[3];
+		int kanNum = 0;
 		Hai[] sarashiHaiLeft = new Hai[2];
 		Hai[] sarashiHaiCenter = new Hai[2];
 		Hai[] sarashiHaiRight = new Hai[2];
@@ -72,11 +74,12 @@ public class Man implements EventIf {
 				menuNum++;
 			}
 
-//			if (m_tehai.validKan(tsumoHai)) {
-//				m_playerAction.setValidKan(true);
-//				eventId[menuNum] = EventId.ANKAN;
-//				menuNum++;
-//			}
+			kanNum = m_tehai.validKan(tsumoHai, kanHais);
+			if (kanNum > 0) {
+				m_playerAction.setValidKan(true, kanHais, kanNum);
+				eventId[menuNum] = EventId.ANKAN;
+				menuNum++;
+			}
 
 //			if (menuNum > 0) {
 //				m_playerAction.setMenuSelect(5);
@@ -134,6 +137,22 @@ public class Man implements EventIf {
 							}
 							m_playerAction.init();
 							this.m_iSutehai = sutehaiIdx;
+						} else if ((eventId[menuSelect] == EventId.ANKAN) ||
+								(eventId[menuSelect] == EventId.KAN)) {
+							if (kanNum > 1) {
+								while (true) {
+									m_playerAction.init();
+									// ì¸óÕÇë“Ç¬ÅB
+									m_playerAction.setChiiEventId(eventId[iChii]);
+									m_playerAction.setState(PlayerAction.STATE_KAN_SELECT);
+									m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
+									m_playerAction.actionWait();
+									int kanSelect = m_playerAction.getKanSelect();
+									m_playerAction.init();
+									this.m_iSutehai = kanSelect;
+									return eventId[menuSelect];
+								}
+							}
 						}
 						return eventId[menuSelect];
 					}

@@ -773,6 +773,43 @@ public class AndjongView extends View implements EventIf {
 					}
 				}
 			}
+		} else if (isPlayer && (m_playerAction.getState() == PlayerAction.STATE_KAN_SELECT)) {
+			Hai[] kanHais = m_playerAction.getKanHais();
+			int kanNum = m_playerAction.getKanNum();
+			int kanSelect = m_playerAction.getKanSelect();
+
+			for (int i = 0; i < jyunTehaiLength; i++) {
+				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
+					if (i == m_drawItem.getSkipIdx()) {
+						continue;
+					}
+				}
+				if (jyunTehai[i].getId() == kanHais[kanSelect].getId()) {
+					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+				} else {
+					if (isDisp) {
+						canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
+					} else {
+						canvas.drawBitmap(mHaiHideImage, left + (width * i), top, null);
+					}
+				}
+			}
+
+			if (a_addHai != null) {
+				if ((a_addHai.getId() == kanHais[kanSelect].getId()) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
+					if (isDisp) {
+						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
+					} else {
+						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
+					}
+				} else {
+					if (isDisp) {
+						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+					} else {
+						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
+					}
+				}
+			}
 		} else {
 			for (int i = 0; i < jyunTehaiLength; i++) {
 				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
@@ -929,6 +966,27 @@ public class AndjongView extends View implements EventIf {
 			}
 		}
 
+
+		if (m_playerAction.getState() == PlayerAction.STATE_KAN_SELECT) {
+			int kanNum = m_playerAction.getKanNum();
+			int kanSelect = m_playerAction.getKanSelect();
+			if (action == MotionEvent.ACTION_DOWN) {
+				int ty = (int) event.getY();
+				if ((TOUCH_TOP <= ty) && (ty <= TOUCH_BOTTOM)) {
+					kanSelect++;
+					if (kanSelect >= kanNum) {
+						kanSelect = 0;
+					}
+					m_playerAction.setKanSelect(kanSelect);
+					invalidate();
+				} else {
+					Log.d(TAG, "chii actionNotifyAll");
+					m_playerAction.actionNotifyAll();
+				}
+			}
+
+			return true;
+		}
 
 		if (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT) {
 			boolean isValidChiiLeft = m_isValidChiiLeft;
@@ -1102,6 +1160,7 @@ public class AndjongView extends View implements EventIf {
 			default:
 				//return super.onKeyDown(keyCode, event);
 			}
+			Log.e("KAN", "select = " + kanSelect);
 		}
 		if (state == PlayerAction.STATE_CHII_SELECT) {
 			boolean isValidChiiLeft = m_isValidChiiLeft;

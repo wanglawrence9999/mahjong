@@ -143,7 +143,8 @@ public class Man implements EventIf {
 								while (true) {
 									m_playerAction.init();
 									// ì¸óÕÇë“Ç¬ÅB
-									m_playerAction.setChiiEventId(eventId[iChii]);
+									m_playerAction.setValidKan(false, kanHais, kanNum);
+									//m_playerAction.setChiiEventId(eventId[iChii]);
 									m_playerAction.setState(PlayerAction.STATE_KAN_SELECT);
 									m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
 									m_playerAction.actionWait();

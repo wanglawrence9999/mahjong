@@ -257,9 +257,10 @@ public class PlayerAction {
 	private int m_kanNum = 0;
 	private int m_kanSelect = 0;
 
-	public synchronized void setValidKan(boolean a_validKan, Hai[] a_kanHais, int kanNum) {
+	public synchronized void setValidKan(boolean a_validKan, Hai[] a_kanHais, int a_kanNum) {
 		this.m_validKan = a_validKan;
 		this.m_kanHais = a_kanHais;
+		this.m_kanNum = a_kanNum;
 	}
 
 	public synchronized Hai[] getKanHais() {

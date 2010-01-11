@@ -406,6 +406,9 @@ public class AndjongView extends View implements EventIf {
 				string += agariInfo.m_han + "翻 " + agariInfo.m_fu + "符 " + agariInfo.m_score + "点";
 				drawString(left, top + 20, a_canvas, 20, Color.WHITE, string, Align.LEFT);
 				return;
+			case STATE_END:
+				drawMessage(a_canvas, "終了");
+				break;
 			}
 
 			// アクションボタンを表示する。
@@ -1098,6 +1101,9 @@ public class AndjongView extends View implements EventIf {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
+		if (m_drawItem.m_state == STATE_END) {
+			return super.onKeyDown(keyCode, event);
+		}
 
 		if (m_drawItem.m_kazeFrom >= 4) {
 			Log.d(TAG, "Error kazeFrom actionNotifyAll");
@@ -1361,7 +1367,8 @@ public class AndjongView extends View implements EventIf {
 			}
 			break;
 		case END_GAME:
-			m_drawItem.setState(STATE_NONE);
+			m_drawItem.setState(STATE_END);
+			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case START_KYOKU:// サイ振り
 			// サイ振りを局の開始と考える。

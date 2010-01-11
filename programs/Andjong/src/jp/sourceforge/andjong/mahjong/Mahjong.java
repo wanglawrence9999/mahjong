@@ -257,7 +257,8 @@ public class Mahjong implements Runnable {
 		m_kyoku = KYOKU_TON_1;
 
 		// 局の終了を設定する。
-		m_kyokuEnd = KYOKU_TON_4;
+		//m_kyokuEnd = KYOKU_TON_4;
+		m_kyokuEnd = KYOKU_TON_1;
 
 		// ツモ牌を作成する。
 		m_tsumoHai = new Hai();

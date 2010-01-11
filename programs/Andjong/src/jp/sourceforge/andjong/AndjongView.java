@@ -460,7 +460,7 @@ public class AndjongView extends View implements EventIf {
 						iMenu++;
 					}
 
-					if (m_playerAction.isValidKan()) {
+					if (m_playerAction.isValidKan() || m_playerAction.isValidDaiMinKan()) {
 						drawMenuMessage(a_canvas, "ƒJƒ“", iMenu);
 						iMenu++;
 					}
@@ -833,6 +833,9 @@ public class AndjongView extends View implements EventIf {
 						canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
 							canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top - 15, null);
+						} else if (type == Fuuro.TYPE_DAIMINKAN) {
+							fuuroLeft -= mHaiImageWidth;
+							canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
 						}
 						fuuroLeft -= mHaiImageWidth;
 						canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
@@ -841,6 +844,10 @@ public class AndjongView extends View implements EventIf {
 					} else if (relation == Mahjong.RELATION_TOIMEN) {
 						fuuroLeft -= mHaiImageWidth;
 						canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
+						if (type == Fuuro.TYPE_DAIMINKAN) {
+							fuuroLeft -= mHaiImageWidth;
+							canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
+						}
 						fuuroLeft -= mHaiImageHeight;
 						canvas.drawBitmap(mHaiHorizontalImage[hais[1].getId()], fuuroLeft, top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
@@ -853,6 +860,10 @@ public class AndjongView extends View implements EventIf {
 						canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
 						fuuroLeft -= mHaiImageWidth;
 						canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
+						if (type == Fuuro.TYPE_DAIMINKAN) {
+							fuuroLeft -= mHaiImageWidth;
+							canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
+						}
 						fuuroLeft -= mHaiImageHeight;
 						canvas.drawBitmap(mHaiHorizontalImage[hais[0].getId()], fuuroLeft, top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {

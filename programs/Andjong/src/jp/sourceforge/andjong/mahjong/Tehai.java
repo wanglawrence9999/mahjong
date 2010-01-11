@@ -592,6 +592,24 @@ public class Tehai {
 		return kanCount;
 	}
 
+	public boolean validDaiMinKan(Hai a_suteHai) {
+		if (m_fuuroNums >= FUURO_MAX) {
+			return false;
+		}
+
+		int id = a_suteHai.getId();
+		for (int i = 0, count = 0; i < m_jyunTehaiLength; i++) {
+			if (id == m_jyunTehai[i].getId()) {
+				count++;
+				if (count >= MENTSU_LENGTH_4) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * ‘å–¾È‚ğİ’è‚·‚éB
 	 *
@@ -602,11 +620,6 @@ public class Tehai {
 	 * @return Œ‹‰Ê
 	 */
 	public boolean setDaiMinKan(Hai a_suteHai, int a_relation) {
-		Hai[] kanHais = new Hai[3];
-		if (validKan(a_suteHai, kanHais) == 0) {
-			return false;
-		}
-
 		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
 
 		int iHais = 0;
@@ -628,9 +641,7 @@ public class Tehai {
 			}
 		}
 
-		hais[iHais] = new Hai();
-
-		m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_MINKOU);
+		m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_DAIMINKAN);
 		m_fuuros[m_fuuroNums].setRelation(a_relation);
 		m_fuuros[m_fuuroNums].setHais(hais);
 		m_fuuroNums++;

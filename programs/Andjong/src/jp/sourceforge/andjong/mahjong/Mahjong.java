@@ -763,6 +763,26 @@ public class Mahjong implements Runnable {
 				// イベントを通知する。
 				retEid = notifyEvent(EventId.CHII_RIGHT, this.m_kazeFrom, this.m_kazeTo);
 				break;
+			case DAIMINKAN:
+				// アクティブプレイヤーを設定する。
+				this.m_kazeFrom = j;
+				this.m_kazeTo = fromKaze;
+				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
+				activePlayer.getTehai().setDaiMinKan(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
+				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
+
+				// イベントを通知する。
+				retEid = notifyEvent(EventId.DAIMINKAN, this.m_kazeFrom, this.m_kazeTo);
+
+				// UIイベント（進行待ち）を発行する。
+				m_view.event(EventId.UI_WAIT_PROGRESS, KAZE_NONE, KAZE_NONE);
+
+				// ツモ牌を取得する。
+				m_tsumoHai = m_yama.rinshanTsumo();
+
+				// イベント（ツモ）を発行する。
+				retEid = tsumoEvent();
+				break;
 			default:
 				break;
 			}

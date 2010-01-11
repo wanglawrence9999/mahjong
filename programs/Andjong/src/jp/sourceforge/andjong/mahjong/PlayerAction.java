@@ -71,6 +71,7 @@ public class PlayerAction {
 		m_kanNum = 0;
 		m_kanSelect = 0;
 		m_dispMenu = false;
+		m_validDaiMinKan = false;
 
 		setMenuSelect(5);
 	}
@@ -127,7 +128,7 @@ public class PlayerAction {
 	 */
 	public synchronized boolean isActionRequest() {
 		return mValidRon | mValidTsumo | mValidPon | m_validReach
-				| m_validChiiLeft | m_validChiiCenter | m_validChiiRight | m_validKan;
+				| m_validChiiLeft | m_validChiiCenter | m_validChiiRight | m_validKan | m_validDaiMinKan;
 	}
 
 	/**
@@ -267,6 +268,16 @@ public class PlayerAction {
 
 	public synchronized int getKanNum() {
 		return m_kanNum;
+	}
+
+	private boolean m_validDaiMinKan;
+
+	public synchronized void setValidDaiMinKan(boolean a_validDaiMinKan) {
+		this.m_validDaiMinKan = a_validDaiMinKan;
+	}
+
+	public synchronized boolean isValidDaiMinKan() {
+		return m_validDaiMinKan;
 	}
 
 	public synchronized void setKanSelect(int a_kanSelect) {

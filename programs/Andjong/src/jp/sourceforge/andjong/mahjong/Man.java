@@ -242,6 +242,12 @@ public class Man implements EventIf {
 				}
 			}
 
+			if (m_tehai.validDaiMinKan(suteHai)) {
+				m_playerAction.setValidDaiMinKan(true);
+				eventId[menuNum] = EventId.DAIMINKAN;
+				menuNum++;
+			}
+
 			if (menuNum > 0) {
 				m_playerAction.setMenuSelect(5);
 				m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);

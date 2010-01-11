@@ -730,7 +730,7 @@ public class AndjongView extends View implements EventIf {
 		}
 	}
 
-	private static final int FUURO_LEFT = 296;
+	private static final int FUURO_LEFT = 320 - 2;
 
 	private void drawTehai(int left, int top, Canvas canvas, Tehai tehai, Hai a_addHai, int kaze, int select, boolean isPlayer) {
 		top += 15;
@@ -814,30 +814,51 @@ public class AndjongView extends View implements EventIf {
 			Fuuro[] fuuros = tehai.getFuuros();
 			for (int i = 0; i < fuuroNums; i++) {
 				Hai hais[] = fuuros[i].getHais();
-				//int type = fuuros[i].getType();
-				int relation = fuuros[i].getRelation();
+				int type = fuuros[i].getType();
 
-				if (relation == Mahjong.RELATION_KAMICHA) {
-					fuuroLeft -= mHaiImageHeight;
-					canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top + 4, null);
+				if (type == Fuuro.TYPE_ANKAN) {
+					fuuroLeft -= mHaiImageWidth;
+					canvas.drawBitmap(mHaiUraImage, fuuroLeft, top, null);
+					fuuroLeft -= mHaiImageWidth;
+					canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
 					fuuroLeft -= mHaiImageWidth;
 					canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
 					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
-				} else if (relation == Mahjong.RELATION_TOIMEN) {
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
-					fuuroLeft -= mHaiImageHeight;
-					canvas.drawBitmap(mHaiHorizontalImage[hais[1].getId()], fuuroLeft, top + 4, null);
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
+					canvas.drawBitmap(mHaiUraImage, fuuroLeft, top, null);
 				} else {
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
-					fuuroLeft -= mHaiImageHeight;
-					canvas.drawBitmap(mHaiHorizontalImage[hais[0].getId()], fuuroLeft, top + 4, null);
+					int relation = fuuros[i].getRelation();
+
+					if (relation == Mahjong.RELATION_KAMICHA) {
+						fuuroLeft -= mHaiImageHeight;
+						canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top + 4, null);
+						if (type == Fuuro.TYPE_KAKAN) {
+							canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top - 15, null);
+						}
+						fuuroLeft -= mHaiImageWidth;
+						canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
+						fuuroLeft -= mHaiImageWidth;
+						canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
+					} else if (relation == Mahjong.RELATION_TOIMEN) {
+						fuuroLeft -= mHaiImageWidth;
+						canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
+						fuuroLeft -= mHaiImageHeight;
+						canvas.drawBitmap(mHaiHorizontalImage[hais[1].getId()], fuuroLeft, top + 4, null);
+						if (type == Fuuro.TYPE_KAKAN) {
+							canvas.drawBitmap(mHaiHorizontalImage[hais[1].getId()], fuuroLeft, top - 15, null);
+						}
+						fuuroLeft -= mHaiImageWidth;
+						canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
+					} else {
+						fuuroLeft -= mHaiImageWidth;
+						canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
+						fuuroLeft -= mHaiImageWidth;
+						canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
+						fuuroLeft -= mHaiImageHeight;
+						canvas.drawBitmap(mHaiHorizontalImage[hais[0].getId()], fuuroLeft, top + 4, null);
+						if (type == Fuuro.TYPE_KAKAN) {
+							canvas.drawBitmap(mHaiHorizontalImage[hais[0].getId()], fuuroLeft, top - 15, null);
+						}
+					}
 				}
 			}
 		}

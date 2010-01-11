@@ -38,7 +38,7 @@ public class Man implements EventIf {
 		EventId eventId[] = new EventId[4];
 		int jyunTehaiLength;
 
-		Hai[] kanHais = new Hai[3];
+		Hai[] kanHais = new Hai[4];
 		int kanNum = 0;
 		Hai[] sarashiHaiLeft = new Hai[2];
 		Hai[] sarashiHaiCenter = new Hai[2];

@@ -558,9 +558,23 @@ public class Tehai {
 		}
 
 		int kanCount = 0;
+		int id;
 
 		addJyunTehai(a_addHai);
-		int id = m_jyunTehai[0].getId();
+
+		// 加カンのチェック
+		for (int i = 0; i < m_fuuroNums; i++) {
+			if (m_fuuros[i].getType() == Fuuro.TYPE_MINKOU) {
+				for (int j = 0; j < m_jyunTehaiLength; j++) {
+					if (m_fuuros[i].getHais()[0].getId() == m_jyunTehai[j].getId()) {
+						a_kanHais[kanCount] = new Hai(m_jyunTehai[j]);
+						kanCount++;
+					}
+				}
+			}
+		}
+
+		id = m_jyunTehai[0].getId();
 		for (int i = 1, count = 1; i < m_jyunTehaiLength; i++) {
 			if (id == m_jyunTehai[i].getId()) {
 				count++;
@@ -687,18 +701,28 @@ public class Tehai {
 	 * @return 結果
 	 */
 	public boolean setAnKan(Hai a_tsumoHai, int a_relation) {
-		Hai[] kanHais = new Hai[3];
-		//if (validKan(a_tsumoHai, kanHais) == 0) {
-		//	return false;
-		//}
-
-		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
-
-		int iHais = 0;
-		//hais[iHais] = new Hai(a_tsumoHai);
-		//iHais++;
+		Hai fuuroHais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
 
 		int id = a_tsumoHai.getId();
+		for (int i = 0; i < m_fuuroNums; i++) {
+			if (m_fuuros[i].getType() == Fuuro.TYPE_MINKOU) {
+				fuuroHais = m_fuuros[i].getHais();
+				if (id == fuuroHais[0].getId()) {
+					Hai.copy(fuuroHais[3], a_tsumoHai);
+					rmJyunTehai(a_tsumoHai);
+					m_fuuros[i].setType(Fuuro.TYPE_KAKAN);
+					m_fuuros[i].setHais(fuuroHais);
+					//m_fuuroNums++;
+
+					return true;
+				}
+			}
+		}
+
+		int iHais = 0;
+		Hai hais[] = new Hai[Mahjong.MENTSU_HAI_MEMBERS_4];
+
+		//id = a_tsumoHai.getId();
 		for (int i = 0; i < m_jyunTehaiLength; i++) {
 			if (id == m_jyunTehai[i].getId()) {
 				hais[iHais] = new Hai(m_jyunTehai[i]);
@@ -712,8 +736,6 @@ public class Tehai {
 				}
 			}
 		}
-
-		//hais[iHais] = new Hai();
 
 		m_fuuros[m_fuuroNums].setType(Fuuro.TYPE_ANKAN);
 		m_fuuros[m_fuuroNums].setRelation(a_relation);

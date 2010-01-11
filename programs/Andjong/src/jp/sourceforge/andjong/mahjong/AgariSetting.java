@@ -42,7 +42,7 @@ public class AgariSetting {
 	/** 自風 */
 	private int jikaze = KAZE_NONE;
 	/** 場風の設定 */
-	private int bakaze = KAZE_NONE;
+	private int bakaze = KAZE_TON;
 	/** 表ドラ表示牌 */
 	Hai doraHais[] = new Hai[4];
 	/** 裏ドラ */

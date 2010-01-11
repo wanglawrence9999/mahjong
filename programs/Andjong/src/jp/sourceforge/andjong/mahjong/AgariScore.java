@@ -11,6 +11,35 @@ public class AgariScore {
 		public String[] m_yakuNames;
 	}
 
+	public static class Score {
+		public int m_oyaRon;
+		public int m_oyaTsumo;
+		public int m_koRon;
+		public int m_koTsumo;
+
+		public Score(int a_oyaRon, int a_oyaTsumo, int a_koRon, int a_koTsumo) {
+			this.m_oyaRon = a_oyaRon;
+			this.m_oyaTsumo = a_oyaTsumo;
+			this.m_koRon = a_koRon;
+			this.m_koTsumo = a_koTsumo;
+		}
+	}
+
+	Score[][] m_score = {
+			{new Score(    0,    0,    0,    0),new Score(    0,    0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score( 2000,  700, 1300,  400),new Score( 2400,    0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score( 3900, 1300, 2600,  700),new Score( 4800, 1600,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score( 7700, 2600, 5200, 1300),new Score( 9600, 3200,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score(12000, 4000, 8000, 2000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score(18000, 6000,12000, 3000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score(24000, 8000,16000, 4000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score(36000,12000,24000, 6000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
+			{new Score(48000,16000,32000, 8000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)}};
+
 	/** カウントフォーマット */
 	private CountFormat countFormat = new CountFormat();
 
@@ -41,12 +70,12 @@ public class AgariScore {
 		}
 
 		// 場風なら２符追加
-		if (atamaHai.getId() == setting.getBakaze()){
+		if ((atamaHai.getId() - ID_TON) == setting.getBakaze()){
 			countHu += 2;
 		}
 
 		// 自風なら２符追加
-		if (atamaHai.getId() == setting.getJikaze()){
+		if ((atamaHai.getId() - ID_TON) == setting.getJikaze()){
 			countHu += 2;
 		}
 
@@ -172,6 +201,10 @@ public class AgariScore {
 	 * @return int 和了り点
 	 */
 	public int getScore(int hanSuu, int huSuu) {
+		if (hanSuu == 0) {
+			return 0;
+		}
+
 		int score;
 		// 符　× ２の　（翻数　+　場ゾロの2翻)乗
 		score = huSuu * (int) Math.pow(2, hanSuu + 2);
@@ -183,9 +216,9 @@ public class AgariScore {
 			score = score - (score % 100) + 100;
 		}
 		// 7700以上は8000とする
-		if (score >= 7700) {
-			score = 8000;
-		}
+//		if (score >= 7700) {
+//			score = 8000;
+//		}
 
 		if (hanSuu >= 13) { // 13翻以上は役満
 			score = 32000;

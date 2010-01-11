@@ -257,8 +257,7 @@ public class Mahjong implements Runnable {
 		m_kyoku = KYOKU_TON_1;
 
 		// 局の終了を設定する。
-		//m_kyokuEnd = KYOKU_TON_4;
-		m_kyokuEnd = KYOKU_TON_1;
+		m_kyokuEnd = KYOKU_TON_4;
 
 		// ツモ牌を作成する。
 		m_tsumoHai = new Hai();
@@ -533,8 +532,8 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		if (true) {
-		//if (false) {
+		//if (true) {
+		if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
@@ -964,23 +963,19 @@ public class Mahjong implements Runnable {
 
 	public int getAgariScore(Tehai tehai, Hai addHai) {
 		AgariSetting setting = new AgariSetting(this);
-		setting.setDoraHais(m_infoUi.getDoraHais());
 		if (activePlayer.isReach()) {
 			setting.setYakuflg(YakuflgName.REACH.ordinal(), true);
-			setting.setBakaze(KAZE_TON);
-			setting.setJikaze(activePlayer.getJikaze());
-			setting.setDoraHais(m_infoUi.getUraDoraHais());
 		}
 		if (m_isTsumo) {
 			setting.setYakuflg(YakuflgName.TUMO.ordinal(), true);
 		}
 		m_score = new AgariScore();
 		int score = m_score.getAgariScore(tehai, addHai, combis, setting, m_agariInfo);
-		if (m_iOya == m_kazeToPlayerIdx[m_kazeTo]) {
-			score *= 1.5;
-			score = (score / 100) * 100;
-		}
-		m_agariInfo.m_score = score;
+//		if (m_iOya == m_kazeToPlayerIdx[m_kazeTo]) {
+//			score *= 1.5;
+//			score = (score / 100) * 100;
+//		}
+//		m_agariInfo.m_score = score;
 		return score;
 	}
 

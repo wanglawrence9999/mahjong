@@ -222,9 +222,10 @@ public class CountFormat {
 	 * @return
 	 */
 	public int getCombis(Combi[] a_combis) {
+//	public int getCombis(Combi[] a_combis) {
 		m_combiManage.initialize(getTotalCountLength());
 		searchCombi(0);
-		a_combis = m_combiManage.m_combis;
+		//a_combis = m_combiManage.m_combis;
 		return m_combiManage.m_combiNum;
 	}
 

@@ -1,5 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 
+import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
+
 /**
  * プレイヤーを管理するクラスです。
  *
@@ -20,7 +22,7 @@ class Player {
 	}
 
 	/** 手牌 */
-	private Tehai tehai = new Tehai();
+	private Tehai m_tehai = new Tehai();
 
 	/**
 	 * 手牌を取得します。
@@ -28,7 +30,7 @@ class Player {
 	 * @return 手牌
 	 */
 	Tehai getTehai() {
-		return tehai;
+		return m_tehai;
 	}
 
 	/** 河 */
@@ -129,6 +131,26 @@ class Player {
 		this.reach = reach;
 	}
 
+
+	private CountFormat m_countFormat = new CountFormat();
+
+	boolean isTenpai() {
+		if (reach) {
+			return true;
+		}
+
+		Hai addHai;
+		for (int id = 0; id < Hai.ID_ITEM_MAX; id++) {
+			addHai = new Hai(id);
+			m_countFormat.setCountFormat(m_tehai, addHai);
+			if (m_countFormat.getCombis(null) > 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * プレイヤーを初期化する。
 	 *
@@ -144,7 +166,7 @@ class Player {
 	 */
 	void init() {
 		// 手牌を初期化します。
-		tehai.initialize();
+		m_tehai.initialize();
 
 		// 河を初期化します。
 		kawa.initialize();

@@ -182,6 +182,7 @@ public class DrawItem {
 		Hai m_tsumoHai;
 		/** 点棒 */
 		int m_tenbo;
+		boolean m_tenpai;
 	}
 
 	/** プレイヤー情報 */

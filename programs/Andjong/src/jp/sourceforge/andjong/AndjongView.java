@@ -499,13 +499,13 @@ public class AndjongView extends View implements EventIf {
 			Bitmap test2 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[0]].m_tehai, m_drawItem.m_playerInfos[dispKaze[0]].m_kawa, PLACE_PLAYER, dispKaze[0], true, m_drawItem.m_playerInfos[dispKaze[0]].m_tsumoHai);
 			a_canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
 
-			Bitmap test3 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[1]].m_tehai, m_drawItem.m_playerInfos[dispKaze[1]].m_kawa, PLACE_KAMICHA, dispKaze[1], false, m_drawItem.m_playerInfos[dispKaze[1]].m_tsumoHai);
+			Bitmap test3 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[1]].m_tehai, m_drawItem.m_playerInfos[dispKaze[1]].m_kawa, PLACE_KAMICHA, dispKaze[1], m_drawItem.m_playerInfos[dispKaze[1]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[1]].m_tsumoHai);
 			a_canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
 
-			Bitmap test = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[2]].m_tehai, m_drawItem.m_playerInfos[dispKaze[2]].m_kawa, PLACE_TOIMEN, dispKaze[2], false, m_drawItem.m_playerInfos[dispKaze[2]].m_tsumoHai);
+			Bitmap test = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[2]].m_tehai, m_drawItem.m_playerInfos[dispKaze[2]].m_kawa, PLACE_TOIMEN, dispKaze[2], m_drawItem.m_playerInfos[dispKaze[2]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[2]].m_tsumoHai);
 			a_canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
 
-			Bitmap test4 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[3]].m_tehai, m_drawItem.m_playerInfos[dispKaze[3]].m_kawa, PLACE_SHIMOCHA, dispKaze[3], false, m_drawItem.m_playerInfos[dispKaze[3]].m_tsumoHai);
+			Bitmap test4 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[3]].m_tehai, m_drawItem.m_playerInfos[dispKaze[3]].m_kawa, PLACE_SHIMOCHA, dispKaze[3], m_drawItem.m_playerInfos[dispKaze[3]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[3]].m_tsumoHai);
 			a_canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
 		}
 	}
@@ -1335,6 +1335,14 @@ public class AndjongView extends View implements EventIf {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RYUUKYOKU:// 流局
+			boolean tenpai[] = m_infoUi.getTenpai();
+			synchronized (m_drawItem) {
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					m_drawItem.m_playerInfos[i].m_tenpai = tenpai[i];
+					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
+				}
+			}
+
 			// サイ振りを局の開始と考える。
 			m_drawItem.setState(STATE_RYUUKYOKU);
 
@@ -1343,6 +1351,12 @@ public class AndjongView extends View implements EventIf {
 
 			// アクションを待つ。
 			m_playerAction.actionWait();
+
+			synchronized (m_drawItem) {
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					m_drawItem.m_playerInfos[i].m_tenpai = false;
+				}
+			}
 			break;
 		case NAGASHI:// 流し
 			// 何も表示しない。

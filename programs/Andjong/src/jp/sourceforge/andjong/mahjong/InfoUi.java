@@ -50,4 +50,8 @@ public class InfoUi extends Info {
 	public AgariInfo getAgariInfo() {
 		return game.getAgariInfo();
 	}
+
+	public boolean[] getTenpai() {
+		return game.getTenpai();
+	}
 }

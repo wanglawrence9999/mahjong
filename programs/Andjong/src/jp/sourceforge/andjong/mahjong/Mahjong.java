@@ -298,6 +298,12 @@ public class Mahjong implements Runnable {
 		m_view.initUi(m_infoUi, "AndjongView");
 	}
 
+	boolean m_tenpai[] = new boolean[4];
+
+	public boolean[] getTenpai() {
+		return m_tenpai;
+	}
+
 	/**
 	 * 局を開始する。
 	 */
@@ -355,8 +361,49 @@ public class Mahjong implements Runnable {
 
 			// ツモ牌がない場合、流局する。
 			if (m_tsumoHai == null) {
+				// テンパイの確認をする。
+				int tenpaiCount = 0;
+				int iPlayer;
+				for (int i = 0; i < m_tenpai.length; i++) {
+					iPlayer = m_kazeToPlayerIdx[i];
+					m_tenpai[iPlayer] = m_players[iPlayer].isTenpai();
+					if (m_tenpai[iPlayer]) {
+						tenpaiCount++;
+					}
+				}
+				int incScore = 0;
+				int redScore = 0;
+				switch (tenpaiCount) {
+				case 0:
+					break;
+				case 1:
+					incScore = 3000;
+					redScore = 1000;
+					break;
+				case 2:
+					incScore = 1500;
+					redScore = 1500;
+					break;
+				case 3:
+					incScore = 1000;
+					redScore = 3000;
+					break;
+				}
+				for (int i = 0; i < m_tenpai.length; i++) {
+					if (m_tenpai[i]) {
+						m_players[i].increaseTenbou(incScore);
+					} else {
+						m_players[i].reduceTenbou(redScore);
+					}
+				}
+
 				// UIイベント（流局）を発行する。
 				m_view.event(EventId.RYUUKYOKU, KAZE_NONE, KAZE_NONE);
+
+				// フラグを落としておく。
+				for (int i = 0; i < m_tenpai.length; i++) {
+					m_tenpai[i] = false;
+				}
 
 				// 親を更新する。上がり連荘とする。
 				m_iOya++;
@@ -485,8 +532,8 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		if (true) {
-		//if (false) {
+		//if (true) {
+		if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}

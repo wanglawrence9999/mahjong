@@ -1395,6 +1395,7 @@ public class AndjongView extends View implements EventIf {
 					m_drawItem.m_playerInfos[i].m_tsumoHai = null;
 					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
 				}
+				m_drawItem.setReachbou(m_infoUi.getReachbou());
 			}
 
 			// 描画する。
@@ -1519,6 +1520,13 @@ public class AndjongView extends View implements EventIf {
 			}
 			break;
 		case REACH:
+			synchronized (m_drawItem) {
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
+				}
+				m_drawItem.setReachbou(m_infoUi.getReachbou());
+			}
+
 			Log.e(TAG, "REACH fromKaze = " + a_kazeFrom);
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);

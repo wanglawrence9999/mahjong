@@ -696,6 +696,10 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setReach(true);
 			}
 
+			activePlayer.reduceTenbou(1000);
+			activePlayer.setReach(true);
+			m_reachbou++;
+
 			// イベントを通知する。
 			retEid = notifyEvent(EventId.REACH, m_kazeFrom, m_kazeFrom);
 			break;

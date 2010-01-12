@@ -1395,6 +1395,7 @@ public class AndjongView extends View implements EventIf {
 					m_drawItem.m_playerInfos[i].m_tsumoHai = null;
 					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
 				}
+				m_drawItem.setHonba(m_infoUi.getHonba());
 				m_drawItem.setReachbou(m_infoUi.getReachbou());
 			}
 

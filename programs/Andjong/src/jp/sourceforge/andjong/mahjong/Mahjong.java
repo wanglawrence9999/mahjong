@@ -429,25 +429,25 @@ public class Mahjong implements Runnable {
 			case TSUMO_AGARI:// ツモあがり
 				iPlayer = m_kazeToPlayerIdx[m_kazeTo];
 				if (m_iOya == iPlayer) {
-					score = m_agariInfo.m_score.m_oyaRon;
+					score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
 					for (int i = 0; i < 3; i++) {
 						iPlayer = (iPlayer + 1) % 4;
-						m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo);
+						m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo + (m_honba * 100));
 					}
 				} else {
-					score = m_agariInfo.m_score.m_koRon;
+					score = m_agariInfo.m_score.m_koRon + (m_honba * 300);
 					for (int i = 0; i < 3; i++) {
 						iPlayer = (iPlayer + 1) % 4;
 						if (m_iOya == iPlayer) {
-							m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo);
+							m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo + (m_honba * 100));
 						} else {
-							m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_koTsumo);
+							m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_koTsumo + (m_honba * 100));
 						}
 					}
 				}
 
 				activePlayer.increaseTenbou(score);
-				m_agariInfo.m_agariScore = score;
+				m_agariInfo.m_agariScore = score - (m_honba * 300);
 
 				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);
@@ -469,15 +469,15 @@ public class Mahjong implements Runnable {
 				break KYOKU_MAIN;
 			case RON_AGARI:// ロン
 				if (m_iOya == m_kazeToPlayerIdx[m_kazeTo]) {
-					score = m_agariInfo.m_score.m_oyaRon;
+					score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
 				} else {
-					score = m_agariInfo.m_score.m_koRon;
+					score = m_agariInfo.m_score.m_koRon + (m_honba * 300);
 				}
 
 				m_players[m_kazeToPlayerIdx[m_kazeFrom]].increaseTenbou(score);
 				m_players[m_kazeToPlayerIdx[m_kazeTo]].reduceTenbou(score);
 
-				m_agariInfo.m_agariScore = score;
+				m_agariInfo.m_agariScore = score - (m_honba * 300);
 
 				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);

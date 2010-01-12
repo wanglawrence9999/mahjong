@@ -7,8 +7,9 @@ public class AgariScore {
 	public static class AgariInfo {
 		public int m_han;
 		public int m_fu;
-		public int m_score;
 		public String[] m_yakuNames;
+		public Score m_score;
+		public int m_agariScore;
 	}
 
 	public static class Score {
@@ -16,6 +17,13 @@ public class AgariScore {
 		public int m_oyaTsumo;
 		public int m_koRon;
 		public int m_koTsumo;
+
+		public Score(Score a_score) {
+			this.m_oyaRon = a_score.m_oyaRon;
+			this.m_oyaTsumo = a_score.m_oyaTsumo;
+			this.m_koRon = a_score.m_koRon;
+			this.m_koTsumo = a_score.m_koTsumo;
+		}
 
 		public Score(int a_oyaRon, int a_oyaTsumo, int a_koRon, int a_koTsumo) {
 			this.m_oyaRon = a_oyaRon;
@@ -25,20 +33,21 @@ public class AgariScore {
 		}
 	}
 
-	Score[][] m_score = {
-			{new Score(    0,    0,    0,    0),new Score(    0,    0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score( 2000,  700, 1300,  400),new Score( 2400,    0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score( 3900, 1300, 2600,  700),new Score( 4800, 1600,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score( 7700, 2600, 5200, 1300),new Score( 9600, 3200,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score(12000, 4000, 8000, 2000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score(18000, 6000,12000, 3000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score(24000, 8000,16000, 4000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score(36000,12000,24000, 6000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-//			{new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)},
-			{new Score(48000,16000,32000, 8000),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0),new Score(0,0,0,0)}};
+	Score m_scoreWork;
+	final static Score[][] SCORE = {
+			{new Score(    0,    0,    0,    0),new Score(    0,    0,    0,    0),new Score( 1500,  500, 1000,  300),new Score( 2000,  700, 1300,  400),new Score( 2400,  800, 1600,  400),new Score( 2900, 1000, 2000,  500),new Score( 3400, 1200, 2300,  600),new Score( 3900, 1300, 2600,  700),new Score( 4400, 1500, 2900,  800),new Score( 4800, 1600, 3200,  800),new Score( 5300,    0, 3600,    0)},
+			{new Score( 2000,  700, 1300,  400),new Score( 2400,    0, 1600,    0),new Score( 2900, 1000, 2000,  500),new Score( 3900, 1300, 2600,  700),new Score( 4800, 1600, 3200,  800),new Score( 5800, 2000, 3900, 1000),new Score( 6800, 2300, 4500, 1200),new Score( 7700, 2600, 5200, 1300),new Score( 8700, 2900, 5800, 1500),new Score( 9600, 3200, 6400, 1600),new Score(10600, 3600, 7100, 1800)},
+			{new Score( 3900, 1300, 2600,  700),new Score( 4800, 1600, 3200,  800),new Score( 5800, 2000, 3900, 1000),new Score( 7700, 2600, 5200, 1300),new Score( 9600, 3200, 6400, 1600),new Score(11600, 3900, 7700, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000)},
+			{new Score( 7700, 2600, 5200, 1300),new Score( 9600, 3200, 6400, 1600),new Score(11600, 3900, 7700, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000)},
+			{new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000),new Score(12000, 4000, 8000, 2000)},
+			{new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000)},
+			{new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000),new Score(18000, 6000,12000, 3000)},
+			{new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000)},
+			{new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000)},
+			{new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000),new Score(24000, 8000,16000, 4000)},
+			{new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000)},
+			{new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000),new Score(36000,12000,24000, 6000)},
+			{new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000),new Score(48000,16000,32000, 8000)}};
 
 	/** ÉJÉEÉìÉgÉtÉHÅ[É}ÉbÉg */
 	private CountFormat countFormat = new CountFormat();
@@ -205,34 +214,54 @@ public class AgariScore {
 			return 0;
 		}
 
-		int score;
-		// ïÑÅ@Å~ ÇQÇÃÅ@Åiñ|êîÅ@+Å@èÍÉ]ÉçÇÃ2ñ|)èÊ
-		score = huSuu * (int) Math.pow(2, hanSuu + 2);
-		// éqÇÕè„ÇÃ4î{Ç™äÓñ{ì_(êeÇÕ6î{)
-		score *= 4;
-
-		// 100Ç≈äÑÇËêÿÇÍÇ»Ç¢êîÇ™Ç†ÇÈèÍçá100ì_åJè„Ç∞
-		if (score % 100 != 0) {
-			score = score - (score % 100) + 100;
+		int iFu;
+		if (huSuu == 20) {
+			iFu = 0;
+		} else if (huSuu == 25) {
+			iFu = 1;
+		} else {
+			iFu = (huSuu / 10) - 1;
 		}
-		// 7700à»è„ÇÕ8000Ç∆Ç∑ÇÈ
-//		if (score >= 7700) {
+
+		int iHan;
+		if (hanSuu > 13) {
+			iHan = 13 - 1;
+		} else {
+			iHan = hanSuu - 1;
+		}
+
+		m_scoreWork = new Score(SCORE[iHan][iFu]);
+
+		return m_scoreWork.m_koRon;
+
+//		int score;
+//		// ïÑÅ@Å~ ÇQÇÃÅ@Åiñ|êîÅ@+Å@èÍÉ]ÉçÇÃ2ñ|)èÊ
+//		score = huSuu * (int) Math.pow(2, hanSuu + 2);
+//		// éqÇÕè„ÇÃ4î{Ç™äÓñ{ì_(êeÇÕ6î{)
+//		score *= 4;
+//
+//		// 100Ç≈äÑÇËêÿÇÍÇ»Ç¢êîÇ™Ç†ÇÈèÍçá100ì_åJè„Ç∞
+//		if (score % 100 != 0) {
+//			score = score - (score % 100) + 100;
+//		}
+//		// 7700à»è„ÇÕ8000Ç∆Ç∑ÇÈ
+////		if (score >= 7700) {
+////			score = 8000;
+////		}
+//
+//		if (hanSuu >= 13) { // 13ñ|à»è„ÇÕññû
+//			score = 32000;
+//		} else if (hanSuu >= 11) { // 11ñ|à»è„ÇÕ3î{ñû
+//			score = 24000;
+//		} else if (hanSuu >= 8) { // 8ñ|à»è„ÇÕî{ñû
+//			score = 16000;
+//		} else if (hanSuu >= 6) { // 6ñ|à»è„ÇÕíµñû
+//			score = 12000;
+//		} else if (hanSuu >= 5) { // 5ñ|à»è„ÇÕñûä—
 //			score = 8000;
 //		}
-
-		if (hanSuu >= 13) { // 13ñ|à»è„ÇÕññû
-			score = 32000;
-		} else if (hanSuu >= 11) { // 11ñ|à»è„ÇÕ3î{ñû
-			score = 24000;
-		} else if (hanSuu >= 8) { // 8ñ|à»è„ÇÕî{ñû
-			score = 16000;
-		} else if (hanSuu >= 6) { // 6ñ|à»è„ÇÕíµñû
-			score = 12000;
-		} else if (hanSuu >= 5) { // 5ñ|à»è„ÇÕñûä—
-			score = 8000;
-		}
-
-		return score;
+//
+//		return score;
 	}
 
 	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting, AgariInfo a_agariInfo) {
@@ -264,10 +293,10 @@ public class AgariScore {
 			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
 
 			if(maxagariScore < agariScore[i]){
+				a_agariInfo.m_score = m_scoreWork;
 				maxagariScore = agariScore[i];
 				a_agariInfo.m_fu = huSuu[i];
 				a_agariInfo.m_han = hanSuu[i];
-				a_agariInfo.m_score = agariScore[i];
 				a_agariInfo.m_yakuNames = yaku.getYakuName();
 			}
 		}

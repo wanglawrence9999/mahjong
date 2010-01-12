@@ -422,10 +422,32 @@ public class Mahjong implements Runnable {
 
 			Log.e("Mahjong", "kazeFrom = " + m_kazeFrom + " kazeTo = " + m_kazeTo);
 			Log.e("Mahjong", "iFrom = " + m_kazeToPlayerIdx[m_kazeFrom] + " iTo = " + m_kazeToPlayerIdx[m_kazeTo]);
+			int score;
+			int iPlayer;
 			// イベントを処理する。
 			switch (retEid) {
 			case TSUMO_AGARI:// ツモあがり
-				activePlayer.increaseTenbou(m_agariInfo.m_score);
+				iPlayer = m_kazeToPlayerIdx[m_kazeTo];
+				if (m_iOya == iPlayer) {
+					score = m_agariInfo.m_score.m_oyaRon;
+					for (int i = 0; i < 3; i++) {
+						iPlayer = (iPlayer + 1) % 4;
+						m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo);
+					}
+				} else {
+					score = m_agariInfo.m_score.m_koRon;
+					for (int i = 0; i < 3; i++) {
+						iPlayer = (iPlayer + 1) % 4;
+						if (m_iOya == iPlayer) {
+							m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo);
+						} else {
+							m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_koTsumo);
+						}
+					}
+				}
+
+				activePlayer.increaseTenbou(score);
+				m_agariInfo.m_agariScore = score;
 
 				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);
@@ -446,8 +468,16 @@ public class Mahjong implements Runnable {
 
 				break KYOKU_MAIN;
 			case RON_AGARI:// ロン
-				m_players[m_kazeToPlayerIdx[m_kazeFrom]].increaseTenbou(m_agariInfo.m_score);
-				m_players[m_kazeToPlayerIdx[m_kazeTo]].reduceTenbou(m_agariInfo.m_score);
+				if (m_iOya == m_kazeToPlayerIdx[m_kazeTo]) {
+					score = m_agariInfo.m_score.m_oyaRon;
+				} else {
+					score = m_agariInfo.m_score.m_koRon;
+				}
+
+				m_players[m_kazeToPlayerIdx[m_kazeFrom]].increaseTenbou(score);
+				m_players[m_kazeToPlayerIdx[m_kazeTo]].reduceTenbou(score);
+
+				m_agariInfo.m_agariScore = score;
 
 				// TODO 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);
@@ -532,8 +562,8 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		//if (true) {
-		if (false) {
+		if (true) {
+		//if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}

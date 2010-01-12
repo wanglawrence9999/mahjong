@@ -403,7 +403,7 @@ public class AndjongView extends View implements EventIf {
 					top += 20;
 				}
 				String string = new String();
-				string += agariInfo.m_han + "–| " + agariInfo.m_fu + "•„ " + agariInfo.m_score + "“_";
+				string += agariInfo.m_han + "–| " + agariInfo.m_fu + "•„ " + agariInfo.m_agariScore + "“_";
 				drawString(left, top + 20, a_canvas, 20, Color.WHITE, string, Align.LEFT);
 				return;
 			case STATE_END:

@@ -173,5 +173,17 @@ class Player {
 
 		// ƒŠ[ƒ`‚ğ‰Šú‰»‚µ‚Ü‚·B
 		reach = false;
+
+		m_ippatsu = false;
 	}
+
+	public void setIppatsu(boolean a_ippatsu) {
+		this.m_ippatsu = a_ippatsu;
+	}
+
+	public boolean isIppatsu() {
+		return m_ippatsu;
+	}
+
+	private boolean m_ippatsu;
 }

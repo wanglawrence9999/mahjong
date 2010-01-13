@@ -507,14 +507,6 @@ public class Mahjong implements Runnable {
 				}
 
 				break KYOKU_MAIN;
-			case REACH:// リーチ
-				int tenbou = activePlayer.getTenbou();
-				if (tenbou >= 1000) {
-					activePlayer.reduceTenbou(1000);
-					activePlayer.setReach(true);
-					m_reachbou++;
-				}
-				break;
 			default:
 				break;
 			}
@@ -583,8 +575,8 @@ public class Mahjong implements Runnable {
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
 			}
-			m_players[0].getTehai().rmJyunTehai(0);
-			m_players[0].getTehai().setPon(new Hai(1), getRelation(this.m_kazeFrom, this.m_kazeTo));
+			//m_players[0].getTehai().rmJyunTehai(0);
+			//m_players[0].getTehai().setPon(new Hai(1), getRelation(this.m_kazeFrom, this.m_kazeTo));
 		}
 	}
 
@@ -601,6 +593,7 @@ public class Mahjong implements Runnable {
 		// アクティブプレイヤーを設定する。
 		activePlayer = m_players[m_kazeToPlayerIdx[m_kazeFrom]];
 
+		//m_tsumoHai = new Hai(4);
 		m_isTsumo = true;
 
 		// UIイベント（ツモ）を発行する。
@@ -616,6 +609,10 @@ public class Mahjong implements Runnable {
 
 		int sutehaiIdx;
 		Hai[] kanHais;
+
+		if (retEid != EventId.REACH) {
+			activePlayer.setIppatsu(false);
+		}
 
 		// イベントを処理する。
 		switch (retEid) {
@@ -686,6 +683,8 @@ public class Mahjong implements Runnable {
 			activePlayer.setReach(true);
 			m_reachbou++;
 
+			activePlayer.setIppatsu(true);
+
 			// イベントを通知する。
 			retEid = notifyEvent(EventId.REACH, m_kazeFrom, m_kazeFrom);
 			break;
@@ -729,6 +728,12 @@ public class Mahjong implements Runnable {
 			// イベントを発行する。
 			toKaze = j;
 			retEid = activePlayer.getEventIf().event(eid, fromKaze, toKaze);
+
+			if (retEid != EventId.NAGASHI) {
+				for (int k = 0; k < 4; k++) {
+					m_players[k].setIppatsu(false);
+				}
+			}
 
 			// イベントを処理する。
 			switch (retEid) {
@@ -1000,6 +1005,9 @@ public class Mahjong implements Runnable {
 			} else {
 				setting.setYakuflg(YakuflgName.HOUTEI.ordinal(), true);
 			}
+		}
+		if (activePlayer.isIppatsu()) {
+			setting.setYakuflg(YakuflgName.IPPATU.ordinal(), true);
 		}
 		m_score = new AgariScore();
 		int score = m_score.getAgariScore(tehai, addHai, combis, setting, m_agariInfo);

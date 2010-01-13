@@ -774,6 +774,16 @@ public class Tehai {
 		return m_fuuroNums;
 	}
 
+	public boolean isNaki() {
+		for (int i = 0; i < m_fuuroNums; i++) {
+			if (m_fuuros[i].getType() != Fuuro.TYPE_ANKAN) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * 副露の配列をコピーする。
 	 *

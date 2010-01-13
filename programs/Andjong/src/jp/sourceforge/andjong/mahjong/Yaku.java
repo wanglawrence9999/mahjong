@@ -34,9 +34,7 @@ public class Yaku {
 		this.combi  = combi;
 		this.setting = setting;
 		//–Â‚«‚ª‚ ‚éê‡
-		if (tehai.getFuuroNum() != 0) {
-			nakiflg = true;
-		}
+		nakiflg = tehai.isNaki();
 
 		YakuHantei buffer[] = {new CheckTanyao(),
 							   new CheckPinfu(),

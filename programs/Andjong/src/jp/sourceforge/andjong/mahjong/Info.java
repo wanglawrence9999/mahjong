@@ -213,7 +213,7 @@ public class Info {
 
 	public int getReachIndexs(Tehai a_tehai, Hai a_tsumoHai, int[] a_indexs) {
 		// 鳴いている場合は、リーチできない。
-		if (a_tehai.getFuuroNum() > 0) {
+		if (a_tehai.isNaki()) {
 			return 0;
 		}
 

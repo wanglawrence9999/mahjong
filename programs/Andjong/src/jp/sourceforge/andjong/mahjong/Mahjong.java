@@ -315,6 +315,10 @@ public class Mahjong implements Runnable {
 		// 連荘を初期化する。
 		m_renchan = false;
 
+		m_isTsumo = false;
+		m_isRinshan = false;
+		m_isLast = false;
+
 		// プレイヤーの自風を設定する。
 		setJikaze();
 
@@ -351,6 +355,7 @@ public class Mahjong implements Runnable {
 
 		EventId retEid;
 
+		int tsumoNokori;
 		// 局を進行する。
 		KYOKU_MAIN: while (true) {
 			// UIイベント（進行待ち）を発行する。
@@ -415,6 +420,11 @@ public class Mahjong implements Runnable {
 				m_honba++;
 
 				break KYOKU_MAIN;
+			}
+
+			tsumoNokori = m_yama.getTsumoNokori();
+			if (tsumoNokori == 0) {
+				m_isLast = true;
 			}
 
 			// イベント（ツモ）を発行する。
@@ -562,8 +572,8 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		if (true) {
-		//if (false) {
+		//if (true) {
+		if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
@@ -573,10 +583,14 @@ public class Mahjong implements Runnable {
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
 			}
+			m_players[0].getTehai().rmJyunTehai(0);
+			m_players[0].getTehai().setPon(new Hai(1), getRelation(this.m_kazeFrom, this.m_kazeTo));
 		}
 	}
 
 	boolean m_isTsumo = false;
+	boolean m_isRinshan = false;
+	boolean m_isLast = false;
 
 	/**
 	 * イベント（ツモ）を発行する。
@@ -587,36 +601,6 @@ public class Mahjong implements Runnable {
 		// アクティブプレイヤーを設定する。
 		activePlayer = m_players[m_kazeToPlayerIdx[m_kazeFrom]];
 
-		boolean isTest = false;
-		if (isTest) {
-			//activePlayer.setReach(true);
-			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 9}; // ピンフイーペーコー
-			//int haiIds[] = {ID_NAN, ID_NAN, ID_NAN, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 東
-			//int haiIds[] = {ID_TON, ID_TON, ID_TON, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 東
-			//int haiIds[] = {1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
-			//int haiIds[] = {1, 1, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // タンヤオ
-			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_CHUN, ID_CHUN, ID_CHUN, 5, 6, 7, ID_HATSU, ID_HATSU, 10, 11, 12}; // 役牌
-			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_CHUN, ID_CHUN, ID_CHUN, 5, 6, 7, 10, 10, 10, 11, 12}; // 役牌
-			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_HATSU, ID_HATSU, ID_HATSU, ID_CHUN, ID_CHUN, ID_CHUN, 10, 10, 10, 11, 12}; // 役牌
-			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, ID_HATSU, ID_HATSU, ID_HATSU, 5, 6, 7, 10, 10, 10, 11, 12}; // 役牌
-			//int haiIds[] = {ID_HAKU, ID_HAKU, ID_HAKU, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // 役牌
-			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
-			//int haiIds[] = {1, 1, 1, 2, 3, 4, 5, 6, 7, 10, 10, 10, 11, 12}; // タンヤオ
-			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12}; // 平和
-			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-			//int haiIds[] = {0, 0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14};
-			Tehai tehai = new Tehai();
-			for (int i = 0; i < haiIds.length - 1; i++) {
-				tehai.addJyunTehai(new Hai(haiIds[i]));
-			}
-			//tehai.setChiiLeft(new Hai(1), 0);
-			//tehai.setPon(new Hai(1), 0);
-			Hai addHai = new Hai(haiIds[haiIds.length - 1]);
-
-			int agariScore = getAgariScore(tehai, addHai);
-
-			Log.e("TEST", "agariScore = " + agariScore);
-		}
 		m_isTsumo = true;
 
 		// UIイベント（ツモ）を発行する。
@@ -651,7 +635,9 @@ public class Mahjong implements Runnable {
 			m_tsumoHai = m_yama.rinshanTsumo();
 
 			// イベント（ツモ）を発行する。
+			m_isRinshan = true;
 			retEid = tsumoEvent();
+			m_isRinshan = false;
 			break;
 		case TSUMO_AGARI:// ツモあがり
 			break;
@@ -862,7 +848,9 @@ public class Mahjong implements Runnable {
 				m_tsumoHai = m_yama.rinshanTsumo();
 
 				// イベント（ツモ）を発行する。
+				m_isRinshan = true;
 				retEid = tsumoEvent();
+				m_isRinshan = false;
 				break;
 			default:
 				break;
@@ -1003,13 +991,18 @@ public class Mahjong implements Runnable {
 		if (m_isTsumo) {
 			setting.setYakuflg(YakuflgName.TUMO.ordinal(), true);
 		}
+		if (m_isTsumo && m_isRinshan) {
+			setting.setYakuflg(YakuflgName.RINSYAN.ordinal(), true);
+		}
+		if (m_isLast) {
+			if (m_isTsumo) {
+				setting.setYakuflg(YakuflgName.HAITEI.ordinal(), true);
+			} else {
+				setting.setYakuflg(YakuflgName.HOUTEI.ordinal(), true);
+			}
+		}
 		m_score = new AgariScore();
 		int score = m_score.getAgariScore(tehai, addHai, combis, setting, m_agariInfo);
-//		if (m_iOya == m_kazeToPlayerIdx[m_kazeTo]) {
-//			score *= 1.5;
-//			score = (score / 100) * 100;
-//		}
-//		m_agariInfo.m_score = score;
 		return score;
 	}
 

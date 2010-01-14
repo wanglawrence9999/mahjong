@@ -1514,7 +1514,7 @@ public class AndjongView extends View implements EventIf {
 					}
 					// mDrawItem.tsumoKaze = 5;
 					// mDrawItem.tsumoHai = null;
-					// mDrawItem.tsumoHais[mInfoUi.getJikaze()] = null;
+					//m_drawItem.m_playerInfos[m_infoUi.getJikaze()] = null;
 					m_iSelectSutehai = 0;
 					this.postInvalidate(0, 0, getWidth(), getHeight());
 				}

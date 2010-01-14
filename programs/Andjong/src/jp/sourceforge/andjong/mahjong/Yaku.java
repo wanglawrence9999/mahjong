@@ -934,7 +934,7 @@ public class Yaku {
 		}
 
 		//純手牌の頭をチェック
-		checkHai = new Hai(combi.m_atamaNoKind);
+		checkHai = new Hai(Hai.noKindToId(combi.m_atamaNoKind));
 		if (checkHai.isYaochuu() == false){
 			return false;
 		}
@@ -995,7 +995,7 @@ public class Yaku {
 
 		//手牌の順子をチェック
 		for(int i = 0 ; i < combi.m_shunNum ; i++){
-			id = combi.m_shunNoKinds[i];
+			id = Hai.noKindToId(combi.m_shunNoKinds[i]);
 			for(int j =0 ; j < checkId.length ; j++){
 				if(id == checkId[j]){
 					ikkituukanflg[j] = true;
@@ -1014,7 +1014,7 @@ public class Yaku {
 			case Fuuro.TYPE_MINSHUN:
 				//鳴いた牌をチェック
 				checkHai = fuuros[i].getHais();
-				id = checkHai[0].getNo();
+				id = checkHai[0].getId();
 				for(int j =0 ; j < checkId.length ; j++){
 					if(id == checkId[j]){
 						ikkituukanflg[j] = true;
@@ -1063,7 +1063,7 @@ public class Yaku {
 
 		//手牌の順子をチェック
 		for(int i = 0 ; i < combi.m_shunNum ; i++){
-			id = combi.m_shunNoKinds[i];
+			id = Hai.noKindToId(combi.m_shunNoKinds[i]);
 			checkSansyoku(id,sansyokuflg);
 		}
 
@@ -1078,7 +1078,7 @@ public class Yaku {
 			case Fuuro.TYPE_MINSHUN:
 				//鳴いた牌をチェック
 				checkHai = fuuros[i].getHais();
-				id = checkHai[0].getNo();
+				id = checkHai[0].getId();
 				checkSansyoku(id,sansyokuflg);
 				break;
 			default:
@@ -1111,7 +1111,7 @@ public class Yaku {
 
 		//手牌の刻子をチェック
 		for(int i = 0 ; i < combi.m_kouNum ; i++){
-			id = combi.m_kouNoKinds[i];
+			id = Hai.noKindToId(combi.m_kouNoKinds[i]);
 			checkSansyoku(id,sansyokuflg);
 		}
 		Fuuro[] fuuros;
@@ -1210,15 +1210,15 @@ public class Yaku {
 		}
 		//ロン上がりの場合、和了った牌と
 		else{
-			int id = addHai.getId();
+			int noKind = addHai.getNoKind();
 			//ロン上がりで頭待ちの場合は成立
-			if(id == combi.m_atamaNoKind){
+			if(noKind == combi.m_atamaNoKind){
 				return true;
 			}else{
 				//和了った牌と刻子になっている牌が同じか確認
 				boolean checkflg = false;
 				for(int i = 0 ; i < combi.m_kouNum ; i++){
-					if(id == combi.m_kouNoKinds[i]){
+					if(noKind == combi.m_kouNoKinds[i]){
 						checkflg = true;
 					}
 				}
@@ -1235,13 +1235,13 @@ public class Yaku {
 						for(int i = 0 ; i < combi.m_shunNum ; i++){
 							switch(addHai.getNo()){
 								case 1:
-									if(id == combi.m_shunNoKinds[i]){
+									if(noKind == combi.m_shunNoKinds[i]){
 										checkshun = true;
 									}
 									break;
 								case 2:
-									if((id == combi.m_shunNoKinds[i])
-									 ||(id-1 == combi.m_shunNoKinds[i])){
+									if((noKind == combi.m_shunNoKinds[i])
+									 ||(noKind-1 == combi.m_shunNoKinds[i])){
 										checkshun = true;
 									}
 									break;
@@ -1250,20 +1250,20 @@ public class Yaku {
 								case 5:
 								case 6:
 								case 7:
-									if((id == combi.m_shunNoKinds[i])
-										 ||(id-1 == combi.m_shunNoKinds[i])
-										 ||(id-2 == combi.m_shunNoKinds[i])){
+									if((noKind == combi.m_shunNoKinds[i])
+										 ||(noKind-1 == combi.m_shunNoKinds[i])
+										 ||(noKind-2 == combi.m_shunNoKinds[i])){
 											checkshun = true;
 									}
 									break;
 								case 8:
-									if((id-1 == combi.m_shunNoKinds[i])
-										 ||(id-2 == combi.m_shunNoKinds[i])){
+									if((noKind-1 == combi.m_shunNoKinds[i])
+										 ||(noKind-2 == combi.m_shunNoKinds[i])){
 											checkshun = true;
 									}
 									break;
 								case 9:
-									if(id-2 == combi.m_shunNoKinds[i]){
+									if(noKind-2 == combi.m_shunNoKinds[i]){
 											checkshun = true;
 									}
 									break;
@@ -1424,7 +1424,7 @@ public class Yaku {
 		}
 
 		//純手牌の頭をチェック
-		checkHai = new Hai(combi.m_atamaNoKind);
+		checkHai = new Hai(Hai.noKindToId(combi.m_atamaNoKind));
 		//字牌があれば不成立
 		if( checkHai.isTsuu() == true){
 			return false;
@@ -1612,7 +1612,7 @@ public class Yaku {
 			//ロン和了りの場合
 			else{
 				//頭待ちならば成立 (四暗刻単騎待ち)
-				if(addHai.getId() == combi.m_atamaNoKind){
+				if(addHai.getNoKind() == combi.m_atamaNoKind){
 					return true;
 				}else{
 					return false;

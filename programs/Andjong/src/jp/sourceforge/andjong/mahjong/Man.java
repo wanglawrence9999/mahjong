@@ -153,6 +153,8 @@ public class Man implements EventIf {
 									this.m_iSutehai = kanSelect;
 									return eventId[menuSelect];
 								}
+							} else {
+								this.m_iSutehai = 0;
 							}
 						}
 						return eventId[menuSelect];

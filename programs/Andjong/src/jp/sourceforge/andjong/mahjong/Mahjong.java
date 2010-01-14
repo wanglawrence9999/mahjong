@@ -569,14 +569,22 @@ public class Mahjong implements Runnable {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
+			int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4};
+			//int haiIds[] = {0, 0, 0, 9, 9, 9, 18, 18, 18, 27, 27, 29, 28, 28};
+			//int haiIds[] = {0, 0, 0, 9, 9, 9, 18, 18, 18, 27, 27, 28, 28, 28};
+			//int haiIds[] = {0, 0, 0, 9, 9, 9, 18, 18, 18, 5, 6, 7, 27, 27};
+			//int haiIds[] = {0, 0, 0, 2, 2, 2, 3, 3, 3, 5, 6, 7, 27, 27};
+			//int haiIds[] = {0, 0, 0, 2, 2, 2, 3, 3, 3, 4, 4, 4, 10, 10};
+			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 10, 10}; // イッツー
+			//int haiIds[] = {0, 1, 2, 9, 10, 11, 18, 19, 20, 33, 33, 33, 27, 27};
+			//int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコーTehai tehai = new Tehai();
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
 			}
 			//m_players[0].getTehai().rmJyunTehai(0);
-			//m_players[0].getTehai().setPon(new Hai(1), getRelation(this.m_kazeFrom, this.m_kazeTo));
+			//m_players[0].getTehai().setPon(new Hai(0), getRelation(this.m_kazeFrom, this.m_kazeTo));
 		}
 	}
 
@@ -593,7 +601,7 @@ public class Mahjong implements Runnable {
 		// アクティブプレイヤーを設定する。
 		activePlayer = m_players[m_kazeToPlayerIdx[m_kazeFrom]];
 
-		//m_tsumoHai = new Hai(4);
+		//m_tsumoHai = new Hai(0);
 		m_isTsumo = true;
 
 		// UIイベント（ツモ）を発行する。

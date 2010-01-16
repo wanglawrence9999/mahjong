@@ -245,10 +245,17 @@ public class Info {
 			tehai.addJyunTehai(haiTemp);
 		}
 
-		countFormat.setCountFormat(tehai, null);
-		if (countFormat.getCombis(combis) > 0) {
-			a_indexs[index] = 13;
-			index++;
+		for (int id = 0; id < Hai.ID_ITEM_MAX; id++) {
+			addHai = new Hai(id);
+			tehai.addJyunTehai(addHai);
+			countFormat.setCountFormat(tehai, null);
+			if (countFormat.getCombis(combis) > 0) {
+				a_indexs[index] = 13;
+				index++;
+				tehai.rmJyunTehai(addHai);
+				break;
+			}
+			tehai.rmJyunTehai(addHai);
 		}
 
 		return index;

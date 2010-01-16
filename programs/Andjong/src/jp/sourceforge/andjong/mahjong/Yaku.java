@@ -77,7 +77,9 @@ public class Yaku {
 							   new CheckChinroutou(),
 							   new CheckRyuuisou(),
 							   new CheckCyuurennpoutou(),
-							   new CheckKokushi()
+							   new CheckKokushi(),
+							   new CheckTenhou(),
+							   new CheckTihou()
 		};
 
 		yakuhantei = buffer;
@@ -599,6 +601,22 @@ public class Yaku {
 			yakuman = true;
 		}
 	}
+	private class CheckTenhou extends YakuHantei{
+		CheckTenhou(){
+			hantei = checkTenhou();
+			yakuName = "天和";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
+	private class CheckTihou extends YakuHantei{
+		CheckTihou(){
+			hantei = checkTihou();
+			yakuName = "地和";
+			hanSuu = 13;
+			yakuman = true;
+		}
+	}
 
 
 	boolean checkTanyao() {
@@ -633,7 +651,7 @@ public class Yaku {
 			case Fuuro.TYPE_MINSHUN:
 				//明順の牌をチェック
 				checkHai = fuuros[i].getHais();
-				id = checkHai[0].getNo();
+				id = checkHai[0].getId();
 				//123 と　789 の順子があれば不成立
 				if ((id == 1) || (id == 7)){
 					return false;
@@ -809,7 +827,7 @@ public class Yaku {
 			case Fuuro.TYPE_MINKOU:
 				//明刻の牌をチェック
 				checkHai = fuuros[i].getHais();
-				id = checkHai[0].getNo();
+				id = checkHai[0].getId();
 				//IDと役牌のIDをチェック
 				if( id == yakuHaiId ){
 					return true;
@@ -1682,19 +1700,19 @@ public class Yaku {
 		//風牌役が成立している個数を調べる
 		int countFon = 0;
 		//東が刻子
-		if(checkTon() == true){
+		if(checkYakuHai(tehai,combi,ID_TON) == true){
 			countFon++;
 		}
 		//南が刻子
-		if(checkNan() == true){
+		if(checkYakuHai(tehai,combi,ID_NAN) == true){
 			countFon++;
 		}
 		//西が刻子
-		if(checkSya() == true){
+		if(checkYakuHai(tehai,combi,ID_SHA) == true){
 			countFon++;
 		}
 		//北が刻子
-		if(checkPei() == true){
+		if(checkYakuHai(tehai,combi,ID_PE) == true){
 			countFon++;
 		}
 
@@ -1712,19 +1730,19 @@ public class Yaku {
 		//風牌役が成立している個数を調べる
 		int countFon = 0;
 		//東が刻子
-		if(checkTon() == true){
+		if(checkYakuHai(tehai,combi,ID_TON) == true){
 			countFon++;
 		}
 		//南が刻子
-		if(checkNan() == true){
+		if(checkYakuHai(tehai,combi,ID_NAN) == true){
 			countFon++;
 		}
 		//西が刻子
-		if(checkSya() == true){
+		if(checkYakuHai(tehai,combi,ID_SHA) == true){
 			countFon++;
 		}
 		//北が刻子
-		if(checkPei() == true){
+		if(checkYakuHai(tehai,combi,ID_PE) == true){
 			countFon++;
 		}
 			//風牌役が4つ成立
@@ -1818,7 +1836,7 @@ public class Yaku {
 			case Fuuro.TYPE_MINSHUN:
 				//明順の牌をチェック
 				checkHai = fuuros[i].getHais();
-				id = checkHai[0].getNo();
+				id = checkHai[0].getId();
 				//索子の2,3,4以外の順子があった場合不成立
 				if (id != ID_SOU_2){
 					return false;
@@ -1829,7 +1847,7 @@ public class Yaku {
 			case Fuuro.TYPE_KAKAN:
 			case Fuuro.TYPE_ANKAN:
 				checkHai = fuuros[i].getHais();
-				id = checkHai[0].getNo();
+				id = checkHai[0].getId();
 				ryuuisouflg = false;
 				for(int j = 0 ; j < checkId.length ; j++){
 					//緑一色に使用できる牌だった

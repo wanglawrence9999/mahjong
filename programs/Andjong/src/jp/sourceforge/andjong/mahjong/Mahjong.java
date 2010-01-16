@@ -315,6 +315,8 @@ public class Mahjong implements Runnable {
 		// 連荘を初期化する。
 		m_renchan = false;
 
+		m_isTenhou = true;
+		m_isChiihou = true;
 		m_isTsumo = false;
 		m_isRinshan = false;
 		m_isLast = false;
@@ -425,6 +427,8 @@ public class Mahjong implements Runnable {
 			tsumoNokori = m_yama.getTsumoNokori();
 			if (tsumoNokori == 0) {
 				m_isLast = true;
+			} else if (tsumoNokori < 67) {
+				m_isChiihou = false;
 			}
 
 			// イベント（ツモ）を発行する。
@@ -569,7 +573,15 @@ public class Mahjong implements Runnable {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4};
+			int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 25, 25, 25, 21, 21};
+			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 17, 17, 17, 18, 18};
+			//int haiIds[] = {0, 0, 0, 0, 8, 8, 8, 8, 9, 9, 9, 9, 18, 18};
+			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 18, 18, 18, 26, 26};
+			//int haiIds[] = {27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31};
+			//int haiIds[] = {31, 31, 31, 32, 32, 32, 33, 33, 33, 30, 30, 30, 29, 29};
+			//int haiIds[] = {0, 0, 1, 1, 2, 2, 6, 6, 7, 7, 8, 8, 9, 9};
+			//int haiIds[] = {31, 31, 31, 32, 32, 32, 33, 33, 3, 4, 5, 6, 7, 8};
+			//int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4};
 			//int haiIds[] = {0, 0, 0, 9, 9, 9, 18, 18, 18, 27, 27, 29, 28, 28};
 			//int haiIds[] = {0, 0, 0, 9, 9, 9, 18, 18, 18, 27, 27, 28, 28, 28};
 			//int haiIds[] = {0, 0, 0, 9, 9, 9, 18, 18, 18, 5, 6, 7, 27, 27};
@@ -588,6 +600,8 @@ public class Mahjong implements Runnable {
 		}
 	}
 
+	boolean m_isTenhou = false;
+	boolean m_isChiihou = false;
 	boolean m_isTsumo = false;
 	boolean m_isRinshan = false;
 	boolean m_isLast = false;
@@ -601,7 +615,6 @@ public class Mahjong implements Runnable {
 		// アクティブプレイヤーを設定する。
 		activePlayer = m_players[m_kazeToPlayerIdx[m_kazeFrom]];
 
-		//m_tsumoHai = new Hai(0);
 		m_isTsumo = true;
 
 		// UIイベント（ツモ）を発行する。
@@ -609,6 +622,8 @@ public class Mahjong implements Runnable {
 
 		// イベント（ツモ）を発行する。
 		EventId retEid = activePlayer.getEventIf().event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
+
+		m_isTenhou = false;
 
 		m_isTsumo = false;
 
@@ -625,6 +640,8 @@ public class Mahjong implements Runnable {
 		// イベントを処理する。
 		switch (retEid) {
 		case ANKAN:
+			m_isChiihou = false;
+
 			activePlayer.getTehai().addJyunTehai(m_tsumoHai);
 			sutehaiIdx = activePlayer.getEventIf().getISutehai();
 			kanHais = m_playerAction.getKanHais();
@@ -760,6 +777,7 @@ public class Mahjong implements Runnable {
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				break NOTIFYLOOP;
 			case PON:
+				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
 				this.m_kazeTo = fromKaze;
@@ -781,6 +799,7 @@ public class Mahjong implements Runnable {
 				retEid = notifyEvent(EventId.PON, this.m_kazeFrom, this.m_kazeTo);
 				break NOTIFYLOOP;
 			case CHII_LEFT:
+				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
 				this.m_kazeTo = fromKaze;
@@ -800,8 +819,9 @@ public class Mahjong implements Runnable {
 
 				// イベントを通知する。
 				retEid = notifyEvent(EventId.CHII_LEFT, this.m_kazeFrom, this.m_kazeTo);
-				break;
+				break NOTIFYLOOP;
 			case CHII_CENTER:
+				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
 				this.m_kazeTo = fromKaze;
@@ -821,8 +841,9 @@ public class Mahjong implements Runnable {
 
 				// イベントを通知する。
 				retEid = notifyEvent(EventId.CHII_CENTER, this.m_kazeFrom, this.m_kazeTo);
-				break;
+				break NOTIFYLOOP;
 			case CHII_RIGHT:
+				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
 				this.m_kazeTo = fromKaze;
@@ -842,8 +863,9 @@ public class Mahjong implements Runnable {
 
 				// イベントを通知する。
 				retEid = notifyEvent(EventId.CHII_RIGHT, this.m_kazeFrom, this.m_kazeTo);
-				break;
+				break NOTIFYLOOP;
 			case DAIMINKAN:
+				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
 				this.m_kazeTo = fromKaze;
@@ -864,7 +886,7 @@ public class Mahjong implements Runnable {
 				m_isRinshan = true;
 				retEid = tsumoEvent();
 				m_isRinshan = false;
-				break;
+				break NOTIFYLOOP;
 			default:
 				break;
 			}
@@ -873,6 +895,9 @@ public class Mahjong implements Runnable {
 				return retEid;
 			}
 		}
+
+		// アクティブプレイヤーを設定する。
+		activePlayer = m_players[m_kazeToPlayerIdx[fromKaze]];
 
 		return retEid;
 	}
@@ -1003,6 +1028,11 @@ public class Mahjong implements Runnable {
 		}
 		if (m_isTsumo) {
 			setting.setYakuflg(YakuflgName.TUMO.ordinal(), true);
+			if (m_isTenhou) {
+				setting.setYakuflg(YakuflgName.TENHOU.ordinal(), true);
+			} else if (m_isChiihou) {
+				setting.setYakuflg(YakuflgName.TIHOU.ordinal(), true);
+			}
 		}
 		if (m_isTsumo && m_isRinshan) {
 			setting.setYakuflg(YakuflgName.RINSYAN.ordinal(), true);

@@ -173,7 +173,7 @@ public class Tehai {
 	 * @return Œ‹‰Ê
 	 */
 	public static boolean copyJyunTehai(Hai[] a_dest, Hai[] a_src, int a_length) {
-		if (a_length >= JYUN_TEHAI_LENGTH_MAX) {
+		if (a_length > JYUN_TEHAI_LENGTH_MAX) {
 			return false;
 		}
 
@@ -796,7 +796,7 @@ public class Tehai {
 	 * @return Œ‹‰Ê
 	 */
 	public static boolean copyFuuros(Fuuro[] a_dest, Fuuro[] a_src, int a_length) {
-		if (a_length >= FUURO_MAX) {
+		if (a_length > FUURO_MAX) {
 			return false;
 		}
 

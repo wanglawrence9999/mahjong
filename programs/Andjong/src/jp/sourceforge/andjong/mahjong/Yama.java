@@ -136,6 +136,23 @@ public class Yama {
 		return uraDoraHais;
 	}
 
+	Hai[] getAllDoraHais() {
+		int omoteDoraHaisLength = m_iRinshanHais + 1;
+		int uraDoraHaisLength = m_iRinshanHais + 1;
+		int allDoraHaisLength = omoteDoraHaisLength + uraDoraHaisLength;
+		Hai[] allDoraHais = new Hai[allDoraHaisLength];
+
+		for (int i = 0; i < omoteDoraHaisLength; i++) {
+			allDoraHais[i] = new Hai(this.m_omoteDoraHais[i]);
+		}
+
+		for (int i = 0; i < uraDoraHaisLength; i++) {
+			allDoraHais[omoteDoraHaisLength + i] = new Hai(this.m_uraDoraHais[i]);
+		}
+
+		return allDoraHais;
+	}
+
 	/**
 	 * ツモ牌の開始位置を設定する。
 	 *

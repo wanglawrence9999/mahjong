@@ -260,15 +260,15 @@ public class Hai {
 	/** ネクスト牌のIDの配列 */
 	private final static int[] NEXT_HAI_IDS = {
 	// 萬子
-	NO_WAN_2, NO_WAN_3, NO_WAN_4, NO_WAN_5, NO_WAN_6, NO_WAN_7, NO_WAN_8, NO_WAN_9, NO_WAN_1,
+	ID_WAN_2, ID_WAN_3, ID_WAN_4, ID_WAN_5, ID_WAN_6, ID_WAN_7, ID_WAN_8, ID_WAN_9, ID_WAN_1,
 	// 筒子
-	NO_PIN_2, NO_PIN_3, NO_PIN_4, NO_PIN_5, NO_PIN_6, NO_PIN_7, NO_PIN_8, NO_PIN_9, NO_PIN_1,
+	ID_PIN_2, ID_PIN_3, ID_PIN_4, ID_PIN_5, ID_PIN_6, ID_PIN_7, ID_PIN_8, ID_PIN_9, ID_PIN_1,
 	// 索子
-	NO_SOU_2, NO_SOU_3, NO_SOU_4, NO_SOU_5, NO_SOU_6, NO_SOU_7, NO_SOU_8, NO_SOU_9, NO_SOU_1,
+	ID_SOU_2, ID_SOU_3, ID_SOU_4, ID_SOU_5, ID_SOU_6, ID_SOU_7, ID_SOU_8, ID_SOU_9, ID_SOU_1,
 	// 風牌
-	NO_NAN, NO_SHA, NO_PE, NO_TON,
+	ID_NAN, ID_SHA, ID_PE, ID_TON,
 	// 三元牌
-	NO_HATSU, NO_CHUN, NO_HAKU };
+	ID_HATSU, ID_CHUN, ID_HAKU };
 
 	/** ID */
 	private int m_id;

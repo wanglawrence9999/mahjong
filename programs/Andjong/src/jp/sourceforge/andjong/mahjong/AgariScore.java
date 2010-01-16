@@ -204,7 +204,7 @@ public class AgariScore {
 	/**
 	 * ã‚ª‚è“_”‚ğæ“¾‚µ‚Ü‚·B
 	 *
-	 * @param tehai
+	 * @param m_tehai
 	 *            è”v addHai ˜a—¹‚Á‚½”v combi è”v‚Ì‘g‚İ‡‚í‚¹@
 	 *
 	 * @return int ˜a—¹‚è“_

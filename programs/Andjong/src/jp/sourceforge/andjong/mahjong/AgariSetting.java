@@ -102,11 +102,11 @@ public class AgariSetting {
 	}
 
 	/** 裏ドラ表示牌の設定 */
-	void getUraDoraHais(Hai[] uraDoraHais){
+	void setUraDoraHais(Hai[] uraDoraHais){
 		this.doraHais = uraDoraHais;
 	}
 	/** 裏ドラ表示牌の取得 */
-	Hai[] setUraDoraHais(){
+	Hai[] getUraDoraHais(){
 		return this.uraDoraHais;
 	}
 }

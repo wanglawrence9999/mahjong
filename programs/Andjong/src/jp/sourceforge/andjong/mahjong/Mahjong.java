@@ -320,6 +320,7 @@ public class Mahjong implements Runnable {
 		m_isTsumo = false;
 		m_isRinshan = false;
 		m_isLast = false;
+		m_isUra = false;
 
 		// プレイヤーの自風を設定する。
 		setJikaze();
@@ -441,6 +442,12 @@ public class Mahjong implements Runnable {
 			// イベントを処理する。
 			switch (retEid) {
 			case TSUMO_AGARI:// ツモあがり
+				m_isUra = true;
+				m_setting.setDoraHais(m_yama.getAllDoraHais());
+				//getAgariScore(activePlayer.getTehai(), m_tsumoHai);
+				m_score = new AgariScore();
+				m_score.getAgariScore(activePlayer.getTehai(), m_tsumoHai, combis, m_setting, m_agariInfo);
+
 				iPlayer = m_kazeToPlayerIdx[m_kazeTo];
 				if (m_iOya == iPlayer) {
 					score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
@@ -482,6 +489,12 @@ public class Mahjong implements Runnable {
 
 				break KYOKU_MAIN;
 			case RON_AGARI:// ロン
+				m_isUra = true;
+				m_setting.setDoraHais(m_yama.getAllDoraHais());
+				//getAgariScore(activePlayer.getTehai(), m_suteHai);
+				m_score = new AgariScore();
+				m_score.getAgariScore(activePlayer.getTehai(), m_suteHai, combis, m_setting, m_agariInfo);
+
 				if (m_iOya == m_kazeToPlayerIdx[m_kazeTo]) {
 					score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
 				} else {
@@ -573,7 +586,8 @@ public class Mahjong implements Runnable {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 25, 25, 25, 21, 21};
+			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
+			//int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 25, 25, 25, 21, 21};
 			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 17, 17, 17, 18, 18};
 			//int haiIds[] = {0, 0, 0, 0, 8, 8, 8, 8, 9, 9, 9, 9, 18, 18};
 			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 18, 18, 18, 26, 26};
@@ -605,6 +619,7 @@ public class Mahjong implements Runnable {
 	boolean m_isTsumo = false;
 	boolean m_isRinshan = false;
 	boolean m_isLast = false;
+	boolean m_isUra = false;
 
 	/**
 	 * イベント（ツモ）を発行する。
@@ -617,6 +632,7 @@ public class Mahjong implements Runnable {
 
 		m_isTsumo = true;
 
+		m_tsumoHai = new Hai(1);
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
 
@@ -1021,8 +1037,11 @@ public class Mahjong implements Runnable {
 		return m_agariInfo;
 	}
 
+	AgariSetting m_setting;
 	public int getAgariScore(Tehai tehai, Hai addHai) {
 		AgariSetting setting = new AgariSetting(this);
+		m_setting = setting;
+		setting.setDoraHais(getDoras());
 		if (activePlayer.isReach()) {
 			setting.setYakuflg(YakuflgName.REACH.ordinal(), true);
 		}

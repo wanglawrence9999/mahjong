@@ -100,6 +100,25 @@ public class Yaku {
 		}
 	}
 
+
+	/**
+	 * YakuƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^B
+	 * ˆø”‚ğ•Û‘¶‚µAYakuHanteiƒNƒ‰ƒX‚Ì”z—ñ‚ğì¬‚·‚éB
+	 * @param tehai è”v@addHai ã‚ª‚Á‚½”v  combi è”v ‚Ì‘g‚İ‡‚í‚¹ info î•ñ
+	 */
+	Yaku(Tehai tehai, Hai addHai, AgariSetting setting){
+		this.m_tehai = tehai;
+		this.m_addHai = addHai;
+		this.m_setting = setting;
+
+		YakuHantei buffer[] = {new CheckKokushi(),
+							   new CheckTenhou(),
+							   new CheckTihou()
+		};
+
+		yakuhantei = buffer;
+	}
+
 	/**
 	 * è”v‘S‘Ì‚Ì–|”‚ğæ“¾‚µ‚Ü‚·B
 	 *
@@ -1948,15 +1967,29 @@ public class Yaku {
 			}
 		}
 
+		for(int j = 0 ; j < checkId.length ; j++){
+			if(m_addHai.getId() == checkId[j]){
+				countHai[j]++;
+			}
+		}
+
+		boolean atama = false;
 		//‘m–³‘o‚ª¬—§‚µ‚Ä‚¢‚é‚©’²‚×‚é(è”v‚ª‚·‚×‚Ä1.9š”v ‚·‚×‚Ä‚Ì‚P,‚Xš”v‚ğ‚Á‚Ä‚¢‚éj
 		for(int i = 0 ; i < countHai.length ; i++){
 			//0–‡‚Ì”v‚ª‚ ‚ê‚Î•s¬—§
 			if(countHai[i] == 0){
 				return false;
 			}
+			if(countHai[i] == 2){
+				atama = true;
+			}
 		}
 		//ğŒ‚ğ–‚½‚µ‚Ä‚¢‚ê‚Î¬—§
-		return true;
+		if (atama) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	boolean checkDora() {

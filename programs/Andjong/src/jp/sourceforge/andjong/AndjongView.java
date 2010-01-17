@@ -1047,8 +1047,18 @@ public class AndjongView extends View implements EventIf {
 			}
 		}
 
-
-		PlayerInfo playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
+		PlayerInfo playerInfo;
+		try {
+			synchronized (m_drawItem) {
+				Log.d("onTouchEvent", "m_drawItem.m_kazeFrom = " + m_drawItem.m_kazeFrom);
+				playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
+			}
+		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			Log.d("onTouchEvent", "m_drawItem.m_kazeFrom = " + m_drawItem.m_kazeFrom);
+			return true;
+		}
 		int jyunTehaiLength = playerInfo.m_tehai.getJyunTehaiLength();
 		Log.e(TAG, "jyunTehaiLength = " + jyunTehaiLength);
 		if (playerInfo.m_tsumoHai != null) {
@@ -1337,7 +1347,7 @@ public class AndjongView extends View implements EventIf {
 		m_drawItem.m_kazeFrom = a_kazeFrom;
 		m_drawItem.m_kazeTo = a_kazeTo;
 
-		Log.d(TAG, "eid = " + a_eventId.toString());
+		Log.d("UI", "a_eventId = " + a_eventId.toString() + ", a_kazeFrom = " + a_kazeFrom + ", a_kazeTo = " + a_kazeTo);
 		switch (a_eventId) {
 		case UI_WAIT_PROGRESS:// 進行待ち
 			try {

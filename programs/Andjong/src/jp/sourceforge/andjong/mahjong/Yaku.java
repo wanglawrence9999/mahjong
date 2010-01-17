@@ -650,7 +650,7 @@ public class Yaku {
 			hantei = checkDora();
 			yakuName = "ƒhƒ‰";
 			hanSuu = 1;
-			yakuman = true;
+			yakuman = false;
 		}
 	}
 

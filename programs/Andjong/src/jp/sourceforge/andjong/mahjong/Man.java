@@ -81,36 +81,6 @@ public class Man implements EventIf {
 				menuNum++;
 			}
 
-//			if (menuNum > 0) {
-//				m_playerAction.setMenuSelect(5);
-//				m_playerAction.setState(PlayerAction.STATE_TSUMO_SELECT);
-//				m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
-//				m_playerAction.actionWait();
-//				int menuSelect = m_playerAction.getMenuSelect();
-//				if ((menuSelect >= 0) && (menuSelect < menuNum)) {
-//					m_playerAction.init();
-//					if (eventId[menuSelect] == EventId.REACH) {
-//						m_playerAction.m_indexs = indexs;
-//						m_playerAction.m_indexNum = indexNum;
-//						while (true) {
-//							// “ü—Í‚ð‘Ò‚ÂB
-//							m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
-//							m_playerAction.actionWait();
-//							sutehaiIdx = m_playerAction.getSutehaiIdx();
-//							if (sutehaiIdx != Integer.MAX_VALUE) {
-//								if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
-//									break;
-//								}
-//							}
-//						}
-//						m_playerAction.init();
-//						this.m_iSutehai = sutehaiIdx;
-//					}
-//					return eventId[menuSelect];
-//				}
-//				m_playerAction.init();
-//			}
-
 			while (true) {
 				// “ü—Í‚ð‘Ò‚ÂB
 				m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
@@ -207,48 +177,50 @@ public class Man implements EventIf {
 				menuNum++;
 			}
 
-			if (m_tehai.validPon(suteHai)) {
-				m_playerAction.setValidPon(true);
-				eventId[menuNum] = EventId.PON;
-				menuNum++;
-			}
-
-			if ((relation == -1) || (relation == 3)) {
-				if (m_tehai.validChiiRight(suteHai, sarashiHaiRight)) {
-					m_playerAction.setValidChiiRight(true, sarashiHaiRight);
-					if (chiiCount == 0) {
-						iChii = menuNum;
-						eventId[menuNum] = EventId.CHII_RIGHT;
-						menuNum++;
-					}
-					chiiCount++;
+			if (!m_info.isReach()) {
+				if (m_tehai.validPon(suteHai)) {
+					m_playerAction.setValidPon(true);
+					eventId[menuNum] = EventId.PON;
+					menuNum++;
 				}
 
-				if (m_tehai.validChiiCenter(suteHai, sarashiHaiCenter)) {
-					m_playerAction.setValidChiiCenter(true, sarashiHaiCenter);
-					if (chiiCount == 0) {
-						iChii = menuNum;
-						eventId[menuNum] = EventId.CHII_CENTER;
-						menuNum++;
+				if ((relation == -1) || (relation == 3)) {
+					if (m_tehai.validChiiRight(suteHai, sarashiHaiRight)) {
+						m_playerAction.setValidChiiRight(true, sarashiHaiRight);
+						if (chiiCount == 0) {
+							iChii = menuNum;
+							eventId[menuNum] = EventId.CHII_RIGHT;
+							menuNum++;
+						}
+						chiiCount++;
 					}
-					chiiCount++;
+
+					if (m_tehai.validChiiCenter(suteHai, sarashiHaiCenter)) {
+						m_playerAction.setValidChiiCenter(true, sarashiHaiCenter);
+						if (chiiCount == 0) {
+							iChii = menuNum;
+							eventId[menuNum] = EventId.CHII_CENTER;
+							menuNum++;
+						}
+						chiiCount++;
+					}
+
+					if (m_tehai.validChiiLeft(suteHai, sarashiHaiLeft)) {
+						m_playerAction.setValidChiiLeft(true, sarashiHaiLeft);
+						if (chiiCount == 0) {
+							iChii = menuNum;
+							eventId[menuNum] = EventId.CHII_LEFT;
+							menuNum++;
+						}
+						chiiCount++;
+					}
 				}
 
-				if (m_tehai.validChiiLeft(suteHai, sarashiHaiLeft)) {
-					m_playerAction.setValidChiiLeft(true, sarashiHaiLeft);
-					if (chiiCount == 0) {
-						iChii = menuNum;
-						eventId[menuNum] = EventId.CHII_LEFT;
-						menuNum++;
-					}
-					chiiCount++;
+				if (m_tehai.validDaiMinKan(suteHai)) {
+					m_playerAction.setValidDaiMinKan(true);
+					eventId[menuNum] = EventId.DAIMINKAN;
+					menuNum++;
 				}
-			}
-
-			if (m_tehai.validDaiMinKan(suteHai)) {
-				m_playerAction.setValidDaiMinKan(true);
-				eventId[menuNum] = EventId.DAIMINKAN;
-				menuNum++;
 			}
 
 			if (menuNum > 0) {

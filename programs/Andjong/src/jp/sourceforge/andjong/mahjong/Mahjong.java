@@ -448,7 +448,7 @@ public class Mahjong implements Runnable {
 				m_score = new AgariScore();
 				m_score.getAgariScore(activePlayer.getTehai(), m_tsumoHai, combis, m_setting, m_agariInfo);
 
-				iPlayer = m_kazeToPlayerIdx[m_kazeTo];
+				iPlayer = m_kazeToPlayerIdx[m_kazeFrom];
 				if (m_iOya == iPlayer) {
 					score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
 					for (int i = 0; i < 3; i++) {
@@ -495,7 +495,7 @@ public class Mahjong implements Runnable {
 				m_score = new AgariScore();
 				m_score.getAgariScore(activePlayer.getTehai(), m_suteHai, combis, m_setting, m_agariInfo);
 
-				if (m_iOya == m_kazeToPlayerIdx[m_kazeTo]) {
+				if (m_iOya == m_kazeToPlayerIdx[m_kazeFrom]) {
 					score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
 				} else {
 					score = m_agariInfo.m_score.m_koRon + (m_honba * 300);
@@ -586,7 +586,8 @@ public class Mahjong implements Runnable {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34};
+			int haiIds[] = {0, 0, 0, 0, 8, 8, 8, 8, 9, 9, 9, 9, 18, 18};
+			//int haiIds[] = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34};
 			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
 			//int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 25, 25, 25, 21, 21};
@@ -634,6 +635,7 @@ public class Mahjong implements Runnable {
 
 		m_isTsumo = true;
 
+		//m_tsumoHai = new Hai(18);
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
 
@@ -688,7 +690,7 @@ public class Mahjong implements Runnable {
 			m_infoUi.setSutehaiIdx(sutehaiIdx);
 			m_view.event(EventId.UI_WAIT_RIHAI, m_kazeFrom, m_kazeFrom);
 
-			if (sutehaiIdx == 13) {// ツモ切り
+			if (sutehaiIdx >= activePlayer.getTehai().getJyunTehaiLength()) {// ツモ切り
 				Hai.copy(m_suteHai, m_tsumoHai);
 				activePlayer.getKawa().add(m_suteHai);
 			} else {// 手出し
@@ -708,7 +710,7 @@ public class Mahjong implements Runnable {
 			activePlayer.setReach(true);
 			m_view.event(EventId.UI_WAIT_RIHAI, m_kazeFrom, m_kazeFrom);
 
-			if (sutehaiIdx == 13) {// ツモ切り
+			if (sutehaiIdx >= activePlayer.getTehai().getJyunTehaiLength()) {// ツモ切り
 				Hai.copy(m_suteHai, m_tsumoHai);
 				activePlayer.getKawa().add(m_suteHai);
 				activePlayer.getKawa().setReach(true);

@@ -889,7 +889,7 @@ public class AndjongView extends View implements EventIf {
 				} else {
 					int relation = fuuros[i].getRelation();
 
-					if (relation == Mahjong.RELATION_KAMICHA) {
+					if (relation == Mahjong.RELATION_SHIMOCHA) {
 						fuuroLeft -= mHaiImageHeight;
 						canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
@@ -1516,13 +1516,7 @@ public class AndjongView extends View implements EventIf {
 			m_drawItem.setState(STATE_TSUMO);
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 			m_drawItem.m_playerInfos[a_kazeFrom].m_tsumoHai = m_infoUi.getTsumoHai();
-
-//			synchronized (m_drawItem) {
-//				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
-//					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
-//					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
-//				}
-//			}
+			m_drawItem.m_playerInfos[a_kazeFrom].m_tenpai = true;
 
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -1532,6 +1526,8 @@ public class AndjongView extends View implements EventIf {
 
 			// 結果画面を表示する。
 			m_drawItem.m_state = STATE_RESULT;
+
+			m_drawItem.m_playerInfos[a_kazeFrom].m_tenpai = false;
 
 			// アクションを待つ。
 			m_playerAction.actionWait();
@@ -1636,13 +1632,7 @@ public class AndjongView extends View implements EventIf {
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 			m_drawItem.m_suteHai = m_infoUi.getSuteHai();
-
-//			synchronized (m_drawItem) {
-//				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
-//					Log.d(TAG, "getTenbou = " + m_infoUi.getTenbou(i));
-//					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
-//				}
-//			}
+			m_drawItem.m_playerInfos[a_kazeFrom].m_tenpai = true;
 
 			m_drawItem.m_state = STATE_RON;
 			this.postInvalidate(0, 0, getWidth(), getHeight());
@@ -1652,6 +1642,8 @@ public class AndjongView extends View implements EventIf {
 
 			// 結果画面を表示する。
 			m_drawItem.m_state = STATE_RESULT;
+
+			m_drawItem.m_playerInfos[a_kazeFrom].m_tenpai = false;
 
 			// アクションを待つ。
 			m_playerAction.actionWait();

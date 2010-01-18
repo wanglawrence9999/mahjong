@@ -374,8 +374,8 @@ public class Mahjong implements Runnable {
 				int iPlayer;
 				for (int i = 0; i < m_tenpai.length; i++) {
 					iPlayer = m_kazeToPlayerIdx[i];
-					m_tenpai[iPlayer] = m_players[iPlayer].isTenpai();
-					if (m_tenpai[iPlayer]) {
+					m_tenpai[i] = m_players[iPlayer].isTenpai();
+					if (m_tenpai[i]) {
 						tenpaiCount++;
 					}
 				}
@@ -581,14 +581,15 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		//if (true) {
-		if (false) {
+		if (true) {
+		//if (false) {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
+			int haiIds[] = {27, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33};
 			//int haiIds[] = {0, 0, 0, 0, 8, 8, 8, 8, 9, 9, 9, 9, 18, 18};
 			//int haiIds[] = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34};
-			int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
+			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
 			//int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 25, 25, 25, 21, 21};
 			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 17, 17, 17, 18, 18};

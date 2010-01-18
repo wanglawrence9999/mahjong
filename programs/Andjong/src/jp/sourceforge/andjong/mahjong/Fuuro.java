@@ -2,9 +2,9 @@ package jp.sourceforge.andjong.mahjong;
 
 /**
  * 副露を管理する。
- * 
+ *
  * @author Yuji Urushibara
- * 
+ *
  */
 public class Fuuro {
 	/*
@@ -39,7 +39,7 @@ public class Fuuro {
 
 	/**
 	 * 種別を設定する。
-	 * 
+	 *
 	 * @param a_type
 	 *            種別
 	 */
@@ -49,7 +49,7 @@ public class Fuuro {
 
 	/**
 	 * 種別を取得する。
-	 * 
+	 *
 	 * @return 種別
 	 */
 	public int getType() {
@@ -58,7 +58,7 @@ public class Fuuro {
 
 	/**
 	 * 他家との関係を設定する。
-	 * 
+	 *
 	 * @param a_relation
 	 *            他家との関係
 	 */
@@ -68,7 +68,7 @@ public class Fuuro {
 
 	/**
 	 * 他家との関係を取得する。
-	 * 
+	 *
 	 * @return 他家との関係
 	 */
 	public int getRelation() {
@@ -77,7 +77,7 @@ public class Fuuro {
 
 	/**
 	 * 構成牌を設定する。
-	 * 
+	 *
 	 * @param m_hais
 	 *            構成牌
 	 */
@@ -87,7 +87,7 @@ public class Fuuro {
 
 	/**
 	 * 構成牌を取得する。
-	 * 
+	 *
 	 * @return 構成牌
 	 */
 	public Hai[] getHais() {
@@ -96,7 +96,7 @@ public class Fuuro {
 
 	/**
 	 * 副露をコピーする。
-	 * 
+	 *
 	 * @param a_dest
 	 *            コピー先の副露
 	 * @param a_src
@@ -104,7 +104,7 @@ public class Fuuro {
 	 */
 	public static void copy(Fuuro a_dest, Fuuro a_src) {
 		a_dest.m_type = a_src.m_type;
-		a_dest.m_relation = a_dest.m_relation;
+		a_dest.m_relation = a_src.m_relation;
 
 		for (int i = 0; i < Mahjong.MENTSU_HAI_MEMBERS_4; i++) {
 			Hai.copy(a_dest.m_hais[i], a_src.m_hais[i]);

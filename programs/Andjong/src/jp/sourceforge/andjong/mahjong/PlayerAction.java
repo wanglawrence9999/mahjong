@@ -10,6 +10,7 @@ public class PlayerAction {
 	public static final int STATE_ACTION_WAIT = 4;
 	public static final int STATE_CHII_SELECT = 5;
 	public static final int STATE_KAN_SELECT = 6;
+	public static final int STATE_REACH_SELECT = 7;
 
 	EventId m_chiiEventId;
 
@@ -300,4 +301,14 @@ public class PlayerAction {
 	public synchronized boolean isDispMenu() {
 		return m_dispMenu;
 	}
+
+	public void setReachSelect(int a_reachSelect) {
+		this.m_reachSelect = a_reachSelect;
+	}
+
+	public int getReachSelect() {
+		return m_reachSelect;
+	}
+
+	private int m_reachSelect;
 }

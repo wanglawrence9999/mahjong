@@ -184,8 +184,6 @@ public class AndjongView extends View implements EventIf {
 	/** 本場の数Top */
 	private static final int HONBA_TOP = TENBOU_00100_MIN_IMAGE_TOP + 5;
 
-	private boolean mHaiSelectStatus;
-
 	/**
 	 * コンストラクタ
 	 *
@@ -813,6 +811,29 @@ public class AndjongView extends View implements EventIf {
 					}
 				}
 			}
+		} else if (isPlayer && (m_playerAction.getState() == PlayerAction.STATE_REACH_SELECT)){
+			int[] indexs = m_playerAction.m_indexs;
+			select = indexs[m_playerAction.getReachSelect()];
+			for (int i = 0; i < jyunTehaiLength; i++) {
+				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
+					if (i == m_drawItem.getSkipIdx()) {
+						continue;
+					}
+				}
+				if (i == select) {
+					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+				} else {
+					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
+				}
+			}
+
+			if (a_addHai != null) {
+				if (select >= jyunTehaiLength) {
+					canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
+				} else {
+					canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+				}
+			}
 		} else {
 			for (int i = 0; i < jyunTehaiLength; i++) {
 				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
@@ -969,6 +990,27 @@ public class AndjongView extends View implements EventIf {
 			}
 		}
 
+		if (m_playerAction.getState() == PlayerAction.STATE_REACH_SELECT) {
+			int indexNum = m_playerAction.m_indexNum;
+			int reachSelect = m_playerAction.getReachSelect();
+			//int[] indexs = m_playerAction.m_indexs;
+			if (action == MotionEvent.ACTION_DOWN) {
+				int ty = (int) event.getY();
+				if ((TOUCH_TOP <= ty) && (ty <= TOUCH_BOTTOM)) {
+					reachSelect++;
+					if (reachSelect >= indexNum) {
+						reachSelect = 0;
+					}
+					m_playerAction.setReachSelect(reachSelect);
+					invalidate();
+				} else {
+					Log.d(TAG, "reach actionNotifyAll");
+					m_playerAction.actionNotifyAll();
+				}
+			}
+
+			return true;
+		}
 
 		if (m_playerAction.getState() == PlayerAction.STATE_KAN_SELECT) {
 			int kanNum = m_playerAction.getKanNum();
@@ -1083,7 +1125,6 @@ public class AndjongView extends View implements EventIf {
 				}
 				m_iSelectSutehai = iSelect;
 			}
-			mHaiSelectStatus = true;
 		} else {
 			if (act_evt == MotionEvent.ACTION_DOWN) {
 				synchronized (m_drawItem) {
@@ -1153,6 +1194,31 @@ public class AndjongView extends View implements EventIf {
 		}
 
 		int state = m_playerAction.getState();
+		if (state == PlayerAction.STATE_REACH_SELECT) {
+			int indexNum = m_playerAction.m_indexNum;
+			int reachSelect = m_playerAction.getReachSelect();
+			//int[] indexs = m_playerAction.m_indexs;
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				reachSelect--;
+				if (reachSelect < 0) {
+					reachSelect = indexNum - 1;
+				}
+				m_playerAction.setReachSelect(reachSelect);
+				invalidate();
+				break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				reachSelect++;
+				if (reachSelect >= indexNum) {
+					reachSelect = 0;
+				}
+				m_playerAction.setReachSelect(reachSelect);
+				invalidate();
+				break;
+			default:
+				//return super.onKeyDown(keyCode, event);
+			}
+		}
 		if (state == PlayerAction.STATE_KAN_SELECT) {
 			int kanNum = m_playerAction.getKanNum();
 			int kanSelect = m_playerAction.getKanSelect();

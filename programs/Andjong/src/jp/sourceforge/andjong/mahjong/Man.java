@@ -61,6 +61,8 @@ public class Man implements EventIf {
 				Log.d("Man", "getReachIndexs = " + indexNum);
 				if (indexNum > 0) {
 					m_playerAction.setValidReach(true);
+					m_playerAction.m_indexs = indexs;
+					m_playerAction.m_indexNum = indexNum;
 					eventId[menuNum] = EventId.REACH;
 					menuNum++;
 				}
@@ -94,19 +96,21 @@ public class Man implements EventIf {
 						if (eventId[menuSelect] == EventId.REACH) {
 							m_playerAction.m_indexs = indexs;
 							m_playerAction.m_indexNum = indexNum;
+							m_playerAction.setReachSelect(0);
 							while (true) {
 								// “ü—Í‚ð‘Ò‚ÂB
-								m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
+								m_playerAction.setState(PlayerAction.STATE_REACH_SELECT);
+								m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
 								m_playerAction.actionWait();
-								sutehaiIdx = m_playerAction.getSutehaiIdx();
+								sutehaiIdx = m_playerAction.getReachSelect();
 								if (sutehaiIdx != Integer.MAX_VALUE) {
-									if (sutehaiIdx >= 0 && sutehaiIdx <= 13) {
+									if (sutehaiIdx >= 0 && sutehaiIdx < indexNum) {
 										break;
 									}
 								}
 							}
 							m_playerAction.init();
-							this.m_iSutehai = sutehaiIdx;
+							this.m_iSutehai = indexs[sutehaiIdx];
 						} else if ((eventId[menuSelect] == EventId.ANKAN) ||
 								(eventId[menuSelect] == EventId.KAN)) {
 							if (kanNum > 1) {

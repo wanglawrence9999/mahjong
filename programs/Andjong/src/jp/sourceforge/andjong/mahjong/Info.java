@@ -261,6 +261,30 @@ public class Info {
 		return index;
 	}
 
+	public int getMachiIndexs(Tehai a_tehai, Hai[] a_hais) {
+		Tehai tehai = new Tehai();
+		Tehai.copy(tehai, a_tehai, true);
+
+		int index = 0;
+		Hai addHai;
+		CountFormat countFormat = new CountFormat();
+
+		for (int id = 0; id < Hai.ID_ITEM_MAX; id++) {
+			addHai = new Hai(id);
+			tehai.addJyunTehai(addHai);
+			countFormat.setCountFormat(tehai, null);
+			if (countFormat.getCombis(combis) > 0) {
+				a_hais[index] = new Hai(id);
+				index++;
+				tehai.rmJyunTehai(addHai);
+			} else {
+				tehai.rmJyunTehai(addHai);
+			}
+		}
+
+		return index;
+	}
+
 	public void postUiEvent(EventId a_eventId, int a_kazeFrom, int a_kazeTo) {
 		game.postUiEvent(a_eventId, a_kazeFrom, a_kazeTo);
 	}

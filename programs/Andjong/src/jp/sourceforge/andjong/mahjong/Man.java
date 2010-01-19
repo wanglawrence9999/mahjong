@@ -25,6 +25,7 @@ public class Man implements EventIf {
 
 	/** Žè”v */
 	private Tehai m_tehai = new Tehai();
+	private Kawa m_kawa = new Kawa();
 
 	@Override
 	public EventId event(EventId eid, int a_kazeFrom, int a_kazeTo) {
@@ -47,6 +48,8 @@ public class Man implements EventIf {
 		int chiiCount = 0;
 		int iChii = 0;
 		int relation = a_kazeFrom - a_kazeTo;
+		boolean furiten = false;
+		Hai[] a_hais = new Hai[Hai.ID_ITEM_MAX];
 
 		switch (eid) {
 		case TSUMO:
@@ -174,12 +177,30 @@ public class Man implements EventIf {
 			m_info.copyTehai(m_tehai, m_info.getJikaze());
 			suteHai = m_info.getSuteHai();
 
-			agariScore = m_info.getAgariScore(m_tehai, suteHai);
-			if (agariScore > 0) {
-				Log.d("Man", "agariScore = " + agariScore);
-				m_playerAction.setValidRon(true);
-				eventId[menuNum] = EventId.RON_AGARI;
-				menuNum++;
+			indexNum = m_info.getMachiIndexs(m_tehai, a_hais);
+			if (indexNum > 0) {
+				m_info.copyKawa(m_kawa, m_info.getJikaze());
+				SuteHai suteHaiTemp = new SuteHai();
+				SuteHai[] suteHais = m_kawa.getSuteHais();
+				int kawaLength = m_kawa.getSuteHaisLength();
+				for (int i = 0; i < kawaLength; i++) {
+					suteHaiTemp = suteHais[i];
+					for (int j = 0; j < indexNum; j++) {
+						if (suteHaiTemp.getId() == a_hais[j].getId()) {
+							furiten = true;
+						}
+					}
+				}
+			}
+
+			if (!furiten) {
+				agariScore = m_info.getAgariScore(m_tehai, suteHai);
+				if (agariScore > 0) {
+					Log.d("Man", "agariScore = " + agariScore);
+					m_playerAction.setValidRon(true);
+					eventId[menuNum] = EventId.RON_AGARI;
+					menuNum++;
+				}
 			}
 
 			if (!m_info.isReach()) {

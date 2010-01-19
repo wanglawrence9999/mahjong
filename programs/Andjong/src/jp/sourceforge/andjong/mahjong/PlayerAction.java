@@ -74,7 +74,19 @@ public class PlayerAction {
 		m_dispMenu = false;
 		m_validDaiMinKan = false;
 
+		m_menuNum = 0;
+
 		setMenuSelect(5);
+	}
+
+	private int m_menuNum;
+
+	public synchronized void setMenuNum(int a_menuNum) {
+		this.m_menuNum = a_menuNum;
+	}
+
+	public synchronized int getMenuNum() {
+		return m_menuNum;
 	}
 
 	public synchronized void setState(int state) {

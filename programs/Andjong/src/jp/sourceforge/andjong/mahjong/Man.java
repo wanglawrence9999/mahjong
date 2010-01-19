@@ -83,6 +83,7 @@ public class Man implements EventIf {
 				menuNum++;
 			}
 
+			m_playerAction.setMenuNum(menuNum);
 			while (true) {
 				// “ü—Í‚ð‘Ò‚ÂB
 				m_playerAction.setState(PlayerAction.STATE_SUTEHAI_SELECT);
@@ -228,6 +229,7 @@ public class Man implements EventIf {
 			}
 
 			if (menuNum > 0) {
+				m_playerAction.setMenuNum(menuNum);
 				m_playerAction.setMenuSelect(5);
 				m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
 				m_playerAction.actionWait();

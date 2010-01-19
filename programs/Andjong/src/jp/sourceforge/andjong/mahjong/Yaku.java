@@ -147,6 +147,7 @@ public class Yaku {
 	 */
 	String[] getYakuName(){
 		int count = 0;
+		int hanSuu;
 
 		//¬—§‚µ‚Ä‚¢‚é–ğ‚Ì”‚ğƒJƒEƒ“ƒg
 		for(int i = 0 ; i < yakuhantei.length ; i++){
@@ -159,7 +160,12 @@ public class Yaku {
 		count = 0;
 		for(int i = 0 ; i < yakuhantei.length ; i++){
 			if( yakuhantei[i].getYakuHantei() == true){
-				yakuName[count] = yakuhantei[i].getYakuName() + " " + yakuhantei[i].getHanSuu() + "–|";
+				hanSuu = yakuhantei[i].getHanSuu();
+				if (hanSuu >= 13) {
+					yakuName[count] = yakuhantei[i].getYakuName() + " " + "–ğ–";
+				} else {
+					yakuName[count] = yakuhantei[i].getYakuName() + " " + hanSuu + "–|";
+				}
 				count++;
 			}
 		}

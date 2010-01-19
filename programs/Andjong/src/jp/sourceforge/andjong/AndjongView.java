@@ -381,8 +381,16 @@ public class AndjongView extends View implements EventIf {
 			case STATE_RESULT:
 				// ドラを表示する。
 				drawDoraHais(RESULT_DORAS_LEFT, RESULT_DORAS_TOP, a_canvas, m_infoUi.getDoraHais());
-				// 裏ドラを表示する。
-				drawDoraHais(RESULT_DORAS_LEFT, RESULT_DORAS_TOP + HAI_HEIGHT, a_canvas, m_infoUi.getUraDoraHais());
+
+				SuteHai[] suteHais = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_kawa.getSuteHais();
+				int kawaLength = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_kawa.getSuteHaisLength();
+				for (int i = 0; i < kawaLength; i++) {
+					if (suteHais[i].isReach()) {
+						// 裏ドラを表示する。
+						drawDoraHais(RESULT_DORAS_LEFT, RESULT_DORAS_TOP + HAI_HEIGHT, a_canvas, m_infoUi.getUraDoraHais());
+						break;
+					}
+				}
 
 				if (m_drawItem.m_eventId == EventId.TSUMO_AGARI) {
 					drawTehai(2, 50, a_canvas, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tehai, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tsumoHai, 0, 15, true);
@@ -401,7 +409,17 @@ public class AndjongView extends View implements EventIf {
 					top += 20;
 				}
 				String string = new String();
-				string += agariInfo.m_han + "翻 " + agariInfo.m_fu + "符 " + agariInfo.m_agariScore + "点";
+				if (agariInfo.m_score.m_oyaRon >= 48000) {
+					string += "役満 " + agariInfo.m_agariScore + "点";
+				} else if (agariInfo.m_score.m_oyaRon >= 36000) {
+					string += agariInfo.m_han + "翻 " + "三倍満 " + agariInfo.m_agariScore + "点";
+				} else if (agariInfo.m_score.m_oyaRon >= 24000) {
+					string += agariInfo.m_han + "翻 " + "倍満 " + agariInfo.m_agariScore + "点";
+				} else if (agariInfo.m_score.m_oyaRon >= 12000) {
+					string += agariInfo.m_han + "翻 " + agariInfo.m_fu + "符 満貫 " + agariInfo.m_agariScore + "点";
+				} else {
+					string += agariInfo.m_han + "翻 " + agariInfo.m_fu + "符 " + agariInfo.m_agariScore + "点";
+				}
 				drawString(left, top + 20, a_canvas, 20, Color.WHITE, string, Align.LEFT);
 				return;
 			case STATE_END:
@@ -968,6 +986,10 @@ public class AndjongView extends View implements EventIf {
 							return true;
 						}
 					}
+					if (m_playerAction.getState() != PlayerAction.STATE_SUTEHAI_SELECT) {
+						m_playerAction.actionNotifyAll();
+						return true;
+					}
 				} else {
 					int iMenu = 5;
 					for (int i = 0; i < m_menuRect.length; i++) {
@@ -978,8 +1000,10 @@ public class AndjongView extends View implements EventIf {
 							}
 						}
 					}
-					if (iMenu == 5) {
+					if (iMenu >= m_playerAction.getMenuNum()) {
 						m_playerAction.setDispMenu(false);
+						invalidate();
+						return true;
 					}
 					Log.d(TAG, "actionRequest actionNotifyAll");
 					m_playerAction.setMenuSelect(iMenu);

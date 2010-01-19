@@ -275,6 +275,19 @@ public class AgariScore {
 		combis = countFormat.getCombis();
 		combisCount = countFormat.getCombiNum();
 
+		if (countFormat.isChiitoitsu()) {
+			Yaku yaku = new Yaku(tehai, addHai, combis[0], setting, 0);
+			String[] yakuNames = yaku.getYakuName();
+			int hanSuu = yaku.getHan();
+			int agariScore = getScore(hanSuu, 25);
+			a_agariInfo.m_score = m_scoreWork;
+			a_agariInfo.m_fu = 25;
+			a_agariInfo.m_han = hanSuu;
+			a_agariInfo.m_yakuNames = yakuNames;
+
+			return agariScore;
+		}
+
 		// ‚ ‚ª‚è‚Ì‘g‚İ‡‚í‚¹‚ª‚È‚¢ê‡‚Í0“_
 		if (combisCount == 0) {
 			Yaku yaku = new Yaku(tehai, addHai, setting);

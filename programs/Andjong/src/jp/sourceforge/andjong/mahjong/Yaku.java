@@ -55,7 +55,7 @@ public class Yaku {
 							   new CheckRinsyan(),
 							   new CheckCyankan(),
 							   new CheckDoubleReach(),
-							   new CheckTeetoitu(),
+//							   new CheckTeetoitu(),
 							   new CheckCyanta(),
 							   new CheckIkkituukan(),
 							   new CheckSansyokuDoukou(),
@@ -119,6 +119,34 @@ public class Yaku {
 		yakuhantei = buffer;
 	}
 
+	Yaku(Tehai tehai, Hai addHai, Combi combi,AgariSetting setting, int a_status){
+		this.m_tehai = tehai;
+		this.m_addHai = addHai;
+		this.m_combi  = combi;
+		this.m_setting = setting;
+		nakiflg = false;
+
+		YakuHantei buffer[] = {
+				new CheckTanyao(),
+				new CheckReach(),
+				new CheckTumo(),
+				new CheckHaitei(),
+				new CheckHoutei(),
+				new CheckRinsyan(),
+				new CheckTeetoitu(),
+				new CheckHonroutouChiitoitsu(),
+				new CheckHonitu(),
+				new CheckTuuisou(),
+				new CheckTenhou(),
+				new CheckTihou(),
+				new CheckDora()
+		};
+
+		yakuhantei = buffer;
+
+		//yakuhantei[yakuhantei.length - 1].hanSuu = m_doraCount;
+	}
+
 	/**
 	 * è”v‘S‘Ì‚Ì–|”‚ğæ“¾‚µ‚Ü‚·B
 	 *
@@ -135,6 +163,17 @@ public class Yaku {
 		// ƒhƒ‰‚Ì‚İ‚Í–³‚µ
 		if (hanSuu == yakuhantei[yakuhantei.length - 1].hanSuu) {
 			return 0;
+		}
+
+		return hanSuu;
+	}
+
+	int getHan(){
+		int hanSuu = 0;
+		for(int i = 0 ; i < yakuhantei.length ; i++){
+			if( yakuhantei[i].getYakuHantei() == true){
+				hanSuu+= yakuhantei[i].getHanSuu();
+			}
 		}
 
 		return hanSuu;
@@ -531,6 +570,14 @@ public class Yaku {
 	private class CheckHonroutou extends YakuHantei{
 		CheckHonroutou(){
 			hantei = checkHonroutou();
+			yakuName = "¬˜V“ª";
+			hanSuu = 2;
+		}
+	}
+
+	private class CheckHonroutouChiitoitsu extends YakuHantei{
+		CheckHonroutouChiitoitsu(){
+			hantei = checkHonroutouChiitoitsu();
 			yakuName = "¬˜V“ª";
 			hanSuu = 2;
 		}
@@ -966,8 +1013,8 @@ public class Yaku {
 		if(nakiflg == true){
 			return false;
 		}
-		//TODO µ‘Îq
-		return false;
+
+		return true;
 	}
 
 	boolean checkCyanta() {
@@ -1594,6 +1641,28 @@ public class Yaku {
 		}
 	}
 
+	boolean checkHonroutouChiitoitsu() {
+		Hai[] jyunTehai = m_tehai.getJyunTehai();
+
+		//ƒè”v‚ğƒ`ƒFƒbƒN
+		int jyunTehaiLength = m_tehai.getJyunTehaiLength();
+		for (int i = 0; i < jyunTehaiLength; i++) {
+			//‚P‚Xš”v‚È‚ç‚Î¬—§
+			if (jyunTehai[i].isYaochuu() == false){
+				return false;
+			}
+		}
+
+		// ’Ç‰Á”v‚ğƒ`ƒFƒbƒN
+
+		//‚P‚Xš”v‚È‚ç‚Î¬—§
+		if (m_addHai.isYaochuu() == false){
+			return false;
+		}
+
+		return true;
+	}
+
 	boolean checkRenhou() {
 		if(m_setting.getYakuflg(RENHOU.ordinal())){
 			return true;
@@ -2012,6 +2081,8 @@ public class Yaku {
 				}
 			}
 		}
+
+		// TODO •›˜I‚Æ’Ç‰Á”v‚ªl—¶‚³‚ê‚Ä‚¢‚È‚¢B
 
 		if (doraCount > 0) {
 			m_doraCount = doraCount;

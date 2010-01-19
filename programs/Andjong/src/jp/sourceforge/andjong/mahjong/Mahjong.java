@@ -428,7 +428,7 @@ public class Mahjong implements Runnable {
 			tsumoNokori = m_yama.getTsumoNokori();
 			if (tsumoNokori == 0) {
 				m_isLast = true;
-			} else if (tsumoNokori < 67) {
+			} else if (tsumoNokori < 66) {
 				m_isChiihou = false;
 			}
 
@@ -581,13 +581,14 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		//if (false)
+		if (false)
 		{
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
+			int haiIds[] = {1, 1, 3, 3, 5, 5, 7, 7, 10, 10, 11, 11, 13, 13};
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
-			int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
+			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
 			//int haiIds[] = {27, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33};
 			//int haiIds[] = {0, 0, 0, 0, 8, 8, 8, 8, 9, 9, 9, 9, 18, 18};
 			//int haiIds[] = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34};
@@ -638,7 +639,7 @@ public class Mahjong implements Runnable {
 
 		m_isTsumo = true;
 
-		//m_tsumoHai = new Hai(18);
+		m_tsumoHai = new Hai(13);
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
 

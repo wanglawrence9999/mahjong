@@ -226,6 +226,12 @@ public class CountFormat {
 		m_combiManage.initialize(getTotalCountLength());
 		searchCombi(0);
 		//a_combis = m_combiManage.m_combis;
+		if (m_combiManage.m_combiNum == 0) {
+			m_chiitoitsu = checkChiitoitsu();
+			if (m_chiitoitsu) {
+				m_combiManage.m_combiNum = 1;
+			}
+		}
 		return m_combiManage.m_combiNum;
 	}
 
@@ -235,6 +241,27 @@ public class CountFormat {
 
 	public int getCombiNum() {
 		return m_combiManage.m_combiNum;
+	}
+
+	private boolean m_chiitoitsu;
+	public boolean isChiitoitsu() {
+		return m_chiitoitsu;
+	}
+
+	private boolean checkChiitoitsu() {
+		int count = 0;
+		for (int i = 0; i < m_countNum; i++) {
+			if (m_counts[i].m_num == 2) {
+				count++;
+			} else {
+				return false;
+			}
+		}
+
+		if (count == 7) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

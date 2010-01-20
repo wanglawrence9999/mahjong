@@ -131,6 +131,13 @@ class Player {
 		this.reach = reach;
 	}
 
+	private int m_suteHaisCount;
+	void setSuteHaisCount(int a_suteHaisCount) {
+		this.m_suteHaisCount = a_suteHaisCount;
+	}
+	int getSuteHaisCount() {
+		return m_suteHaisCount;
+	}
 
 	private CountFormat m_countFormat = new CountFormat();
 

@@ -288,4 +288,16 @@ public class Info {
 	public void postUiEvent(EventId a_eventId, int a_kazeFrom, int a_kazeTo) {
 		game.postUiEvent(a_eventId, a_kazeFrom, a_kazeTo);
 	}
+
+	public int getSuteHaisCount() {
+		return game.getSuteHaisCount();
+	}
+
+	public SuteHai[] getSuteHais() {
+		return game.getSuteHais();
+	}
+
+	public int getPlayerSuteHaisCount() {
+		return game.getPlayerSuteHaisCount(game.getJikaze());
+	}
 }

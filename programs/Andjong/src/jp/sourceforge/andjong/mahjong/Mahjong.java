@@ -7,7 +7,6 @@ import jp.sourceforge.andjong.mahjong.AgariScore.AgariInfo;
 import jp.sourceforge.andjong.mahjong.AgariSetting.YakuflgName;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 import static jp.sourceforge.andjong.mahjong.EventIf.*;
-import static jp.sourceforge.andjong.mahjong.Hai.*;
 
 /**
  * ゲームを管理するクラスです。
@@ -86,6 +85,19 @@ public class Mahjong implements Runnable {
 
 	/** 持ち点の初期値 */
 	private static final int TENBOU_INIT = 20000;
+
+	private int m_suteHaisCount = 0;
+	public int getSuteHaisCount() {
+		return m_suteHaisCount;
+	}
+	private SuteHai[] m_suteHais = new SuteHai[136];
+	public SuteHai[] getSuteHais() {
+		return m_suteHais;
+	}
+
+	public int getPlayerSuteHaisCount(int a_kaze) {
+		return m_players[m_kazeToPlayerIdx[a_kaze]].getSuteHaisCount();
+	}
 
 	/**
 	 * コンストラクタ
@@ -195,7 +207,7 @@ public class Mahjong implements Runnable {
 	public static final int RELATION_SHIMOCHA = 3;
 
 	/** 割れ目 */
-	private int mWareme;
+	//private int mWareme;
 
 	/** アクティブプレイヤー */
 	private Player activePlayer;
@@ -261,6 +273,8 @@ public class Mahjong implements Runnable {
 
 		// 捨牌を作成する。
 		m_suteHai = new Hai();
+
+		m_suteHaisCount = 0;
 
 		// リーチ棒の数を初期化する。
 		m_reachbou = 0;
@@ -328,6 +342,8 @@ public class Mahjong implements Runnable {
 		for (int i = 0; i < m_players.length; i++) {
 			m_players[i].init();
 		}
+
+		m_suteHaisCount = 0;
 
 		// 洗牌する。
 		m_yama.xipai();
@@ -559,7 +575,7 @@ public class Mahjong implements Runnable {
 	void setWareme(Sai[] sais) {
 		int sum = sais[0].getNo() + sais[1].getNo() - 1;
 
-		mWareme = sum % 4;
+		//mWareme = sum % 4;
 
 		int startHaisIdx = ((sum % 4) * 36) + sum;
 
@@ -703,6 +719,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().add(m_suteHai);
 				activePlayer.getKawa().setTedashi(true);
 			}
+			m_suteHais[m_suteHaisCount++] = new SuteHai(m_suteHai);
 
 			// イベントを通知する。
 			retEid = notifyEvent(EventId.SUTEHAI, m_kazeFrom, m_kazeFrom);
@@ -711,6 +728,7 @@ public class Mahjong implements Runnable {
 			// 捨牌のインデックスを取得する。
 			sutehaiIdx = activePlayer.getEventIf().getISutehai();
 			activePlayer.setReach(true);
+			activePlayer.setSuteHaisCount(m_suteHaisCount);
 			m_view.event(EventId.UI_WAIT_RIHAI, m_kazeFrom, m_kazeFrom);
 
 			if (sutehaiIdx >= activePlayer.getTehai().getJyunTehaiLength()) {// ツモ切り
@@ -725,6 +743,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setTedashi(true);
 				activePlayer.getKawa().setReach(true);
 			}
+			m_suteHais[m_suteHaisCount++] = new SuteHai(m_suteHai);
 
 			activePlayer.reduceTenbou(1000);
 			activePlayer.setReach(true);
@@ -840,6 +859,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().add(m_suteHai);
 				//activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
+				m_suteHais[m_suteHaisCount++] = new SuteHai(m_suteHai);
 
 				// イベントを通知する。
 				ret = notifyEvent(EventId.PON, this.m_kazeFrom, this.m_kazeTo);
@@ -862,6 +882,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().add(m_suteHai);
 				//activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
+				m_suteHais[m_suteHaisCount++] = new SuteHai(m_suteHai);
 
 				// イベントを通知する。
 				ret = notifyEvent(EventId.CHII_LEFT, this.m_kazeFrom, this.m_kazeTo);
@@ -884,6 +905,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().add(m_suteHai);
 				//activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
+				m_suteHais[m_suteHaisCount++] = new SuteHai(m_suteHai);
 
 				// イベントを通知する。
 				ret = notifyEvent(EventId.CHII_CENTER, this.m_kazeFrom, this.m_kazeTo);
@@ -906,6 +928,7 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().add(m_suteHai);
 				//activePlayer.getKawa().setNaki(true);
 				activePlayer.getKawa().setTedashi(true);
+				m_suteHais[m_suteHaisCount++] = new SuteHai(m_suteHai);
 
 				// イベントを通知する。
 				ret = notifyEvent(EventId.CHII_RIGHT, this.m_kazeFrom, this.m_kazeTo);

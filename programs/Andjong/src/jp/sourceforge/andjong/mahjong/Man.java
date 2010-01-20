@@ -179,11 +179,27 @@ public class Man implements EventIf {
 				SuteHai suteHaiTemp = new SuteHai();
 				SuteHai[] suteHais = m_kawa.getSuteHais();
 				int kawaLength = m_kawa.getSuteHaisLength();
-				for (int i = 0; i < kawaLength; i++) {
+				FURITENLOOP: for (int i = 0; i < kawaLength; i++) {
 					suteHaiTemp = suteHais[i];
 					for (int j = 0; j < indexNum; j++) {
 						if (suteHaiTemp.getId() == a_hais[j].getId()) {
 							furiten = true;
+							break FURITENLOOP;
+						}
+					}
+				}
+
+				if (m_info.isReach() || !furiten) {
+					suteHais = m_info.getSuteHais();
+					int suteHaisCount = m_info.getSuteHaisCount();
+					int playerSuteHaisCount = m_info.getPlayerSuteHaisCount();
+					FURITENLOOP: for (; playerSuteHaisCount < suteHaisCount - 1; playerSuteHaisCount++) {
+						suteHaiTemp = suteHais[playerSuteHaisCount];
+						for (int j = 0; j < indexNum; j++) {
+							if (suteHaiTemp.getId() == a_hais[j].getId()) {
+								furiten = true;
+								break FURITENLOOP;
+							}
 						}
 					}
 				}
@@ -223,11 +239,27 @@ public class Man implements EventIf {
 				SuteHai suteHaiTemp = new SuteHai();
 				SuteHai[] suteHais = m_kawa.getSuteHais();
 				int kawaLength = m_kawa.getSuteHaisLength();
-				for (int i = 0; i < kawaLength; i++) {
+				FURITENLOOP: for (int i = 0; i < kawaLength; i++) {
 					suteHaiTemp = suteHais[i];
 					for (int j = 0; j < indexNum; j++) {
 						if (suteHaiTemp.getId() == a_hais[j].getId()) {
 							furiten = true;
+							break FURITENLOOP;
+						}
+					}
+				}
+
+				if (m_info.isReach() || !furiten) {
+					suteHais = m_info.getSuteHais();
+					int suteHaisCount = m_info.getSuteHaisCount();
+					int playerSuteHaisCount = m_info.getPlayerSuteHaisCount();
+					FURITENLOOP: for (; playerSuteHaisCount < suteHaisCount - 1; playerSuteHaisCount++) {
+						suteHaiTemp = suteHais[playerSuteHaisCount];
+						for (int j = 0; j < indexNum; j++) {
+							if (suteHaiTemp.getId() == a_hais[j].getId()) {
+								furiten = true;
+								break FURITENLOOP;
+							}
 						}
 					}
 				}

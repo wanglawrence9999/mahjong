@@ -237,10 +237,6 @@ public class Mahjong implements Runnable {
 
 			// 局を進める。
 			m_kyoku++;
-
-			// 本場を初期化する。
-			// TODO 上がりの位置に移動しないと。
-			m_honba = 0;
 		}
 
 		// イベント（ゲームの終了）を発行する。
@@ -309,10 +305,6 @@ public class Mahjong implements Runnable {
 	 * 局を開始する。
 	 */
 	private void startKyoku() {
-		// リーチ棒の数を初期化する。
-		// TODO 上がりの位置に移動しないと。
-		m_reachbou = 0;
-
 		// 連荘を初期化する。
 		m_renchan = false;
 
@@ -400,9 +392,9 @@ public class Mahjong implements Runnable {
 				}
 				for (int i = 0; i < m_tenpai.length; i++) {
 					if (m_tenpai[i]) {
-						m_players[i].increaseTenbou(incScore);
+						m_players[m_kazeToPlayerIdx[i]].increaseTenbou(incScore);
 					} else {
-						m_players[i].reduceTenbou(redScore);
+						m_players[m_kazeToPlayerIdx[i]].reduceTenbou(redScore);
 					}
 				}
 
@@ -469,8 +461,11 @@ public class Mahjong implements Runnable {
 				activePlayer.increaseTenbou(score);
 				m_agariInfo.m_agariScore = score - (m_honba * 300);
 
-				// TODO 点数を清算する。
+				// 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);
+
+				// リーチ棒の数を初期化する。
+				m_reachbou = 0;
 
 				// UIイベント（ツモあがり）を発行する。
 				m_view.event(retEid, m_kazeFrom, m_kazeTo);
@@ -505,8 +500,11 @@ public class Mahjong implements Runnable {
 
 				m_agariInfo.m_agariScore = score - (m_honba * 300);
 
-				// TODO 点数を清算する。
+				// 点数を清算する。
 				activePlayer.increaseTenbou(m_reachbou * 1000);
+
+				// リーチ棒の数を初期化する。
+				m_reachbou = 0;
 
 				// UIイベント（ロン）を発行する。
 				m_view.event(retEid, m_kazeFrom, m_kazeTo);
@@ -580,7 +578,7 @@ public class Mahjong implements Runnable {
 			m_players[j].getTehai().addJyunTehai(m_yama.tsumo());
 		}
 
-		if (false)
+		//if (false)
 		{
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);

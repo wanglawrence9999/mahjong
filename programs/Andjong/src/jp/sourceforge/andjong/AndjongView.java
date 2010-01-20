@@ -27,15 +27,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 public class AndjongView extends View implements EventIf {
 	private static final String TAG = "AndjongView";
 
 	/** アクティビティ */
-	private Game mGame;
+	//private Game mGame;
 
 	/** 牌のイメージ */
 	private Bitmap[] m_haiImage;
@@ -67,7 +64,7 @@ public class AndjongView extends View implements EventIf {
 	private Bitmap mChiichaImage;
 
 	/** メニュー選択のイメージ */
-	private Bitmap mMenuSelectImage;
+	//private Bitmap mMenuSelectImage;
 
 	/** 背景のペイント */
 	private Paint mBackgroundPaint;
@@ -194,7 +191,7 @@ public class AndjongView extends View implements EventIf {
 		super(context);
 
 		// アクティビティを保存する。
-		this.mGame = (Game) context;
+		//this.mGame = (Game) context;
 
 		// イメージを初期化する。
 		initImage(getResources());
@@ -276,7 +273,7 @@ public class AndjongView extends View implements EventIf {
 
 		mChiichaImage = BitmapFactory.decodeResource(res, R.drawable.chiicha);
 
-		mMenuSelectImage = BitmapFactory.decodeResource(res, R.drawable.menu_select);
+		//mMenuSelectImage = BitmapFactory.decodeResource(res, R.drawable.menu_select);
 	}
 
 	/**
@@ -794,7 +791,7 @@ public class AndjongView extends View implements EventIf {
 			}
 		} else if (isPlayer && (m_playerAction.getState() == PlayerAction.STATE_KAN_SELECT)) {
 			Hai[] kanHais = m_playerAction.getKanHais();
-			int kanNum = m_playerAction.getKanNum();
+			//int kanNum = m_playerAction.getKanNum();
 			int kanSelect = m_playerAction.getKanSelect();
 
 			for (int i = 0; i < jyunTehaiLength; i++) {
@@ -1467,6 +1464,11 @@ public class AndjongView extends View implements EventIf {
 			}
 			break;
 		case END_GAME:
+			synchronized (m_drawItem) {
+				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
+					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
+				}
+			}
 			m_drawItem.setState(STATE_END);
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;

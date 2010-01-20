@@ -2083,7 +2083,51 @@ public class Yaku {
 			}
 		}
 
-		// TODO •›˜I‚Æ’Ç‰Á”v‚ªl—¶‚³‚ê‚Ä‚¢‚È‚¢B
+		for (int i = 0; i < doraHais.length; i++) {
+			if (doraHais[i].getNextHaiId() == m_addHai.getId()) {
+				doraCount++;
+				break;
+			}
+		}
+
+		Fuuro[] fuuros = m_tehai.getFuuros();
+		int fuuroNum = m_tehai.getFuuroNum();
+		int type;
+		for (int i = 0; i < fuuroNum; i++) {
+			type = fuuros[i].getType();
+			switch (type) {
+			case Fuuro.TYPE_MINKOU:
+				for (int j = 0; j < doraHais.length; j++) {
+					if (doraHais[i].getNextHaiId() == fuuros[i].getHais()[0].getId()) {
+						doraCount += 3;
+						break;
+					}
+				}
+				break;
+			case Fuuro.TYPE_DAIMINKAN:
+			case Fuuro.TYPE_KAKAN:
+			case Fuuro.TYPE_ANKAN:
+				for (int j = 0; j < doraHais.length; j++) {
+					if (doraHais[i].getNextHaiId() == fuuros[i].getHais()[0].getId()) {
+						doraCount += 4;
+						break;
+					}
+				}
+				break;
+			case Fuuro.TYPE_MINSHUN:
+				SEARCHLOOP: for (int j = 0; j < doraHais.length; j++) {
+					for (int k = 0; k < 3; k++) {
+						if (doraHais[i].getNextHaiId() == fuuros[i].getHais()[k].getId()) {
+							doraCount += 1;
+							break SEARCHLOOP;
+						}
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
 
 		if (doraCount > 0) {
 			m_doraCount = doraCount;

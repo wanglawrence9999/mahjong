@@ -66,9 +66,9 @@ public class AgariScore {
 		Hai checkHais[];
 
 		//µ‘Îq‚Ìê‡‚Í‚Q‚T•„
-		if(yaku.checkTeetoitu() == true){
-			return 25;
-		}
+//		if(yaku.checkTeetoitu() == true){
+//			return 25;
+//		}
 
 		//“ª‚Ì”v‚ğæ“¾
 		Hai atamaHai = new Hai(Hai.noKindToId(combi.m_atamaNoKind));

@@ -1,7 +1,5 @@
 package jp.sourceforge.andjong.mahjong;
 
-import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
-
 /**
  * プレイヤーを管理するクラスです。
  *

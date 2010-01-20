@@ -136,6 +136,7 @@ public class Yaku {
 				new CheckTeetoitu(),
 				new CheckHonroutouChiitoitsu(),
 				new CheckHonitu(),
+				new CheckTinitu(),
 				new CheckTuuisou(),
 				new CheckTenhou(),
 				new CheckTihou(),

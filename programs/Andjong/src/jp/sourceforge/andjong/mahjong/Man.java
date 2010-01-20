@@ -75,6 +75,7 @@ public class Man implements EventIf {
 			if (agariScore > 0) {
 				Log.d("Man", "agariScore = " + agariScore);
 				m_playerAction.setValidTsumo(true);
+				m_playerAction.setDispMenu(true);
 				eventId[menuNum] = EventId.TSUMO_AGARI;
 				menuNum++;
 			}
@@ -168,11 +169,50 @@ public class Man implements EventIf {
 			m_playerAction.init();
 			this.m_iSutehai = sutehaiIdx;
 			return EventId.SUTEHAI;
+		case RON_CHECK:
+			m_info.copyTehai(m_tehai, m_info.getJikaze());
+			suteHai = m_info.getSuteHai();
+
+			indexNum = m_info.getMachiIndexs(m_tehai, a_hais);
+			if (indexNum > 0) {
+				m_info.copyKawa(m_kawa, m_info.getJikaze());
+				SuteHai suteHaiTemp = new SuteHai();
+				SuteHai[] suteHais = m_kawa.getSuteHais();
+				int kawaLength = m_kawa.getSuteHaisLength();
+				for (int i = 0; i < kawaLength; i++) {
+					suteHaiTemp = suteHais[i];
+					for (int j = 0; j < indexNum; j++) {
+						if (suteHaiTemp.getId() == a_hais[j].getId()) {
+							furiten = true;
+						}
+					}
+				}
+			}
+
+			if (!furiten) {
+				agariScore = m_info.getAgariScore(m_tehai, suteHai);
+				if (agariScore > 0) {
+					m_playerAction.setDispMenu(true);
+					m_playerAction.setValidRon(true);
+					m_playerAction.setMenuNum(1);
+					m_playerAction.setMenuSelect(5);
+					m_playerAction.setState(PlayerAction.STATE_RON_SELECT);
+					m_info.postUiEvent(EventId.UI_INPUT_PLAYER_ACTION, a_kazeFrom, a_kazeTo);
+					m_playerAction.actionWait();
+					int menuSelect = m_playerAction.getMenuSelect();
+					if (menuSelect < 1) {
+						m_playerAction.init();
+						return EventId.RON_AGARI;
+					}
+					m_playerAction.init();
+				}
+			}
+			break;
 		case SUTEHAI:
 			if (a_kazeFrom == m_info.getJikaze()) {
 				return EventId.NAGASHI;
 			}
-			Log.e("SUTEHAI", "fromKaze = " + a_kazeFrom + ", toKaze = " + a_kazeTo);
+			//Log.e("SUTEHAI", "fromKaze = " + a_kazeFrom + ", toKaze = " + a_kazeTo);
 
 			m_info.copyTehai(m_tehai, m_info.getJikaze());
 			suteHai = m_info.getSuteHai();

@@ -16,6 +16,8 @@ import static jp.sourceforge.andjong.mahjong.Hai.*;
  *
  */
 public class Mahjong implements Runnable {
+	private static final String TAG = "Mahjong";
+
 	/** AndjongView */
 	private AndjongView m_view;
 
@@ -223,7 +225,6 @@ public class Mahjong implements Runnable {
 
 		// 局を繰り返して、ゲームを進行する。
 		while (m_kyoku <= m_kyokuEnd) {
-			Log.e("Mahjong", "oya = " + m_iOya);
 			// 局を開始する。
 			startKyoku();
 
@@ -435,8 +436,6 @@ public class Mahjong implements Runnable {
 			// イベント（ツモ）を発行する。
 			retEid = tsumoEvent();
 
-			Log.e("Mahjong", "kazeFrom = " + m_kazeFrom + " kazeTo = " + m_kazeTo);
-			Log.e("Mahjong", "iFrom = " + m_kazeToPlayerIdx[m_kazeFrom] + " iTo = " + m_kazeToPlayerIdx[m_kazeTo]);
 			int score;
 			int iPlayer;
 			// イベントを処理する。
@@ -586,7 +585,8 @@ public class Mahjong implements Runnable {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {1, 1, 3, 3, 5, 5, 7, 7, 10, 10, 11, 11, 13, 13};
+			int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
+			//int haiIds[] = {1, 1, 3, 3, 5, 5, 7, 7, 10, 10, 11, 11, 13, 13};
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
 			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
 			//int haiIds[] = {27, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33};
@@ -639,12 +639,13 @@ public class Mahjong implements Runnable {
 
 		m_isTsumo = true;
 
-		m_tsumoHai = new Hai(13);
+		//m_tsumoHai = new Hai(13);
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
 
 		// イベント（ツモ）を発行する。
 		EventId retEid = activePlayer.getEventIf().event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
+		Log.i(TAG, retEid.toString() + ", kazeFrom = " + m_kazeFrom + ", kazeTo = " + m_kazeTo);
 
 		m_isTenhou = false;
 
@@ -746,23 +747,50 @@ public class Mahjong implements Runnable {
 	/**
 	 * イベントを通知する。
 	 *
-	 * @param eid
+	 * @param a_eventId
 	 *            イベントID
-	 * @param fromKaze
+	 * @param a_kazeFrom
 	 *            イベントを発行した風
-	 * @param toKaze
+	 * @param a_kazeTo
 	 *            イベントの対象となった風
 	 * @return イベントID
 	 */
-	private EventId notifyEvent(EventId eid, int fromKaze, int toKaze) {
-		EventId retEid = EventId.NAGASHI;
+	private EventId notifyEvent(EventId a_eventId, int a_kazeFrom, int a_kazeTo) {
+		// UIイベントを発行する。
+		m_view.event(a_eventId, a_kazeFrom, a_kazeTo);
+
+		EventId ret = EventId.NAGASHI;
 		int iSuteHai;
 
-		// UIイベントを発行する。
-		m_view.event(eid, fromKaze, toKaze);
+		switch (a_eventId) {
+		case PON:
+		case CHII_CENTER:
+		case CHII_LEFT:
+		case CHII_RIGHT:
+		case DAIMINKAN:
+		case SUTEHAI:
+			for (int i = 0, j = a_kazeFrom + 1; i < m_players.length - 1; i++, j++) {
+				if (j >= m_players.length) {
+					j = 0;
+				}
+
+				// アクティブプレイヤーを設定する。
+				activePlayer = m_players[m_kazeToPlayerIdx[j]];
+
+				ret = activePlayer.getEventIf().event(EventId.RON_CHECK, a_kazeFrom, j);
+				if (ret == EventId.RON_AGARI) {
+					// アクティブプレイヤーを設定する。
+					this.m_kazeFrom = j;
+					this.m_kazeTo = a_kazeFrom;
+					activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
+					return ret;
+				}
+			}
+			break;
+		}
 
 		// 各プレイヤーにイベントを通知する。
-		NOTIFYLOOP: for (int i = 0, j = fromKaze; i < m_players.length; i++, j++) {
+		NOTIFYLOOP: for (int i = 0, j = a_kazeFrom; i < m_players.length; i++, j++) {
 			if (j >= m_players.length) {
 				j = 0;
 			}
@@ -770,31 +798,28 @@ public class Mahjong implements Runnable {
 			// アクティブプレイヤーを設定する。
 			activePlayer = m_players[m_kazeToPlayerIdx[j]];
 
-			// UIイベントを発行する。
-			//mView.event(eid, fromKaze, toKaze);
-
 			// イベントを発行する。
-			toKaze = j;
-			retEid = activePlayer.getEventIf().event(eid, fromKaze, toKaze);
+			a_kazeTo = j;
+			ret = activePlayer.getEventIf().event(a_eventId, a_kazeFrom, a_kazeTo);
 
-			if (retEid != EventId.NAGASHI) {
+			if (ret != EventId.NAGASHI) {
 				for (int k = 0; k < 4; k++) {
 					m_players[k].setIppatsu(false);
 				}
 			}
 
 			// イベントを処理する。
-			switch (retEid) {
+			switch (ret) {
 			case TSUMO_AGARI:// ツモあがり
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
-				this.m_kazeTo = toKaze;
+				this.m_kazeTo = a_kazeTo;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				break NOTIFYLOOP;
 			case RON_AGARI:// ロン
 				// アクティブプレイヤーを設定する。
-				this.m_kazeFrom = toKaze;
-				this.m_kazeTo = fromKaze;
+				this.m_kazeFrom = a_kazeTo;
+				this.m_kazeTo = a_kazeFrom;
 //				this.m_kazeFrom = j;
 //				this.m_kazeTo = toKaze;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
@@ -803,7 +828,7 @@ public class Mahjong implements Runnable {
 				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
-				this.m_kazeTo = fromKaze;
+				this.m_kazeTo = a_kazeFrom;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				activePlayer.getTehai().setPon(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
 				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
@@ -819,13 +844,13 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setTedashi(true);
 
 				// イベントを通知する。
-				retEid = notifyEvent(EventId.PON, this.m_kazeFrom, this.m_kazeTo);
+				ret = notifyEvent(EventId.PON, this.m_kazeFrom, this.m_kazeTo);
 				break NOTIFYLOOP;
 			case CHII_LEFT:
 				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
-				this.m_kazeTo = fromKaze;
+				this.m_kazeTo = a_kazeFrom;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				activePlayer.getTehai().setChiiLeft(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
 				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
@@ -841,13 +866,13 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setTedashi(true);
 
 				// イベントを通知する。
-				retEid = notifyEvent(EventId.CHII_LEFT, this.m_kazeFrom, this.m_kazeTo);
+				ret = notifyEvent(EventId.CHII_LEFT, this.m_kazeFrom, this.m_kazeTo);
 				break NOTIFYLOOP;
 			case CHII_CENTER:
 				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
-				this.m_kazeTo = fromKaze;
+				this.m_kazeTo = a_kazeFrom;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				activePlayer.getTehai().setChiiCenter(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
 				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
@@ -863,13 +888,13 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setTedashi(true);
 
 				// イベントを通知する。
-				retEid = notifyEvent(EventId.CHII_CENTER, this.m_kazeFrom, this.m_kazeTo);
+				ret = notifyEvent(EventId.CHII_CENTER, this.m_kazeFrom, this.m_kazeTo);
 				break NOTIFYLOOP;
 			case CHII_RIGHT:
 				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
-				this.m_kazeTo = fromKaze;
+				this.m_kazeTo = a_kazeFrom;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				activePlayer.getTehai().setChiiRight(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
 				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
@@ -885,19 +910,19 @@ public class Mahjong implements Runnable {
 				activePlayer.getKawa().setTedashi(true);
 
 				// イベントを通知する。
-				retEid = notifyEvent(EventId.CHII_RIGHT, this.m_kazeFrom, this.m_kazeTo);
+				ret = notifyEvent(EventId.CHII_RIGHT, this.m_kazeFrom, this.m_kazeTo);
 				break NOTIFYLOOP;
 			case DAIMINKAN:
 				m_isChiihou = false;
 				// アクティブプレイヤーを設定する。
 				this.m_kazeFrom = j;
-				this.m_kazeTo = fromKaze;
+				this.m_kazeTo = a_kazeFrom;
 				activePlayer = m_players[m_kazeToPlayerIdx[this.m_kazeFrom]];
 				activePlayer.getTehai().setDaiMinKan(m_suteHai, getRelation(this.m_kazeFrom, this.m_kazeTo));
 				m_players[m_kazeToPlayerIdx[this.m_kazeTo]].getKawa().setNaki(true);
 
 				// イベントを通知する。
-				retEid = notifyEvent(EventId.DAIMINKAN, this.m_kazeFrom, this.m_kazeTo);
+				ret = notifyEvent(EventId.DAIMINKAN, this.m_kazeFrom, this.m_kazeTo);
 
 				// UIイベント（進行待ち）を発行する。
 				m_view.event(EventId.UI_WAIT_PROGRESS, KAZE_NONE, KAZE_NONE);
@@ -907,22 +932,22 @@ public class Mahjong implements Runnable {
 
 				// イベント（ツモ）を発行する。
 				m_isRinshan = true;
-				retEid = tsumoEvent();
+				ret = tsumoEvent();
 				m_isRinshan = false;
 				break NOTIFYLOOP;
 			default:
 				break;
 			}
 
-			if (eid == EventId.SELECT_SUTEHAI) {
-				return retEid;
+			if (a_eventId == EventId.SELECT_SUTEHAI) {
+				return ret;
 			}
 		}
 
 		// アクティブプレイヤーを設定する。
-		activePlayer = m_players[m_kazeToPlayerIdx[fromKaze]];
+		activePlayer = m_players[m_kazeToPlayerIdx[a_kazeFrom]];
 
-		return retEid;
+		return ret;
 	}
 
 	/*

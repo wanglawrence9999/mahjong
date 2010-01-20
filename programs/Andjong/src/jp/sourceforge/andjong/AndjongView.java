@@ -403,7 +403,7 @@ public class AndjongView extends View implements EventIf {
 				int top = 50 + 38 + 2 + 10;
 				//int left = (MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2;
 				//int top = (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2;
-				Log.e(TAG, "length = " + agariInfo.m_yakuNames.length);
+				Log.d(TAG, "length = " + agariInfo.m_yakuNames.length);
 				for (int i = 0; i < agariInfo.m_yakuNames.length; i++) {
 					drawString(left, top, a_canvas, 20, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
 					top += 20;
@@ -499,7 +499,7 @@ public class AndjongView extends View implements EventIf {
 			drawDoraHais(DORAS_LEFT, DORAS_TOP, a_canvas, m_infoUi.getDoraHais());
 
 			int manKaze = m_infoUi.getManKaze();
-			Log.e(TAG, "manKaze = " + manKaze);
+			Log.d(TAG, "manKaze = " + manKaze);
 			int dispKaze[] = { 0, 1, 2, 3 };
 			for (int i = 0; i < 4; i++) {
 				dispKaze[i] = manKaze;
@@ -1000,7 +1000,7 @@ public class AndjongView extends View implements EventIf {
 							}
 						}
 					}
-					if (iMenu >= m_playerAction.getMenuNum()) {
+					if (iMenu >= m_playerAction.getMenuNum() && (m_playerAction.getState() != PlayerAction.STATE_RON_SELECT)) {
 						m_playerAction.setDispMenu(false);
 						invalidate();
 						return true;
@@ -1126,11 +1126,11 @@ public class AndjongView extends View implements EventIf {
 			return true;
 		}
 		int jyunTehaiLength = playerInfo.m_tehai.getJyunTehaiLength();
-		Log.e(TAG, "jyunTehaiLength = " + jyunTehaiLength);
+		Log.d(TAG, "jyunTehaiLength = " + jyunTehaiLength);
 		if (playerInfo.m_tsumoHai != null) {
 			jyunTehaiLength++;
 		}
-		Log.e(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
+		Log.d(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
 		jyunTehaiLength--;
 
 		/* X,Y座標の取得 */
@@ -1266,7 +1266,7 @@ public class AndjongView extends View implements EventIf {
 			default:
 				//return super.onKeyDown(keyCode, event);
 			}
-			Log.e("KAN", "select = " + kanSelect);
+			Log.d("KAN", "select = " + kanSelect);
 		}
 		if (state == PlayerAction.STATE_CHII_SELECT) {
 			boolean isValidChiiLeft = m_isValidChiiLeft;
@@ -1335,11 +1335,11 @@ public class AndjongView extends View implements EventIf {
 
 		PlayerInfo playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
 		int jyunTehaiLength = playerInfo.m_tehai.getJyunTehaiLength();
-		Log.e(TAG, "jyunTehaiLength = " + jyunTehaiLength + ", m_iSelectSutehai = " + m_iSelectSutehai);
+		Log.d(TAG, "jyunTehaiLength = " + jyunTehaiLength + ", m_iSelectSutehai = " + m_iSelectSutehai);
 		if (playerInfo.m_tsumoHai != null) {
 			jyunTehaiLength++;
 		}
-		Log.e(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
+		Log.d(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
 		jyunTehaiLength--;
 
 		//int state = m_playerAction.getState();
@@ -1388,7 +1388,7 @@ public class AndjongView extends View implements EventIf {
 			synchronized (m_drawItem) {
 				switch (m_drawItem.m_state) {
 				case STATE_PLAY:
-					Log.e(TAG, "STATE_PLAY actionNotifyAll, m_iSelectSutehai = " + m_iSelectSutehai);
+					Log.d(TAG, "STATE_PLAY actionNotifyAll, m_iSelectSutehai = " + m_iSelectSutehai);
 					m_playerAction.setSutehaiIdx(m_iSelectSutehai);
 					m_playerAction.actionNotifyAll();
 					break;
@@ -1557,7 +1557,7 @@ public class AndjongView extends View implements EventIf {
 			m_playerAction.actionWait();
 			break;
 		case SUTEHAI:// 捨牌
-			Log.e(TAG, "SUTEHAI fromKaze = " + a_kazeFrom);
+			Log.d(TAG, "SUTEHAI fromKaze = " + a_kazeFrom);
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 
@@ -1624,7 +1624,7 @@ public class AndjongView extends View implements EventIf {
 				m_drawItem.setReachbou(m_infoUi.getReachbou());
 			}
 
-			Log.e(TAG, "REACH fromKaze = " + a_kazeFrom);
+			Log.d(TAG, "REACH fromKaze = " + a_kazeFrom);
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 

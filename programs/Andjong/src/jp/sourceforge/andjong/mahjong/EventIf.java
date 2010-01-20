@@ -48,6 +48,9 @@ public interface EventIf {
 		/** ゲームの終了 */
 		END_GAME,
 
+		/** ロンのチェック */
+		RON_CHECK,
+
 		/** 理牌待ち */
 		UI_WAIT_RIHAI,
 		/** 進行待ち */

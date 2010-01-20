@@ -52,7 +52,13 @@ public class AI implements EventIf {
 		case TSUMO:
 			eventId = eventTsumo(a_kazeFrom, a_kazeTo);
 			break;
+		case PON:
+		case CHII_CENTER:
+		case CHII_LEFT:
+		case CHII_RIGHT:
+		case DAIMINKAN:
 		case SUTEHAI:
+		case RON_CHECK:
 			eventId = eventSutehai(a_kazeFrom, a_kazeTo);
 			break;
 		case SELECT_SUTEHAI:

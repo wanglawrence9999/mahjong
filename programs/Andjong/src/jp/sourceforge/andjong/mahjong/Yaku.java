@@ -901,7 +901,8 @@ public class Yaku {
 		//純手牌をチェック
 		for(int i = 0; i < combi.m_kouNum ; i++){
 			//IDと役牌のIDをチェック
-			if( Hai.noKindToId(combi.m_kouNoKinds[i]) == yakuHaiId ){
+			id = Hai.noKindToId(combi.m_kouNoKinds[i]);
+			if( id == yakuHaiId ){
 				return true;
 			}
 		}
@@ -2098,7 +2099,7 @@ public class Yaku {
 			switch (type) {
 			case Fuuro.TYPE_MINKOU:
 				for (int j = 0; j < doraHais.length; j++) {
-					if (doraHais[i].getNextHaiId() == fuuros[i].getHais()[0].getId()) {
+					if (doraHais[j].getNextHaiId() == fuuros[i].getHais()[0].getId()) {
 						doraCount += 3;
 						break;
 					}
@@ -2108,7 +2109,7 @@ public class Yaku {
 			case Fuuro.TYPE_KAKAN:
 			case Fuuro.TYPE_ANKAN:
 				for (int j = 0; j < doraHais.length; j++) {
-					if (doraHais[i].getNextHaiId() == fuuros[i].getHais()[0].getId()) {
+					if (doraHais[j].getNextHaiId() == fuuros[i].getHais()[0].getId()) {
 						doraCount += 4;
 						break;
 					}
@@ -2117,7 +2118,7 @@ public class Yaku {
 			case Fuuro.TYPE_MINSHUN:
 				SEARCHLOOP: for (int j = 0; j < doraHais.length; j++) {
 					for (int k = 0; k < 3; k++) {
-						if (doraHais[i].getNextHaiId() == fuuros[i].getHais()[k].getId()) {
+						if (doraHais[j].getNextHaiId() == fuuros[i].getHais()[k].getId()) {
 							doraCount += 1;
 							break SEARCHLOOP;
 						}

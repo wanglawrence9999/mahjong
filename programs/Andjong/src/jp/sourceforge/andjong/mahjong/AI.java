@@ -59,6 +59,7 @@ public class AI implements EventIf {
 		case DAIMINKAN:
 		case SUTEHAI:
 		case RON_CHECK:
+		case REACH:
 			eventId = eventSutehai(a_kazeFrom, a_kazeTo);
 			break;
 		case SELECT_SUTEHAI:
@@ -203,10 +204,12 @@ public class AI implements EventIf {
 			new Hai(Hai.ID_CHUN) };
 
 	private boolean thinkReach(Tehai tehai) {
-		for (Hai hai : haiTable) {
-			countFormat.setCountFormat(tehai, hai);
-			if (countFormat.getCombis(combis) > 0) {
-				return true;
+		if (m_info.getTsumoRemain() >= 4) {
+			for (Hai hai : haiTable) {
+				countFormat.setCountFormat(tehai, hai);
+				if (countFormat.getCombis(combis) > 0) {
+					return true;
+				}
 			}
 		}
 		return false;

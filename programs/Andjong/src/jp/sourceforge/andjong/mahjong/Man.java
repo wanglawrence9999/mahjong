@@ -58,7 +58,7 @@ public class Man implements EventIf {
 			// ƒcƒ‚”v‚ðŽæ“¾‚·‚éB
 			tsumoHai = m_info.getTsumoHai();
 
-			if (!m_info.isReach()) {
+			if (!m_info.isReach() && (m_info.getTsumoRemain() >= 4)) {
 				Log.d("Man", "getReachIndexs in");
 				indexNum = m_info.getReachIndexs(m_tehai, tsumoHai, indexs);
 				Log.d("Man", "getReachIndexs = " + indexNum);
@@ -189,7 +189,7 @@ public class Man implements EventIf {
 					}
 				}
 
-				if (m_info.isReach() || !furiten) {
+				if (m_info.isReach() && !furiten) {
 					suteHais = m_info.getSuteHais();
 					int suteHaisCount = m_info.getSuteHaisCount();
 					int playerSuteHaisCount = m_info.getPlayerSuteHaisCount();
@@ -225,6 +225,7 @@ public class Man implements EventIf {
 			}
 			break;
 		case SUTEHAI:
+		case REACH:
 			if (a_kazeFrom == m_info.getJikaze()) {
 				return EventId.NAGASHI;
 			}

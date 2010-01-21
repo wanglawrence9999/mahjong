@@ -1468,6 +1468,8 @@ public class AndjongView extends View implements EventIf {
 				for (int i = 0; i < m_drawItem.m_playerInfos.length; i++) {
 					m_drawItem.m_playerInfos[i].m_tenbo = m_infoUi.getTenbou(i);
 				}
+				m_drawItem.setHonba(m_infoUi.getHonba());
+				m_drawItem.setReachbou(m_infoUi.getReachbou());
 			}
 			m_drawItem.setState(STATE_END);
 			this.postInvalidate(0, 0, getWidth(), getHeight());

@@ -293,7 +293,7 @@ public class AgariScore {
 			Yaku yaku = new Yaku(tehai, addHai, setting);
 			String[] yakuNames = yaku.getYakuName();
 			for (int i = 0; i < yakuNames.length; i++) {
-				if (yakuNames[i].equals("‘m–³‘o 13–|")) {
+				if (yakuNames[i].equals("‘m–³‘o –ğ–")) {
 					int hanSuu = 13;
 					int agariScore = getScore(hanSuu, 20);
 					a_agariInfo.m_score = m_scoreWork;

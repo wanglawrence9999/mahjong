@@ -1347,9 +1347,9 @@ public class AndjongView extends View implements EventIf {
 			}
 			//mSelectSutehaiIdx = 0;
 			if(m_drawItem.m_isDebug){
-				m_drawItem.m_isDebug = false;
+				//m_drawItem.m_isDebug = false;
 			}else{
-				m_drawItem.m_isDebug = true;
+				//m_drawItem.m_isDebug = true;
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:

@@ -212,6 +212,13 @@ public class CountFormat {
 			m_counts[m_countNum].m_num = 1;
 			m_countNum++;
 		}
+
+		for (int i = 0; i < m_countNum; i++) {
+			if (m_counts[i].m_num > 4) {
+				// 5‚Â–Ú‚Ì’Ç‰Á”v‚Í–³Œø‚Æ‚·‚éB
+				m_counts[i].m_num--;
+			}
+		}
 	}
 
 	/**

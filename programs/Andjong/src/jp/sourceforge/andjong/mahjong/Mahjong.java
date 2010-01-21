@@ -600,12 +600,13 @@ public class Mahjong implements Runnable {
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {29, 29, 29, 30, 30, 30, 31, 31, 31, 32, 32, 33, 33, 33};
+			int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 33, 33, 33, 33, 33};
+			//int haiIds[] = {29, 29, 29, 30, 30, 30, 31, 31, 31, 32, 32, 33, 33, 33};
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 31, 31, 33, 33, 33};
 			//int haiIds[] = {0, 1, 2, 10, 11, 12, 13, 14, 15, 31, 31, 33, 33, 33};
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 31, 31, 32, 32, 32};
 			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
-			//int haiIds[] = {1, 1, 3, 3, 5, 5, 7, 7, 10, 10, 11, 11, 13, 13};
+			//int haiIds[] = {1, 1, 3, 3, 5, 5, 7, 7, 30, 30, 31, 31, 32, 32};
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
 			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
 			//int haiIds[] = {27, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33};
@@ -613,7 +614,7 @@ public class Mahjong implements Runnable {
 			//int haiIds[] = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34};
 			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
-			//int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 25, 25, 25, 21, 21};
+			//int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 23, 25, 25, 25, 25};
 			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 17, 17, 17, 18, 18};
 			//int haiIds[] = {0, 0, 0, 0, 8, 8, 8, 8, 9, 9, 9, 9, 18, 18};
 			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 18, 18, 18, 26, 26};
@@ -660,7 +661,7 @@ public class Mahjong implements Runnable {
 
 		m_isTsumo = true;
 
-		//m_tsumoHai = new Hai(13);
+		//m_tsumoHai = new Hai(32);
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
 

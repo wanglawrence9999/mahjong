@@ -129,6 +129,7 @@ public class Yaku {
 		YakuHantei buffer[] = {
 				new CheckTanyao(),
 				new CheckReach(),
+				new CheckIppatu(),
 				new CheckTumo(),
 				new CheckHaitei(),
 				new CheckHoutei(),

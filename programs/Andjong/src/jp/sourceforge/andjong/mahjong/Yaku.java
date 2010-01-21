@@ -1478,7 +1478,7 @@ public class Yaku {
 					//明刻の牌をチェック
 					//明槓の牌をチェック
 					//暗槓の牌をチェック
-					checkHai = fuuros[i].getHais();
+					checkHai = fuuros[j].getHais();
 					//牌が(萬子、筒子、索子)以外もしくは字牌以外
 					if ((checkHai[0].getKind() != checkId[i]) && (checkHai[0].isTsuu() == false)){
 						honituflg = false;

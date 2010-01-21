@@ -598,7 +598,7 @@ public class Tehai {
 		}
 
 		int id = a_suteHai.getId();
-		for (int i = 0, count = 0; i < m_jyunTehaiLength; i++) {
+		for (int i = 0, count = 1; i < m_jyunTehaiLength; i++) {
 			if (id == m_jyunTehai[i].getId()) {
 				count++;
 				if (count >= MENTSU_LENGTH_4) {

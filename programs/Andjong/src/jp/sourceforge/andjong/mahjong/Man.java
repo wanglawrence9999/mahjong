@@ -59,9 +59,7 @@ public class Man implements EventIf {
 			tsumoHai = m_info.getTsumoHai();
 
 			if (!m_info.isReach() && (m_info.getTsumoRemain() >= 4)) {
-				Log.d("Man", "getReachIndexs in");
 				indexNum = m_info.getReachIndexs(m_tehai, tsumoHai, indexs);
-				Log.d("Man", "getReachIndexs = " + indexNum);
 				if (indexNum > 0) {
 					m_playerAction.setValidReach(true);
 					m_playerAction.m_indexs = indexs;
@@ -80,11 +78,14 @@ public class Man implements EventIf {
 				menuNum++;
 			}
 
-			kanNum = m_tehai.validKan(tsumoHai, kanHais);
-			if (kanNum > 0) {
-				m_playerAction.setValidKan(true, kanHais, kanNum);
-				eventId[menuNum] = EventId.ANKAN;
-				menuNum++;
+			// 制限事項。リーチ後のカンをさせない。
+			if (m_info.isReach()) {
+				kanNum = m_tehai.validKan(tsumoHai, kanHais);
+				if (kanNum > 0) {
+					m_playerAction.setValidKan(true, kanHais, kanNum);
+					eventId[menuNum] = EventId.ANKAN;
+					menuNum++;
+				}
 			}
 
 			m_playerAction.setMenuNum(menuNum);

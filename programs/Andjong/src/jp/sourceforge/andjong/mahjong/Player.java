@@ -129,6 +129,28 @@ class Player {
 		this.reach = reach;
 	}
 
+	/** ダブルリーチ */
+	private boolean m_doubleReach;
+
+	/**
+	 * ダブルリーチを取得します。
+	 *
+	 * @return ダブルリーチ
+	 */
+	boolean isDoubleReach() {
+		return m_doubleReach;
+	}
+
+	/**
+	 * ダブルリーチを設定します。
+	 *
+	 * @param reach
+	 *            ダブルリーチ
+	 */
+	void setDoubleReach(boolean a_doubleReach) {
+		this.m_doubleReach = a_doubleReach;
+	}
+
 	private int m_suteHaisCount;
 	void setSuteHaisCount(int a_suteHaisCount) {
 		this.m_suteHaisCount = a_suteHaisCount;
@@ -180,6 +202,7 @@ class Player {
 		reach = false;
 
 		m_ippatsu = false;
+		m_doubleReach = false;
 	}
 
 	public void setIppatsu(boolean a_ippatsu) {

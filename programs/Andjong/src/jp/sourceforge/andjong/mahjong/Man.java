@@ -79,7 +79,7 @@ public class Man implements EventIf {
 			}
 
 			// 制限事項。リーチ後のカンをさせない。
-			if (m_info.isReach()) {
+			if (!m_info.isReach()) {
 				kanNum = m_tehai.validKan(tsumoHai, kanHais);
 				if (kanNum > 0) {
 					m_playerAction.setValidKan(true, kanHais, kanNum);

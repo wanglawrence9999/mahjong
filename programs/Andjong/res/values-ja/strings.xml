@@ -3,6 +3,7 @@
 	<string name="app_name">Andjong</string>
 	<string name="main_title">Andjong</string>
 	<string name="new_game_label">New Game</string>
+	<string name="about_label">About</string>
 	<string name="exit_label">Exit</string>
 	<string name="game_title">Game</string>
 	<string name="kyoku_ton_1">東一局</string>
@@ -83,4 +84,23 @@
 	<string name="yaku_tenhou">天和</string>
 	<string name="yaku_tihou">地和</string>
 	<string name="yaku_dora">ドラ</string>
+
+	<string name="about_title">About Andjong</string>
+	<string name="about_text">\
+オープンソースの四人打ち麻雀ゲームです。\n
+皆様とともに、より良いゲームにしていきたいです。\n
+\n
+HVGA(320 X 480 pixel)のみサポートしています。\n
+\n
+ベータ版のリリースになります。\n
+バグが多くあると思いますので、報告はウェブページにしていただけるとありがたいです。\n
+\n
+操作方法\n
+・手牌や手牌の下の領域をタッチするか、左右キー操作で牌を選択します。\n
+・手牌以外の部分をタッチするか、決定キー操作で牌を捨てます。\n
+・表示されたメニューをクリックすることでアクションを起こすことができます。\n
+・画面をタッチするか、決定キー操作で画面を遷移します。\n
+\n
+その他、色々さわりながら試してみてください。\n
+</string>
 </resources>

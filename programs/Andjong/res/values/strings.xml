@@ -3,6 +3,7 @@
 	<string name="app_name">Andjong</string>
 	<string name="main_title">Andjong</string>
 	<string name="new_game_label">New Game</string>
+	<string name="about_label">About</string>
 	<string name="exit_label">Exit</string>
 	<string name="game_title">Game</string>
 	<string name="kyoku_ton_1">East 1R</string>
@@ -83,4 +84,15 @@
 	<string name="yaku_tenhou">Heavenly hand</string>
 	<string name="yaku_tihou">Earthly hand</string>
 	<string name="yaku_dora">Dora</string>
+
+	<string name="about_title">About Andjong</string>
+	<string name="about_text">\
+Andjong is Open Source Software Mahjong Game.\n
+･Support English.\n
+･320X480 only.\n
+･The area under tehai and tehai is selected and it touches or the tile is selected by the right and left key.\n
+･The parts other than tehai are thrown away and it touches or the tile is thrown away for the decision key.\n
+･The action can be caused by clicking the displayed menu.\n
+･A screen changes when involved with a screen.\n
+</string>
 </resources>

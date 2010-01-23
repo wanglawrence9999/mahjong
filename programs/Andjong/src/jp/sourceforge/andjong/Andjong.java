@@ -15,6 +15,7 @@ public class Andjong extends Activity implements OnClickListener {
 		setContentView(R.layout.main);
 
 		this.findViewById(R.id.new_button).setOnClickListener(this);
+		this.findViewById(R.id.about_button).setOnClickListener(this);
 		this.findViewById(R.id.exit_button).setOnClickListener(this);
 	}
 
@@ -23,6 +24,9 @@ public class Andjong extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.new_button:
 			startActivity(new Intent(Andjong.this, Game.class));
+			break;
+		case R.id.about_button:
+			startActivity(new Intent(Andjong.this, About.class));
 			break;
 		case R.id.exit_button:
 			finish();

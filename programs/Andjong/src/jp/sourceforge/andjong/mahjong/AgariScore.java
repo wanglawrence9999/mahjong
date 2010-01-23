@@ -1,6 +1,7 @@
 package jp.sourceforge.andjong.mahjong;
 
 import static jp.sourceforge.andjong.mahjong.Hai.*;
+import android.content.res.Resources;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 public class AgariScore {
@@ -266,7 +267,7 @@ public class AgariScore {
 //		return score;
 	}
 
-	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting, AgariInfo a_agariInfo) {
+	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting, AgariInfo a_agariInfo, Resources a_res) {
 		// カウントフォーマットを取得します。
 		countFormat.setCountFormat(tehai, addHai);
 
@@ -276,7 +277,7 @@ public class AgariScore {
 		combisCount = countFormat.getCombiNum();
 
 		if (countFormat.isChiitoitsu()) {
-			Yaku yaku = new Yaku(tehai, addHai, combis[0], setting, 0);
+			Yaku yaku = new Yaku(tehai, addHai, combis[0], setting, 0, a_res);
 			String[] yakuNames = yaku.getYakuName();
 			int hanSuu = yaku.getHan();
 			int agariScore = getScore(hanSuu, 25);
@@ -290,19 +291,16 @@ public class AgariScore {
 
 		// あがりの組み合わせがない場合は0点
 		if (combisCount == 0) {
-			Yaku yaku = new Yaku(tehai, addHai, setting);
-			String[] yakuNames = yaku.getYakuName();
-			for (int i = 0; i < yakuNames.length; i++) {
-				if (yakuNames[i].equals("国士無双 役満")) {
-					int hanSuu = 13;
-					int agariScore = getScore(hanSuu, 20);
-					a_agariInfo.m_score = m_scoreWork;
-					a_agariInfo.m_fu = 0;
-					a_agariInfo.m_han = hanSuu;
-					a_agariInfo.m_yakuNames = yakuNames;
+			Yaku yaku = new Yaku(tehai, addHai, setting, a_res);
+			if (yaku.m_kokushi) {
+				int hanSuu = 13;
+				int agariScore = getScore(hanSuu, 20);
+				a_agariInfo.m_score = m_scoreWork;
+				a_agariInfo.m_fu = 0;
+				a_agariInfo.m_han = hanSuu;
+				a_agariInfo.m_yakuNames = yaku.getYakuName();
 
-					return agariScore;
-				}
+				return agariScore;
 			}
 			return 0;
 		}
@@ -317,7 +315,7 @@ public class AgariScore {
 		int maxagariScore = 0;
 
 		for (int i = 0; i < combisCount; i++) {
-			Yaku yaku = new Yaku(tehai, addHai, combis[i], setting);
+			Yaku yaku = new Yaku(tehai, addHai, combis[i], setting, a_res);
 			hanSuu[i] = yaku.getHanSuu();
 			huSuu[i] = countHu(tehai, addHai, combis[i],yaku,setting);
 			agariScore[i] = getScore(hanSuu[i], huSuu[i]);
@@ -339,7 +337,7 @@ public class AgariScore {
 		return maxagariScore;
 	}
 
-	public String[] getYakuName(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting) {
+	public String[] getYakuName(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting, Resources a_res) {
 		//和了り役の名前
 		String[] yakuNames = {""};
 		// カウントフォーマットを取得します。
@@ -364,7 +362,7 @@ public class AgariScore {
 
 
 		for (int i = 0; i < combisCount; i++) {
-			Yaku yaku = new Yaku(tehai, addHai, combis[i], setting);
+			Yaku yaku = new Yaku(tehai, addHai, combis[i], setting, a_res);
 			hanSuu[i] = yaku.getHanSuu();
 			huSuu[i] = countHu(tehai, addHai, combis[i],yaku,setting);
 			agariScore[i] = getScore(hanSuu[i], huSuu[i]);

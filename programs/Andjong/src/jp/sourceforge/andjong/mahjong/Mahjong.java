@@ -454,7 +454,7 @@ public class Mahjong implements Runnable {
 				}
 				//getAgariScore(activePlayer.getTehai(), m_tsumoHai);
 				m_score = new AgariScore();
-				m_score.getAgariScore(activePlayer.getTehai(), m_tsumoHai, combis, m_setting, m_agariInfo);
+				m_score.getAgariScore(activePlayer.getTehai(), m_tsumoHai, combis, m_setting, m_agariInfo, m_view.getResources());
 
 				iPlayer = m_kazeToPlayerIdx[m_kazeFrom];
 				if (m_iOya == iPlayer) {
@@ -504,7 +504,7 @@ public class Mahjong implements Runnable {
 					m_setting.setDoraHais(m_yama.getAllDoraHais());
 				}
 				m_score = new AgariScore();
-				m_score.getAgariScore(activePlayer.getTehai(), m_suteHai, combis, m_setting, m_agariInfo);
+				m_score.getAgariScore(activePlayer.getTehai(), m_suteHai, combis, m_setting, m_agariInfo, m_view.getResources());
 
 				if (m_iOya == m_kazeToPlayerIdx[m_kazeFrom]) {
 					score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
@@ -596,12 +596,12 @@ public class Mahjong implements Runnable {
 		}
 
 		boolean test = false;
-		if (test)
+		//if (test)
 		{
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
 			}
-			int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 33, 33, 33, 31, 31};
+			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 33, 33, 33, 31, 31};
 			//int haiIds[] = {29, 29, 29, 30, 30, 30, 31, 31, 31, 32, 32, 33, 33, 33};
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 31, 31, 33, 33, 33};
 			//int haiIds[] = {0, 1, 2, 10, 11, 12, 13, 14, 15, 31, 31, 33, 33, 33};
@@ -632,7 +632,7 @@ public class Mahjong implements Runnable {
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 10, 10}; // イッツー
 			//int haiIds[] = {0, 1, 2, 9, 10, 11, 18, 19, 20, 33, 33, 33, 27, 27};
 			//int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4}; // リーチタンピンイーペーコー
-			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコー
+			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコー
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
@@ -1136,14 +1136,14 @@ public class Mahjong implements Runnable {
 			setting.setYakuflg(YakuflgName.IPPATU.ordinal(), true);
 		}
 		m_score = new AgariScore();
-		int score = m_score.getAgariScore(tehai, addHai, combis, setting, m_agariInfo);
+		int score = m_score.getAgariScore(tehai, addHai, combis, setting, m_agariInfo, m_view.getResources());
 		return score;
 	}
 
 	public String[] getYakuName(Tehai tehai, Hai addHai){
 		AgariSetting setting = new AgariSetting(this);
 		AgariScore score = new AgariScore();
-		return score.getYakuName(tehai, addHai, combis, setting);
+		return score.getYakuName(tehai, addHai, combis, setting, m_view.getResources());
 	}
 
 	@Override

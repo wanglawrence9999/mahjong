@@ -2,6 +2,8 @@ package jp.sourceforge.andjong.mahjong;
 import static jp.sourceforge.andjong.mahjong.AgariSetting.YakuflgName.*;
 import static jp.sourceforge.andjong.mahjong.Hai.*;
 import static jp.sourceforge.andjong.mahjong.Tehai.JYUN_TEHAI_LENGTH_MAX;
+import android.content.res.Resources;
+import jp.sourceforge.andjong.R;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 /**
@@ -23,65 +25,68 @@ public class Yaku {
 	YakuHantei yakuhantei[];
 	boolean nakiflg = false;
 	int m_doraCount;
+	Resources m_res;
+	boolean m_kokushi = false;
 
 	/**
 	 * Yakuクラスのコンストラクタ。
 	 * 引数を保存し、YakuHanteiクラスの配列を作成する。
 	 * @param tehai 手牌　addHai 上がった牌  combi 手牌 の組み合わせ info 情報
 	 */
-	Yaku(Tehai tehai, Hai addHai, Combi combi,AgariSetting setting){
+	Yaku(Tehai tehai, Hai addHai, Combi combi,AgariSetting setting, Resources a_res){
 		this.m_tehai = tehai;
 		this.m_addHai = addHai;
 		this.m_combi  = combi;
 		this.m_setting = setting;
+		this.m_res = a_res;
 		//鳴きがある場合
 		nakiflg = tehai.isNaki();
 
-		YakuHantei buffer[] = {new CheckTanyao(),
-							   new CheckPinfu(),
-							   new CheckIpeikou(),
-							   new CheckReach(),
-							   new CheckIppatu(),
-							   new CheckTumo(),
-							   new CheckTon(),
-							   new CheckNan(),
-							   new CheckSya(),
-							   new CheckPei(),
-							   new CheckHaku(),
-							   new CheckHatu(),
-							   new CheckCyun(),
-							   new CheckHaitei(),
-							   new CheckHoutei(),
-							   new CheckRinsyan(),
-							   new CheckCyankan(),
-							   new CheckDoubleReach(),
-//							   new CheckTeetoitu(),
-							   new CheckCyanta(),
-							   new CheckIkkituukan(),
-							   new CheckSansyokuDoukou(),
-							   new CheckSansyokuDoujun(),
-							   new CheckToitoi(),
-							   new CheckSanankou(),
-							   new CheckSankantu(),
-							   new CheckRyanpeikou(),
-							   new CheckHonitu(),
-							   new CheckJunCyan(),
-							   new CheckSyousangen(),
-							   new CheckHonroutou(),
-							   new CheckTinitu(),
-							   new CheckSuuankou(),
-							   new CheckSuukantu(),
-							   new CheckDaisangen(),
-							   new CheckSyousuushi(),
-							   new CheckDaisuushi(),
-							   new CheckTuuisou(),
-							   new CheckChinroutou(),
-							   new CheckRyuuisou(),
-							   new CheckCyuurennpoutou(),
-							   new CheckKokushi(),
-							   new CheckTenhou(),
-							   new CheckTihou(),
-							   new CheckDora()
+		YakuHantei buffer[] = {new CheckTanyao(a_res),
+							   new CheckPinfu(a_res),
+							   new CheckIpeikou(a_res),
+							   new CheckReach(a_res),
+							   new CheckIppatu(a_res),
+							   new CheckTumo(a_res),
+							   new CheckTon(a_res),
+							   new CheckNan(a_res),
+							   new CheckSya(a_res),
+							   new CheckPei(a_res),
+							   new CheckHaku(a_res),
+							   new CheckHatu(a_res),
+							   new CheckCyun(a_res),
+							   new CheckHaitei(a_res),
+							   new CheckHoutei(a_res),
+							   new CheckRinsyan(a_res),
+							   new CheckCyankan(a_res),
+							   new CheckDoubleReach(a_res),
+//							   new CheckTeetoitu(a_res),
+							   new CheckCyanta(a_res),
+							   new CheckIkkituukan(a_res),
+							   new CheckSansyokuDoukou(a_res),
+							   new CheckSansyokuDoujun(a_res),
+							   new CheckToitoi(a_res),
+							   new CheckSanankou(a_res),
+							   new CheckSankantu(a_res),
+							   new CheckRyanpeikou(a_res),
+							   new CheckHonitu(a_res),
+							   new CheckJunCyan(a_res),
+							   new CheckSyousangen(a_res),
+							   new CheckHonroutou(a_res),
+							   new CheckTinitu(a_res),
+							   new CheckSuuankou(a_res),
+							   new CheckSuukantu(a_res),
+							   new CheckDaisangen(a_res),
+							   new CheckSyousuushi(a_res),
+							   new CheckDaisuushi(a_res),
+							   new CheckTuuisou(a_res),
+							   new CheckChinroutou(a_res),
+							   new CheckRyuuisou(a_res),
+							   new CheckCyuurennpoutou(a_res),
+							   new CheckKokushi(a_res),
+							   new CheckTenhou(a_res),
+							   new CheckTihou(a_res),
+							   new CheckDora(a_res)
 		};
 
 		yakuhantei = buffer;
@@ -106,43 +111,47 @@ public class Yaku {
 	 * 引数を保存し、YakuHanteiクラスの配列を作成する。
 	 * @param tehai 手牌　addHai 上がった牌  combi 手牌 の組み合わせ info 情報
 	 */
-	Yaku(Tehai tehai, Hai addHai, AgariSetting setting){
+	Yaku(Tehai tehai, Hai addHai, AgariSetting setting, Resources a_res){
 		this.m_tehai = tehai;
 		this.m_addHai = addHai;
 		this.m_setting = setting;
+		this.m_res = a_res;
+		this.m_kokushi = false;
 
-		YakuHantei buffer[] = {new CheckKokushi(),
-							   new CheckTenhou(),
-							   new CheckTihou()
+		YakuHantei buffer[] = {new CheckKokushi(a_res),
+							   new CheckTenhou(a_res),
+							   new CheckTihou(a_res)
 		};
 
+		this.m_kokushi = buffer[0].hantei;
 		yakuhantei = buffer;
 	}
 
-	Yaku(Tehai tehai, Hai addHai, Combi combi,AgariSetting setting, int a_status){
+	Yaku(Tehai tehai, Hai addHai, Combi combi,AgariSetting setting, int a_status, Resources a_res){
 		this.m_tehai = tehai;
 		this.m_addHai = addHai;
 		this.m_combi  = combi;
 		this.m_setting = setting;
+		this.m_res = a_res;
 		nakiflg = false;
 
 		YakuHantei buffer[] = {
-				new CheckTanyao(),
-				new CheckReach(),
-				new CheckIppatu(),
-				new CheckTumo(),
-				new CheckHaitei(),
-				new CheckHoutei(),
-				new CheckRinsyan(),
-				new CheckDoubleReach(),
-				new CheckTeetoitu(),
-				new CheckHonroutouChiitoitsu(),
-				new CheckHonitu(),
-				new CheckTinitu(),
-				new CheckTuuisou(),
-				new CheckTenhou(),
-				new CheckTihou(),
-				new CheckDora()
+				new CheckTanyao(a_res),
+				new CheckReach(a_res),
+				new CheckIppatu(a_res),
+				new CheckTumo(a_res),
+				new CheckHaitei(a_res),
+				new CheckHoutei(a_res),
+				new CheckRinsyan(a_res),
+				new CheckDoubleReach(a_res),
+				new CheckTeetoitu(a_res),
+				new CheckHonroutouChiitoitsu(a_res),
+				new CheckHonitu(a_res),
+				new CheckTinitu(a_res),
+				new CheckTuuisou(a_res),
+				new CheckTenhou(a_res),
+				new CheckTihou(a_res),
+				new CheckDora(a_res)
 		};
 
 		yakuhantei = buffer;
@@ -204,9 +213,9 @@ public class Yaku {
 			if( yakuhantei[i].getYakuHantei() == true){
 				hanSuu = yakuhantei[i].getHanSuu();
 				if (hanSuu >= 13) {
-					yakuName[count] = yakuhantei[i].getYakuName() + " " + "役満";
+					yakuName[count] = yakuhantei[i].getYakuName() + m_res.getString(R.string.space) + m_res.getString(R.string.yakuman);
 				} else {
-					yakuName[count] = yakuhantei[i].getYakuName() + " " + hanSuu + "翻";
+					yakuName[count] = yakuhantei[i].getYakuName() + m_res.getString(R.string.space) + hanSuu + m_res.getString(R.string.han);
 				}
 				count++;
 			}
@@ -291,170 +300,170 @@ public class Yaku {
 	}
 
 	private class CheckTanyao extends YakuHantei{
-		CheckTanyao(){
+		CheckTanyao(Resources a_res){
 			hantei = checkTanyao();
-			yakuName = "断幺";
+			yakuName = a_res.getString(R.string.yaku_tanyao);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckPinfu extends YakuHantei{
-		CheckPinfu(){
+		CheckPinfu(Resources a_res){
 			hantei = checkPinfu();
-			yakuName = "平和";
+			yakuName = a_res.getString(R.string.yaku_pinfu);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckIpeikou extends YakuHantei{
-		CheckIpeikou(){
+		CheckIpeikou(Resources a_res){
 			hantei = checkIpeikou();
 			if(checkRyanpeikou()){
 				hantei = false;
 			}
-			yakuName = "一盃口";
+			yakuName = a_res.getString(R.string.yaku_ipeikou);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckReach extends YakuHantei{
-		CheckReach(){
+		CheckReach(Resources a_res){
 			hantei = checkReach();
 			if(checkDoubleReach() == true){
 				hantei = false;
 			}
-			yakuName = "立直";
+			yakuName = a_res.getString(R.string.yaku_reach);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckIppatu extends YakuHantei{
-		CheckIppatu(){
+		CheckIppatu(Resources a_res){
 			hantei = checkIppatu();
-			yakuName = "一発";
+			yakuName = a_res.getString(R.string.yaku_ippatu);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckTumo extends YakuHantei{
-		CheckTumo(){
+		CheckTumo(Resources a_res){
 			hantei = checkTumo();
-			yakuName = "門前清自摸和";
+			yakuName = a_res.getString(R.string.yaku_tumo);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckTon extends YakuHantei{
-		CheckTon(){
+		CheckTon(Resources a_res){
 			hantei = checkTon();
 			if(m_setting.getJikaze() == JIKAZE_TON){
-				yakuName = "ダブ東";
+				yakuName = a_res.getString(R.string.yaku_doubleton);
 				hanSuu = 2;
 			}else{
-				yakuName = "東";
+				yakuName = a_res.getString(R.string.yaku_ton);
 				hanSuu = 1;
 			}
 		}
 	}
 
 	private class CheckNan extends YakuHantei{
-		CheckNan(){
+		CheckNan(Resources a_res){
 			hantei = checkNan();
-			yakuName = "南";
+			yakuName = a_res.getString(R.string.yaku_nan);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckSya extends YakuHantei{
-		CheckSya(){
+		CheckSya(Resources a_res){
 			hantei = checkSya();
-			yakuName = "西";
+			yakuName = a_res.getString(R.string.yaku_sya);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckPei extends YakuHantei{
-		CheckPei(){
+		CheckPei(Resources a_res){
 			hantei = checkPei();
-			yakuName = "北";
+			yakuName = a_res.getString(R.string.yaku_pei);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckHaku extends YakuHantei{
-		CheckHaku(){
+		CheckHaku(Resources a_res){
 			hantei = checkHaku();
-			yakuName = "白";
+			yakuName = a_res.getString(R.string.yaku_haku);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckHatu extends YakuHantei{
-		CheckHatu(){
+		CheckHatu(Resources a_res){
 			hantei = checkHatu();
-			yakuName = "發";
+			yakuName = a_res.getString(R.string.yaku_hatu);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckCyun extends YakuHantei{
-		CheckCyun(){
+		CheckCyun(Resources a_res){
 			hantei = checkCyun();
-			yakuName = "中";
+			yakuName = a_res.getString(R.string.yaku_cyun);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckHaitei extends YakuHantei{
-		CheckHaitei(){
+		CheckHaitei(Resources a_res){
 			hantei = checkHaitei();
-			yakuName = "海底摸月";
+			yakuName = a_res.getString(R.string.yaku_haitei);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckHoutei extends YakuHantei{
-		CheckHoutei(){
+		CheckHoutei(Resources a_res){
 			hantei = checkHoutei();
-			yakuName = "河底撈魚";
+			yakuName = a_res.getString(R.string.yaku_houtei);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckRinsyan extends YakuHantei{
-		CheckRinsyan(){
+		CheckRinsyan(Resources a_res){
 			hantei = checkRinsyan();
-			yakuName = "嶺上開花";
+			yakuName = a_res.getString(R.string.yaku_rinsyan);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckCyankan extends YakuHantei{
-		CheckCyankan(){
+		CheckCyankan(Resources a_res){
 			hantei = checkCyankan();
-			yakuName = "槍槓";
+			yakuName = a_res.getString(R.string.yaku_cyankan);
 			hanSuu = 1;
 		}
 	}
 
 	private class CheckDoubleReach extends YakuHantei{
-		CheckDoubleReach(){
+		CheckDoubleReach(Resources a_res){
 			hantei = checkDoubleReach();
-			yakuName = "ダブル立直";
+			yakuName = a_res.getString(R.string.yaku_doublereach);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckTeetoitu extends YakuHantei{
-		CheckTeetoitu(){
+		CheckTeetoitu(Resources a_res){
 			hantei = checkTeetoitu();
-			yakuName = "七対子";
+			yakuName = a_res.getString(R.string.yaku_teetoitu);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckCyanta extends YakuHantei{
-		CheckCyanta(){
+		CheckCyanta(Resources a_res){
 			hantei = checkCyanta();
 			if(checkJunCyan()){
 				hantei = false;
@@ -462,7 +471,7 @@ public class Yaku {
 			if(checkHonroutou()){
 				hantei = false;
 			}
-			yakuName = "全帯";
+			yakuName = a_res.getString(R.string.yaku_cyanta);
 			if (nakiflg == true) {
 				hanSuu = 1;
 			}else{
@@ -472,9 +481,9 @@ public class Yaku {
 	}
 
 	private class CheckIkkituukan extends YakuHantei{
-		CheckIkkituukan(){
+		CheckIkkituukan(Resources a_res){
 			hantei = checkIkkituukan();
-			yakuName = "一気通貫";
+			yakuName = a_res.getString(R.string.yaku_ikkituukan);
 			if (nakiflg == true) {
 				hanSuu = 1;
 			}else{
@@ -484,9 +493,9 @@ public class Yaku {
 	}
 
 	private class CheckSansyokuDoujun extends YakuHantei{
-		CheckSansyokuDoujun(){
+		CheckSansyokuDoujun(Resources a_res){
 			hantei = checkSansyokuDoujun();
-			yakuName = "三色同順";
+			yakuName = a_res.getString(R.string.yaku_sansyokudoujyun);
 			if (nakiflg == true) {
 				hanSuu = 1;
 			}else{
@@ -496,52 +505,52 @@ public class Yaku {
 	}
 
 	private class CheckSansyokuDoukou extends YakuHantei{
-		CheckSansyokuDoukou(){
+		CheckSansyokuDoukou(Resources a_res){
 			hantei = checkSansyokuDoukou();
-			yakuName = "三色同刻";
+			yakuName = a_res.getString(R.string.yaku_sansyokudoukou);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckToitoi extends YakuHantei{
-		CheckToitoi(){
+		CheckToitoi(Resources a_res){
 			hantei = checkToitoi();
-			yakuName = "対々和";
+			yakuName = a_res.getString(R.string.yaku_toitoi);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckSanankou extends YakuHantei{
-		CheckSanankou(){
+		CheckSanankou(Resources a_res){
 			hantei = checkSanankou();
-			yakuName = "三暗刻";
+			yakuName = a_res.getString(R.string.yaku_sanankou);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckSankantu extends YakuHantei{
-		CheckSankantu(){
+		CheckSankantu(Resources a_res){
 			hantei = checkSankantu();
-			yakuName = "三槓子";
+			yakuName = a_res.getString(R.string.yaku_sankantu);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckRyanpeikou extends YakuHantei{
-		CheckRyanpeikou(){
+		CheckRyanpeikou(Resources a_res){
 			hantei = checkRyanpeikou();
-			yakuName = "二盃口";
+			yakuName = a_res.getString(R.string.yaku_ryanpeikou);
 			hanSuu = 3;
 		}
 	}
 
 	private class CheckHonitu extends YakuHantei{
-		CheckHonitu(){
+		CheckHonitu(Resources a_res){
 			hantei = checkHonitu();
 			if(checkTinitu()){
 				hantei = false;
 			}
-			yakuName = "混一色";
+			yakuName = a_res.getString(R.string.yaku_honitu);
 			if (nakiflg == true) {
 				hanSuu = 2;
 			}else{
@@ -551,9 +560,9 @@ public class Yaku {
 	}
 
 	private class CheckJunCyan extends YakuHantei{
-		CheckJunCyan(){
+		CheckJunCyan(Resources a_res){
 			hantei = checkJunCyan();
-			yakuName = "純全帯";
+			yakuName = a_res.getString(R.string.yaku_juncyan);
 			if (nakiflg == true) {
 				hanSuu = 2;
 			}else{
@@ -563,33 +572,33 @@ public class Yaku {
 	}
 
 	private class CheckSyousangen extends YakuHantei{
-		CheckSyousangen(){
+		CheckSyousangen(Resources a_res){
 			hantei = checkSyousangen();
-			yakuName = "小三元";
+			yakuName = a_res.getString(R.string.yaku_syousangen);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckHonroutou extends YakuHantei{
-		CheckHonroutou(){
+		CheckHonroutou(Resources a_res){
 			hantei = checkHonroutou();
-			yakuName = "混老頭";
+			yakuName = a_res.getString(R.string.yaku_honroutou);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckHonroutouChiitoitsu extends YakuHantei{
-		CheckHonroutouChiitoitsu(){
+		CheckHonroutouChiitoitsu(Resources a_res){
 			hantei = checkHonroutouChiitoitsu();
-			yakuName = "混老頭";
+			yakuName = a_res.getString(R.string.yaku_honroutou);
 			hanSuu = 2;
 		}
 	}
 
 	private class CheckTinitu extends YakuHantei{
-		CheckTinitu(){
+		CheckTinitu(Resources a_res){
 			hantei = checkTinitu();
-			yakuName = "清一色";
+			yakuName = a_res.getString(R.string.yaku_tinitu);
 			if (nakiflg == true) {
 				hanSuu = 5;
 			}else{
@@ -599,112 +608,112 @@ public class Yaku {
 	}
 
 	private class CheckSuuankou extends YakuHantei{
-		CheckSuuankou(){
+		CheckSuuankou(Resources a_res){
 			hantei = checkSuuankou();
-			yakuName = "四暗刻";
+			yakuName = a_res.getString(R.string.yaku_suuankou);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 
 	private class CheckSuukantu extends YakuHantei{
-		CheckSuukantu(){
+		CheckSuukantu(Resources a_res){
 			hantei = checkSuukantu();
-			yakuName = "四槓子";
+			yakuName = a_res.getString(R.string.yaku_suukantu);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 
 	private class CheckDaisangen extends YakuHantei{
-		CheckDaisangen(){
+		CheckDaisangen(Resources a_res){
 			hantei = checkDaisangen();
-			yakuName = "大三元";
+			yakuName = a_res.getString(R.string.yaku_daisangen);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 
 	private class CheckSyousuushi extends YakuHantei{
-		CheckSyousuushi(){
+		CheckSyousuushi(Resources a_res){
 			hantei = checkSyousuushi();
-			yakuName = "小四喜";
+			yakuName = a_res.getString(R.string.yaku_syousuushi);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 
 	private class CheckDaisuushi extends YakuHantei{
-		CheckDaisuushi(){
+		CheckDaisuushi(Resources a_res){
 			hantei = checkDaisuushi();
-			yakuName = "大四喜";
+			yakuName = a_res.getString(R.string.yaku_daisuushi);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 
 	private class CheckTuuisou extends YakuHantei{
-		CheckTuuisou(){
+		CheckTuuisou(Resources a_res){
 			hantei = checkTuuisou();
-			yakuName = "字一色";
+			yakuName = a_res.getString(R.string.yaku_tuuisou);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 
 	private class CheckChinroutou extends YakuHantei{
-		CheckChinroutou(){
+		CheckChinroutou(Resources a_res){
 			hantei = checkChinroutou();
-			yakuName = "清老頭";
+			yakuName = a_res.getString(R.string.yaku_chinroutou);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 
 	private class CheckRyuuisou extends YakuHantei{
-		CheckRyuuisou(){
+		CheckRyuuisou(Resources a_res){
 			hantei = checkRyuuisou();
-			yakuName = "緑一色";
+			yakuName = a_res.getString(R.string.yaku_ryuuisou);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 	private class CheckCyuurennpoutou extends YakuHantei{
-		CheckCyuurennpoutou(){
+		CheckCyuurennpoutou(Resources a_res){
 			hantei = checkCyuurennpoutou();
-			yakuName = "九蓮宝燈";
+			yakuName = a_res.getString(R.string.yaku_cyuurennpoutou);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 	private class CheckKokushi extends YakuHantei{
-		CheckKokushi(){
+		CheckKokushi(Resources a_res){
 			hantei = checkKokushi();
-			yakuName = "国士無双";
+			yakuName = a_res.getString(R.string.yaku_kokushi);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 	private class CheckTenhou extends YakuHantei{
-		CheckTenhou(){
+		CheckTenhou(Resources a_res){
 			hantei = checkTenhou();
-			yakuName = "天和";
+			yakuName = a_res.getString(R.string.yaku_tenhou);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 	private class CheckTihou extends YakuHantei{
-		CheckTihou(){
+		CheckTihou(Resources a_res){
 			hantei = checkTihou();
-			yakuName = "地和";
+			yakuName = a_res.getString(R.string.yaku_tihou);
 			hanSuu = 13;
 			yakuman = true;
 		}
 	}
 	private class CheckDora extends YakuHantei{
-		CheckDora(){
+		CheckDora(Resources a_res){
 			hantei = checkDora();
-			yakuName = "ドラ";
+			yakuName = a_res.getString(R.string.yaku_dora);
 			hanSuu = 1;
 			yakuman = false;
 		}

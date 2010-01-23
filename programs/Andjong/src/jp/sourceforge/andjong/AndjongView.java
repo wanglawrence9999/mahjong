@@ -63,9 +63,6 @@ public class AndjongView extends View implements EventIf {
 	/** 起家マークのイメージ */
 	private Bitmap mChiichaImage;
 
-	/** メニュー選択のイメージ */
-	//private Bitmap mMenuSelectImage;
-
 	/** 背景のペイント */
 	private Paint mBackgroundPaint;
 
@@ -346,6 +343,7 @@ public class AndjongView extends View implements EventIf {
 
 	@Override
 	protected void onDraw(Canvas a_canvas) {
+		Resources res = getResources();
 		// 背景を描画する。
 		a_canvas.drawRect(0, 0, getWidth(), getHeight(), mBackgroundPaint);
 
@@ -361,19 +359,19 @@ public class AndjongView extends View implements EventIf {
 				return;
 			case STATE_REACH:
 				// リーチのメッセージを表示する。
-				drawMessage(a_canvas, "リーチ");
+				drawMessage(a_canvas, res.getString(R.string.info_reach));
 				break;
 			case STATE_RON:
 				// ロンのメッセージを表示する。
-				drawMessage(a_canvas, "ロン");
+				drawMessage(a_canvas, res.getString(R.string.info_ron));
 				break;
 			case STATE_TSUMO:
 				// ツモのメッセージを表示する。
-				drawMessage(a_canvas, "ツモ");
+				drawMessage(a_canvas, res.getString(R.string.info_tsumo));
 				break;
 			case STATE_RYUUKYOKU:
 				// 流局のメッセージを表示する。
-				drawMessage(a_canvas, getResources().getString(R.string.ryuukyoku));
+				drawMessage(a_canvas, res.getString(R.string.info_ryuukyoku));
 				break;
 			case STATE_RESULT:
 				// ドラを表示する。
@@ -398,29 +396,32 @@ public class AndjongView extends View implements EventIf {
 				AgariInfo agariInfo = m_infoUi.getAgariInfo();
 				int left = 2;
 				int top = 50 + 38 + 2 + 10;
-				//int left = (MESSAGE_AREA_LEFT + MESSAGE_AREA_RIGHT) / 2;
-				//int top = (MESSAGE_AREA_TOP + MESSAGE_AREA_BOTTOM) / 2;
-				Log.d(TAG, "length = " + agariInfo.m_yakuNames.length);
 				for (int i = 0; i < agariInfo.m_yakuNames.length; i++) {
 					drawString(left, top, a_canvas, 20, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
 					top += 20;
 				}
 				String string = new String();
+				String han = res.getString(R.string.han);
+				String ten = res.getString(R.string.ten);
+				String fu = res.getString(R.string.fu);
+				String sp = res.getString(R.string.space);
 				if (agariInfo.m_score.m_oyaRon >= 48000) {
-					string += "役満 " + agariInfo.m_agariScore + "点";
+					string += res.getString(R.string.yakuman) + sp + agariInfo.m_agariScore + ten;
 				} else if (agariInfo.m_score.m_oyaRon >= 36000) {
-					string += agariInfo.m_han + "翻 " + "三倍満 " + agariInfo.m_agariScore + "点";
+					string += agariInfo.m_han + han + sp + res.getString(R.string.sanbaiman) + sp + agariInfo.m_agariScore + ten;
 				} else if (agariInfo.m_score.m_oyaRon >= 24000) {
-					string += agariInfo.m_han + "翻 " + "倍満 " + agariInfo.m_agariScore + "点";
+					string += agariInfo.m_han + han + sp + res.getString(R.string.baiman) + sp + agariInfo.m_agariScore + ten;
+				} else if (agariInfo.m_score.m_oyaRon >= 18000) {
+					string += agariInfo.m_han + han + sp + res.getString(R.string.haneman) + sp + agariInfo.m_agariScore + ten;
 				} else if (agariInfo.m_score.m_oyaRon >= 12000) {
-					string += agariInfo.m_han + "翻 " + agariInfo.m_fu + "符 満貫 " + agariInfo.m_agariScore + "点";
+					string += agariInfo.m_han + han + sp + agariInfo.m_fu + fu + sp + res.getString(R.string.mangan) + sp + agariInfo.m_agariScore + ten;
 				} else {
-					string += agariInfo.m_han + "翻 " + agariInfo.m_fu + "符 " + agariInfo.m_agariScore + "点";
+					string += agariInfo.m_han + han + sp + agariInfo.m_fu + fu + sp + agariInfo.m_agariScore + ten;
 				}
 				drawString(left, top + 20, a_canvas, 20, Color.WHITE, string, Align.LEFT);
 				return;
 			case STATE_END:
-				drawMessage(a_canvas, "終了");
+				drawMessage(a_canvas, res.getString(R.string.info_end));
 				break;
 			}
 
@@ -428,28 +429,27 @@ public class AndjongView extends View implements EventIf {
 			boolean actionRequest = m_playerAction.isActionRequest();
 			if (actionRequest) {
 				if (!m_playerAction.isDispMenu()) {
-					drawMessage(a_canvas, "メニュー");
-					//drawMessage(canvas, getResources().getString(R.string.action_button));
+					drawMessage(a_canvas, res.getString(R.string.button_menu));
 				} else {
 					int iMenu = 0;
 
 					if (m_playerAction.isValidReach()) {
-						drawMenuMessage(a_canvas, "立直", iMenu);
+						drawMenuMessage(a_canvas, res.getString(R.string.button_reach), iMenu);
 						iMenu++;
 					}
 
 					if (m_playerAction.isValidRon()) {
-						drawMenuMessage(a_canvas, "ロン", iMenu);
+						drawMenuMessage(a_canvas, res.getString(R.string.button_ron), iMenu);
 						iMenu++;
 					}
 
 					if (m_playerAction.isValidTsumo()) {
-						drawMenuMessage(a_canvas, "ツモ", iMenu);
+						drawMenuMessage(a_canvas, res.getString(R.string.button_tsumo), iMenu);
 						iMenu++;
 					}
 
 					if (m_playerAction.isValidPon()) {
-						drawMenuMessage(a_canvas, "ポン", iMenu);
+						drawMenuMessage(a_canvas, res.getString(R.string.button_pon), iMenu);
 						iMenu++;
 					}
 
@@ -457,27 +457,13 @@ public class AndjongView extends View implements EventIf {
 					m_isValidChiiCenter = m_playerAction.isValidChiiCenter();
 					m_isValidChiiRight = m_playerAction.isValidChiiRight();
 
-					/*
-					if (isValidChiiLeft) {
-						drawMenuMessage(a_canvas, "チーL", iMenu);
-						iMenu++;
-					}
-					if (isValidChiiCenter) {
-						drawMenuMessage(a_canvas, "チーC", iMenu);
-						iMenu++;
-					}
-					if (isValidChiiRight) {
-						drawMenuMessage(a_canvas, "チーR", iMenu);
-						iMenu++;
-					}
-					*/
 					if (m_isValidChiiLeft || m_isValidChiiCenter || m_isValidChiiRight) {
-						drawMenuMessage(a_canvas, "チー", iMenu);
+						drawMenuMessage(a_canvas, res.getString(R.string.button_chii), iMenu);
 						iMenu++;
 					}
 
 					if (m_playerAction.isValidKan() || m_playerAction.isValidDaiMinKan()) {
-						drawMenuMessage(a_canvas, "カン", iMenu);
+						drawMenuMessage(a_canvas, res.getString(R.string.button_kan), iMenu);
 						iMenu++;
 					}
 				}
@@ -496,7 +482,6 @@ public class AndjongView extends View implements EventIf {
 			drawDoraHais(DORAS_LEFT, DORAS_TOP, a_canvas, m_infoUi.getDoraHais());
 
 			int manKaze = m_infoUi.getManKaze();
-			Log.d(TAG, "manKaze = " + manKaze);
 			int dispKaze[] = { 0, 1, 2, 3 };
 			for (int i = 0; i < 4; i++) {
 				dispKaze[i] = manKaze;
@@ -604,7 +589,10 @@ public class AndjongView extends View implements EventIf {
 	 */
 	private void drawReachbou(Canvas canvas, int reachbou) {
 		canvas.drawBitmap(mTenbou1000Image, TENBOU_01000_MIN_IMAGE_LEFT, TENBOU_01000_MIN_IMAGE_TOP, null);
-		drawString(REACHBOU_LEFT, REACHBOU_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(reachbou).toString(), Align.CENTER);
+
+		Resources res = getResources();
+		String string = res.getString(R.string.multi) + res.getString(R.string.space) + new Integer(reachbou).toString();
+		drawString(REACHBOU_LEFT, REACHBOU_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
 	}
 
 	/**
@@ -617,7 +605,10 @@ public class AndjongView extends View implements EventIf {
 	 */
 	private void drawHonba(Canvas canvas, int honba) {
 		canvas.drawBitmap(mTenbou100Image, TENBOU_00100_MIN_IMAGE_LEFT, TENBOU_00100_MIN_IMAGE_TOP, null);
-		drawString(HONBA_LEFT, HONBA_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, "x " + new Integer(honba).toString(), Align.CENTER);
+
+		Resources res = getResources();
+		String string = res.getString(R.string.multi) + res.getString(R.string.space) + new Integer(honba).toString();
+		drawString(HONBA_LEFT, HONBA_TOP, canvas, MINI_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
 	}
 
 	/**
@@ -957,7 +948,6 @@ public class AndjongView extends View implements EventIf {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (m_drawItem.m_kazeFrom >= 4) {
-			Log.d(TAG, "Error kazeFrom actionNotifyAll");
 			m_playerAction.actionNotifyAll();
 			return true;
 		}
@@ -1002,7 +992,6 @@ public class AndjongView extends View implements EventIf {
 						invalidate();
 						return true;
 					}
-					Log.d(TAG, "actionRequest actionNotifyAll");
 					m_playerAction.setMenuSelect(iMenu);
 					m_playerAction.actionNotifyAll();
 
@@ -1025,7 +1014,6 @@ public class AndjongView extends View implements EventIf {
 					m_playerAction.setReachSelect(reachSelect);
 					invalidate();
 				} else {
-					Log.d(TAG, "reach actionNotifyAll");
 					m_playerAction.actionNotifyAll();
 				}
 			}
@@ -1046,7 +1034,6 @@ public class AndjongView extends View implements EventIf {
 					m_playerAction.setKanSelect(kanSelect);
 					invalidate();
 				} else {
-					Log.d(TAG, "chii actionNotifyAll");
 					m_playerAction.actionNotifyAll();
 				}
 			}
@@ -1089,7 +1076,6 @@ public class AndjongView extends View implements EventIf {
 					invalidate();
 				} else {
 					m_isValidChiiLeft = m_isValidChiiCenter = m_isValidChiiRight = false;
-					Log.d(TAG, "chii actionNotifyAll");
 					m_playerAction.actionNotifyAll();
 				}
 			}
@@ -1100,10 +1086,8 @@ public class AndjongView extends View implements EventIf {
 			synchronized (m_drawItem) {
 				switch (m_drawItem.m_state) {
 				case STATE_PLAY:
-					Log.d(TAG, "mDrawItem STATE_PLAY");
 					break;
 				default:
-					Log.d(TAG, "mDrawItem actionNotifyAll");
 					m_playerAction.actionNotifyAll();
 					return true;
 				}
@@ -1113,21 +1097,17 @@ public class AndjongView extends View implements EventIf {
 		PlayerInfo playerInfo;
 		try {
 			synchronized (m_drawItem) {
-				Log.d("onTouchEvent", "m_drawItem.m_kazeFrom = " + m_drawItem.m_kazeFrom);
 				playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
 			}
 		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			Log.d("onTouchEvent", "m_drawItem.m_kazeFrom = " + m_drawItem.m_kazeFrom);
 			return true;
 		}
 		int jyunTehaiLength = playerInfo.m_tehai.getJyunTehaiLength();
-		Log.d(TAG, "jyunTehaiLength = " + jyunTehaiLength);
 		if (playerInfo.m_tsumoHai != null) {
 			jyunTehaiLength++;
 		}
-		Log.d(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
 		jyunTehaiLength--;
 
 		/* X,Y座標の取得 */
@@ -1151,12 +1131,10 @@ public class AndjongView extends View implements EventIf {
 				synchronized (m_drawItem) {
 					switch (m_drawItem.m_state) {
 					case STATE_PLAY:
-						Log.d(TAG, "STATE_PLAY actionNotifyAll");
 						m_playerAction.setSutehaiIdx(m_iSelectSutehai);
 						m_playerAction.actionNotifyAll();
 						break;
 					default:
-						Log.d(TAG, "default actionNotifyAll");
 						m_playerAction.actionNotifyAll();
 						break;
 					}
@@ -1178,7 +1156,6 @@ public class AndjongView extends View implements EventIf {
 		}
 
 		if (m_drawItem.m_kazeFrom >= 4) {
-			Log.d(TAG, "Error kazeFrom actionNotifyAll");
 			m_playerAction.actionNotifyAll();
 			return true;
 		}
@@ -1202,7 +1179,6 @@ public class AndjongView extends View implements EventIf {
 					break;
 				case KeyEvent.KEYCODE_ENTER:
 				case KeyEvent.KEYCODE_DPAD_CENTER:
-					Log.d(TAG, "KEYCODE_DPAD_CENTER actionNotifyAll");
 					m_playerAction.actionNotifyAll();
 					break;
 				default:
@@ -1263,7 +1239,6 @@ public class AndjongView extends View implements EventIf {
 			default:
 				//return super.onKeyDown(keyCode, event);
 			}
-			Log.d("KAN", "select = " + kanSelect);
 		}
 		if (state == PlayerAction.STATE_CHII_SELECT) {
 			boolean isValidChiiLeft = m_isValidChiiLeft;
@@ -1332,11 +1307,9 @@ public class AndjongView extends View implements EventIf {
 
 		PlayerInfo playerInfo = m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom];
 		int jyunTehaiLength = playerInfo.m_tehai.getJyunTehaiLength();
-		Log.d(TAG, "jyunTehaiLength = " + jyunTehaiLength + ", m_iSelectSutehai = " + m_iSelectSutehai);
 		if (playerInfo.m_tsumoHai != null) {
 			jyunTehaiLength++;
 		}
-		Log.d(TAG, "jyunTehaiLength add = " + jyunTehaiLength);
 		jyunTehaiLength--;
 
 		//int state = m_playerAction.getState();
@@ -1385,12 +1358,10 @@ public class AndjongView extends View implements EventIf {
 			synchronized (m_drawItem) {
 				switch (m_drawItem.m_state) {
 				case STATE_PLAY:
-					Log.d(TAG, "STATE_PLAY actionNotifyAll, m_iSelectSutehai = " + m_iSelectSutehai);
 					m_playerAction.setSutehaiIdx(m_iSelectSutehai);
 					m_playerAction.actionNotifyAll();
 					break;
 				default:
-					Log.d(TAG, "default actionNotifyAll");
 					m_playerAction.actionNotifyAll();
 					break;
 				}
@@ -1561,7 +1532,6 @@ public class AndjongView extends View implements EventIf {
 			m_playerAction.actionWait();
 			break;
 		case SUTEHAI:// 捨牌
-			Log.d(TAG, "SUTEHAI fromKaze = " + a_kazeFrom);
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 
@@ -1628,7 +1598,6 @@ public class AndjongView extends View implements EventIf {
 				m_drawItem.setReachbou(m_infoUi.getReachbou());
 			}
 
-			Log.d(TAG, "REACH fromKaze = " + a_kazeFrom);
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 
@@ -1655,8 +1624,6 @@ public class AndjongView extends View implements EventIf {
 			this.postInvalidate(0, 0, getWidth(), getHeight());
 			break;
 		case RON_AGARI:// ロン
-			Log.d(TAG, "RON_AGARI");
-
 			// 手牌をコピーする。
 			m_infoUi.copyTehai(m_drawItem.m_playerInfos[a_kazeFrom].m_tehai, a_kazeFrom);
 			m_drawItem.m_suteHai = m_infoUi.getSuteHai();
@@ -1687,21 +1654,5 @@ public class AndjongView extends View implements EventIf {
 
 	public int getISutehai() {
 		return mSutehaiIdx;
-	}
-
-	/**
-	 * 成立している役を表示します。
-	 *
-	 * @param jikaze
-	 *            自風
-	 * @return　
-	 */
-	public void jikazeToString(Hai addHai) {
-		/*
-		String[] yakuNames = this.mInfoUi.getYakuName(tehai, addHai);
-		for (int i = 0; i < yakuNames.length; i++) {
-			System.out.println(yakuNames[i]);
-		}
-		*/
 	}
 }

@@ -9,6 +9,31 @@
 	<string name="kyoku_ton_2">東二局</string>
 	<string name="kyoku_ton_3">東三局</string>
 	<string name="kyoku_ton_4">東四局</string>
-	<string name="ryuukyoku">流局</string>
-	<string name="action_button">メニュー</string>
+
+	<string name="space">" "</string>
+	<string name="multi">x</string>
+
+	<string name="button_menu">メニュー</string>
+	<string name="button_reach">リーチ</string>
+	<string name="button_ron">ロン</string>
+	<string name="button_tsumo">ツモ</string>
+	<string name="button_pon">ポン</string>
+	<string name="button_chii">チー</string>
+	<string name="button_kan">カン</string>
+
+	<string name="han">翻</string>
+	<string name="fu">符</string>
+	<string name="ten">点</string>
+
+	<string name="yakuman">役満</string>
+	<string name="sanbaiman">三倍満</string>
+	<string name="baiman">倍満</string>
+	<string name="haneman">ハネ満</string>
+	<string name="mangan">満貫</string>
+
+	<string name="info_reach">リーチ</string>
+	<string name="info_ron">ロン</string>
+	<string name="info_tsumo">ツモ</string>
+	<string name="info_ryuukyoku">流局</string>
+	<string name="info_end">終了</string>
 </resources>

@@ -596,7 +596,7 @@ public class Mahjong implements Runnable {
 		}
 
 		boolean test = false;
-		//if (test)
+		if (test)
 		{
 			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
 				m_players[0].getTehai().rmJyunTehai(0);
@@ -621,7 +621,7 @@ public class Mahjong implements Runnable {
 			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 18, 18, 18, 26, 26};
 			//int haiIds[] = {27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31};
 			//int haiIds[] = {31, 31, 31, 32, 32, 32, 33, 33, 33, 30, 30, 30, 29, 29};
-			//int haiIds[] = {0, 0, 1, 1, 2, 2, 6, 6, 7, 7, 8, 8, 9, 9};
+			int haiIds[] = {0, 0, 1, 1, 2, 2, 6, 6, 7, 7, 8, 8, 9, 9};
 			//int haiIds[] = {31, 31, 31, 32, 32, 32, 33, 33, 3, 4, 5, 6, 7, 8};
 			//int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4};
 			//int haiIds[] = {0, 0, 0, 9, 9, 9, 18, 18, 18, 27, 27, 29, 28, 28};
@@ -632,7 +632,7 @@ public class Mahjong implements Runnable {
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 10, 10}; // イッツー
 			//int haiIds[] = {0, 1, 2, 9, 10, 11, 18, 19, 20, 33, 33, 33, 27, 27};
 			//int haiIds[] = {1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4}; // リーチタンピンイーペーコー
-			int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコー
+			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコー
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
 			for (int i = 0; i < haiIds.length - 1; i++) {
 				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));

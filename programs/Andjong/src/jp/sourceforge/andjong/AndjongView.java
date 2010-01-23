@@ -116,6 +116,9 @@ public class AndjongView extends View implements EventIf {
 	/** メニューの枠 */
 	private RectF m_menuRect[];
 
+	/** メニューのテキストサイズ */
+	private static final int MENU_TEXT_SIZE = 24;
+
 	/*
 	 * 結果画面
 	 */
@@ -397,8 +400,8 @@ public class AndjongView extends View implements EventIf {
 				int left = 2;
 				int top = 50 + 38 + 2 + 10;
 				for (int i = 0; i < agariInfo.m_yakuNames.length; i++) {
-					drawString(left, top, a_canvas, 20, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
-					top += 20;
+					drawString(left, top, a_canvas, 16, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
+					top += 18;
 				}
 				String string = new String();
 				String han = res.getString(R.string.han);
@@ -527,7 +530,7 @@ public class AndjongView extends View implements EventIf {
 
 	private void drawMenuMessage(Canvas canvas, String string, int no) {
 		canvas.drawRoundRect(m_menuRect[no], MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
-		drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 2)), canvas, MESSAGE_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
+		drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 2)), canvas, MENU_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
 	}
 
 	/**

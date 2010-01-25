@@ -2,7 +2,7 @@ package jp.sourceforge.andjong;
 
 import android.content.res.Resources;
 import jp.sourceforge.andjong.mahjong.Hai;
-import jp.sourceforge.andjong.mahjong.Kawa;
+import jp.sourceforge.andjong.mahjong.Hou;
 import jp.sourceforge.andjong.mahjong.Mahjong;
 import jp.sourceforge.andjong.mahjong.Tehai;
 import jp.sourceforge.andjong.mahjong.EventIf.EventId;
@@ -152,7 +152,7 @@ public class DrawItem {
 	 *
 	 * @return Žè”v‚©‚çŽÌ‚Ä‚½”v‚ÌƒCƒ“ƒfƒbƒNƒX
 	 */
-	public synchronized int getSkipIdx() {
+	public synchronized int getISkip() {
 		return m_iSkip;
 	}
 
@@ -179,7 +179,7 @@ public class DrawItem {
 		/** Žè”v */
 		Tehai m_tehai = new Tehai();
 		/** ‰Í */
-		Kawa m_kawa = new Kawa();
+		Hou m_kawa = new Hou();
 		/** ƒcƒ‚”v */
 		Hai m_tsumoHai;
 		/** “_–_ */

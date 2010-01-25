@@ -32,14 +32,14 @@ class Player {
 	}
 
 	/** ‰Í */
-	private Kawa kawa = new Kawa();
+	private Hou kawa = new Hou();
 
 	/**
 	 * ‰Í‚ğæ“¾‚µ‚Ü‚·B
 	 *
 	 * @return ‰Í
 	 */
-	Kawa getKawa() {
+	Hou getKawa() {
 		return kawa;
 	}
 

@@ -7,7 +7,7 @@ import jp.sourceforge.andjong.mahjong.EventIf;
 import jp.sourceforge.andjong.mahjong.Fuuro;
 import jp.sourceforge.andjong.mahjong.Hai;
 import jp.sourceforge.andjong.mahjong.InfoUi;
-import jp.sourceforge.andjong.mahjong.Kawa;
+import jp.sourceforge.andjong.mahjong.Hou;
 import jp.sourceforge.andjong.mahjong.Mahjong;
 import jp.sourceforge.andjong.mahjong.PlayerAction;
 import jp.sourceforge.andjong.mahjong.SuteHai;
@@ -37,23 +37,32 @@ public class AndjongView extends View implements EventIf {
 	/** 牌のイメージ */
 	private Bitmap[] m_haiImage;
 	/** 牌のイメージの幅 */
-	private int mHaiImageWidth;
+	private int m_haiImageWidth;
 	/** 牌のイメージの高さ */
-	private int mHaiImageHeight;
+	private int m_haiImageHeight;
 
 	/** 牌の幅 */
 	private static final int HAI_WIDTH = 19;
 	/** 牌の高さ */
 	private static final int HAI_HEIGHT = 23;
 
+	private static final int TSUMO_OFFSET = 2;
+	private static final int SELECT_OFFSET = 16;
+
+	private static final int FUURO_LEFT = 320 - 2;
+
 	/** 牌の裏のイメージ */
 	private Bitmap mHaiUraImage;
 
 	/** 横になった牌のイメージ */
-	private Bitmap[] mHaiHorizontalImage;
+	private Bitmap[] m_horizontalHaiImage;
 
 	/** 隠している牌のイメージ */
-	private Bitmap mHaiHideImage;
+	private Bitmap m_hideHaiImage;
+
+	private Bitmap[] m_largeHaiImage;
+	private int m_largeHaiImageWidth;
+//	private int m_largeHaiImageHeight;
 
 	/** 1000点棒のイメージ */
 	private Bitmap mTenbou1000Image;
@@ -66,31 +75,78 @@ public class AndjongView extends View implements EventIf {
 	/** 背景のペイント */
 	private Paint mBackgroundPaint;
 
+	/*
+	 * print
+	 */
+
+	private static final int ROUND = 5;
+	private static final int PRINT_AREA_WIDTH = 150 - 10;
+	private static final int PRINT_AREA_HEIGHT = 134 - 10;
+	private static final int PRINT_AREA_LEFT = 90 + 150 + 5;
+	private static final int PRINT_AREA_TOP = 90 + 5;
+	private static final int PRINT_AREA_RIGHT = PRINT_AREA_LEFT + PRINT_AREA_WIDTH;
+	private static final int PRINT_AREA_BOTTOM = PRINT_AREA_TOP + PRINT_AREA_HEIGHT;
+	private static final int PRINT_TEXT_SIZE = 30;
+	private Paint m_printPaint;
+	private RectF m_printRect;
+
 	/** メッセージエリアの幅 */
-	private static final int MESSAGE_AREA_WIDTH = 146;
+	private static final int MESSAGE_AREA_WIDTH = 88;
+//	private static final int MESSAGE_AREA_WIDTH = 146;
 	/** メッセージエリアの高さ */
-	private static final int MESSAGE_AREA_HEIGHT = 143;
+	private static final int MESSAGE_AREA_HEIGHT = 40;
+//	private static final int MESSAGE_AREA_HEIGHT = 143;
 
 	/** メッセージエリアのLeft */
-	private static final int MESSAGE_AREA_LEFT = 87;
+	private static final int MESSAGE_AREA_LEFT = 392;
+//	private static final int MESSAGE_AREA_LEFT = 87;
 	/** メッセージエリアのTop */
-	private static final int MESSAGE_AREA_TOP = 176;
+	private static final int MESSAGE_AREA_TOP = 280;
+	private static final int MESSAGE_AREA_MARGIN = 20;
+//	private static final int MESSAGE_AREA_TOP = 176;
 	/** メッセージエリアのRight */
 	private static final int MESSAGE_AREA_RIGHT = MESSAGE_AREA_LEFT + MESSAGE_AREA_WIDTH;
 	/** メッセージエリアのBottom */
 	private static final int MESSAGE_AREA_BOTTOM = MESSAGE_AREA_TOP + MESSAGE_AREA_HEIGHT;
 
 	/** メッセージのテキストサイズ */
-	private static final int MESSAGE_TEXT_SIZE = 30;
+	private static final int MESSAGE_TEXT_SIZE = 20;
 
 	/** メッセージの枠の丸み */
-	private static final int MESSAGE_ROUND = 5;
+	private static final int MESSAGE_ROUND = 10;
 
 	/** メッセージのペイント */
 	private Paint mMessagePaint;
 
 	/** メッセージの枠 */
 	private RectF mMessageRect;
+
+	/*
+	 * 情報エリア
+	 */
+
+	/** 情報エリアの幅 */
+	private static final int INFO_AREA_WIDTH = 300;
+	/** 情報エリアの高さ */
+	private static final int INFO_AREA_HEIGHT = 134;
+
+	/** 情報エリアのLeft */
+	private static final int INFO_AREA_LEFT = 90;
+	/** 情報エリアのTop */
+	private static final int INFO_AREA_TOP = 90;
+	/** 情報エリアのRight */
+	private static final int INFO_AREA_RIGHT = INFO_AREA_LEFT + INFO_AREA_WIDTH;
+	/** 情報エリアのBottom */
+	private static final int INFO_AREA_BOTTOM = INFO_AREA_TOP + INFO_AREA_HEIGHT;
+
+	/** 情報エリアの枠の丸み */
+	private static final int INFO_ROUND = 5;
+
+	/** 情報エリアのペイント */
+	private Paint m_infoPaint;
+
+	/** 情報エリアの枠 */
+	private RectF m_infoRect;
 
 	/*
 	 * メニュー
@@ -100,18 +156,22 @@ public class AndjongView extends View implements EventIf {
 	private static final int MENU_ITEM_MAX = 4;
 
 	/** メニューの幅 */
-	private static final int MENU_WIDTH = 78;
+	private static final int MENU_WIDTH = 94;
+//	private static final int MENU_WIDTH = 78;
 	/** メニューの高さ */
-	private static final int MENU_HEIGHT = 72;
+	private static final int MENU_HEIGHT = 66;
+//	private static final int MENU_HEIGHT = 72;
 
 	/** メニューエリアのtop */
-	private static final int MENU_AREA_TOP = 406;
+	private static final int MENU_AREA_TOP = 250;
+//	private static final int MENU_AREA_TOP = 406;
 	/** メニューエリアのleft */
 	private static final int MENU_AREA_LEFT = 0;
 	/** メニューエリアのtopのマージン */
-	private static final int MENU_AREA_TOP_MARGIN = 1;
+	private static final int MENU_AREA_TOP_MARGIN = 2;
+//	private static final int MENU_AREA_TOP_MARGIN = 1;
 	/** メニューエリアのleftのマージン */
-	private static final int MENU_AREA_LEFT_MARGIN = 1;
+	private static final int MENU_AREA_LEFT_MARGIN = 2;
 
 	/** メニューの枠 */
 	private RectF m_menuRect[];
@@ -140,23 +200,26 @@ public class AndjongView extends View implements EventIf {
 	/** プレイヤーアクション */
 	private PlayerAction m_playerAction;
 
+	private static final int LEFT_OFFSET = 5;
+	private static final int TOP_OFFSET = 26;
+
 	/** 局のLeft */
-	private static final int KYOKU_LEFT = 160;
+	private static final int KYOKU_LEFT = 160 + LEFT_OFFSET;
 	/** 局のTop */
-	private static final int KYOKU_TOP = 85 + 11;
+	private static final int KYOKU_TOP = 85 + 11 + TOP_OFFSET;
 
 	/** 局のテキストサイズ */
 	private static final int KYOKU_TEXT_SIZE = 18;
 
 	/** ドラのLeft */
-	private static final int DORAS_LEFT = 112;
+	private static final int DORAS_LEFT = 112 + LEFT_OFFSET;
 	/** ドラのTop */
-	private static final int DORAS_TOP = 150;
+	private static final int DORAS_TOP = 150 + TOP_OFFSET;
 
 	/** リーチ棒のイメージのLeft */
-	private static final int TENBOU_01000_MIN_IMAGE_LEFT = 100;
+	private static final int TENBOU_01000_MIN_IMAGE_LEFT = 100 + LEFT_OFFSET;
 	/** リーチ棒のイメージのTop */
-	private static final int TENBOU_01000_MIN_IMAGE_TOP = 137;
+	private static final int TENBOU_01000_MIN_IMAGE_TOP = 137 + TOP_OFFSET;
 
 	/** リーチ棒の数のLeft */
 	private static final int REACHBOU_LEFT = TENBOU_01000_MIN_IMAGE_LEFT + 43;
@@ -167,12 +230,12 @@ public class AndjongView extends View implements EventIf {
 	private static final int MINI_TEXT_SIZE = 12;
 
 	/** 点棒のLeft */
-	private static final int[] TENBO_LEFT = { 160, 197, 160, 123 };
+	private static final int[] TENBO_LEFT = { 160 + LEFT_OFFSET, 197 + LEFT_OFFSET, 160 + LEFT_OFFSET, 123 + LEFT_OFFSET };
 	/** 点棒のTop */
-	private static final int[] TENBO_TOP = { 131, 121, 111, 121 };
+	private static final int[] TENBO_TOP = { 131 + TOP_OFFSET, 121 + TOP_OFFSET, 111 + TOP_OFFSET, 121 + TOP_OFFSET };
 
 	/** 本場のイメージのLeft */
-	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 170;
+	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 170 + LEFT_OFFSET;
 	/** 本場のイメージのTop */
 	private static final int TENBOU_00100_MIN_IMAGE_TOP = TENBOU_01000_MIN_IMAGE_TOP;
 
@@ -255,25 +318,71 @@ public class AndjongView extends View implements EventIf {
 		m_haiImage[32] = BitmapFactory.decodeResource(res, R.drawable.hai_32_hatsu);
 		m_haiImage[33] = BitmapFactory.decodeResource(res, R.drawable.hai_33_chun);
 
-		mHaiImageWidth = m_haiImage[0].getWidth();
-		mHaiImageHeight = m_haiImage[0].getHeight();
+		m_haiImageWidth = m_haiImage[0].getWidth();
+		m_haiImageHeight = m_haiImage[0].getHeight();
 
 		mHaiUraImage = BitmapFactory.decodeResource(res, R.drawable.hai_ura);
 
-		mHaiHorizontalImage = new Bitmap[Hai.ID_MAX + 1];
+		m_horizontalHaiImage = new Bitmap[Hai.ID_MAX + 1];
 
-		for (int i = 0; i < mHaiHorizontalImage.length; i++) {
-			mHaiHorizontalImage[i] = createHorizontalBitmap(m_haiImage[i]);
+		for (int i = 0; i < m_horizontalHaiImage.length; i++) {
+			m_horizontalHaiImage[i] = createHorizontalBitmap(m_haiImage[i]);
 		}
 
-		mHaiHideImage = BitmapFactory.decodeResource(res, R.drawable.hai_hide);
+		m_hideHaiImage = BitmapFactory.decodeResource(res, R.drawable.hai_hide);
 
 		mTenbou1000Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_1000);
 		mTenbou100Image = BitmapFactory.decodeResource(res, R.drawable.tenbou_100);
 
 		mChiichaImage = BitmapFactory.decodeResource(res, R.drawable.chiicha);
 
-		//mMenuSelectImage = BitmapFactory.decodeResource(res, R.drawable.menu_select);
+		/*
+		 * 大きい牌のイメージ
+		 */
+
+		m_largeHaiImage = new Bitmap[Hai.ID_MAX + 1];
+
+		m_largeHaiImage[0] = BitmapFactory.decodeResource(res, R.drawable.hai_00_wan_1_l);
+		m_largeHaiImage[1] = BitmapFactory.decodeResource(res, R.drawable.hai_01_wan_2_l);
+		m_largeHaiImage[2] = BitmapFactory.decodeResource(res, R.drawable.hai_02_wan_3_l);
+		m_largeHaiImage[3] = BitmapFactory.decodeResource(res, R.drawable.hai_03_wan_4_l);
+		m_largeHaiImage[4] = BitmapFactory.decodeResource(res, R.drawable.hai_04_wan_5_l);
+		m_largeHaiImage[5] = BitmapFactory.decodeResource(res, R.drawable.hai_05_wan_6_l);
+		m_largeHaiImage[6] = BitmapFactory.decodeResource(res, R.drawable.hai_06_wan_7_l);
+		m_largeHaiImage[7] = BitmapFactory.decodeResource(res, R.drawable.hai_07_wan_8_l);
+		m_largeHaiImage[8] = BitmapFactory.decodeResource(res, R.drawable.hai_08_wan_9_l);
+
+		m_largeHaiImage[9] = BitmapFactory.decodeResource(res, R.drawable.hai_09_pin_1_l);
+		m_largeHaiImage[10] = BitmapFactory.decodeResource(res, R.drawable.hai_10_pin_2_l);
+		m_largeHaiImage[11] = BitmapFactory.decodeResource(res, R.drawable.hai_11_pin_3_l);
+		m_largeHaiImage[12] = BitmapFactory.decodeResource(res, R.drawable.hai_12_pin_4_l);
+		m_largeHaiImage[13] = BitmapFactory.decodeResource(res, R.drawable.hai_13_pin_5_l);
+		m_largeHaiImage[14] = BitmapFactory.decodeResource(res, R.drawable.hai_14_pin_6_l);
+		m_largeHaiImage[15] = BitmapFactory.decodeResource(res, R.drawable.hai_15_pin_7_l);
+		m_largeHaiImage[16] = BitmapFactory.decodeResource(res, R.drawable.hai_16_pin_8_l);
+		m_largeHaiImage[17] = BitmapFactory.decodeResource(res, R.drawable.hai_17_pin_9_l);
+
+		m_largeHaiImage[18] = BitmapFactory.decodeResource(res, R.drawable.hai_18_sou_1_l);
+		m_largeHaiImage[19] = BitmapFactory.decodeResource(res, R.drawable.hai_19_sou_2_l);
+		m_largeHaiImage[20] = BitmapFactory.decodeResource(res, R.drawable.hai_20_sou_3_l);
+		m_largeHaiImage[21] = BitmapFactory.decodeResource(res, R.drawable.hai_21_sou_4_l);
+		m_largeHaiImage[22] = BitmapFactory.decodeResource(res, R.drawable.hai_22_sou_5_l);
+		m_largeHaiImage[23] = BitmapFactory.decodeResource(res, R.drawable.hai_23_sou_6_l);
+		m_largeHaiImage[24] = BitmapFactory.decodeResource(res, R.drawable.hai_24_sou_7_l);
+		m_largeHaiImage[25] = BitmapFactory.decodeResource(res, R.drawable.hai_25_sou_8_l);
+		m_largeHaiImage[26] = BitmapFactory.decodeResource(res, R.drawable.hai_26_sou_9_l);
+
+		m_largeHaiImage[27] = BitmapFactory.decodeResource(res, R.drawable.hai_27_ton_l);
+		m_largeHaiImage[28] = BitmapFactory.decodeResource(res, R.drawable.hai_28_nan_l);
+		m_largeHaiImage[29] = BitmapFactory.decodeResource(res, R.drawable.hai_29_sha_l);
+		m_largeHaiImage[30] = BitmapFactory.decodeResource(res, R.drawable.hai_30_pei_l);
+
+		m_largeHaiImage[31] = BitmapFactory.decodeResource(res, R.drawable.hai_31_haku_l);
+		m_largeHaiImage[32] = BitmapFactory.decodeResource(res, R.drawable.hai_32_hatsu_l);
+		m_largeHaiImage[33] = BitmapFactory.decodeResource(res, R.drawable.hai_33_chun_l);
+
+		m_largeHaiImageWidth = m_largeHaiImage[0].getWidth();
+//		m_largeHaiImageHeight = m_largeHaiImage[0].getHeight();
 	}
 
 	/**
@@ -287,9 +396,9 @@ public class AndjongView extends View implements EventIf {
 		mBackgroundPaint.setColor(res.getColor(R.color.andjong_background));
 
 		mMessagePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mMessagePaint.setColor(Color.DKGRAY);
-		mMessagePaint.setAlpha(200);
-		mMessageRect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT, MESSAGE_AREA_BOTTOM);
+		//mMessagePaint.setColor(R.color.menu);
+		mMessagePaint.setColor(res.getColor(R.color.menu));
+		mMessageRect = new RectF(MESSAGE_AREA_LEFT, MESSAGE_AREA_TOP, MESSAGE_AREA_RIGHT + MESSAGE_ROUND, MESSAGE_AREA_BOTTOM + MESSAGE_ROUND);
 
 		// メニューを初期化する。
 		m_menuRect = new RectF[MENU_ITEM_MAX];
@@ -300,8 +409,18 @@ public class AndjongView extends View implements EventIf {
 		for (int i = 0; i < m_menuRect.length; i++) {
 			left = (MENU_AREA_LEFT + MENU_AREA_LEFT_MARGIN) + ((MENU_WIDTH + (MENU_AREA_LEFT_MARGIN * 2)) * i);
 			right = left + MENU_WIDTH;
-			m_menuRect[i] = new RectF(left, top, right, bottom);
+			m_menuRect[m_menuRect.length - 1 - i] = new RectF(left, top, right, bottom);
+			//m_menuRect[i] = new RectF(left, top, right, bottom);
 		}
+
+		m_infoPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		m_infoPaint.setColor(res.getColor(R.color.info));
+		m_infoRect = new RectF(INFO_AREA_LEFT, INFO_AREA_TOP, INFO_AREA_RIGHT, INFO_AREA_BOTTOM);
+
+		m_printPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		m_printPaint.setColor(Color.WHITE);
+		m_printPaint.setAlpha(192);
+		m_printRect = new RectF(PRINT_AREA_LEFT, PRINT_AREA_TOP, PRINT_AREA_RIGHT, PRINT_AREA_BOTTOM);
 	}
 
 	/**
@@ -351,32 +470,11 @@ public class AndjongView extends View implements EventIf {
 		a_canvas.drawRect(0, 0, getWidth(), getHeight(), mBackgroundPaint);
 
 		synchronized (m_drawItem) {
-			switch (m_drawItem.m_state) {
-			case STATE_INIT_WAIT:
-			case STATE_NONE:
-				// 何も描画しない。
-				return;
-			case STATE_KYOKU_START:
+			if (m_drawItem.m_state == STATE_KYOKU_START) {
 				// 局を表示する。
-				drawMessage(a_canvas, m_drawItem.getKyokuString());
+				drawString(240, 160, a_canvas, 30, Color.WHITE, m_drawItem.getKyokuString(), Align.CENTER);
 				return;
-			case STATE_REACH:
-				// リーチのメッセージを表示する。
-				drawMessage(a_canvas, res.getString(R.string.info_reach));
-				break;
-			case STATE_RON:
-				// ロンのメッセージを表示する。
-				drawMessage(a_canvas, res.getString(R.string.info_ron));
-				break;
-			case STATE_TSUMO:
-				// ツモのメッセージを表示する。
-				drawMessage(a_canvas, res.getString(R.string.info_tsumo));
-				break;
-			case STATE_RYUUKYOKU:
-				// 流局のメッセージを表示する。
-				drawMessage(a_canvas, res.getString(R.string.info_ryuukyoku));
-				break;
-			case STATE_RESULT:
+			} else if (m_drawItem.m_state == STATE_RESULT) {
 				// ドラを表示する。
 				drawDoraHais(RESULT_DORAS_LEFT, RESULT_DORAS_TOP, a_canvas, m_infoUi.getDoraHais());
 
@@ -391,16 +489,16 @@ public class AndjongView extends View implements EventIf {
 				}
 
 				if (m_drawItem.m_eventId == EventId.TSUMO_AGARI) {
-					drawTehai(2, 50, a_canvas, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tehai, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tsumoHai, 0, 15, true);
+					drawPlayerTehai(a_canvas, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tehai, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tsumoHai, 15, 2, 50);
 				} else {
-					drawTehai(2, 50, a_canvas, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tehai, m_drawItem.m_suteHai, 0, 15, true);
+					drawPlayerTehai(a_canvas, m_drawItem.m_playerInfos[m_drawItem.m_kazeFrom].m_tehai, m_drawItem.m_suteHai, 15, 2, 50);
 				}
 
 				AgariInfo agariInfo = m_infoUi.getAgariInfo();
 				int left = 2;
-				int top = 50 + 38 + 2 + 10;
+				int top = 50 + 44 + 2 + 10;
 				for (int i = 0; i < agariInfo.m_yakuNames.length; i++) {
-					drawString(left, top, a_canvas, 16, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
+					drawString(left, top, a_canvas, 18, Color.WHITE, agariInfo.m_yakuNames[i], Align.LEFT);
 					top += 18;
 				}
 				String string = new String();
@@ -423,10 +521,75 @@ public class AndjongView extends View implements EventIf {
 				}
 				drawString(left, top + 20, a_canvas, 20, Color.WHITE, string, Align.LEFT);
 				return;
+			}
+
+			a_canvas.drawRoundRect(m_infoRect, INFO_ROUND, INFO_ROUND, m_infoPaint);
+
+			switch (m_drawItem.m_state) {
+			case STATE_INIT_WAIT:
+			case STATE_NONE:
+				// 何も描画しない。
+				return;
+			case STATE_REACH:
+				// リーチのメッセージを表示する。
+				drawPrint(a_canvas, res.getString(R.string.info_reach));
+				break;
+			case STATE_RON:
+				// ロンのメッセージを表示する。
+				drawPrint(a_canvas, res.getString(R.string.info_ron));
+				break;
+			case STATE_TSUMO:
+				// ツモのメッセージを表示する。
+				drawPrint(a_canvas, res.getString(R.string.info_tsumo));
+				break;
+			case STATE_RYUUKYOKU:
+				// 流局のメッセージを表示する。
+				drawPrint(a_canvas, res.getString(R.string.info_ryuukyoku));
+				break;
 			case STATE_END:
-				drawMessage(a_canvas, res.getString(R.string.info_end));
+				drawPrint(a_canvas, res.getString(R.string.info_end));
 				break;
 			}
+
+			// 局を表示する。
+			drawString(KYOKU_LEFT, KYOKU_TOP, a_canvas, KYOKU_TEXT_SIZE, Color.WHITE, m_drawItem.getKyokuString(), Align.CENTER);
+
+			// リーチ棒の数を表示する。
+			drawReachbou(a_canvas, m_drawItem.getReachbou());
+
+			// 本場を表示する。
+			drawHonba(a_canvas, m_drawItem.getHonba());
+
+			// ドラを表示する。
+			drawDoraHais(DORAS_LEFT, DORAS_TOP, a_canvas, m_infoUi.getDoraHais());
+
+			int manKaze = m_infoUi.getManKaze();
+			int dispKaze[] = { 0, 1, 2, 3 };
+			for (int i = 0; i < 4; i++) {
+				dispKaze[i] = manKaze;
+				manKaze++;
+				manKaze %= 4;
+			}
+
+			// 点棒を表示する。
+			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
+				drawString(TENBO_LEFT[i], TENBO_TOP[i], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[i]].m_tenbo).toString(), Align.CENTER);
+			}
+
+			// 起家マークを表示する。
+			drawChiicha(a_canvas, m_drawItem.getChiicha());
+
+			Bitmap test2 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[0]].m_tehai, m_drawItem.m_playerInfos[dispKaze[0]].m_kawa, PLACE_PLAYER, dispKaze[0], true, m_drawItem.m_playerInfos[dispKaze[0]].m_tsumoHai);
+			a_canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
+
+			Bitmap test3 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[1]].m_tehai, m_drawItem.m_playerInfos[dispKaze[1]].m_kawa, PLACE_KAMICHA, dispKaze[1], m_drawItem.m_playerInfos[dispKaze[1]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[1]].m_tsumoHai);
+			a_canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
+
+			Bitmap test = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[2]].m_tehai, m_drawItem.m_playerInfos[dispKaze[2]].m_kawa, PLACE_TOIMEN, dispKaze[2], m_drawItem.m_playerInfos[dispKaze[2]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[2]].m_tsumoHai);
+			a_canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
+
+			Bitmap test4 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[3]].m_tehai, m_drawItem.m_playerInfos[dispKaze[3]].m_kawa, PLACE_SHIMOCHA, dispKaze[3], m_drawItem.m_playerInfos[dispKaze[3]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[3]].m_tsumoHai);
+			a_canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
 
 			// アクションボタンを表示する。
 			boolean actionRequest = m_playerAction.isActionRequest();
@@ -471,46 +634,6 @@ public class AndjongView extends View implements EventIf {
 					}
 				}
 			}
-
-			// 局を表示する。
-			drawString(KYOKU_LEFT, KYOKU_TOP, a_canvas, KYOKU_TEXT_SIZE, Color.WHITE, m_drawItem.getKyokuString(), Align.CENTER);
-
-			// リーチ棒の数を表示する。
-			drawReachbou(a_canvas, m_drawItem.getReachbou());
-
-			// 本場を表示する。
-			drawHonba(a_canvas, m_drawItem.getHonba());
-
-			// ドラを表示する。
-			drawDoraHais(DORAS_LEFT, DORAS_TOP, a_canvas, m_infoUi.getDoraHais());
-
-			int manKaze = m_infoUi.getManKaze();
-			int dispKaze[] = { 0, 1, 2, 3 };
-			for (int i = 0; i < 4; i++) {
-				dispKaze[i] = manKaze;
-				manKaze++;
-				manKaze %= 4;
-			}
-
-			// 点棒を表示する。
-			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
-				drawString(TENBO_LEFT[i], TENBO_TOP[i], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[i]].m_tenbo).toString(), Align.CENTER);
-			}
-
-			// 起家マークを表示する。
-			drawChiicha(a_canvas, m_drawItem.getChiicha());
-
-			Bitmap test2 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[0]].m_tehai, m_drawItem.m_playerInfos[dispKaze[0]].m_kawa, PLACE_PLAYER, dispKaze[0], true, m_drawItem.m_playerInfos[dispKaze[0]].m_tsumoHai);
-			a_canvas.drawBitmap(test2, KAWA_TEHAI_AREA_PLAYER_LEFT, KAWA_TEHAI_AREA_PLAYER_TOP, null);
-
-			Bitmap test3 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[1]].m_tehai, m_drawItem.m_playerInfos[dispKaze[1]].m_kawa, PLACE_KAMICHA, dispKaze[1], m_drawItem.m_playerInfos[dispKaze[1]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[1]].m_tsumoHai);
-			a_canvas.drawBitmap(test3, KAWA_TEHAI_AREA_KAMICHA_LEFT, KAWA_TEHAI_AREA_KAMICHA_TOP, null);
-
-			Bitmap test = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[2]].m_tehai, m_drawItem.m_playerInfos[dispKaze[2]].m_kawa, PLACE_TOIMEN, dispKaze[2], m_drawItem.m_playerInfos[dispKaze[2]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[2]].m_tsumoHai);
-			a_canvas.drawBitmap(test, KAWA_TEHAI_AREA_TOIMEN_LEFT, KAWA_TEHAI_AREA_TOIMEN_TOP, null);
-
-			Bitmap test4 = getKawaTehaiAreaImage(m_drawItem.m_playerInfos[dispKaze[3]].m_tehai, m_drawItem.m_playerInfos[dispKaze[3]].m_kawa, PLACE_SHIMOCHA, dispKaze[3], m_drawItem.m_playerInfos[dispKaze[3]].m_tenpai, m_drawItem.m_playerInfos[dispKaze[3]].m_tsumoHai);
-			a_canvas.drawBitmap(test4, KAWA_TEHAI_AREA_SHIMOCHA_LEFT, KAWA_TEHAI_AREA_SHIMOCHA_TOP, null);
 		}
 	}
 
@@ -529,8 +652,14 @@ public class AndjongView extends View implements EventIf {
 
 
 	private void drawMenuMessage(Canvas canvas, String string, int no) {
-		canvas.drawRoundRect(m_menuRect[no], MESSAGE_ROUND, MESSAGE_ROUND, mMessagePaint);
-		drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 2)), canvas, MENU_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
+		canvas.drawRoundRect(m_menuRect[no], ROUND, ROUND, mMessagePaint);
+		drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 4)), canvas, MENU_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
+		//drawString((int) (m_menuRect[no].left + (MENU_WIDTH / 2)), (int) (m_menuRect[no].top + (MENU_HEIGHT / 2)), canvas, MENU_TEXT_SIZE, Color.WHITE, string, Align.CENTER);
+	}
+
+	private void drawPrint(Canvas a_canvas, String a_string) {
+		a_canvas.drawRoundRect(m_printRect, ROUND, ROUND, m_printPaint);
+		drawString((PRINT_AREA_LEFT + PRINT_AREA_RIGHT) / 2, (PRINT_AREA_TOP + PRINT_AREA_BOTTOM) / 2, a_canvas, PRINT_TEXT_SIZE, Color.BLACK, a_string, Align.CENTER);
 	}
 
 	/**
@@ -632,38 +761,55 @@ public class AndjongView extends View implements EventIf {
 	private static final int PLACE_SHIMOCHA = 3;
 
 	private static final int KAWA_TEHAI_AREA_WIDTH = 320;
-	private static final int KAWA_TEHAI_AREA_HEIGHT = 85;
+	private static final int KAWA_TEHAI_AREA_HEIGHT = 88;
+//	private static final int KAWA_TEHAI_AREA_HEIGHT = 85;
 
-	private static final int TEHAI_LEFT = 2;
-	private static final int TEHAI_TOP = 47;
+	private static final int TEHAI_LEFT = 4;
+//	private static final int TEHAI_LEFT = 2;
+//	private static final int TEHAI_TOP = 47;
+	private static final int TEHAI_TOP = 48;
 
-	private static final int KAWA_LEFT = 49;
+	private static final int KAWA_LEFT = 42;
+//	private static final int KAWA_LEFT = 49;
 	private static final int KAWA_TOP = 0;
 
-	private static final int KAWA_TEHAI_AREA_PLAYER_LEFT = 0;
-	private static final int KAWA_TEHAI_AREA_PLAYER_TOP = 321;
+	private static final int KAWA_TEHAI_AREA_PLAYER_LEFT = 42;
+	private static final int KAWA_TEHAI_AREA_PLAYER_TOP = 226;
+//	private static final int KAWA_TEHAI_AREA_PLAYER_LEFT = 0;
+//	private static final int KAWA_TEHAI_AREA_PLAYER_TOP = 321;
 
-	private static final int KAWA_TEHAI_AREA_TOIMEN_LEFT = 0;
+	private static final int KAWA_TEHAI_AREA_TOIMEN_LEFT = 72;
+//	private static final int KAWA_TEHAI_AREA_TOIMEN_LEFT = 0;
 	private static final int KAWA_TEHAI_AREA_TOIMEN_TOP = 0;
 
-	private static final int KAWA_TEHAI_AREA_KAMICHA_LEFT = 235;
-	private static final int KAWA_TEHAI_AREA_KAMICHA_TOP = 47;
+	private static final int KAWA_TEHAI_AREA_KAMICHA_LEFT = 392;
+	private static final int KAWA_TEHAI_AREA_KAMICHA_TOP = 0;
+//	private static final int KAWA_TEHAI_AREA_KAMICHA_LEFT = 235;
+//	private static final int KAWA_TEHAI_AREA_KAMICHA_TOP = 47;
 
 	private static final int KAWA_TEHAI_AREA_SHIMOCHA_LEFT = 0;
-	private static final int KAWA_TEHAI_AREA_SHIMOCHA_TOP = 38;
+	private static final int KAWA_TEHAI_AREA_SHIMOCHA_TOP = 0;
+//	private static final int KAWA_TEHAI_AREA_SHIMOCHA_LEFT = 0;
+//	private static final int KAWA_TEHAI_AREA_SHIMOCHA_TOP = 38;
 
-	private Bitmap getKawaTehaiAreaImage(Tehai tehai, Kawa kawa, int place, int kaze, boolean isPlayer, Hai tsumoHai) {
+	private Bitmap getKawaTehaiAreaImage(Tehai tehai, Hou kawa, int place, int kaze, boolean isPlayer, Hai tsumoHai) {
 		int width;
 		int height;
+		int kawaLeft = KAWA_LEFT;
+		int kawaTop = KAWA_TOP;
 		Bitmap image;
 		Canvas canvas;
 
 		switch (place) {
 		case PLACE_PLAYER:
-			width = KAWA_TEHAI_AREA_WIDTH;
-			height = KAWA_TEHAI_AREA_HEIGHT;
+			width = 408;
+			height = 94;
+	//		width = KAWA_TEHAI_AREA_WIDTH;
+	//		height = KAWA_TEHAI_AREA_HEIGHT;
 			image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 			canvas = new Canvas(image);
+
+			kawaLeft += 40;
 			break;
 		case PLACE_KAMICHA:
 			width = KAWA_TEHAI_AREA_HEIGHT;
@@ -672,6 +818,8 @@ public class AndjongView extends View implements EventIf {
 			canvas = new Canvas(image);
 			canvas.rotate(270, 0, 0);
 			canvas.translate(-height, 0);
+
+			//kawaLeft += 6;
 			break;
 		case PLACE_TOIMEN:
 			width = KAWA_TEHAI_AREA_WIDTH;
@@ -693,63 +841,164 @@ public class AndjongView extends View implements EventIf {
 			return null;
 		}
 
-		drawKawa(KAWA_LEFT, KAWA_TOP, canvas, kawa, null);
+		drawHou(canvas, kawa, kawaLeft, kawaTop, null);
 
 		if ((m_infoUi.getManKaze() == kaze)) {
 	//	if ((mInfoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
-			drawTehai(TEHAI_LEFT, TEHAI_TOP, canvas, tehai, tsumoHai, kaze, m_iSelectSutehai, isPlayer);
+			drawPlayerTehai(canvas, tehai, tsumoHai, m_iSelectSutehai, TEHAI_LEFT, 50);
 		} else {
-			drawTehai(TEHAI_LEFT, TEHAI_TOP, canvas, tehai, tsumoHai, kaze, 15, isPlayer);
+			drawTehai(canvas, tehai, tsumoHai, isPlayer | m_drawItem.m_isDebug, TEHAI_LEFT/*26*/, TEHAI_TOP);
 		}
 
 		return image;
 	}
 
-	private void drawKawa(int left, int top, Canvas canvas, Kawa kawa,
-			Paint paint) {
-		int leftTemp = left;
-		SuteHai[] suteHais = kawa.getSuteHais();
-		int kawaLength = kawa.getSuteHaisLength();
-		boolean reachFlag = false;
+	private void drawHou(Canvas a_canvas, Hou a_hou, int a_left, int a_top, Paint a_paint) {
+		SuteHai[] suteHais = a_hou.getSuteHais();
+		int suteHaisLength = a_hou.getSuteHaisLength();
+
+		int left = a_left;
+		int top;
 		int nakiCount = 0;
-		for (int i = 0; i < kawaLength; i++) {
-			if (i - nakiCount == 12) {
-				left = leftTemp;
-				top += mHaiImageHeight;
+		boolean reachFlag = false;
+
+		for (int i = 0; i < suteHaisLength; i++) {
+			if ((i - nakiCount) == 12) {
+				left = a_left;
+				a_top += m_haiImageHeight;
 				nakiCount = 0;
 			}
 
 			if (suteHais[i].isReach() || reachFlag) {
 				if (suteHais[i].isNaki()) {
+					nakiCount++;
 					reachFlag = true;
 				} else {
-					canvas.drawBitmap(mHaiHorizontalImage[suteHais[i].getId()], left, top + ((mHaiImageHeight - mHaiImageWidth) / 2), paint);
-					left += mHaiImageHeight - mHaiImageWidth;
+					top = a_top + ((m_haiImageHeight - m_haiImageWidth) / 2);
+					a_canvas.drawBitmap(m_horizontalHaiImage[suteHais[i].getId()], left, top, a_paint);
+					left += m_haiImageHeight;
 					reachFlag = false;
 				}
 			} else {
-				if (!suteHais[i].isNaki()) {
-					canvas.drawBitmap(m_haiImage[suteHais[i].getId()], left, top, paint);
-				} else {
-					left -= mHaiImageWidth;
+				if (suteHais[i].isNaki()) {
 					nakiCount++;
+				} else {
+					a_canvas.drawBitmap(m_haiImage[suteHais[i].getId()], left, a_top, a_paint);
+					left += m_haiImageWidth;
 				}
 			}
-
-			left += mHaiImageWidth;
 		}
 	}
 
-	private static final int FUURO_LEFT = 320 - 2;
+	private void drawTehai(Canvas a_canvas, Tehai a_tehai, Hai a_addHai, boolean a_disp, int a_left, int a_top) {
+		Hai[] jyunTehai = a_tehai.getJyunTehai();
+		int jyunTehaiLength = a_tehai.getJyunTehaiLength();
 
-	private void drawTehai(int left, int top, Canvas canvas, Tehai tehai, Hai a_addHai, int kaze, int select, boolean isPlayer) {
-		top += 15;
-		boolean isDisp = isPlayer || m_drawItem.m_isDebug;
+		int iSkip = m_drawItem.getISkip();
 
-		Hai[] jyunTehai = tehai.getJyunTehai();
-		int jyunTehaiLength = tehai.getJyunTehaiLength();
-		int width = m_haiImage[0].getWidth();
-		if (isPlayer && (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT)) {
+		int haiImageWidth = this.m_haiImageWidth;
+
+		int left = a_left;
+		int top = a_top + ((haiImageWidth * 2) - m_haiImageHeight);
+
+		for (int i = 0; i < jyunTehaiLength; i++, left += haiImageWidth) {
+			if ((a_addHai != null) && (m_drawItem.m_state == STATE_RIHAI_WAIT) && (i == iSkip)) {
+				continue;
+			}
+
+			a_canvas.drawBitmap(a_disp ? m_haiImage[jyunTehai[i].getId()] : m_hideHaiImage, left, top, null);
+		}
+
+		if (a_addHai != null) {
+			left += TSUMO_OFFSET;
+			a_canvas.drawBitmap(a_disp ? m_haiImage[a_addHai.getId()] : m_hideHaiImage, left, top, null);
+		}
+
+		drawFuuros(a_canvas, a_tehai, FUURO_LEFT, top);
+	}
+
+	private void drawFuuros(Canvas a_canvas, Tehai a_tehai, int a_left, int a_top) {
+		int fuuroNums = a_tehai.getFuuroNum();
+		if (fuuroNums > 0) {
+			Fuuro[] fuuros = a_tehai.getFuuros();
+			for (int i = 0; i < fuuroNums; i++) {
+				Hai hais[] = fuuros[i].getHais();
+				int type = fuuros[i].getType();
+
+				if (type == Fuuro.TYPE_ANKAN) {
+					a_left -= m_haiImageWidth;
+					a_canvas.drawBitmap(mHaiUraImage, a_left, a_top, null);
+					a_left -= m_haiImageWidth;
+					a_canvas.drawBitmap(m_haiImage[hais[2].getId()], a_left, a_top, null);
+					a_left -= m_haiImageWidth;
+					a_canvas.drawBitmap(m_haiImage[hais[1].getId()], a_left, a_top, null);
+					a_left -= m_haiImageWidth;
+					a_canvas.drawBitmap(mHaiUraImage, a_left, a_top, null);
+				} else {
+					int relation = fuuros[i].getRelation();
+
+					if (relation == Mahjong.RELATION_SHIMOCHA) {
+						a_left -= m_haiImageHeight;
+						a_canvas.drawBitmap(m_horizontalHaiImage[hais[2].getId()], a_left, a_top + 4, null);
+						if (type == Fuuro.TYPE_KAKAN) {
+							a_canvas.drawBitmap(m_horizontalHaiImage[hais[2].getId()], a_left, a_top - 15, null);
+						} else if (type == Fuuro.TYPE_DAIMINKAN) {
+							a_left -= m_haiImageWidth;
+							a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+						}
+						a_left -= m_haiImageWidth;
+						a_canvas.drawBitmap(m_haiImage[hais[1].getId()], a_left, a_top, null);
+						a_left -= m_haiImageWidth;
+						a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+					} else if (relation == Mahjong.RELATION_TOIMEN) {
+						a_left -= m_haiImageWidth;
+						a_canvas.drawBitmap(m_haiImage[hais[2].getId()], a_left, a_top, null);
+						if (type == Fuuro.TYPE_DAIMINKAN) {
+							a_left -= m_haiImageWidth;
+							a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+						}
+						a_left -= m_haiImageHeight;
+						a_canvas.drawBitmap(m_horizontalHaiImage[hais[1].getId()], a_left, a_top + 4, null);
+						if (type == Fuuro.TYPE_KAKAN) {
+							a_canvas.drawBitmap(m_horizontalHaiImage[hais[1].getId()], a_left, a_top - 15, null);
+						}
+						a_left -= m_haiImageWidth;
+						a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+					} else {
+						a_left -= m_haiImageWidth;
+						a_canvas.drawBitmap(m_haiImage[hais[2].getId()], a_left, a_top, null);
+						a_left -= m_haiImageWidth;
+						a_canvas.drawBitmap(m_haiImage[hais[1].getId()], a_left, a_top, null);
+						if (type == Fuuro.TYPE_DAIMINKAN) {
+							a_left -= m_haiImageWidth;
+							a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+						}
+						a_left -= m_haiImageHeight;
+						a_canvas.drawBitmap(m_horizontalHaiImage[hais[0].getId()], a_left, a_top + 4, null);
+						if (type == Fuuro.TYPE_KAKAN) {
+							a_canvas.drawBitmap(m_horizontalHaiImage[hais[0].getId()], a_left, a_top - 15, null);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void drawPlayerTehai(Canvas a_canvas, Tehai a_tehai, Hai a_addHai, int a_iSelect, int a_left, int a_top) {
+		Hai[] jyunTehai = a_tehai.getJyunTehai();
+		int jyunTehaiLength = a_tehai.getJyunTehaiLength();
+
+		int iSkip = m_drawItem.getISkip();
+
+		Bitmap haiImage[] = this.m_largeHaiImage;
+		int haiImageWidth = this.m_largeHaiImageWidth;
+
+		int left = a_left;
+		int topSelect = a_top - SELECT_OFFSET;
+		int top = a_top;
+		//int top = topSelect + SELECT_OFFSET;
+
+		if (m_playerAction.getState() == PlayerAction.STATE_CHII_SELECT) {
 			EventId chiiEventId = m_playerAction.getChiiEventId();
 			Hai iSelects[];
 			switch (chiiEventId) {
@@ -765,188 +1014,97 @@ public class AndjongView extends View implements EventIf {
 			}
 			int iSelect = 0;
 
-			for (int i = 0; i < jyunTehaiLength; i++) {
-				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
-					if (i == m_drawItem.getSkipIdx()) {
-						continue;
-					}
+			for (int i = 0; i < jyunTehaiLength; i++, left += haiImageWidth) {
+				if ((a_addHai != null) && (m_drawItem.m_state == STATE_RIHAI_WAIT) && (i == iSkip)) {
+					continue;
 				}
+
 				if ((iSelect < 2) &&(jyunTehai[i].getId() == iSelects[iSelect].getId())) {
 				//if ((jyunTehai[i].getId() == iSelects[0].getId()) || (jyunTehai[i].getId() == iSelects[1].getId())) {
 					iSelect++;
-					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
 				} else {
-					if (isDisp) {
-						canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
-					} else {
-						canvas.drawBitmap(mHaiHideImage, left + (width * i), top, null);
-					}
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
 				}
 			}
-		} else if (isPlayer && (m_playerAction.getState() == PlayerAction.STATE_KAN_SELECT)) {
+		} else if (m_playerAction.getState() == PlayerAction.STATE_KAN_SELECT) {
 			Hai[] kanHais = m_playerAction.getKanHais();
 			//int kanNum = m_playerAction.getKanNum();
 			int kanSelect = m_playerAction.getKanSelect();
 
-			for (int i = 0; i < jyunTehaiLength; i++) {
-				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
-					if (i == m_drawItem.getSkipIdx()) {
-						continue;
-					}
+			for (int i = 0; i < jyunTehaiLength; i++, left += haiImageWidth) {
+				if ((a_addHai != null) && (m_drawItem.m_state == STATE_RIHAI_WAIT) && (i == iSkip)) {
+					continue;
 				}
+
 				if (jyunTehai[i].getId() == kanHais[kanSelect].getId()) {
-					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
 				} else {
-					if (isDisp) {
-						canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
-					} else {
-						canvas.drawBitmap(mHaiHideImage, left + (width * i), top, null);
-					}
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
 				}
 			}
 
 			if (a_addHai != null) {
+				left += TSUMO_OFFSET;
 				if ((a_addHai.getId() == kanHais[kanSelect].getId()) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
-					if (isDisp) {
-						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
-					} else {
-						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
-					}
+					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, topSelect, null);
 				} else {
-					if (isDisp) {
-						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
-					} else {
-						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
-					}
+					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, top, null);
 				}
 			}
-		} else if (isPlayer && (m_playerAction.getState() == PlayerAction.STATE_REACH_SELECT)){
+		} else if (m_playerAction.getState() == PlayerAction.STATE_REACH_SELECT){
 			int[] indexs = m_playerAction.m_indexs;
-			select = indexs[m_playerAction.getReachSelect()];
-			for (int i = 0; i < jyunTehaiLength; i++) {
-				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
-					if (i == m_drawItem.getSkipIdx()) {
-						continue;
-					}
+			a_iSelect = indexs[m_playerAction.getReachSelect()];
+			for (int i = 0; i < jyunTehaiLength; i++, left += haiImageWidth) {
+				if ((a_addHai != null) && (m_drawItem.m_state == STATE_RIHAI_WAIT) && (i == iSkip)) {
+					continue;
 				}
-				if (i == select) {
-					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+
+				if (i == a_iSelect) {
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
 				} else {
-					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
 				}
 			}
 
 			if (a_addHai != null) {
-				if (select >= jyunTehaiLength) {
-					canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
+				left += TSUMO_OFFSET;
+				if (a_iSelect >= jyunTehaiLength) {
+					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, topSelect, null);
 				} else {
-					canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
+					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, top, null);
 				}
 			}
 		} else {
-			for (int i = 0; i < jyunTehaiLength; i++) {
-				if (a_addHai != null && m_drawItem.m_state == STATE_RIHAI_WAIT) {
-					if (i == m_drawItem.getSkipIdx()) {
-						continue;
-					}
+			for (int i = 0; i < jyunTehaiLength; i++, left += haiImageWidth) {
+				if ((a_addHai != null) && (m_drawItem.m_state == STATE_RIHAI_WAIT) && (i == iSkip)) {
+					continue;
 				}
-				if ((i == select) && (m_playerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
-					canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top - 10, null);
+
+				if ((i == a_iSelect) && (m_playerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
 				} else {
-					if (isDisp) {
-						canvas.drawBitmap(m_haiImage[jyunTehai[i].getId()], left + (width * i), top, null);
-					} else {
-						canvas.drawBitmap(mHaiHideImage, left + (width * i), top, null);
-					}
+					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
 				}
 			}
 
 			if (a_addHai != null) {
-				if ((select >= jyunTehaiLength) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
-					if (isDisp) {
-						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top - 10, null);
-					} else {
-						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
-					}
+				left += TSUMO_OFFSET;
+				if ((a_iSelect >= jyunTehaiLength) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
+					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, topSelect, null);
 				} else {
-					if (isDisp) {
-						canvas.drawBitmap(m_haiImage[a_addHai.getId()], left + ((width * jyunTehaiLength) + 5), top, null);
-					} else {
-						canvas.drawBitmap(mHaiHideImage, left + ((width * jyunTehaiLength) + 5), top, null);
-					}
+					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, top, null);
 				}
 			}
 		}
 
-		int fuuroLeft = FUURO_LEFT;
-		int fuuroNums = tehai.getFuuroNum();
-		if (fuuroNums > 0) {
-			Fuuro[] fuuros = tehai.getFuuros();
-			for (int i = 0; i < fuuroNums; i++) {
-				Hai hais[] = fuuros[i].getHais();
-				int type = fuuros[i].getType();
-
-				if (type == Fuuro.TYPE_ANKAN) {
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(mHaiUraImage, fuuroLeft, top, null);
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
-					fuuroLeft -= mHaiImageWidth;
-					canvas.drawBitmap(mHaiUraImage, fuuroLeft, top, null);
-				} else {
-					int relation = fuuros[i].getRelation();
-
-					if (relation == Mahjong.RELATION_SHIMOCHA) {
-						fuuroLeft -= mHaiImageHeight;
-						canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top + 4, null);
-						if (type == Fuuro.TYPE_KAKAN) {
-							canvas.drawBitmap(mHaiHorizontalImage[hais[2].getId()], fuuroLeft, top - 15, null);
-						} else if (type == Fuuro.TYPE_DAIMINKAN) {
-							fuuroLeft -= mHaiImageWidth;
-							canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
-						}
-						fuuroLeft -= mHaiImageWidth;
-						canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
-						fuuroLeft -= mHaiImageWidth;
-						canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
-					} else if (relation == Mahjong.RELATION_TOIMEN) {
-						fuuroLeft -= mHaiImageWidth;
-						canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
-						if (type == Fuuro.TYPE_DAIMINKAN) {
-							fuuroLeft -= mHaiImageWidth;
-							canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
-						}
-						fuuroLeft -= mHaiImageHeight;
-						canvas.drawBitmap(mHaiHorizontalImage[hais[1].getId()], fuuroLeft, top + 4, null);
-						if (type == Fuuro.TYPE_KAKAN) {
-							canvas.drawBitmap(mHaiHorizontalImage[hais[1].getId()], fuuroLeft, top - 15, null);
-						}
-						fuuroLeft -= mHaiImageWidth;
-						canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
-					} else {
-						fuuroLeft -= mHaiImageWidth;
-						canvas.drawBitmap(m_haiImage[hais[2].getId()], fuuroLeft, top, null);
-						fuuroLeft -= mHaiImageWidth;
-						canvas.drawBitmap(m_haiImage[hais[1].getId()], fuuroLeft, top, null);
-						if (type == Fuuro.TYPE_DAIMINKAN) {
-							fuuroLeft -= mHaiImageWidth;
-							canvas.drawBitmap(m_haiImage[hais[0].getId()], fuuroLeft, top, null);
-						}
-						fuuroLeft -= mHaiImageHeight;
-						canvas.drawBitmap(mHaiHorizontalImage[hais[0].getId()], fuuroLeft, top + 4, null);
-						if (type == Fuuro.TYPE_KAKAN) {
-							canvas.drawBitmap(mHaiHorizontalImage[hais[0].getId()], fuuroLeft, top - 15, null);
-						}
-					}
-				}
-			}
-		}
+		drawFuuros(a_canvas, a_tehai, FUURO_LEFT + 32, top + 11);
 	}
 
-	private static final int TOUCH_TOP = 480 - 97;
-	private static final int TOUCH_BOTTOM = 480;
+	private static final int TOUCH_TOP = 320 - 60;
+	private static final int TOUCH_BOTTOM = 320;
+//	private static final int TOUCH_TOP = 480 - 97;
+//	private static final int TOUCH_BOTTOM = 480;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -969,7 +1127,7 @@ public class AndjongView extends View implements EventIf {
 		if (actionRequest) {
 			if (action == MotionEvent.ACTION_DOWN) {
 				if (!m_playerAction.isDispMenu()) {
-					if ((MESSAGE_AREA_TOP <= y) && (y <= MESSAGE_AREA_BOTTOM)) {
+					if ((MESSAGE_AREA_TOP - MESSAGE_AREA_MARGIN <= y) && (y <= MESSAGE_AREA_BOTTOM)) {
 						if ((MESSAGE_AREA_LEFT <= x) && (x <= MESSAGE_AREA_RIGHT)) {
 							m_playerAction.setDispMenu(true);
 							invalidate();
@@ -1123,9 +1281,11 @@ public class AndjongView extends View implements EventIf {
 			if (m_drawItem.m_isManReach) {
 				m_iSelectSutehai = jyunTehaiLength;
 			} else {
-				int iSelect = (tx - 2) / HAI_WIDTH;
+				int iSelect = (tx - 46) / m_largeHaiImageWidth;
 				if (iSelect > jyunTehaiLength) {
 					iSelect = jyunTehaiLength;
+				} else if (iSelect < 0) {
+					iSelect = 0;
 				}
 				m_iSelectSutehai = iSelect;
 			}

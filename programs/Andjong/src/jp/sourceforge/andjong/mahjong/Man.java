@@ -25,7 +25,7 @@ public class Man implements EventIf {
 
 	/** Žè”v */
 	private Tehai m_tehai = new Tehai();
-	private Kawa m_kawa = new Kawa();
+	private Hou m_kawa = new Hou();
 
 	@Override
 	public EventId event(EventId eid, int a_kazeFrom, int a_kazeTo) {

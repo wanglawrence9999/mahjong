@@ -6,7 +6,7 @@ package jp.sourceforge.andjong.mahjong;
  * @author Yuji Urushibara
  *
  */
-public class Kawa {
+public class Hou {
 	/** 捨牌の配列の長さの最大値 */
 	public final static int SUTE_HAIS_LENGTH_MAX = 24;
 
@@ -25,7 +25,7 @@ public class Kawa {
 	/**
 	 * 河を作成する。
 	 */
-	public Kawa() {
+	public Hou() {
 		initialize();
 	}
 
@@ -44,7 +44,7 @@ public class Kawa {
 	 * @param a_src
 	 *            コピー元の河
 	 */
-	public static void copy(Kawa a_dest, Kawa a_src) {
+	public static void copy(Hou a_dest, Hou a_src) {
 		a_dest.m_suteHaisLength = a_src.m_suteHaisLength;
 		for (int i = 0; i < a_dest.m_suteHaisLength; i++) {
 			SuteHai.copy(a_dest.m_suteHais[i], a_src.m_suteHais[i]);

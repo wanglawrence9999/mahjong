@@ -5,7 +5,7 @@
 	<uses-sdk android:minSdkVersion="2" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name">
 		<activity android:name=".Andjong" android:label="@string/app_name"
-			android:screenOrientation="portrait">
+			android:screenOrientation="landscape">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -15,6 +15,6 @@
 			android:theme="@android:style/Theme.Dialog">
 		</activity>
 		<activity android:name=".Game" android:label="@string/game_title"
-			android:screenOrientation="portrait" />
+			android:screenOrientation="landscape" />
 	</application>
 </manifest>

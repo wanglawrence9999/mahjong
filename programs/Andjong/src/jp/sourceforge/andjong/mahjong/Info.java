@@ -74,7 +74,7 @@ public class Info {
 	 * @param kaze
 	 *            •—
 	 */
-	public void copyKawa(Kawa kawa, int kaze) {
+	public void copyKawa(Hou kawa, int kaze) {
 		game.copyKawa(kawa, kaze);
 	}
 

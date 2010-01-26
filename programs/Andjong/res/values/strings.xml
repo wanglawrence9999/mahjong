@@ -90,8 +90,8 @@
 Andjong is Open Source Software Mahjong Game.\n
 ･Support English.\n
 ･320X480 only.\n
-･The area under tehai and tehai is selected and it touches or the tile is selected by the right and left key.\n
-･The parts other than tehai are thrown away and it touches or the tile is thrown away for the decision key.\n
+･Half of the bottom of the screen is selected and it touches or the tile is selected by the right and left key.\n
+･Half of the upper part of the screen are thrown away and it touches or the tile is thrown away for the decision key.\n
 ･The action can be caused by clicking the displayed menu.\n
 ･A screen changes when involved with a screen.\n
 </string>

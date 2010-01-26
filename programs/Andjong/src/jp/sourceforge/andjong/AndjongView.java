@@ -102,7 +102,7 @@ public class AndjongView extends View implements EventIf {
 //	private static final int MESSAGE_AREA_LEFT = 87;
 	/** メッセージエリアのTop */
 	private static final int MESSAGE_AREA_TOP = 280;
-	private static final int MESSAGE_AREA_MARGIN = 20;
+//	private static final int MESSAGE_AREA_MARGIN = 20;
 //	private static final int MESSAGE_AREA_TOP = 176;
 	/** メッセージエリアのRight */
 	private static final int MESSAGE_AREA_RIGHT = MESSAGE_AREA_LEFT + MESSAGE_AREA_WIDTH;
@@ -552,7 +552,10 @@ public class AndjongView extends View implements EventIf {
 			}
 
 			// 局を表示する。
-			drawString(KYOKU_LEFT, KYOKU_TOP, a_canvas, KYOKU_TEXT_SIZE, Color.WHITE, m_drawItem.getKyokuString(), Align.CENTER);
+			drawString(KYOKU_LEFT - 30, KYOKU_TOP, a_canvas, KYOKU_TEXT_SIZE, Color.WHITE, m_drawItem.getKyokuString(), Align.CENTER);
+
+			// 残り牌を表示する。
+			drawString(KYOKU_LEFT + 40, KYOKU_TOP, a_canvas, KYOKU_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_tsumoRemain).toString(), Align.CENTER);
 
 			// リーチ棒の数を表示する。
 			drawReachbou(a_canvas, m_drawItem.getReachbou());
@@ -1101,7 +1104,7 @@ public class AndjongView extends View implements EventIf {
 		drawFuuros(a_canvas, a_tehai, FUURO_LEFT + 32, top + 11);
 	}
 
-	private static final int TOUCH_TOP = 320 - 60;
+	private static final int TOUCH_TOP = 160;
 	private static final int TOUCH_BOTTOM = 320;
 //	private static final int TOUCH_TOP = 480 - 97;
 //	private static final int TOUCH_BOTTOM = 480;
@@ -1127,7 +1130,8 @@ public class AndjongView extends View implements EventIf {
 		if (actionRequest) {
 			if (action == MotionEvent.ACTION_DOWN) {
 				if (!m_playerAction.isDispMenu()) {
-					if ((MESSAGE_AREA_TOP - MESSAGE_AREA_MARGIN <= y) && (y <= MESSAGE_AREA_BOTTOM)) {
+					if ((160 <= y) && (y <= MESSAGE_AREA_BOTTOM)) {
+					//if ((MESSAGE_AREA_TOP - MESSAGE_AREA_MARGIN <= y) && (y <= MESSAGE_AREA_BOTTOM)) {
 						if ((MESSAGE_AREA_LEFT <= x) && (x <= MESSAGE_AREA_RIGHT)) {
 							m_playerAction.setDispMenu(true);
 							invalidate();
@@ -1142,7 +1146,8 @@ public class AndjongView extends View implements EventIf {
 					int iMenu = 5;
 					for (int i = 0; i < m_menuRect.length; i++) {
 						if (x >= m_menuRect[i].left && x <= m_menuRect[i].right) {
-							if (y >= m_menuRect[i].top && y <= m_menuRect[i].bottom) {
+							if (y >= 160 && y <= m_menuRect[i].bottom) {
+							//if (y >= m_menuRect[i].top && y <= m_menuRect[i].bottom) {
 								iMenu = i;
 								break;
 							}
@@ -1595,6 +1600,8 @@ public class AndjongView extends View implements EventIf {
 
 				// 起家を設定する。
 				m_drawItem.setChiicha(m_infoUi.getChiichaIdx());
+
+				m_drawItem.m_tsumoRemain = 0;
 			}
 			break;
 		case END_GAME:
@@ -1635,6 +1642,7 @@ public class AndjongView extends View implements EventIf {
 				}
 				m_drawItem.setHonba(m_infoUi.getHonba());
 				m_drawItem.setReachbou(m_infoUi.getReachbou());
+				m_drawItem.m_tsumoRemain = m_infoUi.getTsumoRemain();
 			}
 
 			// 描画する。
@@ -1668,8 +1676,12 @@ public class AndjongView extends View implements EventIf {
 			// 何も表示しない。
 			break;
 		case TSUMO:// ツモ
-			// ツモ牌を取得する。
-			m_drawItem.m_playerInfos[m_infoUi.getJikaze()].m_tsumoHai = m_infoUi.getTsumoHai();
+			synchronized (m_drawItem) {
+				// ツモ牌を取得する。
+				m_drawItem.m_playerInfos[m_infoUi.getJikaze()].m_tsumoHai = m_infoUi.getTsumoHai();
+
+				m_drawItem.m_tsumoRemain = m_infoUi.getTsumoRemain();
+			}
 
 			// 描画する。
 			this.postInvalidate(0, 0, getWidth(), getHeight());

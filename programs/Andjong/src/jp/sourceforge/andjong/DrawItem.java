@@ -208,4 +208,6 @@ public class DrawItem {
 			m_playerInfos[i] = new PlayerInfo();
 		}
 	}
+
+	int m_tsumoRemain = 0;
 }

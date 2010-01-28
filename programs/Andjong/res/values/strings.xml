@@ -11,6 +11,11 @@
 	<string name="kyoku_ton_3">East 3R</string>
 	<string name="kyoku_ton_4">East 4R</string>
 
+	<string name="kaze_ton">E</string>
+	<string name="kaze_nan">W</string>
+	<string name="kaze_sya">S</string>
+	<string name="kaze_pei">N</string>
+
 	<string name="space">" "</string>
 	<string name="multi">x</string>
 

@@ -6,4 +6,10 @@
 		<item>@string/kyoku_ton_3</item>
 		<item>@string/kyoku_ton_4</item>
 	</array>
+	<array name="kaze">
+		<item>@string/kaze_ton</item>
+		<item>@string/kaze_nan</item>
+		<item>@string/kaze_sya</item>
+		<item>@string/kaze_pei</item>
+	</array>
 </resources>

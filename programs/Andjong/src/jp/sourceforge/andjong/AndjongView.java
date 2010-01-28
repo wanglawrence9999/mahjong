@@ -214,12 +214,12 @@ public class AndjongView extends View implements EventIf {
 	/** ドラのLeft */
 	private static final int DORAS_LEFT = 112 + LEFT_OFFSET;
 	/** ドラのTop */
-	private static final int DORAS_TOP = 150 + TOP_OFFSET;
+	private static final int DORAS_TOP = 154 + TOP_OFFSET;
 
 	/** リーチ棒のイメージのLeft */
 	private static final int TENBOU_01000_MIN_IMAGE_LEFT = 100 + LEFT_OFFSET;
 	/** リーチ棒のイメージのTop */
-	private static final int TENBOU_01000_MIN_IMAGE_TOP = 137 + TOP_OFFSET;
+	private static final int TENBOU_01000_MIN_IMAGE_TOP = 141 + TOP_OFFSET;
 
 	/** リーチ棒の数のLeft */
 	private static final int REACHBOU_LEFT = TENBOU_01000_MIN_IMAGE_LEFT + 43;
@@ -232,7 +232,7 @@ public class AndjongView extends View implements EventIf {
 	/** 点棒のLeft */
 	private static final int[] TENBO_LEFT = { 160 + LEFT_OFFSET, 197 + LEFT_OFFSET, 160 + LEFT_OFFSET, 123 + LEFT_OFFSET };
 	/** 点棒のTop */
-	private static final int[] TENBO_TOP = { 131 + TOP_OFFSET, 121 + TOP_OFFSET, 111 + TOP_OFFSET, 121 + TOP_OFFSET };
+	private static final int[] TENBO_TOP = { 135 + TOP_OFFSET, 123 + TOP_OFFSET, 111 + TOP_OFFSET, 123 + TOP_OFFSET };
 
 	/** 本場のイメージのLeft */
 	private static final int TENBOU_00100_MIN_IMAGE_LEFT = 170 + LEFT_OFFSET;
@@ -574,9 +574,12 @@ public class AndjongView extends View implements EventIf {
 				manKaze %= 4;
 			}
 
+			String[] kazeStrings = res.getStringArray(R.array.kaze);
+			String sp = res.getString(R.string.space);
+
 			// 点棒を表示する。
 			for (int i = 0; i < EventIf.KAZE_KIND_NUM; i++) {
-				drawString(TENBO_LEFT[i], TENBO_TOP[i], a_canvas, MINI_TEXT_SIZE, Color.WHITE, new Integer(m_drawItem.m_playerInfos[dispKaze[i]].m_tenbo).toString(), Align.CENTER);
+				drawString(TENBO_LEFT[i], TENBO_TOP[i], a_canvas, MINI_TEXT_SIZE, Color.WHITE, kazeStrings[dispKaze[i]] + sp + new Integer(m_drawItem.m_playerInfos[dispKaze[i]].m_tenbo).toString(), Align.CENTER);
 			}
 
 			// 起家マークを表示する。
@@ -755,7 +758,8 @@ public class AndjongView extends View implements EventIf {
 	 *            起家
 	 */
 	private void drawChiicha(Canvas canvas, int chiicha) {
-		canvas.drawBitmap(mChiichaImage, TENBO_LEFT[chiicha] - 26, TENBO_TOP[chiicha] - 5, null);
+		canvas.drawBitmap(mChiichaImage, TENBO_LEFT[chiicha] + 29, TENBO_TOP[chiicha] - 5, null);
+		//canvas.drawBitmap(mChiichaImage, TENBO_LEFT[chiicha] - 26, TENBO_TOP[chiicha] - 5, null);
 	}
 
 	private static final int PLACE_PLAYER = 0;

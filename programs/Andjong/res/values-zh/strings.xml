@@ -6,10 +6,15 @@
 	<string name="about_label">About</string>
 	<string name="exit_label">Exit</string>
 	<string name="game_title">Game</string>
-	<string name="kyoku_ton_1">東一局</string>
-	<string name="kyoku_ton_2">東二局</string>
-	<string name="kyoku_ton_3">東三局</string>
-	<string name="kyoku_ton_4">東四局</string>
+	<string name="kyoku_ton_1">东一局</string>
+	<string name="kyoku_ton_2">东二局</string>
+	<string name="kyoku_ton_3">东三局</string>
+	<string name="kyoku_ton_4">东四局</string>
+
+	<string name="kaze_ton">东</string>
+	<string name="kaze_nan">南</string>
+	<string name="kaze_sya">西</string>
+	<string name="kaze_pei">北</string>
 
 	<string name="space">" "</string>
 	<string name="multi">x</string>

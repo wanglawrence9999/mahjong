@@ -11,6 +11,11 @@
 	<string name="kyoku_ton_3">東三局</string>
 	<string name="kyoku_ton_4">東四局</string>
 
+	<string name="kaze_ton">東</string>
+	<string name="kaze_nan">南</string>
+	<string name="kaze_sya">西</string>
+	<string name="kaze_pei">北</string>
+
 	<string name="space">" "</string>
 	<string name="multi">x</string>
 

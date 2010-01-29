@@ -154,6 +154,7 @@ public class AI implements EventIf {
 		int score = 0;
 		int maxScore = 0;
 
+		m_iSutehai = 13;
 		countFormat.setCountFormat(m_tehai, null);
 		maxScore = getCountFormatScore(countFormat);
 		// System.out.println("score:" + score + ",maxScore:" + maxScore +

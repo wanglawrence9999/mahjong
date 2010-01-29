@@ -798,6 +798,7 @@ public class Mahjong implements Runnable {
 		case CHII_RIGHT:
 		case DAIMINKAN:
 		case SUTEHAI:
+		case REACH:
 			for (int i = 0, j = a_kazeFrom + 1; i < m_players.length - 1; i++, j++) {
 				if (j >= m_players.length) {
 					j = 0;

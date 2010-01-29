@@ -156,7 +156,7 @@ public class Yaku {
 
 		yakuhantei = buffer;
 
-		//yakuhantei[yakuhantei.length - 1].hanSuu = m_doraCount;
+		yakuhantei[yakuhantei.length - 1].hanSuu = m_doraCount;
 	}
 
 	/**

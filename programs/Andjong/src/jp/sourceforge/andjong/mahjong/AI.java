@@ -21,6 +21,12 @@ public class AI implements EventIf {
 	/** 手牌 */
 	private Tehai m_tehai = new Tehai();
 
+	/** 河 */
+	private Hou m_hou = new Hou();
+
+	/** 捨牌 */
+	private Hai m_suteHai = new Hai();
+
 	/**
 	 * AIを作成する。
 	 *
@@ -129,14 +135,54 @@ public class AI implements EventIf {
 		}
 
 		m_info.copyTehai(m_tehai);
-		Hai suteHai = m_info.getSuteHai();
+		m_suteHai = m_info.getSuteHai();
+		m_info.copyKawa(m_hou, m_info.getJikaze());
 
-		int agariScore = m_info.getAgariScore(m_tehai, suteHai);
-		if (agariScore > 0) {
-			return EventId.RON_AGARI;
+		if (isFuriten() == false) {
+			int agariScore = m_info.getAgariScore(m_tehai, m_suteHai);
+			if (agariScore > 0) {
+				return EventId.RON_AGARI;
+			}
 		}
 
 		return EventId.NAGASHI;
+	}
+
+	private boolean isFuriten() {
+		boolean furiten = false;
+		Hai[] hais = new Hai[Hai.ID_ITEM_MAX];
+		int indexNum = m_info.getMachiIndexs(m_tehai, hais);
+		if (indexNum > 0) {
+			SuteHai suteHaiTemp = new SuteHai();
+			SuteHai[] suteHais = m_hou.getSuteHais();
+			int suteHaisLength = m_hou.getSuteHaisLength();
+			FURITENLOOP: for (int i = 0; i < suteHaisLength; i++) {
+				suteHaiTemp = suteHais[i];
+				for (int j = 0; j < indexNum; j++) {
+					if (suteHaiTemp.getId() == hais[j].getId()) {
+						furiten = true;
+						break FURITENLOOP;
+					}
+				}
+			}
+
+			if (m_info.isReach() && !furiten) {
+				suteHais = m_info.getSuteHais();
+				int suteHaisCount = m_info.getSuteHaisCount();
+				int playerSuteHaisCount = m_info.getPlayerSuteHaisCount();
+				FURITENLOOP: for (; playerSuteHaisCount < suteHaisCount - 1; playerSuteHaisCount++) {
+					suteHaiTemp = suteHais[playerSuteHaisCount];
+					for (int j = 0; j < indexNum; j++) {
+						if (suteHaiTemp.getId() == hais[j].getId()) {
+							furiten = true;
+							break FURITENLOOP;
+						}
+					}
+				}
+			}
+		}
+
+		return furiten;
 	}
 
 	/** カウントフォーマット */

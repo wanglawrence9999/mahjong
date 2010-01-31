@@ -598,8 +598,9 @@ public class Mahjong implements Runnable {
 		boolean test = false;
 		if (test)
 		{
-			while (m_players[0].getTehai().getJyunTehaiLength() > 0) {
-				m_players[0].getTehai().rmJyunTehai(0);
+			int iPlayer = 1;
+			while (m_players[iPlayer].getTehai().getJyunTehaiLength() > 0) {
+				m_players[iPlayer].getTehai().rmJyunTehai(0);
 			}
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 33, 33, 33, 31, 31};
 			//int haiIds[] = {29, 29, 29, 30, 30, 30, 31, 31, 31, 32, 32, 33, 33, 33};
@@ -635,13 +636,14 @@ public class Mahjong implements Runnable {
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7}; // リーチタンピンイーペーコー
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 5, 6, 10, 10, 10, 11, 12}; // リーチタンピンイーペーコー
 			for (int i = 0; i < haiIds.length - 1; i++) {
-				m_players[0].getTehai().addJyunTehai(new Hai(haiIds[i]));
+				m_players[iPlayer].getTehai().addJyunTehai(new Hai(haiIds[i]));
 			}
-			//m_players[0].getTehai().rmJyunTehai(0);
-			//m_players[0].getTehai().setPon(new Hai(0), getRelation(this.m_kazeFrom, this.m_kazeTo));
-			//m_players[0].getTehai().setPon(new Hai(31), getRelation(this.m_kazeFrom, this.m_kazeTo));
-			//m_players[0].getTehai().rmJyunTehai(0);
-			//m_players[0].getTehai().setChiiLeft(new Hai(0), getRelation(this.m_kazeFrom, this.m_kazeTo));
+			//m_players[iPlayer].getTehai().rmJyunTehai(0);
+			//m_players[iPlayer].getTehai().setPon(new Hai(0), getRelation(this.m_kazeFrom, this.m_kazeTo));
+			//m_players[iPlayer].getTehai().setPon(new Hai(31), getRelation(this.m_kazeFrom, this.m_kazeTo));
+			//m_players[iPlayer].getTehai().rmJyunTehai(0);
+			//m_players[iPlayer].getTehai().setChiiLeft(new Hai(0), getRelation(this.m_kazeFrom, this.m_kazeTo));
+			//m_players[iPlayer].getKawa().add(new Hai(0));
 		}
 	}
 

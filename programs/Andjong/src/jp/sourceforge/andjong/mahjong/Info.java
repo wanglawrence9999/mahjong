@@ -84,7 +84,11 @@ public class Info {
 	 * @return ƒcƒ‚”v
 	 */
 	public Hai getTsumoHai() {
-		return new Hai(game.getTsumoHai());
+		Hai tsumoHai = game.getTsumoHai();
+		if (tsumoHai != null) {
+			return new Hai(game.getTsumoHai());
+		}
+		return null;
 	}
 
 	/**

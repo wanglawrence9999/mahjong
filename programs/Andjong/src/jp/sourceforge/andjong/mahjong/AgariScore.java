@@ -2,6 +2,7 @@ package jp.sourceforge.andjong.mahjong;
 
 import static jp.sourceforge.andjong.mahjong.Hai.*;
 import android.content.res.Resources;
+import jp.sourceforge.andjong.R;
 import jp.sourceforge.andjong.mahjong.CountFormat.Combi;
 
 public class AgariScore {
@@ -265,6 +266,16 @@ public class AgariScore {
 //		}
 //
 //		return score;
+	}
+
+	public void setNagashiMangan(AgariInfo a_agariInfo, Resources a_res) {
+		getScore(5, 30);
+		a_agariInfo.m_score = m_scoreWork;
+		a_agariInfo.m_fu = 30;
+		a_agariInfo.m_han = 5;
+		String[] strings = new String[1];
+		strings[0] = a_res.getString(R.string.yaku_nagashimangan);
+		a_agariInfo.m_yakuNames = strings;
 	}
 
 	public int getAgariScore(Tehai tehai, Hai addHai, Combi[] combis,AgariSetting setting, AgariInfo a_agariInfo, Resources a_res) {

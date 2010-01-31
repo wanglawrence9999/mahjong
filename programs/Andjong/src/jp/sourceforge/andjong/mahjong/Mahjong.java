@@ -367,6 +367,8 @@ public class Mahjong implements Runnable {
 		EventId retEid;
 
 		int tsumoNokori;
+		int score;
+		int iPlayer;
 		// 局を進行する。
 		KYOKU_MAIN: while (true) {
 			// UIイベント（進行待ち）を発行する。
@@ -377,9 +379,77 @@ public class Mahjong implements Runnable {
 
 			// ツモ牌がない場合、流局する。
 			if (m_tsumoHai == null) {
+				// 流し満貫の確認をする。
+				for (int i = 0, j = m_iOya; i < m_players.length; i++, j++) {
+					if (j >= m_players.length) {
+						j = 0;
+					}
+
+					boolean agari = true;
+					Hou hou = m_players[j].getKawa();
+					SuteHai[] suteHais = hou.getSuteHais();
+					int suteHaisLength = hou.getSuteHaisLength();
+					for (int k = 0; k < suteHaisLength; k++) {
+						if (suteHais[k].isNaki() || !suteHais[k].isYaochuu()) {
+							agari = false;
+							break;
+						}
+					}
+
+					if (agari) {
+						m_kazeFrom = m_kazeTo = m_players[j].getJikaze();
+
+						m_score = new AgariScore();
+						m_score.setNagashiMangan(m_agariInfo, m_view.getResources());
+
+						iPlayer = m_kazeToPlayerIdx[m_kazeFrom];
+						if (m_iOya == iPlayer) {
+							score = m_agariInfo.m_score.m_oyaRon + (m_honba * 300);
+							for (int l = 0; l < 3; l++) {
+								iPlayer = (iPlayer + 1) % 4;
+								m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo + (m_honba * 100));
+							}
+						} else {
+							score = m_agariInfo.m_score.m_koRon + (m_honba * 300);
+							for (int l = 0; l < 3; l++) {
+								iPlayer = (iPlayer + 1) % 4;
+								if (m_iOya == iPlayer) {
+									m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_oyaTsumo + (m_honba * 100));
+								} else {
+									m_players[iPlayer].reduceTenbou(m_agariInfo.m_score.m_koTsumo + (m_honba * 100));
+								}
+							}
+						}
+
+						activePlayer.increaseTenbou(score);
+						m_agariInfo.m_agariScore = score - (m_honba * 300);
+
+						// 点数を清算する。
+						activePlayer.increaseTenbou(m_reachbou * 1000);
+
+						// リーチ棒の数を初期化する。
+						m_reachbou = 0;
+
+						// UIイベント（ツモあがり）を発行する。
+						m_view.event(EventId.TSUMO_AGARI, m_kazeFrom, m_kazeTo);
+
+						// 親を更新する。
+						if (m_iOya != m_kazeToPlayerIdx[m_kazeFrom]) {
+							m_iOya++;
+							if (m_iOya >= m_players.length) {
+								m_iOya = 0;
+							}
+						} else {
+							m_renchan = true;
+							m_honba++;
+						}
+
+						break KYOKU_MAIN;
+					}
+				}
+
 				// テンパイの確認をする。
 				int tenpaiCount = 0;
-				int iPlayer;
 				for (int i = 0; i < m_tenpai.length; i++) {
 					iPlayer = m_kazeToPlayerIdx[i];
 					m_tenpai[i] = m_players[iPlayer].isTenpai();
@@ -444,8 +514,6 @@ public class Mahjong implements Runnable {
 			// イベント（ツモ）を発行する。
 			retEid = tsumoEvent();
 
-			int score;
-			int iPlayer;
 			// イベントを処理する。
 			switch (retEid) {
 			case TSUMO_AGARI:// ツモあがり
@@ -664,7 +732,7 @@ public class Mahjong implements Runnable {
 
 		m_isTsumo = true;
 
-		//m_tsumoHai = new Hai(32);
+		//m_tsumoHai = new Hai(0);
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
 

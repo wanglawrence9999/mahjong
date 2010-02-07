@@ -62,6 +62,7 @@ public class AgariSetting {
 		this.doraHais = game.getDoras();
 		this.uraDoraHais = game.getUraDoras();
 		this.jikaze = game.getJikaze();
+		this.bakaze = game.getBakaze();
 	}
 
 	/** “Áê–ğ¬—§‚Ìİ’è */

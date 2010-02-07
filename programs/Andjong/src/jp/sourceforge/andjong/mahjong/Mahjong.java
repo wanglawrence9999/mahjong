@@ -31,6 +31,14 @@ public class Mahjong implements Runnable {
 	public final static int KYOKU_TON_3 = 2;
 	/** 東四局 */
 	public final static int KYOKU_TON_4 = 3;
+	/** 南一局 */
+	public final static int KYOKU_NAN_1 = 4;
+	/** 南二局 */
+	public final static int KYOKU_NAN_2 = 5;
+	/** 南三局 */
+	public final static int KYOKU_NAN_3 = 6;
+	/** 南四局 */
+	public final static int KYOKU_NAN_4 = 7;
 
 	/** 局 */
 	private int m_kyoku;
@@ -84,7 +92,7 @@ public class Mahjong implements Runnable {
 	private int m_kazeTo;
 
 	/** 持ち点の初期値 */
-	private static final int TENBOU_INIT = 20000;
+	private static final int TENBOU_INIT = 25000;
 
 	private int m_suteHaisCount = 0;
 	public int getSuteHaisCount() {
@@ -264,9 +272,10 @@ public class Mahjong implements Runnable {
 
 		// 局を初期化する。
 		m_kyoku = KYOKU_TON_1;
+		//m_kyoku = KYOKU_NAN_1;
 
 		// 局の終了を設定する。
-		m_kyokuEnd = KYOKU_TON_4;
+		m_kyokuEnd = KYOKU_NAN_4;
 
 		// ツモ牌を作成する。
 		m_tsumoHai = new Hai();
@@ -666,10 +675,11 @@ public class Mahjong implements Runnable {
 		boolean test = false;
 		if (test)
 		{
-			int iPlayer = 1;
+			int iPlayer = 0;
 			while (m_players[iPlayer].getTehai().getJyunTehaiLength() > 0) {
 				m_players[iPlayer].getTehai().rmJyunTehai(0);
 			}
+			int haiIds[] = {27, 27, 27, 28, 28, 28, 0, 0, 1, 2, 3, 4, 5, 6};
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 33, 33, 33, 31, 31};
 			//int haiIds[] = {29, 29, 29, 30, 30, 30, 31, 31, 31, 32, 32, 33, 33, 33};
 			//int haiIds[] = {0, 1, 2, 3, 4, 5, 6, 7, 31, 31, 33, 33, 33};
@@ -682,7 +692,7 @@ public class Mahjong implements Runnable {
 			//int haiIds[] = {27, 27, 28, 28, 29, 29, 30, 30, 31, 31, 32, 32, 33, 33};
 			//int haiIds[] = {0, 0, 0, 0, 8, 8, 8, 8, 9, 9, 9, 9, 18, 18};
 			//int haiIds[] = {0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34};
-			int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
+			//int haiIds[] = {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8};
 			//int haiIds[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
 			//int haiIds[] = {19, 19, 20, 20, 21, 21, 23, 23, 23, 23, 25, 25, 25, 25};
 			//int haiIds[] = {0, 0, 0, 8, 8, 8, 9, 9, 9, 17, 17, 17, 18, 18};
@@ -1171,6 +1181,14 @@ public class Mahjong implements Runnable {
 
 	public AgariInfo getAgariInfo() {
 		return m_agariInfo;
+	}
+
+	public int getBakaze() {
+		if (m_kyoku <= KYOKU_TON_4) {
+			return KAZE_TON;
+		} else {
+			return KAZE_NAN;
+		}
 	}
 
 	AgariSetting m_setting;

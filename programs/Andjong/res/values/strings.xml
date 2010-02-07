@@ -10,6 +10,10 @@
 	<string name="kyoku_ton_2">East 2R</string>
 	<string name="kyoku_ton_3">East 3R</string>
 	<string name="kyoku_ton_4">East 4R</string>
+	<string name="kyoku_nan_1">South 1R</string>
+	<string name="kyoku_nan_2">South 2R</string>
+	<string name="kyoku_nan_3">South 3R</string>
+	<string name="kyoku_nan_4">South 4R</string>
 
 	<string name="kaze_ton">E</string>
 	<string name="kaze_nan">W</string>
@@ -51,6 +55,7 @@
 	<string name="yaku_tumo">Self pick</string>
 	<string name="yaku_doubleton">Double East Wind</string>
 	<string name="yaku_ton">East Wind</string>
+	<string name="yaku_doublenan">Double South Wind</string>
 	<string name="yaku_nan">South Wind</string>
 	<string name="yaku_sya">West Wind</string>
 	<string name="yaku_pei">North Wind</string>

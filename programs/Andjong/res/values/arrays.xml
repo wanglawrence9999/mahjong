@@ -5,6 +5,10 @@
 		<item>@string/kyoku_ton_2</item>
 		<item>@string/kyoku_ton_3</item>
 		<item>@string/kyoku_ton_4</item>
+		<item>@string/kyoku_nan_1</item>
+		<item>@string/kyoku_nan_2</item>
+		<item>@string/kyoku_nan_3</item>
+		<item>@string/kyoku_nan_4</item>
 	</array>
 	<array name="kaze">
 		<item>@string/kaze_ton</item>

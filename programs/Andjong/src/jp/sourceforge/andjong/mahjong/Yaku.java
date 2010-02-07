@@ -356,7 +356,7 @@ public class Yaku {
 	private class CheckTon extends YakuHantei{
 		CheckTon(Resources a_res){
 			hantei = checkTon();
-			if(m_setting.getJikaze() == JIKAZE_TON){
+			if((m_setting.getJikaze() == JIKAZE_TON) && (m_setting.getBakaze() == JIKAZE_TON)){
 				yakuName = a_res.getString(R.string.yaku_doubleton);
 				hanSuu = 2;
 			}else{
@@ -369,8 +369,13 @@ public class Yaku {
 	private class CheckNan extends YakuHantei{
 		CheckNan(Resources a_res){
 			hantei = checkNan();
-			yakuName = a_res.getString(R.string.yaku_nan);
-			hanSuu = 1;
+			if((m_setting.getJikaze() == JIKAZE_NAN) && (m_setting.getBakaze() == JIKAZE_NAN)){
+				yakuName = a_res.getString(R.string.yaku_doublenan);
+				hanSuu = 2;
+			}else{
+				yakuName = a_res.getString(R.string.yaku_nan);
+				hanSuu = 1;
+			}
 		}
 	}
 
@@ -962,11 +967,15 @@ public class Yaku {
 	}
 
 	boolean checkTon() {
-		return checkYakuHai(m_tehai,m_combi,ID_TON);
+		if((m_setting.getJikaze() == JIKAZE_TON) || (m_setting.getBakaze() == JIKAZE_TON)){
+			return checkYakuHai(m_tehai,m_combi,ID_TON);
+		}else{
+			return false;
+		}
 	}
 
 	boolean checkNan() {
-		if(m_setting.getJikaze() == JIKAZE_NAN){
+		if((m_setting.getJikaze() == JIKAZE_NAN) || (m_setting.getBakaze() == JIKAZE_NAN)){
 			return checkYakuHai(m_tehai,m_combi,ID_NAN);
 		}else{
 			return false;

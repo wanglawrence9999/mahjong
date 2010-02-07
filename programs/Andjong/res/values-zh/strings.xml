@@ -10,6 +10,10 @@
 	<string name="kyoku_ton_2">东二局</string>
 	<string name="kyoku_ton_3">东三局</string>
 	<string name="kyoku_ton_4">东四局</string>
+	<string name="kyoku_nan_1">南一局</string>
+	<string name="kyoku_nan_2">南二局</string>
+	<string name="kyoku_nan_3">南三局</string>
+	<string name="kyoku_nan_4">南四局</string>
 
 	<string name="kaze_ton">东</string>
 	<string name="kaze_nan">南</string>
@@ -51,6 +55,7 @@
 	<string name="yaku_tumo">门前清自摸和</string>
 	<string name="yaku_doubleton">役牌</string>
 	<string name="yaku_ton">役牌</string>
+	<string name="yaku_doublenan">役牌</string>
 	<string name="yaku_nan">役牌</string>
 	<string name="yaku_sya">役牌</string>
 	<string name="yaku_pei">役牌</string>

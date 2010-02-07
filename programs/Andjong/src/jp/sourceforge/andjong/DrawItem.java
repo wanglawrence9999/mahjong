@@ -62,7 +62,7 @@ public class DrawItem {
 	 *            ‹Ç
 	 */
 	public synchronized void setKyokuString(Resources a_resources, int a_kyoku) {
-		if (a_kyoku > Mahjong.KYOKU_TON_4) {
+		if (a_kyoku > Mahjong.KYOKU_NAN_4) {
 			m_kyokuString = null;
 			return;
 		}

@@ -867,32 +867,32 @@ public class AndjongView extends View implements EventIf {
 
 		int left = a_left;
 		int top;
-		int nakiCount = 0;
 		boolean reachFlag = false;
+		int count = 0;
+		int kiriCount = 12;
 
 		for (int i = 0; i < suteHaisLength; i++) {
-			if ((i - nakiCount) == 12) {
+			if (count == kiriCount) {
 				left = a_left;
 				a_top += m_haiImageHeight;
-				nakiCount = 0;
+				kiriCount += 12;
 			}
 
 			if (suteHais[i].isReach() || reachFlag) {
-				if (suteHais[i].isNaki()) {
-					nakiCount++;
-					reachFlag = true;
-				} else {
+				if (!suteHais[i].isNaki()) {
 					top = a_top + ((m_haiImageHeight - m_haiImageWidth) / 2);
 					a_canvas.drawBitmap(m_horizontalHaiImage[suteHais[i].getId()], left, top, a_paint);
 					left += m_haiImageHeight;
 					reachFlag = false;
+					count++;
+				} else {
+					reachFlag = true;
 				}
 			} else {
-				if (suteHais[i].isNaki()) {
-					nakiCount++;
-				} else {
+				if (!suteHais[i].isNaki()) {
 					a_canvas.drawBitmap(m_haiImage[suteHais[i].getId()], left, a_top, a_paint);
 					left += m_haiImageWidth;
+					count++;
 				}
 			}
 		}

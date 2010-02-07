@@ -14,6 +14,7 @@ import jp.sourceforge.andjong.mahjong.SuteHai;
 import jp.sourceforge.andjong.mahjong.Tehai;
 import jp.sourceforge.andjong.mahjong.Yama;
 import jp.sourceforge.andjong.mahjong.AgariScore.AgariInfo;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -32,7 +33,7 @@ public class AndjongView extends View implements EventIf {
 	private static final String TAG = "AndjongView";
 
 	/** アクティビティ */
-	//private Game mGame;
+	private Game m_game;
 
 	/** 牌のイメージ */
 	private Bitmap[] m_haiImage;
@@ -254,7 +255,7 @@ public class AndjongView extends View implements EventIf {
 		super(context);
 
 		// アクティビティを保存する。
-		//this.mGame = (Game) context;
+		this.m_game = (Game) context;
 
 		// イメージを初期化する。
 		initImage(getResources());
@@ -1115,6 +1116,16 @@ public class AndjongView extends View implements EventIf {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		switch (m_drawItem.m_state) {
+		case STATE_END:
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				m_game.setResult(Activity.RESULT_OK);
+				m_game.finish();
+				return true;
+			}
+			break;
+		}
+
 		if (m_drawItem.m_kazeFrom >= 4) {
 			m_playerAction.actionNotifyAll();
 			return true;

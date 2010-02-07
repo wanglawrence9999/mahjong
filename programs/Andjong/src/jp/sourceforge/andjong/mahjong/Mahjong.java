@@ -448,6 +448,7 @@ public class Mahjong implements Runnable {
 							if (m_iOya >= m_players.length) {
 								m_iOya = 0;
 							}
+							m_honba = 0;
 						} else {
 							m_renchan = true;
 							m_honba++;
@@ -570,6 +571,7 @@ public class Mahjong implements Runnable {
 					if (m_iOya >= m_players.length) {
 						m_iOya = 0;
 					}
+					m_honba = 0;
 				} else {
 					m_renchan = true;
 					m_honba++;
@@ -609,6 +611,7 @@ public class Mahjong implements Runnable {
 					if (m_iOya >= m_players.length) {
 						m_iOya = 0;
 					}
+					m_honba = 0;
 				} else {
 					m_renchan = true;
 					m_honba++;

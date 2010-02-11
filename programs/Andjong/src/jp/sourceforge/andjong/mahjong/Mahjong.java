@@ -270,6 +270,9 @@ public class Mahjong implements Runnable {
 		// 山を作成する。
 		m_yama = new Yama();
 
+		// 赤ドラを設定する。
+		m_yama.setRedDora(Hai.ID_PIN_5, 2);
+
 		// 局を初期化する。
 		m_kyoku = KYOKU_TON_1;
 		//m_kyoku = KYOKU_NAN_1;
@@ -745,7 +748,7 @@ public class Mahjong implements Runnable {
 
 		m_isTsumo = true;
 
-		//m_tsumoHai = new Hai(0);
+		//m_tsumoHai = new Hai(13, true);
 		// UIイベント（ツモ）を発行する。
 		m_view.event(EventId.TSUMO, m_kazeFrom, m_kazeFrom);
 

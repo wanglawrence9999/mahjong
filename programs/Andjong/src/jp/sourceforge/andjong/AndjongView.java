@@ -77,6 +77,14 @@ public class AndjongView extends View implements EventIf {
 	private Paint mBackgroundPaint;
 
 	/*
+	 * 赤ドラ
+	 */
+
+	private Bitmap[] m_haiRedImage;
+	private Bitmap[] m_horizontalHaiRedImage;
+	private Bitmap[] m_largeHaiRedImage;
+
+	/*
 	 * print
 	 */
 
@@ -384,6 +392,43 @@ public class AndjongView extends View implements EventIf {
 
 		m_largeHaiImageWidth = m_largeHaiImage[0].getWidth();
 //		m_largeHaiImageHeight = m_largeHaiImage[0].getHeight();
+
+		/*
+		 * 赤ドラのイメージ
+		 */
+
+		m_haiRedImage = new Bitmap[Hai.ID_MAX + 1];
+		m_haiRedImage[13] = BitmapFactory.decodeResource(res, R.drawable.hai_13_pin_5_red);
+
+		m_horizontalHaiRedImage = new Bitmap[Hai.ID_MAX + 1];
+		m_horizontalHaiRedImage[13] = createHorizontalBitmap(m_haiRedImage[13]);
+
+		m_largeHaiRedImage = new Bitmap[Hai.ID_MAX + 1];
+		m_largeHaiRedImage[13] = BitmapFactory.decodeResource(res, R.drawable.hai_13_pin_5_l_red);
+	}
+
+	private Bitmap getHaiImage(Hai a_hai) {
+		if (a_hai.isRed()) {
+			return m_haiRedImage[a_hai.getId()];
+		} else {
+			return m_haiImage[a_hai.getId()];
+		}
+	}
+
+	private Bitmap getHorizontalHaiImage(Hai a_hai) {
+		if (a_hai.isRed()) {
+			return m_horizontalHaiRedImage[a_hai.getId()];
+		} else {
+			return m_horizontalHaiImage[a_hai.getId()];
+		}
+	}
+
+	private Bitmap getLargeHaiImage(Hai a_hai) {
+		if (a_hai.isRed()) {
+			return m_largeHaiRedImage[a_hai.getId()];
+		} else {
+			return m_largeHaiImage[a_hai.getId()];
+		}
 	}
 
 	/**
@@ -710,7 +755,7 @@ public class AndjongView extends View implements EventIf {
 	private void drawDoraHais(int a_left, int a_top, Canvas a_canvas, Hai a_hais[]) {
 		int i = 0;
 		for (; i < a_hais.length; i++) {
-			a_canvas.drawBitmap(m_haiImage[a_hais[i].getId()], a_left + (i * HAI_WIDTH), a_top, null);
+			a_canvas.drawBitmap(getHaiImage(a_hais[i]), a_left + (i * HAI_WIDTH), a_top, null);
 		}
 
 		for (; i < Yama.DORA_HAIS_MAX; i++) {
@@ -855,6 +900,7 @@ public class AndjongView extends View implements EventIf {
 	//	if ((mInfoUi.getManKaze() == kaze) && (drawItem.tsumoKaze == kaze)) {
 			drawPlayerTehai(canvas, tehai, tsumoHai, m_iSelectSutehai, TEHAI_LEFT, 50);
 		} else {
+			//m_drawItem.m_isDebug = true;
 			drawTehai(canvas, tehai, tsumoHai, isPlayer | m_drawItem.m_isDebug, TEHAI_LEFT/*26*/, TEHAI_TOP);
 		}
 
@@ -881,7 +927,7 @@ public class AndjongView extends View implements EventIf {
 			if (suteHais[i].isReach() || reachFlag) {
 				if (!suteHais[i].isNaki()) {
 					top = a_top + ((m_haiImageHeight - m_haiImageWidth) / 2);
-					a_canvas.drawBitmap(m_horizontalHaiImage[suteHais[i].getId()], left, top, a_paint);
+					a_canvas.drawBitmap(getHorizontalHaiImage(suteHais[i]), left, top, a_paint);
 					left += m_haiImageHeight;
 					reachFlag = false;
 					count++;
@@ -890,7 +936,7 @@ public class AndjongView extends View implements EventIf {
 				}
 			} else {
 				if (!suteHais[i].isNaki()) {
-					a_canvas.drawBitmap(m_haiImage[suteHais[i].getId()], left, a_top, a_paint);
+					a_canvas.drawBitmap(getHaiImage(suteHais[i]), left, a_top, a_paint);
 					left += m_haiImageWidth;
 					count++;
 				}
@@ -914,12 +960,12 @@ public class AndjongView extends View implements EventIf {
 				continue;
 			}
 
-			a_canvas.drawBitmap(a_disp ? m_haiImage[jyunTehai[i].getId()] : m_hideHaiImage, left, top, null);
+			a_canvas.drawBitmap(a_disp ? getHaiImage(jyunTehai[i]) : m_hideHaiImage, left, top, null);
 		}
 
 		if (a_addHai != null) {
 			left += TSUMO_OFFSET;
-			a_canvas.drawBitmap(a_disp ? m_haiImage[a_addHai.getId()] : m_hideHaiImage, left, top, null);
+			a_canvas.drawBitmap(a_disp ? getHaiImage(a_addHai) : m_hideHaiImage, left, top, null);
 		}
 
 		drawFuuros(a_canvas, a_tehai, FUURO_LEFT, top);
@@ -937,9 +983,9 @@ public class AndjongView extends View implements EventIf {
 					a_left -= m_haiImageWidth;
 					a_canvas.drawBitmap(mHaiUraImage, a_left, a_top, null);
 					a_left -= m_haiImageWidth;
-					a_canvas.drawBitmap(m_haiImage[hais[2].getId()], a_left, a_top, null);
+					a_canvas.drawBitmap(getHaiImage(hais[2]), a_left, a_top, null);
 					a_left -= m_haiImageWidth;
-					a_canvas.drawBitmap(m_haiImage[hais[1].getId()], a_left, a_top, null);
+					a_canvas.drawBitmap(getHaiImage(hais[1]), a_left, a_top, null);
 					a_left -= m_haiImageWidth;
 					a_canvas.drawBitmap(mHaiUraImage, a_left, a_top, null);
 				} else {
@@ -947,44 +993,44 @@ public class AndjongView extends View implements EventIf {
 
 					if (relation == Mahjong.RELATION_SHIMOCHA) {
 						a_left -= m_haiImageHeight;
-						a_canvas.drawBitmap(m_horizontalHaiImage[hais[2].getId()], a_left, a_top + 4, null);
+						a_canvas.drawBitmap(getHorizontalHaiImage(hais[2]), a_left, a_top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
-							a_canvas.drawBitmap(m_horizontalHaiImage[hais[2].getId()], a_left, a_top - 15, null);
+							a_canvas.drawBitmap(getHorizontalHaiImage(hais[2]), a_left, a_top - 15, null);
 						} else if (type == Fuuro.TYPE_DAIMINKAN) {
 							a_left -= m_haiImageWidth;
-							a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+							a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
 						}
 						a_left -= m_haiImageWidth;
-						a_canvas.drawBitmap(m_haiImage[hais[1].getId()], a_left, a_top, null);
+						a_canvas.drawBitmap(getHaiImage(hais[1]), a_left, a_top, null);
 						a_left -= m_haiImageWidth;
-						a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+						a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
 					} else if (relation == Mahjong.RELATION_TOIMEN) {
 						a_left -= m_haiImageWidth;
-						a_canvas.drawBitmap(m_haiImage[hais[2].getId()], a_left, a_top, null);
+						a_canvas.drawBitmap(getHaiImage(hais[2]), a_left, a_top, null);
 						if (type == Fuuro.TYPE_DAIMINKAN) {
 							a_left -= m_haiImageWidth;
-							a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+							a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
 						}
 						a_left -= m_haiImageHeight;
-						a_canvas.drawBitmap(m_horizontalHaiImage[hais[1].getId()], a_left, a_top + 4, null);
+						a_canvas.drawBitmap(getHorizontalHaiImage(hais[1]), a_left, a_top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
-							a_canvas.drawBitmap(m_horizontalHaiImage[hais[1].getId()], a_left, a_top - 15, null);
+							a_canvas.drawBitmap(getHorizontalHaiImage(hais[1]), a_left, a_top - 15, null);
 						}
 						a_left -= m_haiImageWidth;
-						a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+						a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
 					} else {
 						a_left -= m_haiImageWidth;
-						a_canvas.drawBitmap(m_haiImage[hais[2].getId()], a_left, a_top, null);
+						a_canvas.drawBitmap(getHaiImage(hais[2]), a_left, a_top, null);
 						a_left -= m_haiImageWidth;
-						a_canvas.drawBitmap(m_haiImage[hais[1].getId()], a_left, a_top, null);
+						a_canvas.drawBitmap(getHaiImage(hais[1]), a_left, a_top, null);
 						if (type == Fuuro.TYPE_DAIMINKAN) {
 							a_left -= m_haiImageWidth;
-							a_canvas.drawBitmap(m_haiImage[hais[0].getId()], a_left, a_top, null);
+							a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
 						}
 						a_left -= m_haiImageHeight;
-						a_canvas.drawBitmap(m_horizontalHaiImage[hais[0].getId()], a_left, a_top + 4, null);
+						a_canvas.drawBitmap(getHorizontalHaiImage(hais[0]), a_left, a_top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
-							a_canvas.drawBitmap(m_horizontalHaiImage[hais[0].getId()], a_left, a_top - 15, null);
+							a_canvas.drawBitmap(getHorizontalHaiImage(hais[0]), a_left, a_top - 15, null);
 						}
 					}
 				}
@@ -998,7 +1044,7 @@ public class AndjongView extends View implements EventIf {
 
 		int iSkip = m_drawItem.getISkip();
 
-		Bitmap haiImage[] = this.m_largeHaiImage;
+		//Bitmap haiImage[] = this.m_largeHaiImage;
 		int haiImageWidth = this.m_largeHaiImageWidth;
 
 		int left = a_left;
@@ -1030,9 +1076,9 @@ public class AndjongView extends View implements EventIf {
 				if ((iSelect < 2) &&(jyunTehai[i].getId() == iSelects[iSelect].getId())) {
 				//if ((jyunTehai[i].getId() == iSelects[0].getId()) || (jyunTehai[i].getId() == iSelects[1].getId())) {
 					iSelect++;
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, topSelect, null);
 				} else {
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, top, null);
 				}
 			}
 		} else if (m_playerAction.getState() == PlayerAction.STATE_KAN_SELECT) {
@@ -1046,18 +1092,18 @@ public class AndjongView extends View implements EventIf {
 				}
 
 				if (jyunTehai[i].getId() == kanHais[kanSelect].getId()) {
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, topSelect, null);
 				} else {
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, top, null);
 				}
 			}
 
 			if (a_addHai != null) {
 				left += TSUMO_OFFSET;
 				if ((a_addHai.getId() == kanHais[kanSelect].getId()) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
-					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, topSelect, null);
+					a_canvas.drawBitmap(getLargeHaiImage(a_addHai), left, topSelect, null);
 				} else {
-					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, top, null);
+					a_canvas.drawBitmap(getLargeHaiImage(a_addHai), left, top, null);
 				}
 			}
 		} else if (m_playerAction.getState() == PlayerAction.STATE_REACH_SELECT){
@@ -1069,18 +1115,18 @@ public class AndjongView extends View implements EventIf {
 				}
 
 				if (i == a_iSelect) {
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, topSelect, null);
 				} else {
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, top, null);
 				}
 			}
 
 			if (a_addHai != null) {
 				left += TSUMO_OFFSET;
 				if (a_iSelect >= jyunTehaiLength) {
-					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, topSelect, null);
+					a_canvas.drawBitmap(getLargeHaiImage(a_addHai), left, topSelect, null);
 				} else {
-					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, top, null);
+					a_canvas.drawBitmap(getLargeHaiImage(a_addHai), left, top, null);
 				}
 			}
 		} else {
@@ -1090,18 +1136,18 @@ public class AndjongView extends View implements EventIf {
 				}
 
 				if ((i == a_iSelect) && (m_playerAction.getState() == PlayerAction.STATE_SUTEHAI_SELECT)) {
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, topSelect, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, topSelect, null);
 				} else {
-					a_canvas.drawBitmap(haiImage[jyunTehai[i].getId()], left, top, null);
+					a_canvas.drawBitmap(getLargeHaiImage(jyunTehai[i]), left, top, null);
 				}
 			}
 
 			if (a_addHai != null) {
 				left += TSUMO_OFFSET;
 				if ((a_iSelect >= jyunTehaiLength) && (m_drawItem.m_state != STATE_RIHAI_WAIT) && (m_drawItem.m_state != STATE_RESULT)) {
-					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, topSelect, null);
+					a_canvas.drawBitmap(getLargeHaiImage(a_addHai), left, topSelect, null);
 				} else {
-					a_canvas.drawBitmap(haiImage[a_addHai.getId()], left, top, null);
+					a_canvas.drawBitmap(getLargeHaiImage(a_addHai), left, top, null);
 				}
 			}
 		}

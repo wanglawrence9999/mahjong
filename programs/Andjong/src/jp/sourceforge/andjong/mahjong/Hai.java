@@ -287,6 +287,20 @@ public class Hai {
 	 */
 	public Hai(int a_id) {
 		this.m_id = a_id;
+		this.m_red = false;
+	}
+
+	/**
+	 * IDと赤ドラから牌を作成する。
+	 *
+	 * @param a_id
+	 *            ID
+	 * @param a_red
+	 *            赤ドラ
+	 */
+	public Hai(int a_id, boolean a_red) {
+		this.m_id = a_id;
+		this.m_red = a_red;
 	}
 
 	/**
@@ -309,6 +323,7 @@ public class Hai {
 	 */
 	public static void copy(Hai a_dest, Hai a_src) {
 		a_dest.m_id = a_src.m_id;
+		a_dest.m_red = a_src.m_red;
 	}
 
 	/**
@@ -415,5 +430,27 @@ public class Hai {
 			id = a_noKind - KIND_WAN + ID_WAN_1 - 1;
 		}
 		return id;
+	}
+
+	/** 赤ドラ */
+	private boolean m_red;
+
+	/**
+	 * 赤ドラを設定する。
+	 *
+	 * @param a_red
+	 *            赤ドラ
+	 */
+	public void setRed(boolean a_red) {
+		this.m_red = a_red;
+	}
+
+	/**
+	 * 赤ドラを取得する。
+	 *
+	 * @return 赤ドラ
+	 */
+	public boolean isRed() {
+		return m_red;
 	}
 }

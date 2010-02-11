@@ -726,7 +726,7 @@ public class Yaku {
 
 
 	boolean checkTanyao() {
-		int id;
+		int no;
 		Hai[] jyunTehai = m_tehai.getJyunTehai();
 		Hai checkHai[];
 
@@ -757,9 +757,9 @@ public class Yaku {
 			case Fuuro.TYPE_MINSHUN:
 				//明順の牌をチェック
 				checkHai = fuuros[i].getHais();
-				id = checkHai[0].getId();
+				no = checkHai[0].getNo();
 				//123 と　789 の順子があれば不成立
-				if ((id == 1) || (id == 7)){
+				if ((no == 1) || (no == 7)){
 					return false;
 				}
 				break;
@@ -2104,11 +2104,21 @@ public class Yaku {
 			}
 		}
 
+		for (int j = 0; j < jyunTehaiLength; j++) {
+			if (jyunTehai[j].isRed()) {
+				doraCount++;
+			}
+		}
+
 		for (int i = 0; i < doraHais.length; i++) {
 			if (doraHais[i].getNextHaiId() == m_addHai.getId()) {
 				doraCount++;
 				break;
 			}
+		}
+
+		if (m_addHai.isRed()) {
+			doraCount++;
 		}
 
 		Fuuro[] fuuros = m_tehai.getFuuros();
@@ -2142,6 +2152,31 @@ public class Yaku {
 							doraCount += 1;
 							break SEARCHLOOP;
 						}
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		for (int i = 0; i < fuuroNum; i++) {
+			type = fuuros[i].getType();
+			switch (type) {
+			case Fuuro.TYPE_MINKOU:
+			case Fuuro.TYPE_DAIMINKAN:
+			case Fuuro.TYPE_KAKAN:
+			case Fuuro.TYPE_ANKAN:
+				for (int j = 0; j < 4; j++) {
+					if (fuuros[i].getHais()[j].isRed()) {
+						doraCount++;
+					}
+				}
+				break;
+			case Fuuro.TYPE_MINSHUN:
+				for (int j = 0; j < 3; j++) {
+					if (fuuros[i].getHais()[j].isRed()) {
+						doraCount++;
 					}
 				}
 				break;

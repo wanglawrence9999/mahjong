@@ -215,4 +215,28 @@ public class Yama {
 	int getTsumoNokori() {
 		return TSUMO_HAIS_MAX - m_iTsumoHais;
 	}
+
+	/**
+	 * Ôƒhƒ‰‚ğİ’è‚·‚éB
+	 *
+	 * @param a_id
+	 *            ID
+	 * @param a_num
+	 *            ŒÂ”
+	 */
+	void setRedDora(int a_id, int a_num) {
+		if (a_num <= 0) {
+			return;
+		}
+
+		for (int i = 0; i < m_yamaHais.length; i++) {
+			if (m_yamaHais[i].getId() == a_id) {
+				m_yamaHais[i].setRed(true);
+				a_num--;
+				if (a_num <= 0) {
+					break;
+				}
+			}
+		}
+	}
 }

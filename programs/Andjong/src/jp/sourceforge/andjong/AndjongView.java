@@ -995,10 +995,10 @@ public class AndjongView extends View implements EventIf {
 						a_left -= m_haiImageHeight;
 						a_canvas.drawBitmap(getHorizontalHaiImage(hais[2]), a_left, a_top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
-							a_canvas.drawBitmap(getHorizontalHaiImage(hais[2]), a_left, a_top - 15, null);
+							a_canvas.drawBitmap(getHorizontalHaiImage(hais[3]), a_left, a_top - 15, null);
 						} else if (type == Fuuro.TYPE_DAIMINKAN) {
 							a_left -= m_haiImageWidth;
-							a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
+							a_canvas.drawBitmap(getHaiImage(hais[3]), a_left, a_top, null);
 						}
 						a_left -= m_haiImageWidth;
 						a_canvas.drawBitmap(getHaiImage(hais[1]), a_left, a_top, null);
@@ -1009,12 +1009,12 @@ public class AndjongView extends View implements EventIf {
 						a_canvas.drawBitmap(getHaiImage(hais[2]), a_left, a_top, null);
 						if (type == Fuuro.TYPE_DAIMINKAN) {
 							a_left -= m_haiImageWidth;
-							a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
+							a_canvas.drawBitmap(getHaiImage(hais[3]), a_left, a_top, null);
 						}
 						a_left -= m_haiImageHeight;
 						a_canvas.drawBitmap(getHorizontalHaiImage(hais[1]), a_left, a_top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
-							a_canvas.drawBitmap(getHorizontalHaiImage(hais[1]), a_left, a_top - 15, null);
+							a_canvas.drawBitmap(getHorizontalHaiImage(hais[3]), a_left, a_top - 15, null);
 						}
 						a_left -= m_haiImageWidth;
 						a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
@@ -1025,12 +1025,12 @@ public class AndjongView extends View implements EventIf {
 						a_canvas.drawBitmap(getHaiImage(hais[1]), a_left, a_top, null);
 						if (type == Fuuro.TYPE_DAIMINKAN) {
 							a_left -= m_haiImageWidth;
-							a_canvas.drawBitmap(getHaiImage(hais[0]), a_left, a_top, null);
+							a_canvas.drawBitmap(getHaiImage(hais[3]), a_left, a_top, null);
 						}
 						a_left -= m_haiImageHeight;
 						a_canvas.drawBitmap(getHorizontalHaiImage(hais[0]), a_left, a_top + 4, null);
 						if (type == Fuuro.TYPE_KAKAN) {
-							a_canvas.drawBitmap(getHorizontalHaiImage(hais[0]), a_left, a_top - 15, null);
+							a_canvas.drawBitmap(getHorizontalHaiImage(hais[3]), a_left, a_top - 15, null);
 						}
 					}
 				}

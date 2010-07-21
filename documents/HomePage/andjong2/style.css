@@ -1,0 +1,157 @@
+/********************************************/
+/*											*/
+/********************************************/
+body {
+ background-image: none;
+ background-attachment: fixed;
+ text-align: center;
+ }
+
+#base {
+ width:800px;
+ height:800px
+ margin: 2.5% 5%;
+ background-color: white;
+ font-family: Arial,Helvetica,sans-serif;
+ text-align: center;
+ }
+
+/* heder */
+#heder{
+ width:800px;
+ height:160px
+ margin : 0px;
+ padding : 0px;
+}
+#heder td{
+ text-align: center;
+}
+
+#header img{
+ width:500px;
+ height:160px;
+}
+
+#header #sub {
+ font-size: 12px;
+ font-style:oblique;
+ color: #86A886;
+}
+/* heder */
+
+/* menu */
+#menu  {
+ border-style: solid none none;
+ border-color: gray;
+ border-width: 1px 0px 0px;
+ color: white;
+ text-align:center;
+ font-size:12px;
+ color:gray;
+}
+
+#menu a { 
+ color: black;
+ background-color: white;
+ text-decoration: none;
+}
+
+#menu ul {
+ margin-top: 10px;
+ padding: 0px;
+ list-style-type: none;
+ line-height: 1.5px;
+ word-spacing : 15px;
+}
+
+#menu a:hover {
+ color: black;
+ background-color: gray;
+}
+/* menu */
+
+/* contetns */
+#contents {
+ width:500px;
+ height:500px;
+ float: left;
+}
+
+#contents h1 {
+ margin-top: 40px;
+ padding: 1px;
+ font-size: 20px;
+ font-weight: bold;
+ }
+
+#contents h2 {
+ margin-top: 10px;
+ padding: 1px;
+ font-size: 18px;
+ font-weight: bold;
+ }
+
+#contents p{
+ font-size: 14px;
+ font-weight: bold;	
+ padding : 1px;
+ line-height: 20px;
+}
+
+#contents img{
+ margin-top:30px;
+ border-style: solid;
+ border:1px
+}
+
+#attention{
+ text-align:center;
+ padding : 22px;
+}
+
+/* contetns */
+/* side */
+#side {
+ margin-top:30px;
+ margin-left:10px;
+ margin-right:10px;
+ margin-bottom:10px;
+ padding : 5ps;
+ float: right;
+ width: 165px;
+}
+
+#side img {
+ border:none;
+}
+#side li {
+ list-style-type: none;
+}
+/* side */
+
+/* footer */
+#footer {
+ width:800px;
+ height:50px;
+ margin-top : 750px;
+ padding : 0px;
+ border-style: solid none none;
+ border-color: gray;
+ border-width: 1px 0px 0px;
+ color: white;
+ }
+
+#footer address{
+ color: gray;
+ font-size : 10px;
+}
+/* footer */
+
+
+
+#attention p{
+ font-size : 15px;
+ font-weight:bold;
+ color : red;
+}
+

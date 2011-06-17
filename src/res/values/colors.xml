@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="background">#3500ffff</color>
+	<color name="andjong_background">#ff6aa635</color>
+	<color name="menu">#A0ab0d13</color>
+	<color name="info">#ff48602c</color>
+</resources>

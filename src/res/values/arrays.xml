@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<array name="kyoku">
+		<item>@string/kyoku_ton_1</item>
+		<item>@string/kyoku_ton_2</item>
+		<item>@string/kyoku_ton_3</item>
+		<item>@string/kyoku_ton_4</item>
+		<item>@string/kyoku_nan_1</item>
+		<item>@string/kyoku_nan_2</item>
+		<item>@string/kyoku_nan_3</item>
+		<item>@string/kyoku_nan_4</item>
+	</array>
+	<array name="kaze">
+		<item>@string/kaze_ton</item>
+		<item>@string/kaze_nan</item>
+		<item>@string/kaze_sya</item>
+		<item>@string/kaze_pei</item>
+	</array>
+
+	<string-array name="list_entries">
+		<item>@string/rounds_tonpuu</item>
+		<item>@string/rounds_hanchan</item>
+	</string-array>
+
+	<string-array name="list_entryvalues">
+		<item>tonpuu</item>
+		<item>hanchan</item>
+	</string-array>
+</resources>

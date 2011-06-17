@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<ListPreference android:key="settings_kyokusuu"
+		android:title="@string/settings_kyokusuu" android:dialogTitle="@string/settings_kyokusuu"
+		android:entries="@array/list_entries" android:entryValues="@array/list_entryvalues" />
+
+	<CheckBoxPreference android:key="settings_kuitan"
+		android:title="@string/settings_kuitan" android:defaultValue="true" />
+
+	<CheckBoxPreference android:key="hints"
+		android:title="@string/hints_title" android:defaultValue="true" />
+</PreferenceScreen>

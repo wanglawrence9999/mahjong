@@ -822,13 +822,13 @@ public class Yaku {
 
 		//“ª‚ªê•—
 		if( atamaHai.getKind() == KIND_FON
-				&& atamaHai.getNo() == m_setting.getBakaze()){
+				&& (atamaHai.getNo() - 1) == m_setting.getBakaze()){
 			return false;
 		}
 
 		//“ª‚ª©•—
 		if( atamaHai.getKind() == KIND_FON
-				&& atamaHai.getNo() == m_setting.getJikaze()){
+				&& (atamaHai.getNo() - 1) == m_setting.getJikaze()){
 			return false;
 		}
 

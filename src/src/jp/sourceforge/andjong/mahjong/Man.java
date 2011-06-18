@@ -285,7 +285,7 @@ public class Man implements EventIf {
 				}
 			}
 
-			if (!m_info.isReach()) {
+			if (!m_info.isReach() && (m_info.getTsumoRemain() > 0)) {
 				if (m_tehai.validPon(suteHai)) {
 					m_playerAction.setValidPon(true);
 					eventId[menuNum] = EventId.PON;

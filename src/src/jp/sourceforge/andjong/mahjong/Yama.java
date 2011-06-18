@@ -78,7 +78,7 @@ public class Yama {
 	 * @return ƒcƒ‚”v
 	 */
 	Hai tsumo() {
-		if (m_iTsumoHais >= TSUMO_HAIS_MAX) {
+		if (m_iTsumoHais >= (TSUMO_HAIS_MAX - m_iRinshanHais)) {
 			return null;
 		}
 
@@ -213,7 +213,7 @@ public class Yama {
 	 * @return ƒcƒ‚”v‚Ìc‚è”
 	 */
 	int getTsumoNokori() {
-		return TSUMO_HAIS_MAX - m_iTsumoHais;
+		return TSUMO_HAIS_MAX - m_iTsumoHais - m_iRinshanHais;
 	}
 
 	/**

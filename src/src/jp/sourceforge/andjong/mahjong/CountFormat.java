@@ -1,5 +1,19 @@
 package jp.sourceforge.andjong.mahjong;
 
+import static jp.sourceforge.andjong.mahjong.Hai.ID_CHUN;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_HAKU;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_HATSU;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_NAN;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_PE;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_PIN_1;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_PIN_9;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_SHA;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_SOU_1;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_SOU_9;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_TON;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_WAN_1;
+import static jp.sourceforge.andjong.mahjong.Hai.ID_WAN_9;
+
 /**
  * カウントフォーマットを管理するクラスです。
  *
@@ -237,6 +251,11 @@ public class CountFormat {
 			m_chiitoitsu = checkChiitoitsu();
 			if (m_chiitoitsu) {
 				m_combiManage.m_combiNum = 1;
+			} else {
+				m_kokushi = checkKokushi();
+				if (m_kokushi) {
+					m_combiManage.m_combiNum = 1;
+				}
 			}
 		}
 		return m_combiManage.m_combiNum;
@@ -269,6 +288,45 @@ public class CountFormat {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean m_kokushi;
+	public boolean isKokushi() {
+		return m_kokushi;
+	}
+
+	private boolean checkKokushi() {
+		//牌の数を調べるための配列 (0番地は使用しない）
+		int checkId[] = {ID_WAN_1,ID_WAN_9,ID_PIN_1,ID_PIN_9,ID_SOU_1,ID_SOU_9,
+								ID_TON,ID_NAN,ID_SHA,ID_PE,ID_HAKU,ID_HATSU,ID_CHUN};
+		int countHai[] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+		//手牌のIDを検索する
+		for(int i = 0 ; i < m_countNum ; i++){
+			for(int j = 0 ; j < checkId.length ; j++){
+				if(Hai.noKindToId(m_counts[i].m_noKind) == checkId[j]){
+					countHai[j] = m_counts[i].m_num;
+				}
+			}
+		}
+
+		boolean atama = false;
+		//国士無双が成立しているか調べる(手牌がすべて1.9字牌 すべての１,９字牌を持っている）
+		for(int i = 0 ; i < countHai.length ; i++){
+			//0枚の牌があれば不成立
+			if(countHai[i] == 0){
+				return false;
+			}
+			if(countHai[i] == 2){
+				atama = true;
+			}
+		}
+		//条件を満たしていれば成立
+		if (atama) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

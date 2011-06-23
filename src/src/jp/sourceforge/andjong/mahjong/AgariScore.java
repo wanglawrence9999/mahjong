@@ -300,8 +300,7 @@ public class AgariScore {
 			return agariScore;
 		}
 
-		// あがりの組み合わせがない場合は0点
-		if (combisCount == 0) {
+		if (countFormat.isKokushi()) {
 			Yaku yaku = new Yaku(tehai, addHai, setting, a_res);
 			if (yaku.m_kokushi) {
 				int hanSuu = 13;
@@ -313,6 +312,11 @@ public class AgariScore {
 
 				return agariScore;
 			}
+			return 0;
+		}
+
+		// あがりの組み合わせがない場合は0点
+		if (combisCount == 0) {
 			return 0;
 		}
 

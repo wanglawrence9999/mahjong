@@ -821,6 +821,10 @@ public class Mahjong implements Runnable {
 			}
 			m_suteHais[m_suteHaisCount++] = new SuteHai(m_suteHai);
 
+			if (!activePlayer.isReach()) {
+				activePlayer.setSuteHaisCount(m_suteHaisCount);
+			}
+
 			// イベントを通知する。
 			retEid = notifyEvent(EventId.SUTEHAI, m_kazeFrom, m_kazeFrom);
 			break;

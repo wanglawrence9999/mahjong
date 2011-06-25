@@ -9,11 +9,18 @@ import java.util.Random;
  *
  */
 public class Sai {
+	/** シード */
+	private static long m_seed;
+
 	/** 番号 */
 	private int m_no = 1;
 
 	/** 乱数ジェネレータ */
-	private Random m_random = new Random();
+	private Random m_random = new Random(m_seed++);
+
+	static {
+		m_seed = System.currentTimeMillis();
+	}
 
 	/**
 	 * 番号を取得する。

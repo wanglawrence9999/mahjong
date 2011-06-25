@@ -166,7 +166,7 @@ public class AI implements EventIf {
 				}
 			}
 
-			if (m_info.isReach() && !furiten) {
+			if (!furiten) {
 				suteHais = m_info.getSuteHais();
 				int suteHaisCount = m_info.getSuteHaisCount();
 				int playerSuteHaisCount = m_info.getPlayerSuteHaisCount();
